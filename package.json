@@ -1,12 +1,13 @@
 {
-  "name": "csde-components-validator",
+  "name": "@woodwing/csde-components-validator",
   "version": "0.1.0",
   "description": "Validation module for Content Station Digital Editor components packages.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "build": "tsc",
+    "watch": "tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +22,14 @@
   "homepage": "https://github.com/WoodWing/csde-components-validator#readme",
   "devDependencies": {
     "typescript": "^2.7.2"
+  },
+  "dependencies": {
+    "@types/ajv": "^1.0.0",
+    "@types/node": "^9.4.6",
+    "@types/recursive-readdir": "^2.2.0",
+    "ajv": "^6.1.1",
+    "ajv-errors": "^1.0.0",
+    "colors": "^1.1.2",
+    "recursive-readdir": "^2.2.1"
   }
 }
