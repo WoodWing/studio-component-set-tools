@@ -1,0 +1,46 @@
+{
+    "name": "minimal-sample",
+    "description": "Minimal components package sample touching most of the available options.",
+    "version": "1.0.0",
+
+    "components":[
+        {
+            "name": "body",
+            "label": "Body Label",
+            "icon": "icons/body.svg",
+            "properties":[
+                "style"
+            ],
+            "countStatistics": true
+        }
+    ],
+
+    "groups": [
+        {
+            "label": "Minimal",
+            "name": "minimal",
+            "components": [
+                "body"
+            ]
+        }
+    ],
+
+    "componentProperties": [
+        {
+            "name": "style",
+            "label": "{{ 'DESIGN_PROPERTY_VARIANT_LABEL' | translate }}",
+            "control": "select",
+            "options": [
+                {
+                    "caption": "Default"
+                },
+                {
+                    "caption": "Option 1",
+                    "value": "_option1"
+                }
+            ]
+        }
+    ],
+
+    "conversionRules": {}
+}
