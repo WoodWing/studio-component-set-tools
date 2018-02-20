@@ -11,6 +11,8 @@ export const componentsDefinitionSchema = {
         description: { type: 'string', description: 'Description of components package' },
         version: { type: 'string', description: 'Version of matching components model' },
 
+        defaultComponentOnEnter: { type: 'string', description: 'Default component inserted on pressing enter in a text field' },
+
         components: {
             type: 'array',
             description: 'List of available components',
@@ -189,6 +191,6 @@ export const componentsDefinitionSchema = {
             },
         },
     },
-    required: ['name', 'version', 'components', 'componentProperties', 'groups', 'conversionRules'],
+    required: ['name', 'version', 'defaultComponentOnEnter', 'components', 'componentProperties', 'groups', 'conversionRules'],
     additionalProperties: false,
 };
