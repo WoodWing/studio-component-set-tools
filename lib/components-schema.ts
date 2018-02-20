@@ -9,36 +9,114 @@ export const componentsDefinitionSchema = {
         description: { type: 'string', description: 'Description of components package' },
         version: { type: 'string', description: 'Version of matching components model' },
 
-        // Describes components
         components: {
             type: 'array',
+            description: 'List of available components',
             items: {
                 type: 'object',
                 properties: {
-                    name: { type: 'string', description: 'Component identifier. Must be unique' },
+                    name: { type: 'string', description: 'Unique component identifier' },
                     label: { type: 'string', description: 'Component label shown in Digital Editor' },
                     icon: { type: 'string', description: 'Icon shown for component in Digital Editor' },
-                    properties: { type: 'array', items: { type: 'string' }, description: 'names of properties this component can use.' },
+                    properties: {
+                        type: 'array',
+                        items: { type: 'string' },
+                        description: 'names of properties this component can use'
+                    },
+
+                    allowNesting: {
+                        enum: ['no', 'yes', 'one-level'],
+                        description: 'Allows nesting the component in containers. Defaults to "yes".',
+                    },
+                    restrictChildren: {
+                        type: 'object',
+                        description: 'Restricts children of this component to the listed ones. Can be further filtered down to also have content.',
+                    },
                     countStatistics: { type: 'boolean', description: 'Count characters, words and paragraphs of this component' },
                 },
+                required: ['name', 'label', 'icon'],
                 additionalProperties: false
             }
         },
 
-        // Properties available in component
         componentProperties: {
-            type: 'array'
+            type: 'array',
+            description: 'List of available component properties',
+            items: {
+                type: 'object',
+                properties: {
+                    name: { type: 'string' },
+                    label: { type: 'string' },
+                    control: {
+                        type: 'object',
+                        description: 'Type of UI element and options',
+                        anyOf: [
+                            {
+                                properties: {
+                                    type: {
+                                        enum: ['select'],
+                                        description: 'Dropdown with fixed number of options.'
+                                    },
+                                    options: {
+                                        type: 'array',
+                                        minItems: 1,
+                                    },
+                                }
+                            },
+                            {
+                                properties: {
+                                    type: {
+                                        enum: ['checkbox'],
+                                        description: 'Checkbox toggling between value and no value'
+                                    },
+                                    value: { type: 'string' },
+                                }
+                            },
+                        ],
+                    },
+                    dataType: {
+                        enum: [
+                            'styles',
+                            'inlineStyles',
+                            'data',
+                            'doc-editable',
+                            'doc-image',
+                            'doc-html',
+                            'doc-slideshow',
+                            'doc-media',
+                        ]
+                    },
+                    dataProperty: { type: 'string' },
+                },
+
+                required: ['name', 'label', 'control', 'dataType'],
+                additionalProperties: false
+            },
         },
 
-        // Groups component chooser
         groups: {
-            type: 'array'
+            type: 'array',
+            description: 'List of groups shown in component chooser dialog',
+            items: {
+                type: 'object',
+                properties: {
+                    name: { type: 'string', description: 'Unique group identifier' },
+                    label: { type: 'string', description: 'Group label shown in Digital Editor' },
+                    components: {
+                        type: 'array',
+                        items: { type: 'string' },
+                        description: 'names of components in this group'
+                    },
+                },
+                required: ['name', 'label', 'components'],
+            }
         },
 
-        // Conversion rules for transforming one component into another
         conversionRules: {
-            type: 'object'
+            type: 'object',
+            description: 'Conversion rules for transforming one component into another component',
         }
     },
+    required: ['name', 'version'],
     additionalProperties: false,
 };

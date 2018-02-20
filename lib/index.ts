@@ -52,16 +52,28 @@ export async function validate(
 ) {
     // Validate it has a component definition file
     if (!filePaths.has(componentsDefinitionPath)) {
-        errorReporter('components definition file missing!');
+        errorReporter(`Components definition file missing ${componentsDefinitionPath}`);
         return false;
     }
 
     // Validate the schema of the component definition file
-    const componentsDefinition = await getFileContent(componentsDefinitionPath);
-
-    if (!validateSchema(JSON.parse(componentsDefinition))) {
-        errorReporter(`Invalid: ${JSON.stringify(validateSchema.errors, undefined, 4)}`);
+    const componentsDefinition = JSON.parse(await getFileContent(componentsDefinitionPath));
+    if (!validateSchema(componentsDefinition)) {
+        if (validateSchema.errors) {
+            validateSchema.errors.forEach(error => {
+                errorReporter(`${error.message}\n${JSON.stringify(error.params, undefined, 4)}`);
+            });
+        }
         return false;
+    }
+
+    // Validate icons of components
+    for (let i = 0; i < componentsDefinition.components.length; i++) {
+        const comp = componentsDefinition.components[i];
+        if (!filePaths.has(comp.icon)) {
+            errorReporter(`Component ${comp.name} icon missing ${comp.icon}`);
+            return false;
+        }
     }
 
     // TODO: Validate components have matching templates

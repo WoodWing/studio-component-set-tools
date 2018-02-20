@@ -7,9 +7,9 @@
         {
             "name": "body",
             "label": "Body Label",
-            "icon": "icons/body.svg",
+            "icon": "icons/component.svg",
             "properties":[
-                "style"
+                "selectProperty"
             ],
             "countStatistics": true
         }
@@ -27,18 +27,21 @@
 
     "componentProperties": [
         {
-            "name": "style",
-            "label": "{{ 'DESIGN_PROPERTY_VARIANT_LABEL' | translate }}",
-            "control": "select",
-            "options": [
-                {
-                    "caption": "Default"
-                },
-                {
-                    "caption": "Option 1",
-                    "value": "_option1"
-                }
-            ]
+            "name": "selectProperty",
+            "label": "Select property sample",
+            "control": {
+                "type": "select",
+                "options": [
+                    {
+                        "caption": "Default"
+                    },
+                    {
+                        "caption": "Option 1",
+                        "value": "_option1"
+                    }
+                ]
+            },
+            "dataType": "styles"
         }
     ],
 
