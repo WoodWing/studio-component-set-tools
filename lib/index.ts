@@ -61,36 +61,34 @@ export async function validate(
     if (!validateSchema(componentsDefinition)) {
         if (validateSchema.errors) {
             validateSchema.errors.forEach(error => {
-                errorReporter(`${error.message}\n${JSON.stringify(error.params, undefined, 4)}`);
+                errorReporter(`${error.dataPath} ${error.message}\n${JSON.stringify(error.params, undefined, 4)}`);
             });
         }
         return false;
     }
 
     // Perform additional validation of components now that we know the structure is as expected
+    let valid = true;
     for (let i = 0; i < componentsDefinition.components.length; i++) {
         const comp = componentsDefinition.components[i];
 
         // Validate the component has an icon
         if (!filePaths.has(comp.icon)) {
             errorReporter(`Component ${comp.name} icon missing "${comp.icon}"`);
-            return false;
         }
 
         // Validate the component has a html template
         const htmlTemplatePath = path.normalize(`./templates/html/${comp.name}.html`);
         if (!filePaths.has(htmlTemplatePath)) {
             errorReporter(`Component ${comp.name} html template missing "${htmlTemplatePath}"`);
-            return false;
         }
 
         // Validate the component has a style
         const componentStylePath = path.normalize(`./styles/_${comp.name}.scss`);
         if (!filePaths.has(componentStylePath)) {
             errorReporter(`Component ${comp.name} style scss file missing "${componentStylePath}"`);
-            return false;
         }
     }
 
-    return true;
+    return valid;
 }

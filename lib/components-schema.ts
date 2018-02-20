@@ -80,6 +80,30 @@ export const componentsDefinitionSchema = {
                                 },
                                 additionalProperties: false,
                             },
+                            {
+                                properties: {
+                                    type: {
+                                        enum: ['text'],
+                                        description: 'Text field property'
+                                    },
+                                },
+                            },
+                            {
+                                properties: {
+                                    type: {
+                                        enum: ['time'],
+                                        description: 'Time field property'
+                                    },
+                                },
+                            },
+                            {
+                                properties: {
+                                    type: {
+                                        enum: ['colorPicker'],
+                                        description: 'Color picker field property'
+                                    },
+                                },
+                            },
                         ],
                     },
                     dataType: {
@@ -95,6 +119,7 @@ export const componentsDefinitionSchema = {
                         ]
                     },
                     dataProperty: { type: 'string' },
+                    group: { type: 'string' },
                 },
 
                 required: ['name', 'label', 'control', 'dataType'],
@@ -125,38 +150,44 @@ export const componentsDefinitionSchema = {
             description: 'Conversion rules for transforming one component into another component',
             additionalProperties: {
                 type: 'object',
-                anyOf: [
-                    {
-                        type: 'object',
-                        description: 'Map one component into another component by matching fields',
-                        properties: {
-                            type: { enum: ['simple'] },
-                            map: {
-                                type: 'object',
-                                additionalProperties: { type: 'string' },
+                additionalProperties: {
+                    anyOf: [
+                        {
+                            enum: ['auto'],
+                            description: 'Map one component into another component by auto matching fields',
+                        },
+                        {
+                            type: 'object',
+                            description: 'Map one component into another component by field mapping',
+                            properties: {
+                                type: { enum: ['simple'] },
+                                map: {
+                                    type: 'object',
+                                    additionalProperties: { type: 'string' },
+                                },
                             },
+                            required: ['type', 'map'],
                         },
-                        required: ['type', 'map'],
-                    },
-                    {
-                        type: 'object',
-                        properties: {
-                            type: { enum: ['from-container'] },
-                            container: { type: 'string' },
+                        {
+                            type: 'object',
+                            properties: {
+                                type: { enum: ['from-container'] },
+                                container: { type: 'string' },
+                            },
+                            required: ['type', 'container'],
                         },
-                        required: ['type', 'container'],
-                    },
-                    {
-                        type: 'object',
-                        properties: {
-                            type: { enum: ['to-container'] },
-                            container: { type: 'string' },
+                        {
+                            type: 'object',
+                            properties: {
+                                type: { enum: ['to-container'] },
+                                container: { type: 'string' },
+                            },
+                            required: ['type', 'container'],
                         },
-                        required: ['type', 'container'],
-                    },
-                ],
+                    ],
+                },
             },
-        }
+        },
     },
     required: ['name', 'version', 'components', 'componentProperties', 'groups', 'conversionRules'],
     additionalProperties: false,
