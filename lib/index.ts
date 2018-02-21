@@ -1,18 +1,18 @@
 import { promisify } from 'util';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as semver from 'semver';
 // import * as colors from 'colors/safe'; // https://github.com/DefinitelyTyped/DefinitelyTyped/pull/23639
 const colors = require('colors/safe');
 
-const error = colors.red;
 const readFileAsync = promisify(fs.readFile);
 
 import * as Ajv from 'ajv';
-import { componentsDefinitionSchema } from './components-schema';
+import { componentsDefinitionSchema } from './components-schema-v10x';
 import * as recursiveReadDir from 'recursive-readdir';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
-const validateSchema = ajv.compile(componentsDefinitionSchema);
+const validateSchemaV10 = ajv.compile(componentsDefinitionSchema);
 
 const componentsDefinitionPath = path.normalize('./components-definition.json');
 
@@ -33,7 +33,7 @@ export async function validateFolder(folderPath: string) : Promise<boolean> {
     return await validate(files, async (filePath: string) => {
         return readFileAsync(path.resolve(folderPath, filePath), {encoding: 'utf8'});
     }, (errorMessage) => {
-        console.log(error(errorMessage));
+        console.log(colors.red(errorMessage));
     });
 }
 
@@ -58,9 +58,16 @@ export async function validate(
 
     // Validate the schema of the component definition file
     const componentsDefinition = JSON.parse(await getFileContent(componentsDefinitionPath));
-    if (!validateSchema(componentsDefinition)) {
-        if (validateSchema.errors) {
-            validateSchema.errors.forEach(error => {
+
+    const validateSchema = getValidationSchema(componentsDefinition.version);
+    if (!validateSchema) {
+        errorReporter(`Could not find validation schema for component model version "${componentsDefinition.version}"`);
+        return false;
+    }
+
+    if (!validateSchemaV10(componentsDefinition)) {
+        if (validateSchemaV10.errors) {
+            validateSchemaV10.errors.forEach(error => {
                 errorReporter(`${error.dataPath} ${error.message}\n${JSON.stringify(error.params, undefined, 4)}`);
             });
         }
@@ -69,26 +76,79 @@ export async function validate(
 
     // Perform additional validation of components now that we know the structure is as expected
     let valid = true;
+    const componentNames = new Set<string>();
     for (let i = 0; i < componentsDefinition.components.length; i++) {
         const comp = componentsDefinition.components[i];
 
+        // Validate we have not seen the name yet
+        if (componentNames.has(comp.name)) {
+            valid = false;
+            errorReporter(`Component "${comp.name}" is not unique`);
+        }
+        componentNames.add(comp.name);
+
         // Validate the component has an icon
         if (!filePaths.has(comp.icon)) {
-            errorReporter(`Component ${comp.name} icon missing "${comp.icon}"`);
+            valid = false;
+            errorReporter(`Component "${comp.name}" icon missing "${comp.icon}"`);
         }
 
         // Validate the component has a html template
         const htmlTemplatePath = path.normalize(`./templates/html/${comp.name}.html`);
         if (!filePaths.has(htmlTemplatePath)) {
-            errorReporter(`Component ${comp.name} html template missing "${htmlTemplatePath}"`);
+            valid = false;
+            errorReporter(`Component "${comp.name}" html template missing "${htmlTemplatePath}"`);
+
         }
 
         // Validate the component has a style
         const componentStylePath = path.normalize(`./styles/_${comp.name}.scss`);
         if (!filePaths.has(componentStylePath)) {
-            errorReporter(`Component ${comp.name} style scss file missing "${componentStylePath}"`);
+            valid = false;
+            errorReporter(`Component "${comp.name}" style scss file missing "${componentStylePath}"`);
         }
     }
 
+    // Check component properties
+    const componentPropertyNames = new Set<string>();
+    for (let i = 0; i < componentsDefinition.componentProperties.length; i++) {
+        const compProp = componentsDefinition.componentProperties[i];
+
+        // Validate we have not seen the name yet
+        if (componentPropertyNames.has(compProp.name)) {
+            valid = false;
+            errorReporter(`Component property "${compProp.name}" is not unique`);
+        }
+        componentPropertyNames.add(compProp.name);
+    }
+
+    // Check component groups
+    const componentGroupNames = new Set<string>();
+    for (let i = 0; i < componentsDefinition.groups.length; i++) {
+        const group = componentsDefinition.groups[i];
+
+        // Validate we have not seen the name yet
+        if (componentGroupNames.has(group.name)) {
+            valid = false;
+            errorReporter(`Component group "${group.name}" is not unique`);
+        }
+        componentGroupNames.add(group.name);
+    }
+
     return valid;
+}
+
+/**
+ * Returns the validation function for given version.
+ *
+ * @param version
+ * @returns schema validation function if found, otherwise null.
+ */
+function getValidationSchema(version: string) : Ajv.ValidateFunction | null {
+    // Only one version supported
+    // When introducing a patch version, make sure to update the supported range, e.g. '1.0.0 - 1.0.1'
+    if (semver.satisfies(version, '1.0.0')) {
+        return validateSchemaV10;
+    }
+    return null;
 }

@@ -7,7 +7,11 @@
 export const componentsDefinitionSchema = {
     type: 'object',
     properties: {
-        name: { type: 'string', description: 'Name of the components package' },
+        name: {
+            type: 'string',
+            description: 'Name of the components package',
+            minLength: 3,
+        },
         description: { type: 'string', description: 'Description of components package' },
         version: { type: 'string', description: 'Version of matching components model' },
 
@@ -19,7 +23,11 @@ export const componentsDefinitionSchema = {
             items: {
                 type: 'object',
                 properties: {
-                    name: { type: 'string', description: 'Unique component identifier' },
+                    name: {
+                        type: 'string',
+                        description: 'Unique component identifier',
+                        minLength: 3,
+                    },
                     label: { type: 'string', description: 'Component label shown in Digital Editor' },
                     icon: { type: 'string', description: 'Icon shown for component in Digital Editor' },
                     properties: {
@@ -39,11 +47,18 @@ export const componentsDefinitionSchema = {
                     restrictChildren: {
                         type: 'object',
                         description: 'Restricts children of this component to the listed ones and can be further filtered down to also have content',
+                        additionalProperties: {
+                            type: 'object',
+                            properties: {
+                                withContent: { type: 'string' },
+                            },
+                            additionalProperties: false,
+                        }
                     },
                     countStatistics: { type: 'boolean', description: 'Count characters, words and paragraphs of this component' },
                 },
                 required: ['name', 'label', 'icon'],
-                additionalProperties: false
+                additionalProperties: false,
             }
         },
 
@@ -53,7 +68,11 @@ export const componentsDefinitionSchema = {
             items: {
                 type: 'object',
                 properties: {
-                    name: { type: 'string', description: 'Unique identifier of component property' },
+                    name: {
+                        type: 'string',
+                        description: 'Unique identifier of component property',
+                        minLength: 3,
+                    },
                     label: { type: 'string', description: 'Display label of Component property' },
                     control: {
                         type: 'object',
@@ -135,7 +154,11 @@ export const componentsDefinitionSchema = {
             items: {
                 type: 'object',
                 properties: {
-                    name: { type: 'string', description: 'Unique group identifier' },
+                    name: {
+                        type: 'string',
+                        description: 'Unique group identifier',
+                        minLength: 3,
+                    },
                     label: { type: 'string', description: 'Group label shown in Digital Editor' },
                     components: {
                         type: 'array',
@@ -191,6 +214,14 @@ export const componentsDefinitionSchema = {
             },
         },
     },
-    required: ['name', 'version', 'defaultComponentOnEnter', 'components', 'componentProperties', 'groups', 'conversionRules'],
+    required: [
+        'name',
+        'version',
+        'defaultComponentOnEnter',
+        'components',
+        'componentProperties',
+        'groups',
+        'conversionRules'
+    ],
     additionalProperties: false,
 };
