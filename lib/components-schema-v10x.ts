@@ -4,6 +4,7 @@
  * See http://json-schema.org/ for documentation and examples.
  */
 
+ /* tslint:disable:max-line-length */
 export const componentsDefinitionSchema = {
     type: 'object',
     properties: {
@@ -15,7 +16,10 @@ export const componentsDefinitionSchema = {
         description: { type: 'string', description: 'Description of components package' },
         version: { type: 'string', description: 'Version of matching components model' },
 
-        defaultComponentOnEnter: { type: 'string', description: 'Default component inserted on pressing enter in a text field' },
+        defaultComponentOnEnter: {
+            type: 'string',
+            description: 'Default component inserted on pressing enter in a text field',
+        },
 
         components: {
             type: 'array',
@@ -33,7 +37,7 @@ export const componentsDefinitionSchema = {
                     properties: {
                         type: 'array',
                         items: { type: 'string' },
-                        description: 'names of properties this component can use'
+                        description: 'names of properties this component can use',
                     },
 
                     selectionMethod: {
@@ -53,13 +57,13 @@ export const componentsDefinitionSchema = {
                                 withContent: { type: 'string' },
                             },
                             additionalProperties: false,
-                        }
+                        },
                     },
                     countStatistics: { type: 'boolean', description: 'Count characters, words and paragraphs of this component' },
                 },
                 required: ['name', 'label', 'icon'],
                 additionalProperties: false,
-            }
+            },
         },
 
         componentProperties: {
@@ -82,7 +86,7 @@ export const componentsDefinitionSchema = {
                                 properties: {
                                     type: {
                                         enum: ['select'],
-                                        description: 'Dropdown with fixed number of options'
+                                        description: 'Dropdown with fixed number of options',
                                     },
                                     options: {
                                         type: 'array',
@@ -95,7 +99,7 @@ export const componentsDefinitionSchema = {
                                 properties: {
                                     type: {
                                         enum: ['checkbox'],
-                                        description: 'Checkbox toggling between value and no value'
+                                        description: 'Checkbox toggling between value and no value',
                                     },
                                     value: { type: 'string' },
                                 },
@@ -105,7 +109,7 @@ export const componentsDefinitionSchema = {
                                 properties: {
                                     type: {
                                         enum: ['text'],
-                                        description: 'Text field property'
+                                        description: 'Text field property',
                                     },
                                 },
                             },
@@ -113,7 +117,7 @@ export const componentsDefinitionSchema = {
                                 properties: {
                                     type: {
                                         enum: ['time'],
-                                        description: 'Time field property'
+                                        description: 'Time field property',
                                     },
                                 },
                             },
@@ -121,7 +125,7 @@ export const componentsDefinitionSchema = {
                                 properties: {
                                     type: {
                                         enum: ['colorPicker'],
-                                        description: 'Color picker field property'
+                                        description: 'Color picker field property',
                                     },
                                 },
                             },
@@ -137,7 +141,7 @@ export const componentsDefinitionSchema = {
                             'doc-html',
                             'doc-slideshow',
                             'doc-media',
-                        ]
+                        ],
                     },
                     dataProperty: { type: 'string' },
                     group: { type: 'string' },
@@ -163,11 +167,11 @@ export const componentsDefinitionSchema = {
                     components: {
                         type: 'array',
                         items: { type: 'string' },
-                        description: 'names of components in this group'
+                        description: 'names of components in this group',
                     },
                 },
                 required: ['name', 'label', 'components'],
-            }
+            },
         },
 
         conversionRules: {
@@ -221,7 +225,7 @@ export const componentsDefinitionSchema = {
         'components',
         'componentProperties',
         'groups',
-        'conversionRules'
+        'conversionRules',
     ],
     additionalProperties: false,
 };

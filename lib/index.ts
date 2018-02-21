@@ -1,15 +1,16 @@
-import { promisify } from 'util';
-import * as path from 'path';
 import * as fs from 'fs';
+import * as path from 'path';
 import * as semver from 'semver';
+import { promisify } from 'util';
 // import * as colors from 'colors/safe'; // https://github.com/DefinitelyTyped/DefinitelyTyped/pull/23639
+// tslint:disable-next-line
 const colors = require('colors/safe');
 
 const readFileAsync = promisify(fs.readFile);
 
 import * as Ajv from 'ajv';
-import { componentsDefinitionSchema } from './components-schema-v10x';
 import * as recursiveReadDir from 'recursive-readdir';
+import { componentsDefinitionSchema } from './components-schema-v10x';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
 const validateSchemaV10 = ajv.compile(componentsDefinitionSchema);
@@ -21,13 +22,13 @@ const componentsDefinitionPath = path.normalize('./components-definition.json');
  *
  * @param folderPath Path to folder containing the components.
  */
-export async function validateFolder(folderPath: string) : Promise<boolean> {
+export async function validateFolder(folderPath: string): Promise<boolean> {
     folderPath = path.normalize(folderPath);
 
     // List files, make relative to input folder and normalize.
     const files = new Set(
         (await recursiveReadDir(folderPath))
-        .map((p) => path.normalize(p.replace(new RegExp(`^${folderPath}(/|\)?`),"")))
+        .map((p) => path.normalize(p.replace(new RegExp(`^${folderPath}(/|\)?`), ''))),
     );
 
     return await validate(files, async (filePath: string) => {
@@ -48,7 +49,7 @@ export async function validateFolder(folderPath: string) : Promise<boolean> {
 export async function validate(
     filePaths: Set<string>,
     getFileContent: (filePath: string) => Promise<string>,
-    errorReporter: (errorMessage: string) => void
+    errorReporter: (errorMessage: string) => void,
 ) {
     // Validate it has a component definition file
     if (!filePaths.has(componentsDefinitionPath)) {
@@ -67,7 +68,7 @@ export async function validate(
 
     if (!validateSchemaV10(componentsDefinition)) {
         if (validateSchemaV10.errors) {
-            validateSchemaV10.errors.forEach(error => {
+            validateSchemaV10.errors.forEach((error) => {
                 errorReporter(`${error.dataPath} ${error.message}\n${JSON.stringify(error.params, undefined, 4)}`);
             });
         }
@@ -77,9 +78,7 @@ export async function validate(
     // Perform additional validation of components now that we know the structure is as expected
     let valid = true;
     const componentNames = new Set<string>();
-    for (let i = 0; i < componentsDefinition.components.length; i++) {
-        const comp = componentsDefinition.components[i];
-
+    for (const comp of componentsDefinition.components) {
         // Validate we have not seen the name yet
         if (componentNames.has(comp.name)) {
             valid = false;
@@ -111,9 +110,7 @@ export async function validate(
 
     // Check component properties
     const componentPropertyNames = new Set<string>();
-    for (let i = 0; i < componentsDefinition.componentProperties.length; i++) {
-        const compProp = componentsDefinition.componentProperties[i];
-
+    for (const compProp of componentsDefinition.componentProperties) {
         // Validate we have not seen the name yet
         if (componentPropertyNames.has(compProp.name)) {
             valid = false;
@@ -124,9 +121,7 @@ export async function validate(
 
     // Check component groups
     const componentGroupNames = new Set<string>();
-    for (let i = 0; i < componentsDefinition.groups.length; i++) {
-        const group = componentsDefinition.groups[i];
-
+    for (const group of componentsDefinition.groups) {
         // Validate we have not seen the name yet
         if (componentGroupNames.has(group.name)) {
             valid = false;
@@ -144,7 +139,7 @@ export async function validate(
  * @param version
  * @returns schema validation function if found, otherwise null.
  */
-function getValidationSchema(version: string) : Ajv.ValidateFunction | null {
+function getValidationSchema(version: string): Ajv.ValidateFunction | null {
     // Only one version supported
     // When introducing a patch version, make sure to update the supported range, e.g. '1.0.0 - 1.0.1'
     if (semver.satisfies(version, '1.0.0')) {
