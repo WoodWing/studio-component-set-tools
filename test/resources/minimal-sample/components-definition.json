@@ -1,0 +1,71 @@
+{
+    "name": "minimal-sample",
+    "description": "Minimal components package sample touching most of the available options.",
+    "version": "1.0.0",
+    "defaultComponentOnEnter": "body",
+
+    "components":[
+        {
+            "name": "body",
+            "label": "Body Label",
+            "icon": "icons/component.svg",
+            "properties":[
+                "selectProperty"
+            ],
+            "countStatistics": true
+        },
+        {
+            "name": "intro",
+            "label": "Intro Label",
+            "icon": "icons/component.svg",
+            "properties":[
+                "checkboxProperty"
+            ]
+        }
+    ],
+
+    "groups": [
+        {
+            "label": "Minimal",
+            "name": "minimal",
+            "components": [
+                "body"
+            ]
+        }
+    ],
+
+    "componentProperties": [
+        {
+            "name": "selectProperty",
+            "label": "Select property sample",
+            "control": {
+                "type": "select",
+                "options": [
+                    {
+                        "caption": "Default"
+                    },
+                    {
+                        "caption": "Option 1",
+                        "value": "_option1"
+                    }
+                ]
+            },
+            "dataType": "styles"
+        },
+        {
+            "name": "checkboxProperty",
+            "label": "Checkbox property sample",
+            "control": {
+                "type": "checkbox",
+                "value": "_valueWhenOn"
+            },
+            "dataType": "styles"
+        }
+    ],
+
+    "conversionRules": {
+        "body": {
+            "intro": "auto"
+        }
+    }
+}
