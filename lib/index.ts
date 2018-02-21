@@ -10,10 +10,9 @@ const readFileAsync = promisify(fs.readFile);
 
 import * as Ajv from 'ajv';
 import * as recursiveReadDir from 'recursive-readdir';
-import { componentsDefinitionSchema } from './components-schema-v10x';
+import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
-const validateSchemaV10 = ajv.compile(componentsDefinitionSchema);
 
 const componentsDefinitionPath = path.normalize('./components-definition.json');
 
@@ -66,9 +65,9 @@ export async function validate(
         return false;
     }
 
-    if (!validateSchemaV10(componentsDefinition)) {
-        if (validateSchemaV10.errors) {
-            validateSchemaV10.errors.forEach((error) => {
+    if (!validateSchema(componentsDefinition)) {
+        if (validateSchema.errors) {
+            validateSchema.errors.forEach((error) => {
                 errorReporter(`${error.dataPath} ${error.message}\n${JSON.stringify(error.params, undefined, 4)}`);
             });
         }
@@ -143,7 +142,7 @@ function getValidationSchema(version: string): Ajv.ValidateFunction | null {
     // Only one version supported
     // When introducing a patch version, make sure to update the supported range, e.g. '1.0.0 - 1.0.1'
     if (semver.satisfies(version, '1.0.0')) {
-        return validateSchemaV10;
+        return ajv.compile(componentsDefinitionSchema_v1_0_x);
     }
     return null;
 }

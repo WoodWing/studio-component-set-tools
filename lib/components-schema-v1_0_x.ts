@@ -4,8 +4,8 @@
  * See http://json-schema.org/ for documentation and examples.
  */
 
- /* tslint:disable:max-line-length */
-export const componentsDefinitionSchema = {
+ /* tslint:disable:max-line-length variable-name */
+export const componentsDefinitionSchema_v1_0_x = {
     type: 'object',
     properties: {
         name: {
@@ -14,7 +14,11 @@ export const componentsDefinitionSchema = {
             minLength: 3,
         },
         description: { type: 'string', description: 'Description of components package' },
-        version: { type: 'string', description: 'Version of matching components model' },
+        version: {
+            type: 'string',
+            description: 'Version of matching components model',
+            pattern: '\\d+\.\\d+\.\\d+',
+        },
 
         defaultComponentOnEnter: {
             type: 'string',
