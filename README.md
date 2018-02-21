@@ -10,3 +10,12 @@ The component definition model uses semantic versioning:
 - a new MAJOR version is introduced when breaking changes are made
 - a new MINOR version is introduced when additions are made to the component model in a non breaking fashion
 - a new PATCH version iss introduced for bug fixes in the validator
+
+## Publish
+Verify you are logged in as an user with access to the [Woodwing organization](https://www.npmjs.com/org/woodwing):
+
+```npm whoami```
+
+Update the version number in package.json and run:
+
+```npm publish --access public```
