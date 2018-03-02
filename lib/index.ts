@@ -5,7 +5,6 @@ import * as semver from 'semver';
 // tslint:disable-next-line
 const colors = require('colors/safe');
 
-
 import * as Ajv from 'ajv';
 import * as recursiveReadDir from 'recursive-readdir';
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
