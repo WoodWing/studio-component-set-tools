@@ -1,12 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as semver from 'semver';
-import { promisify } from 'util';
 // import * as colors from 'colors/safe'; // https://github.com/DefinitelyTyped/DefinitelyTyped/pull/23639
 // tslint:disable-next-line
 const colors = require('colors/safe');
 
-const readFileAsync = promisify(fs.readFile);
 
 import * as Ajv from 'ajv';
 import * as recursiveReadDir from 'recursive-readdir';
@@ -31,7 +29,7 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
     );
 
     return await validate(files, async (filePath: string) => {
-        return readFileAsync(path.resolve(folderPath, filePath), {encoding: 'utf8'});
+        return await readFile(path.resolve(folderPath, filePath), {encoding: 'utf8'});
     }, (errorMessage) => {
         console.log(colors.red(errorMessage));
     });
@@ -131,6 +129,17 @@ export async function validate(
 
     return valid;
 }
+
+const readFile = (pathToFile: fs.PathLike, options: { encoding: string }) =>
+    new Promise<string>((resolve, reject) => {
+        return fs.readFile(pathToFile, options, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data.toString());
+            }
+        });
+    });
 
 /**
  * Returns the validation function for given version.

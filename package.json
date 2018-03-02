@@ -39,7 +39,6 @@
     "ajv-errors": "^1.0.0",
     "colors": "^1.1.2",
     "recursive-readdir": "^2.2.1",
-    "semver": "^5.5.0",
-    "util.promisify": "^1.0.0"
+    "semver": "^5.5.0"
   }
 }
