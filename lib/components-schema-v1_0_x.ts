@@ -95,6 +95,19 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     options: {
                                         type: 'array',
                                         minItems: 1,
+                                        items: {
+                                            type: 'object',
+                                            properties: {
+                                                caption: {
+                                                    type: 'string',
+                                                },
+                                                value: {
+                                                    type: 'string',
+                                                },
+                                            },
+                                            additionalProperties: false,
+                                            required: ['caption'],
+                                        },
                                     },
                                 },
                                 additionalProperties: false,
@@ -115,7 +128,17 @@ export const componentsDefinitionSchema_v1_0_x = {
                                         enum: ['text'],
                                         description: 'Text field property',
                                     },
+                                    pattern: {
+                                        type: 'string',
+                                    },
+                                    defaultValue: {
+                                        type: 'string',
+                                    },
+                                    unit: {
+                                        type: 'string',
+                                    },
                                 },
+                                additionalProperties: false,
                             },
                             {
                                 properties: {
@@ -131,9 +154,20 @@ export const componentsDefinitionSchema_v1_0_x = {
                                         enum: ['colorPicker'],
                                         description: 'Color picker field property',
                                     },
+                                    options: {
+                                        type: 'object',
+                                        properties: {
+                                            opacity: {
+                                                type: 'boolean',
+                                            },
+                                        },
+                                        additionalProperties: false,
+                                    },
                                 },
+                                additionalProperties: false,
                             },
                         ],
+                        required: ['type'],
                     },
                     dataType: {
                         enum: [
