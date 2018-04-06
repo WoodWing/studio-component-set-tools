@@ -24,7 +24,8 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
     // List files, make relative to input folder and normalize.
     const files = new Set(
         (await recursiveReadDir(folderPath))
-        .map((p) => path.normalize(p.replace(new RegExp(`^${folderPath}(/|\)?`), ''))),
+        .map((p) => path.normalize(p).replace(
+            new RegExp(`^${folderPath.replace(/\\/g, '\\\\')}(/|\\\\)?`), '')),
     );
 
     return await validate(files, async (filePath: string) => {
@@ -83,7 +84,7 @@ export async function validate(
         componentNames.add(comp.name);
 
         // Validate the component has an icon
-        if (!filePaths.has(comp.icon)) {
+        if (!filePaths.has(path.normalize(comp.icon))) {
             valid = false;
             errorReporter(`Component "${comp.name}" icon missing "${comp.icon}"`);
         }
