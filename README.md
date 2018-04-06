@@ -19,3 +19,12 @@ Verify you are logged in as an user with access to the [Woodwing organization](h
 Update the version number in package.json and run:
 
 ```npm publish --access public```
+
+## Update schema Typescript types
+Types for usage with Typescript are automatically generated using `json-schema-to-typescript`.
+
+When making changes to the schema, run the following the npm script to update the types:
+
+```npm run update-types```
+
+After updating, run the tests and commit the files.
