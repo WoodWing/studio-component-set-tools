@@ -9,7 +9,8 @@
     "build": "npm run tslint & tsc",
     "watch": "tsc --watch",
     "test": "jest --forceExit --coverage --verbose",
-    "tslint": "tslint -c tslint.json -p tsconfig.json"
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "update-types": "node -r ts-node/register generateComponentsTypes.ts"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "@types/recursive-readdir": "^2.2.0",
     "chai": "^4.1.2",
     "jest": "^22.4.0",
+    "json-schema-to-typescript": "^5.4.0",
     "ts-jest": "^22.0.4",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
