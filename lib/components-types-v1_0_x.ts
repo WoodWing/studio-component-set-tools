@@ -83,36 +83,44 @@ export interface ComponentsDefinitionV10X {
           /**
            * Dropdown with fixed number of options
            */
-          type?: "select";
-          options?: any[];
+          type: "select";
+          options: {
+            caption: string;
+            value?: string;
+          }[];
         }
       | {
           /**
            * Checkbox toggling between value and no value
            */
-          type?: "checkbox";
-          value?: string;
+          type: "checkbox";
+          value: string;
         }
       | {
           /**
            * Text field property
            */
-          type?: "text";
-          [k: string]: any;
+          type: "text";
+          pattern?: string;
+          defaultValue?: string;
+          unit?: string;
+          inputPlaceholder?: string;
         }
       | {
           /**
            * Time field property
            */
-          type?: "time";
+          type: "time";
           [k: string]: any;
         }
       | {
           /**
            * Color picker field property
            */
-          type?: "colorPicker";
-          [k: string]: any;
+          type: "colorPicker";
+          options?: {
+            opacity?: boolean;
+          };
         };
     dataType:
       | "styles"
@@ -125,6 +133,7 @@ export interface ComponentsDefinitionV10X {
       | "doc-media";
     dataProperty?: string;
     group?: string;
+    selector?: string;
   }[];
   /**
    * List of groups shown in component chooser dialog

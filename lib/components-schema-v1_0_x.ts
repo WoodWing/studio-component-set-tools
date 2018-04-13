@@ -75,6 +75,8 @@ export const componentsDefinitionSchema_v1_0_x = {
             description: 'List of available component properties',
             items: {
                 type: 'object',
+                required: ['name', 'label', 'control', 'dataType'],
+                additionalProperties: false,
                 properties: {
                     name: {
                         type: 'string',
@@ -85,8 +87,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                     control: {
                         type: 'object',
                         description: 'Type of UI element and options.',
-                        anyOf: [
+                        oneOf: [
                             {
+                                additionalProperties: false,
+                                required: ['type', 'options'],
                                 properties: {
                                     type: {
                                         enum: ['select'],
@@ -110,9 +114,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                                         },
                                     },
                                 },
-                                additionalProperties: false,
                             },
                             {
+                                additionalProperties: false,
+                                required: ['type', 'value'],
                                 properties: {
                                     type: {
                                         enum: ['checkbox'],
@@ -120,9 +125,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     },
                                     value: { type: 'string' },
                                 },
-                                additionalProperties: false,
                             },
                             {
+                                additionalProperties: false,
+                                required: ['type'],
                                 properties: {
                                     type: {
                                         enum: ['text'],
@@ -137,10 +143,13 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     unit: {
                                         type: 'string',
                                     },
+                                    inputPlaceholder: {
+                                        type: 'string',
+                                    },
                                 },
-                                additionalProperties: false,
                             },
                             {
+                                required: ['type'],
                                 properties: {
                                     type: {
                                         enum: ['time'],
@@ -149,6 +158,8 @@ export const componentsDefinitionSchema_v1_0_x = {
                                 },
                             },
                             {
+                                additionalProperties: false,
+                                required: ['type'],
                                 properties: {
                                     type: {
                                         enum: ['colorPicker'],
@@ -156,18 +167,16 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     },
                                     options: {
                                         type: 'object',
+                                        additionalProperties: false,
                                         properties: {
                                             opacity: {
                                                 type: 'boolean',
                                             },
                                         },
-                                        additionalProperties: false,
                                     },
                                 },
-                                additionalProperties: false,
                             },
                         ],
-                        required: ['type'],
                     },
                     dataType: {
                         enum: [
@@ -183,10 +192,8 @@ export const componentsDefinitionSchema_v1_0_x = {
                     },
                     dataProperty: { type: 'string' },
                     group: { type: 'string' },
+                    selector: { type: 'string' },
                 },
-
-                required: ['name', 'label', 'control', 'dataType'],
-                additionalProperties: false,
             },
         },
 
