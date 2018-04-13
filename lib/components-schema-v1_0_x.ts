@@ -104,9 +104,11 @@ export const componentsDefinitionSchema_v1_0_x = {
                                             properties: {
                                                 caption: {
                                                     type: 'string',
+                                                    description: 'Label of the item',
                                                 },
                                                 value: {
                                                     type: 'string',
+                                                    description: 'Value of the item',
                                                 },
                                             },
                                             additionalProperties: false,
@@ -136,15 +138,19 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     },
                                     pattern: {
                                         type: 'string',
+                                        description: 'Value validation regexp pattern',
                                     },
                                     defaultValue: {
                                         type: 'string',
+                                        description: 'Default value which is used instead of empty value',
                                     },
                                     unit: {
                                         type: 'string',
+                                        description: 'Unit type',
                                     },
                                     inputPlaceholder: {
                                         type: 'string',
+                                        description: 'Input placeholder',
                                     },
                                 },
                             },
@@ -192,7 +198,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                     },
                     dataProperty: { type: 'string' },
                     group: { type: 'string' },
-                    selector: { type: 'string' },
+                    selector: {
+                        type: 'string',
+                        description: 'Additional selector to define elements of the component which the property should be applied to',
+                    },
                 },
             },
         },

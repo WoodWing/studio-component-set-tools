@@ -85,7 +85,13 @@ export interface ComponentsDefinitionV10X {
            */
           type: "select";
           options: {
+            /**
+             * Label of the item
+             */
             caption: string;
+            /**
+             * Value of the item
+             */
             value?: string;
           }[];
         }
@@ -101,9 +107,21 @@ export interface ComponentsDefinitionV10X {
            * Text field property
            */
           type: "text";
+          /**
+           * Value validation regexp pattern
+           */
           pattern?: string;
+          /**
+           * Default value which is used instead of empty value
+           */
           defaultValue?: string;
+          /**
+           * Unit type
+           */
           unit?: string;
+          /**
+           * Input placeholder
+           */
           inputPlaceholder?: string;
         }
       | {
@@ -133,6 +151,9 @@ export interface ComponentsDefinitionV10X {
       | "doc-media";
     dataProperty?: string;
     group?: string;
+    /**
+     * Additional selector to define elements of the component which the property should be applied to
+     */
     selector?: string;
   }[];
   /**
