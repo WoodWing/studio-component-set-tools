@@ -108,7 +108,7 @@ export const componentsDefinitionSchema_v1_0_x = {
                                                 },
                                                 value: {
                                                     type: 'string',
-                                                    description: 'Value of the item',
+                                                    description: 'Value of the item. Omit it if the option should simply clean the property up',
                                                 },
                                             },
                                             additionalProperties: false,
@@ -146,7 +146,7 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     },
                                     unit: {
                                         type: 'string',
-                                        description: 'Unit type',
+                                        description: 'Unit type like em, px etc',
                                     },
                                     inputPlaceholder: {
                                         type: 'string',
