@@ -90,7 +90,7 @@ export interface ComponentsDefinitionV10X {
              */
             caption: string;
             /**
-             * Value of the item
+             * Value of the item. Omit it if the option should simply clean the property up
              */
             value?: string;
           }[];
@@ -116,7 +116,7 @@ export interface ComponentsDefinitionV10X {
            */
           defaultValue?: string;
           /**
-           * Unit type
+           * Unit type like em, px etc
            */
           unit?: string;
           /**
