@@ -83,36 +83,63 @@ export interface ComponentsDefinitionV10X {
           /**
            * Dropdown with fixed number of options
            */
-          type?: "select";
-          options?: any[];
+          type: "select";
+          options: {
+            /**
+             * Label of the item
+             */
+            caption: string;
+            /**
+             * Value of the item. Omit it if the option should simply clean the property up
+             */
+            value?: string;
+          }[];
         }
       | {
           /**
            * Checkbox toggling between value and no value
            */
-          type?: "checkbox";
-          value?: string;
+          type: "checkbox";
+          value: string;
         }
       | {
           /**
            * Text field property
            */
-          type?: "text";
-          [k: string]: any;
+          type: "text";
+          /**
+           * Value validation regexp pattern
+           */
+          pattern?: string;
+          /**
+           * Default value which is used instead of empty value
+           */
+          defaultValue?: string;
+          /**
+           * Unit type like em, px etc
+           */
+          unit?: string;
+          /**
+           * Input placeholder
+           */
+          inputPlaceholder?: string;
         }
       | {
           /**
            * Time field property
            */
-          type?: "time";
+          type: "time";
           [k: string]: any;
         }
       | {
           /**
            * Color picker field property
            */
-          type?: "colorPicker";
-          [k: string]: any;
+          type: "colorPicker";
+          /**
+           * Enable opacity setting
+           */
+          opacity?: boolean;
         };
     dataType:
       | "styles"
@@ -125,6 +152,10 @@ export interface ComponentsDefinitionV10X {
       | "doc-media";
     dataProperty?: string;
     group?: string;
+    /**
+     * Additional selector to define elements of the component which the property should be applied to
+     */
+    selector?: string;
   }[];
   /**
    * List of groups shown in component chooser dialog

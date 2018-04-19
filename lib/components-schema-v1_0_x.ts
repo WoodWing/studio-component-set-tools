@@ -75,6 +75,8 @@ export const componentsDefinitionSchema_v1_0_x = {
             description: 'List of available component properties',
             items: {
                 type: 'object',
+                required: ['name', 'label', 'control', 'dataType'],
+                additionalProperties: false,
                 properties: {
                     name: {
                         type: 'string',
@@ -85,8 +87,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                     control: {
                         type: 'object',
                         description: 'Type of UI element and options.',
-                        anyOf: [
+                        oneOf: [
                             {
+                                additionalProperties: false,
+                                required: ['type', 'options'],
                                 properties: {
                                     type: {
                                         enum: ['select'],
@@ -95,11 +99,27 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     options: {
                                         type: 'array',
                                         minItems: 1,
+                                        items: {
+                                            type: 'object',
+                                            properties: {
+                                                caption: {
+                                                    type: 'string',
+                                                    description: 'Label of the item',
+                                                },
+                                                value: {
+                                                    type: 'string',
+                                                    description: 'Value of the item. Omit it if the option should simply clean the property up',
+                                                },
+                                            },
+                                            additionalProperties: false,
+                                            required: ['caption'],
+                                        },
                                     },
                                 },
-                                additionalProperties: false,
                             },
                             {
+                                additionalProperties: false,
+                                required: ['type', 'value'],
                                 properties: {
                                     type: {
                                         enum: ['checkbox'],
@@ -107,17 +127,35 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     },
                                     value: { type: 'string' },
                                 },
-                                additionalProperties: false,
                             },
                             {
+                                additionalProperties: false,
+                                required: ['type'],
                                 properties: {
                                     type: {
                                         enum: ['text'],
                                         description: 'Text field property',
                                     },
+                                    pattern: {
+                                        type: 'string',
+                                        description: 'Value validation regexp pattern',
+                                    },
+                                    defaultValue: {
+                                        type: 'string',
+                                        description: 'Default value which is used instead of empty value',
+                                    },
+                                    unit: {
+                                        type: 'string',
+                                        description: 'Unit type like em, px etc',
+                                    },
+                                    inputPlaceholder: {
+                                        type: 'string',
+                                        description: 'Input placeholder',
+                                    },
                                 },
                             },
                             {
+                                required: ['type'],
                                 properties: {
                                     type: {
                                         enum: ['time'],
@@ -126,10 +164,16 @@ export const componentsDefinitionSchema_v1_0_x = {
                                 },
                             },
                             {
+                                additionalProperties: false,
+                                required: ['type'],
                                 properties: {
                                     type: {
                                         enum: ['colorPicker'],
                                         description: 'Color picker field property',
+                                    },
+                                    opacity: {
+                                        type: 'boolean',
+                                        description: 'Enable opacity setting',
                                     },
                                 },
                             },
@@ -149,10 +193,11 @@ export const componentsDefinitionSchema_v1_0_x = {
                     },
                     dataProperty: { type: 'string' },
                     group: { type: 'string' },
+                    selector: {
+                        type: 'string',
+                        description: 'Additional selector to define elements of the component which the property should be applied to',
+                    },
                 },
-
-                required: ['name', 'label', 'control', 'dataType'],
-                additionalProperties: false,
             },
         },
 
