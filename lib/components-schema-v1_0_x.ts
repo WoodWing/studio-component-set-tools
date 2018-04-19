@@ -171,14 +171,9 @@ export const componentsDefinitionSchema_v1_0_x = {
                                         enum: ['colorPicker'],
                                         description: 'Color picker field property',
                                     },
-                                    options: {
-                                        type: 'object',
-                                        additionalProperties: false,
-                                        properties: {
-                                            opacity: {
-                                                type: 'boolean',
-                                            },
-                                        },
+                                    opacity: {
+                                        type: 'boolean',
+                                        description: 'Enable opacity setting',
                                     },
                                 },
                             },

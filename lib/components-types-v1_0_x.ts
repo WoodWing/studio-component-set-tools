@@ -136,9 +136,10 @@ export interface ComponentsDefinitionV10X {
            * Color picker field property
            */
           type: "colorPicker";
-          options?: {
-            opacity?: boolean;
-          };
+          /**
+           * Enable opacity setting
+           */
+          opacity?: boolean;
         };
     dataType:
       | "styles"
