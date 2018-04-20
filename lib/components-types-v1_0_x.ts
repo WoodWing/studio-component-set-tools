@@ -140,6 +140,16 @@ export interface ComponentsDefinitionV10X {
            * Enable opacity setting
            */
           opacity?: boolean;
+        }
+      | {
+          /**
+           * Image editor field property
+           */
+          type: "image-editor";
+          /**
+           * Enable focuspoint feature
+           */
+          focuspoint?: boolean;
         };
     dataType:
       | "styles"
