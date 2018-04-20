@@ -210,6 +210,20 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     },
                                 },
                             },
+                            {
+                                additionalProperties: false,
+                                required: ['type'],
+                                properties: {
+                                    type: {
+                                        enum: ['image-editor'],
+                                        description: 'Image editor field property',
+                                    },
+                                    focuspoint: {
+                                        type: 'boolean',
+                                        description: 'Enable focuspoint feature',
+                                    },
+                                },
+                            },
                         ],
                     },
                     dataType: {
