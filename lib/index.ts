@@ -116,6 +116,16 @@ export async function validate(
             errorReporter(`Component property "${compProp.name}" is not unique`);
         }
         componentPropertyNames.add(compProp.name);
+
+        // Validate the property has icons (for radio control type)
+        if (compProp.control.type === 'radio') {
+            for (const controlOption of compProp.control.options) {
+                if (!filePaths.has(path.normalize(controlOption.icon))) {
+                    valid = false;
+                    errorReporter(`Component properties "${compProp.name}" icon missing "${controlOption.icon}"`);
+                }
+            }
+        }
     }
 
     // Check component groups
