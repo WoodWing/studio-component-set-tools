@@ -1,9 +1,7 @@
+import * as colors from 'colors/safe';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as semver from 'semver';
-// import * as colors from 'colors/safe'; // https://github.com/DefinitelyTyped/DefinitelyTyped/pull/23639
-// tslint:disable-next-line
-const colors = require('colors/safe');
 
 import * as Ajv from 'ajv';
 import * as recursiveReadDir from 'recursive-readdir';
