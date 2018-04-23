@@ -119,6 +119,39 @@ export const componentsDefinitionSchema_v1_0_x = {
                             },
                             {
                                 additionalProperties: false,
+                                required: ['type', 'options'],
+                                properties: {
+                                    type: {
+                                        enum: ['radio'],
+                                        description: 'Radio control type with fixed number of options',
+                                    },
+                                    options: {
+                                        type: 'array',
+                                        minItems: 1,
+                                        items: {
+                                            type: 'object',
+                                            additionalProperties: false,
+                                            required: ['caption', 'icon'],
+                                            properties: {
+                                                caption: {
+                                                    type: 'string',
+                                                    description: 'Label of the item',
+                                                },
+                                                icon: {
+                                                    type: 'string',
+                                                    description: 'Icon shown for the option',
+                                                },
+                                                value: {
+                                                    type: 'string',
+                                                    description: 'Value of the item. Omit it if the option should simply clean the property up',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                            {
+                                additionalProperties: false,
                                 required: ['type', 'value'],
                                 properties: {
                                     type: {

@@ -97,6 +97,26 @@ export interface ComponentsDefinitionV10X {
         }
       | {
           /**
+           * Radio control type with fixed number of options
+           */
+          type: "radio";
+          options: {
+            /**
+             * Label of the item
+             */
+            caption: string;
+            /**
+             * Icon shown for the option
+             */
+            icon: string;
+            /**
+             * Value of the item. Omit it if the option should simply clean the property up
+             */
+            value?: string;
+          }[];
+        }
+      | {
+          /**
            * Checkbox toggling between value and no value
            */
           type: "checkbox";
