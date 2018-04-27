@@ -170,6 +170,12 @@ export interface ComponentsDefinitionV10X {
            * Enable focuspoint feature
            */
           focuspoint?: boolean;
+        }
+      | {
+          /**
+           * Drop capital field property
+           */
+          type: "drop-capital";
         };
     dataType:
       | "styles"
