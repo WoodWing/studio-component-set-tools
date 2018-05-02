@@ -224,6 +224,16 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     },
                                 },
                             },
+                            {
+                                additionalProperties: false,
+                                required: ['type'],
+                                properties: {
+                                    type: {
+                                        enum: ['media-properties'],
+                                        description: 'Enables media properties field property',
+                                    },
+                                },
+                            },
                         ],
                     },
                     dataType: {
