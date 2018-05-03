@@ -143,6 +143,10 @@ export interface ComponentsDefinitionV10X {
            * Input placeholder
            */
           inputPlaceholder?: string;
+          /**
+           * Makes the text field read only from the editor UI
+           */
+          readonly?: string;
         }
       | {
           /**
@@ -170,6 +174,12 @@ export interface ComponentsDefinitionV10X {
            * Enable focuspoint feature
            */
           focuspoint?: boolean;
+        }
+      | {
+          /**
+           * Enables media properties field property
+           */
+          type: "media-properties";
         };
     dataType:
       | "styles"
