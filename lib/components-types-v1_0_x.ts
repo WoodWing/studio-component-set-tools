@@ -176,6 +176,30 @@ export interface ComponentsDefinitionV10X {
            * Drop capital field property
            */
           type: "drop-capital";
+          /**
+           * Minimum value of characters number
+           */
+          charactersMinimum?: number;
+          /**
+           * Default value of characters number
+           */
+          charactersDefault?: number;
+          /**
+           * Maximum value of characters number
+           */
+          charactersMaximum?: number;
+          /**
+           * Minimum value of lines number
+           */
+          linesMinimum?: number;
+          /**
+           * Default value of lines number
+           */
+          linesDefault?: number;
+          /**
+           * Maximum value of lines number
+           */
+          linesMaximum?: number;
         };
     dataType:
       | "styles"

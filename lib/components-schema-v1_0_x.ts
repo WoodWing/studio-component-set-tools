@@ -232,6 +232,30 @@ export const componentsDefinitionSchema_v1_0_x = {
                                         enum: ['drop-capital'],
                                         description: 'Drop capital field property',
                                     },
+                                    charactersMinimum: {
+                                        type: 'number',
+                                        description: 'Minimum value of characters number',
+                                    },
+                                    charactersDefault: {
+                                        type: 'number',
+                                        description: 'Default value of characters number',
+                                    },
+                                    charactersMaximum: {
+                                        type: 'number',
+                                        description: 'Maximum value of characters number',
+                                    },
+                                    linesMinimum: {
+                                        type: 'number',
+                                        description: 'Minimum value of lines number',
+                                    },
+                                    linesDefault: {
+                                        type: 'number',
+                                        description: 'Default value of lines number',
+                                    },
+                                    linesMaximum: {
+                                        type: 'number',
+                                        description: 'Maximum value of lines number',
+                                    },
                                 },
                             },
                         ],
