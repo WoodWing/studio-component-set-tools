@@ -163,6 +163,17 @@ export const componentsDefinitionSchema_v1_0_x = {
                             },
                             {
                                 additionalProperties: false,
+                                required: ['type', 'value'],
+                                properties: {
+                                    type: {
+                                        enum: ['disable-fullscreen-checkbox'],
+                                        description: 'Checkbox toggling between value and no value with additional checking of link directives. The property is set and disabled if the component has a non empty link directive',
+                                    },
+                                    value: { type: 'string' },
+                                },
+                            },
+                            {
+                                additionalProperties: false,
                                 required: ['type'],
                                 properties: {
                                     type: {
@@ -225,6 +236,40 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     focuspoint: {
                                         type: 'boolean',
                                         description: 'Enable focuspoint feature',
+                                    },
+                                },
+                            },
+                            {
+                                additionalProperties: false,
+                                required: ['type'],
+                                properties: {
+                                    type: {
+                                        enum: ['drop-capital'],
+                                        description: 'Drop capital field property',
+                                    },
+                                    charactersMinimum: {
+                                        type: 'number',
+                                        description: 'Minimum value of characters number',
+                                    },
+                                    charactersDefault: {
+                                        type: 'number',
+                                        description: 'Default value of characters number',
+                                    },
+                                    charactersMaximum: {
+                                        type: 'number',
+                                        description: 'Maximum value of characters number',
+                                    },
+                                    linesMinimum: {
+                                        type: 'number',
+                                        description: 'Minimum value of lines number',
+                                    },
+                                    linesDefault: {
+                                        type: 'number',
+                                        description: 'Default value of lines number',
+                                    },
+                                    linesMaximum: {
+                                        type: 'number',
+                                        description: 'Maximum value of lines number',
                                     },
                                 },
                             },

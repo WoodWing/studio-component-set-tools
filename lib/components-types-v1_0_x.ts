@@ -124,6 +124,13 @@ export interface ComponentsDefinitionV10X {
         }
       | {
           /**
+           * Checkbox toggling between value and no value with additional checking of link directives. The property is set and disabled if the component has a non empty link directive
+           */
+          type: "disable-fullscreen-checkbox";
+          value: string;
+        }
+      | {
+          /**
            * Text field property
            */
           type: "text";
@@ -174,6 +181,36 @@ export interface ComponentsDefinitionV10X {
            * Enable focuspoint feature
            */
           focuspoint?: boolean;
+        }
+      | {
+          /**
+           * Drop capital field property
+           */
+          type: "drop-capital";
+          /**
+           * Minimum value of characters number
+           */
+          charactersMinimum?: number;
+          /**
+           * Default value of characters number
+           */
+          charactersDefault?: number;
+          /**
+           * Maximum value of characters number
+           */
+          charactersMaximum?: number;
+          /**
+           * Minimum value of lines number
+           */
+          linesMinimum?: number;
+          /**
+           * Default value of lines number
+           */
+          linesDefault?: number;
+          /**
+           * Maximum value of lines number
+           */
+          linesMaximum?: number;
         }
       | {
           /**
