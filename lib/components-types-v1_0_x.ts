@@ -153,7 +153,7 @@ export interface ComponentsDefinitionV10X {
           /**
            * Makes the text field read only from the editor UI
            */
-          readonly?: string;
+          readonly?: boolean;
         }
       | {
           /**

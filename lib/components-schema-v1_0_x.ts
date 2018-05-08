@@ -197,7 +197,7 @@ export const componentsDefinitionSchema_v1_0_x = {
                                         description: 'Input placeholder',
                                     },
                                     readonly: {
-                                        type: 'string',
+                                        type: 'boolean',
                                         description: 'Makes the text field read only from the editor UI',
                                     },
                                 },
