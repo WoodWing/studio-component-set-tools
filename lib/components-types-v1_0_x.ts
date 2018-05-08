@@ -150,6 +150,10 @@ export interface ComponentsDefinitionV10X {
            * Input placeholder
            */
           inputPlaceholder?: string;
+          /**
+           * Makes the text field read only from the editor UI
+           */
+          readonly?: boolean;
         }
       | {
           /**
@@ -207,6 +211,12 @@ export interface ComponentsDefinitionV10X {
            * Maximum value of lines number
            */
           linesMaximum?: number;
+        }
+      | {
+          /**
+           * Enables media properties field property
+           */
+          type: "media-properties";
         };
     dataType:
       | "styles"

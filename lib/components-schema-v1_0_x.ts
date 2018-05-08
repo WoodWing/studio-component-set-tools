@@ -196,6 +196,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                                         type: 'string',
                                         description: 'Input placeholder',
                                     },
+                                    readonly: {
+                                        type: 'boolean',
+                                        description: 'Makes the text field read only from the editor UI',
+                                    },
                                 },
                             },
                             {
@@ -266,6 +270,16 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     linesMaximum: {
                                         type: 'number',
                                         description: 'Maximum value of lines number',
+                                    },
+                                },
+                            },
+                            {
+                                additionalProperties: false,
+                                required: ['type'],
+                                properties: {
+                                    type: {
+                                        enum: ['media-properties'],
+                                        description: 'Enables media properties field property',
                                     },
                                 },
                             },
