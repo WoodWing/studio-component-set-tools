@@ -303,6 +303,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                         type: 'string',
                         description: 'Additional selector to define elements of the component which the property should be applied to',
                     },
+                    featureFlag: {
+                        type: 'string',
+                        description: 'Feature flag that should be present for the property to show up. Always show if not specified.',
+                    },
                 },
             },
         },
