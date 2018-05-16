@@ -233,6 +233,10 @@ export interface ComponentsDefinitionV10X {
      * Additional selector to define elements of the component which the property should be applied to
      */
     selector?: string;
+    /**
+     * Feature flag that should be present for the property to show up. Always show if not specified.
+     */
+    featureFlag?: string;
   }[];
   /**
    * List of groups shown in component chooser dialog
