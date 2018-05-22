@@ -1,6 +1,6 @@
 {
   "name": "@woodwing/csde-components-validator",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Validation module for Content Station Digital Editor components packages.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
