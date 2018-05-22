@@ -217,6 +217,12 @@ export interface ComponentsDefinitionV10X {
            * Enables media properties field property
            */
           type: "media-properties";
+        }
+      | {
+          /**
+           * Enables fitting option for an image directive
+           */
+          type: "fitting";
         };
     dataType:
       | "styles"

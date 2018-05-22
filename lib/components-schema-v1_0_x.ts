@@ -283,6 +283,16 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     },
                                 },
                             },
+                            {
+                                additionalProperties: false,
+                                required: ['type'],
+                                properties: {
+                                    type: {
+                                        enum: ['fitting'],
+                                        description: 'Enables fitting option for an image directive',
+                                    },
+                                },
+                            },
                         ],
                     },
                     dataType: {
