@@ -223,6 +223,26 @@ export interface ComponentsDefinitionV10X {
            * Enables fitting option for an image directive
            */
           type: "fitting";
+        }
+      | {
+          /**
+           * Configuration of interactive directive
+           */
+          type: "interactive";
+          /**
+           * Default configuration of interactive directive
+           */
+          defaultConfig: {
+            [k: string]: any;
+          };
+          /**
+           * A link which is used to edit the configuration
+           */
+          editLink?: string;
+          /**
+           * A link which is used to show the directive
+           */
+          viewLink: string;
         };
     dataType:
       | "styles"
@@ -232,7 +252,8 @@ export interface ComponentsDefinitionV10X {
       | "doc-image"
       | "doc-html"
       | "doc-slideshow"
-      | "doc-media";
+      | "doc-media"
+      | "doc-interactive";
     dataProperty?: string;
     group?: string;
     /**
