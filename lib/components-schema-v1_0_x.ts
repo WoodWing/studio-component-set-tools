@@ -307,10 +307,12 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     },
                                     editLink: {
                                         type: 'string',
+                                        format: 'uri',
                                         description: 'A link which is used to edit the configuration',
                                     },
                                     viewLink: {
                                         type: 'string',
+                                        format: 'uri',
                                         description: 'A link which is used to show the directive',
                                     },
                                 },
