@@ -332,7 +332,6 @@ export const componentsDefinitionSchema_v1_0_x = {
                             'doc-interactive',
                         ],
                     },
-                    dataProperty: { type: 'string' },
                     group: { type: 'string' },
                     selector: {
                         type: 'string',

@@ -254,7 +254,6 @@ export interface ComponentsDefinitionV10X {
       | "doc-slideshow"
       | "doc-media"
       | "doc-interactive";
-    dataProperty?: string;
     group?: string;
     /**
      * Additional selector to define elements of the component which the property should be applied to
