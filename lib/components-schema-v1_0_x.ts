@@ -293,6 +293,30 @@ export const componentsDefinitionSchema_v1_0_x = {
                                     },
                                 },
                             },
+                            {
+                                additionalProperties: false,
+                                required: ['type', 'defaultConfig', 'viewLink'],
+                                properties: {
+                                    type: {
+                                        enum: ['interactive'],
+                                        description: 'Configuration of interactive directive',
+                                    },
+                                    defaultConfig: {
+                                        type: 'object',
+                                        description: 'Default configuration of interactive directive',
+                                    },
+                                    editLink: {
+                                        type: 'string',
+                                        format: 'uri',
+                                        description: 'A link which is used to edit the configuration',
+                                    },
+                                    viewLink: {
+                                        type: 'string',
+                                        format: 'uri',
+                                        description: 'A link which is used to show the directive',
+                                    },
+                                },
+                            },
                         ],
                     },
                     dataType: {
@@ -305,9 +329,9 @@ export const componentsDefinitionSchema_v1_0_x = {
                             'doc-html',
                             'doc-slideshow',
                             'doc-media',
+                            'doc-interactive',
                         ],
                     },
-                    dataProperty: { type: 'string' },
                     group: { type: 'string' },
                     selector: {
                         type: 'string',
