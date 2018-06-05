@@ -295,6 +295,16 @@ export const componentsDefinitionSchema_v1_0_x = {
                             },
                             {
                                 additionalProperties: false,
+                                required: ['type'],
+                                properties: {
+                                    type: {
+                                        enum: ['slides'],
+                                        description: 'Adds slides section to component properties (for doc-slideshow)',
+                                    },
+                                },
+                            },
+                            {
+                                additionalProperties: false,
                                 required: ['type', 'defaultConfig', 'viewLink'],
                                 properties: {
                                     type: {

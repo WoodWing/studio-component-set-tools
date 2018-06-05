@@ -226,6 +226,12 @@ export interface ComponentsDefinitionV10X {
         }
       | {
           /**
+           * Adds slides section to component properties (for doc-slideshow)
+           */
+          type: "slides";
+        }
+      | {
+          /**
            * Configuration of interactive directive
            */
           type: "interactive";
