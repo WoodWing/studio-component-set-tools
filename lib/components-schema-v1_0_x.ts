@@ -301,6 +301,14 @@ export const componentsDefinitionSchema_v1_0_x = {
                                         enum: ['slides'],
                                         description: 'Adds slides section to component properties (for doc-slideshow)',
                                     },
+                                    include: {
+                                        type: 'array',
+                                        description: 'List of properties to include from active slide component properties',
+                                    },
+                                    exclude: {
+                                        type: 'array',
+                                        description: 'List of properties to exclude from active slide component properties',
+                                    },
                                 },
                             },
                             {
