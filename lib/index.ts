@@ -8,10 +8,24 @@ import * as recursiveReadDir from 'recursive-readdir';
 
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 import { ComponentsDefinitionV10X } from './components-types-v1_0_x';
+import { parseDefinition } from './parser/parser-utils';
+import { RestrictChildrenValidator } from './validators/restrict-children-validator';
+import { ParsedComponentsDefinition } from './models';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
 
 const componentsDefinitionPath = path.normalize('./components-definition.json');
+
+export const readFile = (pathToFile: fs.PathLike, options: { encoding: string }) =>
+    new Promise<string>((resolve, reject) => {
+        return fs.readFile(pathToFile, options, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data.toString());
+            }
+        });
+    });
 
 /**
  * Validates a components package based on folder path.
@@ -94,7 +108,6 @@ export async function validate(
         if (!filePaths.has(htmlTemplatePath)) {
             valid = false;
             errorReporter(`Component "${comp.name}" html template missing "${htmlTemplatePath}"`);
-
         }
 
         // Validate the component has a style
@@ -137,19 +150,24 @@ export async function validate(
         componentGroupNames.add(group.name);
     }
 
+    // parse everything for deeper testing
+    let parsedDefinition: ParsedComponentsDefinition|null = null;
+    try {
+        parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
+    } catch (e) {
+        errorReporter(e);
+    }
+    // can't run validator without parsedDefinition
+    if (!parsedDefinition) {
+        return false;
+    }
+
+    valid = new RestrictChildrenValidator(
+        parsedDefinition,
+    ).validate(errorReporter) && valid;
+
     return valid;
 }
-
-const readFile = (pathToFile: fs.PathLike, options: { encoding: string }) =>
-    new Promise<string>((resolve, reject) => {
-        return fs.readFile(pathToFile, options, (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data.toString());
-            }
-        });
-    });
 
 /**
  * Returns the validation function for given version.
