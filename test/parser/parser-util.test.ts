@@ -181,7 +181,8 @@ describe('Parser utils', () => {
                             }
                         }
                     }
-                }
+                },
+                'defaultComponentOnEnter': 'body'
             };
             const getFileContent = (filePath: string) : Promise<string> => {
                 const filename = path.basename(filePath);

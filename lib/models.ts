@@ -34,6 +34,8 @@ export interface ParsedComponentsDefinition {
             };
         };
     };
+    defaultComponentOnEnter: string;
 }
 // a few shortcuts
 export type ParsedComponentsDefinitionComponent = ParsedComponentsDefinition['components']['name'];
+export type ParsedComponentsDefinitionDirective = ParsedComponentsDefinitionComponent['directives']['key'];

@@ -11,6 +11,10 @@ import { ComponentsDefinitionV10X } from './components-types-v1_0_x';
 import { parseDefinition } from './parser/parser-utils';
 import { RestrictChildrenValidator } from './validators/restrict-children-validator';
 import { ParsedComponentsDefinition } from './models';
+import { DocContainerValidator } from './validators/doc-container-validator';
+import { Validator } from './validators/validator';
+import { DocSlideshowValidator } from './validators/doc-slideshow-validator';
+import { DefaultComponentOnEnterValidator } from './validators/default-component-on-enter-validator';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
 
@@ -157,14 +161,20 @@ export async function validate(
     } catch (e) {
         errorReporter(e);
     }
-    // can't run validator without parsedDefinition
+    // can't run validators without parsedDefinition
     if (!parsedDefinition) {
         return false;
     }
 
-    valid = new RestrictChildrenValidator(
-        parsedDefinition,
-    ).validate(errorReporter) && valid;
+    const validators: Validator[] = [
+        new RestrictChildrenValidator(parsedDefinition),
+        new DocContainerValidator(parsedDefinition),
+        new DocSlideshowValidator(parsedDefinition),
+        new DefaultComponentOnEnterValidator(parsedDefinition),
+    ];
+    for (const validator of validators) {
+        valid = validator.validate(errorReporter) && valid;
+    }
 
     return valid;
 }

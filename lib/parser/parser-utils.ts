@@ -65,9 +65,10 @@ export async function parseDefinition(
     getFileContent: (filePath: string) => Promise<string>,
 ) : Promise<ParsedComponentsDefinition> {
 
-    const result = {
+    const result: ParsedComponentsDefinition = {
         components: {},
-    } as ParsedComponentsDefinition;
+        defaultComponentOnEnter: componentsDefinition.defaultComponentOnEnter,
+    };
 
     // parse directives
     for (let component of componentsDefinition.components) {
