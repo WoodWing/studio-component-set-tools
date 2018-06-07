@@ -55,6 +55,10 @@ function getDirectiveType(directiveName: string) : DirectiveType {
 
 /**
  * Parses the components definition into the object which contains all needed data to make needed validations
+ * It already validates:
+ * - existing of component properties
+ * - existing of directive which properties point to
+ * - duplicating of directives keys in component html template
  * 
  * @param componentsDefinition
  * @param getFileContent
@@ -73,9 +77,10 @@ export async function parseDefinition(
     // parse directives
     for (let component of componentsDefinition.components) {
         const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`));
+        const directives = parseDirectives(htmlContent);
         result.components[component.name] = {
             component: component,
-            directives: parseDirectives(htmlContent),
+            directives: directives,
             properties: component.properties && component.properties.reduce((properties, property) => {
                 const [propertyName, directiveKey] = property.split(':');
                 const propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
@@ -86,6 +91,9 @@ export async function parseDefinition(
                     property: propertyConfiguration,
                     directiveKey: directiveKey || null,
                 };
+                if (directiveKey && !(directiveKey in directives)) {
+                    throw new Error(`Directive with key "${directiveKey}" is not found. Property name is "${property}"`);
+                }
                 return properties;
             }, {} as ParsedComponentsDefinition['components']['name']['properties']) || {},
         };
