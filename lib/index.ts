@@ -15,6 +15,9 @@ import { DocContainerValidator } from './validators/doc-container-validator';
 import { Validator } from './validators/validator';
 import { DocSlideshowValidator } from './validators/doc-slideshow-validator';
 import { DefaultComponentOnEnterValidator } from './validators/default-component-on-enter-validator';
+import { UnitTypeValidator } from './validators/unit-type-validator';
+import { ImageEditorValidator } from './validators/image-editor-validator';
+import { FocuspointValidator } from './validators/focuspoint-validator';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
 
@@ -171,6 +174,9 @@ export async function validate(
         new DocContainerValidator(parsedDefinition),
         new DocSlideshowValidator(parsedDefinition),
         new DefaultComponentOnEnterValidator(parsedDefinition),
+        new UnitTypeValidator(componentsDefinition),
+        new ImageEditorValidator(componentsDefinition),
+        new FocuspointValidator(parsedDefinition),
     ];
     for (const validator of validators) {
         valid = validator.validate(errorReporter) && valid;

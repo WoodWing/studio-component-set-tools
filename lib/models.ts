@@ -38,4 +38,5 @@ export interface ParsedComponentsDefinition {
 }
 // a few shortcuts
 export type ParsedComponentsDefinitionComponent = ParsedComponentsDefinition['components']['name'];
+export type ParsedComponentsDefinitionProperty = ParsedComponentsDefinitionComponent['properties']['name'];
 export type ParsedComponentsDefinitionDirective = ParsedComponentsDefinitionComponent['directives']['key'];

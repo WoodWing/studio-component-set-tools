@@ -38,7 +38,7 @@ describe('DefaultComponentOnEnterValidator', () => {
             definition.defaultComponentOnEnter = 'body';
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Property defaultComponentOnEnter points to non existing component "body"`);
+            expect(reporter).toHaveBeenCalledWith(`Property "defaultComponentOnEnter" points to non existing component "body"`);
         });
     });
 });

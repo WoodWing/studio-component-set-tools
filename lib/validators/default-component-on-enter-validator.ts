@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinition, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionDirective } from '../models';
+import { ParsedComponentsDefinition } from '../models';
 
 export class DefaultComponentOnEnterValidator implements Validator {
 
@@ -18,7 +18,7 @@ export class DefaultComponentOnEnterValidator implements Validator {
         let valid = true;
 
         if (!(this.definition.defaultComponentOnEnter in this.definition.components)) {
-            errorReporter(`Property defaultComponentOnEnter points to non existing component "${this.definition.defaultComponentOnEnter}"`);
+            errorReporter(`Property "defaultComponentOnEnter" points to non existing component "${this.definition.defaultComponentOnEnter}"`);
             valid = false;
         }
 
