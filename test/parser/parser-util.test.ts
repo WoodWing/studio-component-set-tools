@@ -184,7 +184,7 @@ describe('Parser utils', () => {
                 }
             };
             const getFileContent = (filePath: string) : Promise<string> => {
-                const filename = filePath.split(/[\/\\\\]/).pop();
+                const filename = path.basename(filePath);
                 let result;
                 switch (filename) {
                     case 'body.html':
