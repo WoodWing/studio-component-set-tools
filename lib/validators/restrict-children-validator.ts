@@ -29,8 +29,8 @@ export class RestrictChildrenValidator implements Validator {
             const isPresent = PROPERTY in parsedComponent.component && parsedComponent.component[PROPERTY];
             if (!isPresent) {
                 if (this.hasSlideshowDirective(parsedComponent)) {
-                    errorReporter(`Component property "${PROPERTY}" must be defined in component "${parsedComponent.component.name}" because the ` + 
-                        `component contains slideshow directive`);
+                    errorReporter(`Component property "${PROPERTY}" must be defined in component "${parsedComponent.component.name}" because the ` +
+                        `component contains a slideshow directive`);
                     valid = false;
                 }
                 return;
@@ -50,14 +50,14 @@ export class RestrictChildrenValidator implements Validator {
                     if (ADDITIONAL_PROPERTY in propertyValue[componentName]) {
                         const additionalPropertyValue = propertyValue[componentName][ADDITIONAL_PROPERTY] || '';
                         if (!(additionalPropertyValue in pointedParsedComponent.directives)) {
-                            errorReporter(`Additional property "${ADDITIONAL_PROPERTY}" of property "${PROPERTY}.${componentName}" of component ` + 
-                                `"${parsedComponent.component.name}" points to non existing directive key "${additionalPropertyValue}" of component ` + 
+                            errorReporter(`Additional property "${ADDITIONAL_PROPERTY}" of property "${PROPERTY}.${componentName}" of component ` +
+                                `"${parsedComponent.component.name}" points to non existing directive key "${additionalPropertyValue}" of component ` +
                                 `"${pointedParsedComponent.component.name}"`);
                             valid = false;
                         }
                     }
                 } else {
-                    errorReporter(`Component property "${PROPERTY}.${componentName}" of component "${parsedComponent.component.name}" points to ` + 
+                    errorReporter(`Component property "${PROPERTY}.${componentName}" of component "${parsedComponent.component.name}" points to ` +
                         `non existing component`);
                     valid = false;
                 }
