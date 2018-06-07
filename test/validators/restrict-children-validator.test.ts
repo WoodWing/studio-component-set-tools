@@ -26,6 +26,17 @@ describe('RestrictChildrenValidator', () => {
                         }
                     }
                 },
+                'intro': {
+                    'component': {
+                        'name': 'intro',
+                    },
+                    'directives': {
+                        'text': {
+                            'type': 'editable',
+                            'tag': 'p'
+                        }
+                    },
+                },
                 'slider': {
                     'component': {
                         'name': 'slider',
@@ -65,7 +76,7 @@ describe('RestrictChildrenValidator', () => {
             delete definition.components.slider.component.restrictChildren;
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Component property "restrictChildren" must be defined in component "slider" because the component contains slideshow directive`);
+            expect(reporter).toHaveBeenCalledWith(`Component property "restrictChildren" must be defined in component "slider" because the component contains a slideshow directive`);
         });
         it('should not pass if restrictChildren property additional withContent property point to wrong directive', () => {
             definition.components.slider.component.restrictChildren.body.withContent = 'unknown';
@@ -84,6 +95,12 @@ describe('RestrictChildrenValidator', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Component property "restrictChildren.unknown" of component "slider" points to non existing component`);
+        });
+        it('should not pass if restrictChildren property points to more then one component', () => {
+            definition.components.slider.component.restrictChildren.intro = {};
+            const valid = validator.validate(reporter);
+            expect(valid).toBeFalsy();
+            expect(reporter).toHaveBeenCalledWith(`Component property "restrictChildren" of component "slider" must contain only one entry because the component contains a slideshow directive`);
         });
     });
 });

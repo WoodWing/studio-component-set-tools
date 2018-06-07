@@ -3,8 +3,8 @@
  */
 
 import * as path from 'path';
-import { ComponentsDefinitionV10X } from '../components-types-v1_0_x';
-import { DirectiveType, ParsedComponentsDefinition } from '../models';
+import * as htmlparser from 'htmlparser2';
+import { DirectiveType, ParsedComponentsDefinition, ComponentsDefinition } from '../models';
 
 /**
  * Returns information about directives
@@ -13,28 +13,28 @@ import { DirectiveType, ParsedComponentsDefinition } from '../models';
  * @returns ParsedComponentsDefinition['components']['name']['directives']
  */
 function parseDirectives(content: string) : ParsedComponentsDefinition['components']['name']['directives'] {
-    const regexTags = /<([a-z_\-]+).*?\s+doc-[a-z\d\-]+=['"]?[a-z\d\-]+['"]?.*?>/gmi;
-    const regexDirectives = /\sdoc-([a-z\d\-_]+)=['"]?([a-z\d\-_]+)['"]?/gmi;
     const result = {} as ParsedComponentsDefinition['components']['name']['directives'];
-    let matchTags;
-    let matchDirectives;
-    // tslint:disable-next-line:no-conditional-assignment
-    while ((matchTags = regexTags.exec(content)) !== null) {
-        const tagContent = matchTags[0];
-        const tagName = matchTags[1].toLowerCase();
-        // tslint:disable-next-line:no-conditional-assignment
-        while ((matchDirectives = regexDirectives.exec(tagContent)) !== null) {
-            const directiveType = getDirectiveType(matchDirectives[1].toLowerCase());
-            const directiveKey = matchDirectives[2];
-            if (directiveKey in result) {
-                throw new Error(`Directive's attributes must be uniq. Attribute value is "${directiveKey}"`);
-            }
-            result[directiveKey] = {
-                type: directiveType,
-                tag: tagName
-            };
+    const parser = new htmlparser.Parser({
+        onopentag: (name, attributes) => {
+            Object.keys(attributes).forEach(key => {
+                const keyLowerCased = key.toLowerCase();
+                const prefix = 'doc-';
+                if (keyLowerCased.indexOf(prefix) === 0) {
+                    const directiveType = getDirectiveType(keyLowerCased.substr(prefix.length));
+                    const directiveKey = attributes[key];
+                    if (directiveKey in result) {
+                        throw new Error(`Directive's attributes must be unique. Attribute value is "${directiveKey}"`);
+                    }
+                    result[directiveKey] = {
+                        type: directiveType,
+                        tag: name.toLowerCase(),
+                    };
+                }
+            });
         }
-    }
+    });
+    parser.write(content);
+    parser.end();
     return result;
 }
 
@@ -61,7 +61,7 @@ function getDirectiveType(directiveName: string) : DirectiveType {
  * @returns Promise<ParsedComponentsDefinition>
  */
 export async function parseDefinition(
-    componentsDefinition: ComponentsDefinitionV10X,
+    componentsDefinition: ComponentsDefinition,
     getFileContent: (filePath: string) => Promise<string>,
 ) : Promise<ParsedComponentsDefinition> {
 

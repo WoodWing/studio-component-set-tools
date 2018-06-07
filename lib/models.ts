@@ -1,5 +1,7 @@
 import { ComponentsDefinitionV10X } from './components-types-v1_0_x';
 
+export type ComponentsDefinition = ComponentsDefinitionV10X;
+
 export enum DirectiveType {
     editable = 'editable',
     container = 'container',
@@ -17,7 +19,7 @@ export enum DirectiveType {
 export interface ParsedComponentsDefinition {
     components: {
         [name: string]: {
-            component: ComponentsDefinitionV10X['components'][0];
+            component: ComponentsDefinition['components'][0];
             directives: {
                 [key: string]: {
                     type: DirectiveType;
@@ -26,10 +28,12 @@ export interface ParsedComponentsDefinition {
             };
             properties: {
                 [name: string]: {
-                    property: ComponentsDefinitionV10X['componentProperties'][0];
+                    property: ComponentsDefinition['componentProperties'][0];
                     directiveKey: string | null;
                 };
             };
         };
     };
 }
+// a few shortcuts
+export type ParsedComponentsDefinitionComponent = ParsedComponentsDefinition['components']['name'];

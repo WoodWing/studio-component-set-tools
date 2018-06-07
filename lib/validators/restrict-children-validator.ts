@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinition } from '../models';
+import { DirectiveType, ParsedComponentsDefinition, ParsedComponentsDefinitionComponent } from '../models';
 
 const PROPERTY = 'restrictChildren';
 const ADDITIONAL_PROPERTY = 'withContent';
@@ -15,7 +15,7 @@ export class RestrictChildrenValidator implements Validator {
     ) {
     }
 
-    private hasSlideshowDirective(parsedComponent: ParsedComponentsDefinition['components']['name']) : boolean {
+    private hasSlideshowDirective(parsedComponent: ParsedComponentsDefinitionComponent) : boolean {
         return Object.values(parsedComponent.directives)
         .some(directive => directive.type === DirectiveType.slideshow);
     }
@@ -25,20 +25,29 @@ export class RestrictChildrenValidator implements Validator {
     ): boolean {
         let valid = true;
 
-        Object.values(this.definition.components).forEach((parsedComponent: ParsedComponentsDefinition['components']['name']) => {
+        Object.values(this.definition.components).forEach((parsedComponent: ParsedComponentsDefinitionComponent) => {
             const isPresent = PROPERTY in parsedComponent.component && parsedComponent.component[PROPERTY];
+            const hasSlideshow = this.hasSlideshowDirective(parsedComponent);
             if (!isPresent) {
-                if (this.hasSlideshowDirective(parsedComponent)) {
+                if (hasSlideshow) {
                     errorReporter(`Component property "${PROPERTY}" must be defined in component "${parsedComponent.component.name}" because the ` +
                         `component contains a slideshow directive`);
                     valid = false;
                 }
                 return;
             }
-            // check if all keys point to corrent component
-            // TODO if || {} is removed then ES2017 shows an error that parsedComponent.component[PROPERTY] may be undefined, why?
-            const propertyValue = parsedComponent.component[PROPERTY] || {};
-            Object.keys(propertyValue).forEach((componentName: string) => {
+            const propertyValue = parsedComponent.component[PROPERTY]
+                // satisfy the compiler -> if PROPERTY exists then it is a non empty object otherwise it can't pass the schema
+                || {};
+            const propertyKeys = Object.keys(propertyValue);
+            // slideshow component can have only one entry
+            if (hasSlideshow && propertyKeys.length > 1) {
+                errorReporter(`Component property "${PROPERTY}" of component "${parsedComponent.component.name}" must contain only one entry` +
+                ` because the component contains a slideshow directive`);
+                valid = false;
+            }
+            // check if all keys point to correct component
+            propertyKeys.forEach((componentName: string) => {
                 if (componentName === parsedComponent.component.name) {
                     errorReporter(`Component property "${PROPERTY}.${componentName}" of component "${parsedComponent.component.name}" points to itself`);
                     valid = false;

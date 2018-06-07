@@ -1,12 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ES2015",
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
     "declaration": true,
     "outDir": "./dist",
-    "strict": true
+    "strict": true,
+    "lib": [
+      "es2015",
+      "es2017.object"
+    ],
   },
   "include": [
       "lib/**/*"

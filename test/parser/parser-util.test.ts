@@ -1,9 +1,10 @@
-import { parseDefinition } from "../../lib/parser/parser-utils";
-import { ComponentsDefinitionV10X } from "../../lib/components-types-v1_0_x";
+import * as path from 'path';
+import { parseDefinition } from '../../lib/parser/parser-utils';
+import { ComponentsDefinition } from '../../lib/models';
 
 describe('Parser utils', () => {
     describe('parseDefinition', () => {
-        let componentsDefinition: ComponentsDefinitionV10X;
+        let componentsDefinition: ComponentsDefinition;
         beforeEach(() => {
             componentsDefinition = {
                 'name': 'minimal-sample',
@@ -214,7 +215,7 @@ describe('Parser utils', () => {
 
         it('should throw an error if there are directives with the same attribute values', async () => {
             const getFileContent = (filePath: string) : Promise<string> => {
-                const filename = filePath.split(/[\/\\\\]/).pop();
+                const filename = path.basename(filePath);
                 let result;
                 switch (filename) {
                     case 'body.html':
@@ -246,7 +247,7 @@ describe('Parser utils', () => {
             } catch(e) {
                 er = e.message;
             }
-            expect(er).toEqual(`Directive's attributes must be uniq. Attribute value is "text"`);
+            expect(er).toEqual(`Directive's attributes must be unique. Attribute value is "text"`);
         });
     });
 });
