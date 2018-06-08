@@ -58,7 +58,8 @@ function getDirectiveType(directiveName: string) : DirectiveType {
  * It already validates:
  * - existing of component properties
  * - existing of directive which properties point to
- * - duplicating of directives keys in component html template
+ * - if directive keys are unique within a component html template
+ * - if group names are unique
  * 
  * @param componentsDefinition
  * @param getFileContent
@@ -71,11 +72,13 @@ export async function parseDefinition(
 
     const result: ParsedComponentsDefinition = {
         components: {},
+        groups: {},
         defaultComponentOnEnter: componentsDefinition.defaultComponentOnEnter,
+        conversionRules: componentsDefinition.conversionRules,
     };
 
-    // parse directives
-    for (let component of componentsDefinition.components) {
+    // parse components
+    for (const component of componentsDefinition.components) {
         const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`));
         const directives = parseDirectives(htmlContent);
         result.components[component.name] = {
@@ -97,6 +100,14 @@ export async function parseDefinition(
                 return properties;
             }, {} as ParsedComponentsDefinition['components']['name']['properties']) || {},
         };
+    }
+
+    // parse groups
+    for (const group of componentsDefinition.groups) {
+        if (group.name in result.groups) {
+            throw new Error(`Component group "${group.name}" is not unique`);
+        }
+        result.groups[group.name] = group;
     }
 
     return result;

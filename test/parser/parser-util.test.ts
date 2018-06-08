@@ -209,7 +209,22 @@ describe('Parser utils', () => {
                         }
                     }
                 },
-                'defaultComponentOnEnter': 'body'
+                groups: {
+                    minimal: {
+                        'label': 'Minimal',
+                        'name': 'minimal',
+                        'components': [
+                            'body',
+                            'complex'
+                        ]
+                    }
+                },
+                defaultComponentOnEnter: 'body',
+                conversionRules: {
+                    body: {
+                        complex: 'auto'
+                    }
+                }
             };
             const parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
             expect(parsedDefinition).toEqual(expectedParsedComponentsDefinition);
@@ -290,7 +305,7 @@ describe('Parser utils', () => {
         });
 
         it('should throw an error if there is a property which cannot be found', async () => {
-            componentsDefinition.components[0].properties[0] = 'unknown';
+            componentsDefinition.components[0].properties[0] = 'cucicaca';
 
             let er = '';
             try {
@@ -298,7 +313,25 @@ describe('Parser utils', () => {
             } catch(e) {
                 er = e.message;
             }
-            expect(er).toEqual(`Property is not found "unknown"`);
+            expect(er).toEqual(`Property is not found "cucicaca"`);
+        });
+
+        it('should throw an error if there are duplicating group names', async () => {
+            componentsDefinition.groups.push({
+                'label': 'Minimal',
+                'name': 'minimal',
+                'components': [
+                    'body',
+                ]
+            });
+
+            let er = '';
+            try {
+                await parseDefinition(componentsDefinition, getFileContent)
+            } catch(e) {
+                er = e.message;
+            }
+            expect(er).toEqual(`Component group "minimal" is not unique`);
         });
     });
 });

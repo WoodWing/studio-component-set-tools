@@ -34,9 +34,14 @@ export interface ParsedComponentsDefinition {
             };
         };
     };
+    groups: {
+        [name: string]: ComponentsDefinition['groups'][0];
+    };
     defaultComponentOnEnter: string;
+    conversionRules: ComponentsDefinition['conversionRules'];
 }
 // a few shortcuts
 export type ParsedComponentsDefinitionComponent = ParsedComponentsDefinition['components']['name'];
 export type ParsedComponentsDefinitionProperty = ParsedComponentsDefinitionComponent['properties']['name'];
 export type ParsedComponentsDefinitionDirective = ParsedComponentsDefinitionComponent['directives']['key'];
+export type ParsedComponentsDefinitionGroup = ParsedComponentsDefinition['groups']['name'];

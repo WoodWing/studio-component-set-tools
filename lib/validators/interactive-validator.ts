@@ -1,14 +1,14 @@
 /**
- * Validates usage of image-editor control type
+ * Validates usage of interactive control type
  */
 
 import { Validator } from './validator';
 import { ComponentsDefinition } from '../models';
 
-const CONTROL = 'image-editor';
-const ALLOWED_DATA_TYPE = 'doc-image';
+const CONTROL = 'interactive';
+const ALLOWED_DATA_TYPE = 'doc-interactive';
 
-export class ImageEditorValidator implements Validator {
+export class InteractiveValidator implements Validator {
 
     constructor(
         private definition: ComponentsDefinition,

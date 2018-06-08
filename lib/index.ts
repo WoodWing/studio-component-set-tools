@@ -9,15 +9,13 @@ import * as recursiveReadDir from 'recursive-readdir';
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 import { ComponentsDefinitionV10X } from './components-types-v1_0_x';
 import { parseDefinition } from './parser/parser-utils';
-import { RestrictChildrenValidator } from './validators/restrict-children-validator';
 import { ParsedComponentsDefinition } from './models';
-import { DocContainerValidator } from './validators/doc-container-validator';
-import { Validator } from './validators/validator';
-import { DocSlideshowValidator } from './validators/doc-slideshow-validator';
-import { DefaultComponentOnEnterValidator } from './validators/default-component-on-enter-validator';
-import { UnitTypeValidator } from './validators/unit-type-validator';
-import { ImageEditorValidator } from './validators/image-editor-validator';
-import { FocuspointValidator } from './validators/focuspoint-validator';
+import {
+    Validator, RestrictChildrenValidator, DocContainerValidator, DefaultComponentOnEnterValidator,
+    UnitTypeValidator, ImageEditorValidator, FocuspointValidator, DirectivePropertiesValidator, GroupsValidator,
+    ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
+    InteractiveValidator, ComponentsValidator
+} from './validators';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
 
@@ -93,70 +91,6 @@ export async function validate(
         return false;
     }
 
-    // Perform additional validation of components now that we know the structure is as expected
-    let valid = true;
-    const componentNames = new Set<string>();
-    for (const comp of componentsDefinition.components) {
-        // Validate we have not seen the name yet
-        if (componentNames.has(comp.name)) {
-            valid = false;
-            errorReporter(`Component "${comp.name}" is not unique`);
-        }
-        componentNames.add(comp.name);
-
-        // Validate the component has an icon
-        if (!filePaths.has(path.normalize(comp.icon))) {
-            valid = false;
-            errorReporter(`Component "${comp.name}" icon missing "${comp.icon}"`);
-        }
-
-        // Validate the component has a html template
-        const htmlTemplatePath = path.normalize(`./templates/html/${comp.name}.html`);
-        if (!filePaths.has(htmlTemplatePath)) {
-            valid = false;
-            errorReporter(`Component "${comp.name}" html template missing "${htmlTemplatePath}"`);
-        }
-
-        // Validate the component has a style
-        const componentStylePath = path.normalize(`./styles/_${comp.name}.scss`);
-        if (!filePaths.has(componentStylePath)) {
-            valid = false;
-            errorReporter(`Component "${comp.name}" style scss file missing "${componentStylePath}"`);
-        }
-    }
-
-    // Check component properties
-    const componentPropertyNames = new Set<string>();
-    for (const compProp of componentsDefinition.componentProperties) {
-        // Validate we have not seen the name yet
-        if (componentPropertyNames.has(compProp.name)) {
-            valid = false;
-            errorReporter(`Component property "${compProp.name}" is not unique`);
-        }
-        componentPropertyNames.add(compProp.name);
-
-        // Validate the property has icons (for radio control type)
-        if (compProp.control.type === 'radio') {
-            for (const controlOption of compProp.control.options) {
-                if (!filePaths.has(path.normalize(controlOption.icon))) {
-                    valid = false;
-                    errorReporter(`Component properties "${compProp.name}" icon missing "${controlOption.icon}"`);
-                }
-            }
-        }
-    }
-
-    // Check component groups
-    const componentGroupNames = new Set<string>();
-    for (const group of componentsDefinition.groups) {
-        // Validate we have not seen the name yet
-        if (componentGroupNames.has(group.name)) {
-            valid = false;
-            errorReporter(`Component group "${group.name}" is not unique`);
-        }
-        componentGroupNames.add(group.name);
-    }
-
     // parse everything for deeper testing
     let parsedDefinition: ParsedComponentsDefinition|null = null;
     try {
@@ -164,20 +98,30 @@ export async function validate(
     } catch (e) {
         errorReporter(e);
     }
-    // can't run validators without parsedDefinition
+    // can't run validators if the parser has failed
     if (!parsedDefinition) {
         return false;
     }
 
     const validators: Validator[] = [
+        new ComponentsValidator(filePaths, componentsDefinition),
         new RestrictChildrenValidator(parsedDefinition),
         new DocContainerValidator(parsedDefinition),
         new DocSlideshowValidator(parsedDefinition),
         new DefaultComponentOnEnterValidator(parsedDefinition),
         new UnitTypeValidator(componentsDefinition),
         new ImageEditorValidator(componentsDefinition),
+        new DropCapitalValidator(componentsDefinition, parsedDefinition),
         new FocuspointValidator(parsedDefinition),
+        new DirectivePropertiesValidator(parsedDefinition),
+        new GroupsValidator(parsedDefinition),
+        new ConversionRulesValidator(parsedDefinition),
+        new PropertiesValidator(filePaths, componentsDefinition),
+        new FittingValidator(parsedDefinition),
+        new InteractiveValidator(componentsDefinition),
     ];
+
+    let valid = true;
     for (const validator of validators) {
         valid = validator.validate(errorReporter) && valid;
     }

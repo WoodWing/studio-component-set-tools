@@ -1,8 +1,8 @@
-import { FocuspointValidator } from '../../lib/validators/focuspoint-validator';
+import { DirectivePropertiesValidator } from '../../lib/validators/directive-properties-validator';
 
-describe('FocuspointValidator', () => {
+describe('DirectivePropertiesValidator', () => {
     let definition;
-    let validator: FocuspointValidator;
+    let validator: DirectivePropertiesValidator;
     beforeEach(() => {
         // valid definition (cut)
         definition = {
@@ -32,7 +32,7 @@ describe('FocuspointValidator', () => {
                 }
             }
         };
-        validator = new FocuspointValidator(definition);
+        validator = new DirectivePropertiesValidator(definition);
     });
     describe('validate', () => {
         let reporter;
@@ -44,18 +44,17 @@ describe('FocuspointValidator', () => {
             expect(valid).toBeTruthy();
             expect(reporter).not.toHaveBeenCalled();
         });
-        it('should pass if directive is applied to <img> tag but "focuspoint" is not set', () => {
-            definition.components.picture.directives.slide.tag = 'img';
-            delete definition.components.picture.properties.p1.property.control.focuspoint;
+        it('should pass on valid definition (other control type)', () => {
+            definition.components.picture.properties.p1.property.control.type = 'interactive';
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();
             expect(reporter).not.toHaveBeenCalled();
         });
-        it('should not pass if directive is applied to <img> tag', () => {
-            definition.components.picture.directives.slide.tag = 'img';
+        it('should not pass if directive key is not set', () => {
+            delete definition.components.picture.properties.p1.directiveKey;
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Property "test" of component "picture" uses "focuspoint" feature on <img> html tag, which is not supported, "focuspoint" can be applied to other html tags, whereimage is a background`);
+            expect(reporter).toHaveBeenCalledWith(`Property "test" of component "picture" must reference to a directive`);
         });
     });
 });

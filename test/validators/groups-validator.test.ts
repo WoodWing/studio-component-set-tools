@@ -1,8 +1,8 @@
-import { FocuspointValidator } from '../../lib/validators/focuspoint-validator';
+import { GroupsValidator } from '../../lib/validators/groups-validator';
 
-describe('FocuspointValidator', () => {
+describe('GroupsValidator', () => {
     let definition;
-    let validator: FocuspointValidator;
+    let validator: GroupsValidator;
     beforeEach(() => {
         // valid definition (cut)
         definition = {
@@ -30,9 +30,15 @@ describe('FocuspointValidator', () => {
                         }
                     }
                 }
+            },
+            groups: {
+                g1: {
+                    name: 'g1',
+                    components: ['picture']
+                }
             }
         };
-        validator = new FocuspointValidator(definition);
+        validator = new GroupsValidator(definition);
     });
     describe('validate', () => {
         let reporter;
@@ -44,18 +50,14 @@ describe('FocuspointValidator', () => {
             expect(valid).toBeTruthy();
             expect(reporter).not.toHaveBeenCalled();
         });
-        it('should pass if directive is applied to <img> tag but "focuspoint" is not set', () => {
-            definition.components.picture.directives.slide.tag = 'img';
-            delete definition.components.picture.properties.p1.property.control.focuspoint;
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
-        });
-        it('should not pass if directive is applied to <img> tag', () => {
-            definition.components.picture.directives.slide.tag = 'img';
+        it('should not pass if a group contains non existing component', () => {
+            definition.groups.g2 = {
+                name: 'g2',
+                components: ['none']
+            };
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Property "test" of component "picture" uses "focuspoint" feature on <img> html tag, which is not supported, "focuspoint" can be applied to other html tags, whereimage is a background`);
+            expect(reporter).toHaveBeenCalledWith(`Component "none" of group "g2" does not exist`);
         });
     });
 });

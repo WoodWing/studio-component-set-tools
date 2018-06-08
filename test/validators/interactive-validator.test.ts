@@ -1,17 +1,17 @@
-import { ImageEditorValidator } from '../../lib/validators/image-editor-validator';
+import { InteractiveValidator } from '../../lib/validators/interactive-validator';
 
-describe('ImageEditorValidator', () => {
+describe('InteractiveValidator', () => {
     let definition;
-    let validator: ImageEditorValidator;
+    let validator: InteractiveValidator;
     beforeEach(() => {
         // valid definition (cut)
         definition = {
             componentProperties: [{
                 name: 'p1',
                 control: {
-                    type: 'image-editor',
+                    type: 'interactive',
                 },
-                dataType: 'doc-image'
+                dataType: 'doc-interactive'
             }, {
                 name: 'p2',
                 control: {
@@ -20,7 +20,7 @@ describe('ImageEditorValidator', () => {
                 dataType: 'data'
             }]
         };
-        validator = new ImageEditorValidator(definition);
+        validator = new InteractiveValidator(definition);
     });
     describe('validate', () => {
         let reporter;
@@ -32,11 +32,11 @@ describe('ImageEditorValidator', () => {
             expect(valid).toBeTruthy();
             expect(reporter).not.toHaveBeenCalled();
         });
-        it('should not pass if dataType is not "doc-image"', () => {
+        it('should not pass if dataType is not "interactive"', () => {
             definition.componentProperties[0].dataType = 'data';
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Property "p1" uses "image-editor" control type which is allowed to use with dataType="doc-image" only`);
+            expect(reporter).toHaveBeenCalledWith(`Property "p1" uses "interactive" control type which is allowed to use with dataType="doc-interactive" only`);
         });
     });
 });

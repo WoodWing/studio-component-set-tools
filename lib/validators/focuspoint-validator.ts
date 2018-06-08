@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinition, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionProperty } from '../models';
+import { ParsedComponentsDefinition } from '../models';
 
 export class FocuspointValidator implements Validator {
 
@@ -17,8 +17,8 @@ export class FocuspointValidator implements Validator {
     ): boolean {
         let valid = true;
 
-        for (const parsedComponent of <ParsedComponentsDefinitionComponent[]>Object.values(this.definition.components)) {
-            for (const parsedProperty of <ParsedComponentsDefinitionProperty[]>Object.values(parsedComponent.properties)) {
+        for (const parsedComponent of Object.values(this.definition.components)) {
+            for (const parsedProperty of Object.values(parsedComponent.properties)) {
                 if (parsedProperty.property.control.type === 'image-editor' && parsedProperty.property.control.focuspoint &&
                     parsedProperty.directiveKey &&  // skip, it's covered in other validator
                     parsedComponent.directives[parsedProperty.directiveKey] && // skip, it's covered in other validator
