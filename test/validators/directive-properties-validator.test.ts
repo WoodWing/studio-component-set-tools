@@ -15,7 +15,7 @@ describe('DirectivePropertiesValidator', () => {
                         slide: {
                             type: 'image',
                             tag: 'div'
-                        }
+                        },
                     },
                     properties: {
                         p1: {
@@ -27,7 +27,17 @@ describe('DirectivePropertiesValidator', () => {
                                 }
                             },
                             directiveKey: 'slide',
-                        }
+                        },
+                        p2: {
+                            property: {
+                                name: 'test',
+                                control: {
+                                    type: 'test',
+                                },
+                                dataType: 'doc-editable'
+                            },
+                            directiveKey: 'slide',
+                        },
                     }
                 }
             }
@@ -55,6 +65,12 @@ describe('DirectivePropertiesValidator', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Property "test" of component "picture" must reference to a directive`);
+        });
+        it('should not pass if directive key is not set for directive dataType', () => {
+            delete definition.components.picture.properties.p2.directiveKey;
+            const valid = validator.validate(reporter);
+            expect(valid).toBeFalsy();
+            expect(reporter).toHaveBeenCalledWith(`Property "test" of component "picture" must reference to a directive because its dataType is a directive type`);
         });
     });
 });

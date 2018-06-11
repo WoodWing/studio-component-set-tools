@@ -9,7 +9,7 @@
     "build": "npm run tslint & tsc",
     "watch": "tsc --watch",
     "test": "jest --forceExit --coverage --verbose",
-    "watchtest": "jest --forceExit --coverage --verbose --watch",
+    "watchtest": "jest --forceExit --coverage --verbose --watchAll",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "update-types": "node -r ts-node/register generateComponentsTypes.ts"
   },
