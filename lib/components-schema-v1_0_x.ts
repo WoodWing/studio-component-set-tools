@@ -55,6 +55,7 @@ export const componentsDefinitionSchema_v1_0_x = {
                     restrictChildren: {
                         type: 'object',
                         description: 'Restricts children of this component to the listed ones and can be further filtered down to also have content',
+                        minProperties: 1,
                         additionalProperties: {
                             type: 'object',
                             properties: {

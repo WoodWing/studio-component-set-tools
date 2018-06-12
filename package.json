@@ -9,6 +9,7 @@
     "build": "npm run tslint & tsc",
     "watch": "tsc --watch",
     "test": "jest --forceExit --coverage --verbose",
+    "watchtest": "jest --forceExit --coverage --verbose --watchAll",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "update-types": "node -r ts-node/register generateComponentsTypes.ts"
   },
@@ -36,10 +37,12 @@
     "typescript": "^2.7.2"
   },
   "dependencies": {
+    "@types/htmlparser2": "^3.7.31",
     "@types/semver": "^5.5.0",
     "ajv": "^6.1.1",
     "ajv-errors": "^1.0.0",
     "colors": "^1.2.1",
+    "htmlparser2": "^3.9.2",
     "recursive-readdir": "^2.2.1",
     "semver": "^5.5.0"
   }
