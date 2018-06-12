@@ -9,7 +9,7 @@ const TYPES = [
     'em',
     'px',
 ];
-const TYPES_REGEXP = new RegExp(`^(${TYPES.join('|')})$`);
+const TYPES_REGEXP = new RegExp(`^(${TYPES.join('|')})$`, 'i');
 
 export class UnitTypeValidator implements Validator {
 

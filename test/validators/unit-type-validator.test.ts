@@ -17,6 +17,12 @@ describe('UnitTypeValidator', () => {
                 control: {
                     type: 'text',
                 },
+            }, {
+                name: 'p3',
+                control: {
+                    type: 'text',
+                    unit: 'eM',     // test if it is case-insensitive
+                },
             }]
         };
         validator = new UnitTypeValidator(definition);

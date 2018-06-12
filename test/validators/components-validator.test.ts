@@ -67,21 +67,21 @@ describe('ComponentsValidator', () => {
             fileList.delete(file);
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Generic file "${file}" is missing`);
+            expect(reporter).toHaveBeenCalledWith(`File "${file}" is missing`);
         });
         it('should not pass if "design.scss" is missing', () => {
             const file = path.normalize('./styles/design.scss');
             fileList.delete(file);
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Generic file "${file}" is missing`);
+            expect(reporter).toHaveBeenCalledWith(`File "${file}" is missing`);
         });
         it('should not pass if "_common.scss" is missing', () => {
             const file = path.normalize('./styles/_common.scss');
             fileList.delete(file);
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Generic file "${file}" is missing`);
+            expect(reporter).toHaveBeenCalledWith(`File "${file}" is missing`);
         });
     });
 });

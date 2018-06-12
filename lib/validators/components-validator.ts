@@ -73,7 +73,7 @@ export class ComponentsValidator implements Validator {
         for (const file of GENERIC_FILES) {
             if (!this.filePaths.has(file)) {
                 valid = false;
-                errorReporter(`Generic file "${file}" is missing`);
+                errorReporter(`File "${file}" is missing`);
             }
         }
 
