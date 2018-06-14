@@ -4,6 +4,7 @@
 
 import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
+import * as merge from 'deepmerge';
 import { DirectiveType, ParsedComponentsDefinition, ComponentsDefinition } from '../models';
 
 /**
@@ -60,7 +61,7 @@ function getDirectiveType(directiveName: string) : DirectiveType {
  * - existing of directive which properties point to
  * - if directive keys are unique within a component html template
  * - if group names are unique
- * 
+ *
  * @param componentsDefinition
  * @param getFileContent
  * @returns Promise<ParsedComponentsDefinition>
@@ -81,24 +82,41 @@ export async function parseDefinition(
     for (const component of componentsDefinition.components) {
         const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`));
         const directives = parseDirectives(htmlContent);
+        let propertyId = 0;
         result.components[component.name] = {
             component: component,
             directives: directives,
             properties: component.properties && component.properties.reduce((properties, property) => {
-                const [propertyName, directiveKey] = property.split(':');
-                const propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
-                if (!propertyConfiguration) {
-                    throw new Error(`Property is not found "${property}"`);
+                let propertyName: string;
+
+                let propertyConfiguration;
+                if (isPropertyObject(property)) {
+                    propertyName = property.name;
+                    if (!propertyName) {
+                        propertyName = `__internal__${propertyId++}`;
+                        propertyConfiguration = property;
+                    } else {
+                        propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
+                        if (!propertyConfiguration) {
+                            throw new Error(`Property is not found "${property}"`);
+                        }
+                        propertyConfiguration = merge(propertyConfiguration, property);
+                    }
+                } else {
+                    propertyName = <string>property;
+
+                    propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
+                    if (!propertyConfiguration) {
+                        throw new Error(`Property is not found "${property}"`);
+                    }
                 }
-                properties[property] = {
-                    property: propertyConfiguration,
-                    directiveKey: directiveKey || null,
-                };
-                if (directiveKey && !(directiveKey in directives)) {
-                    throw new Error(`Directive with key "${directiveKey}" is not found. Property name is "${property}"`);
+
+                properties.push(propertyConfiguration);
+                if (propertyConfiguration.directiveKey && !(propertyConfiguration.directiveKey in directives)) {
+                    throw new Error(`Directive with key "${propertyConfiguration.directiveKey}" is not found. Property name is "${propertyName}"`);
                 }
                 return properties;
-            }, {} as ParsedComponentsDefinition['components']['name']['properties']) || {},
+            }, [] as ParsedComponentsDefinition['components']['name']['properties']) || [],
         };
     }
 
@@ -112,3 +130,7 @@ export async function parseDefinition(
 
     return result;
 }
+
+function isPropertyObject(property: any): property is ComponentsDefinition['componentProperties'][0] {
+    return property instanceof Object;
+ }

@@ -20,11 +20,11 @@ export class DropCapitalValidator implements Validator {
 
     private countPerComponent(component: ParsedComponentsDefinitionComponent) : number {
         let amount = 0;
-        for (const parsedProperty of Object.values(component.properties)) {
-            if (parsedProperty.property.control.type === CONTROL) {
+        component.properties.forEach((parsedProperty) => {
+            if (parsedProperty.control.type === CONTROL) {
                 amount++;
             }
-        }
+        });
         return amount;
     }
 

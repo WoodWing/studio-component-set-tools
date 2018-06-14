@@ -27,7 +27,8 @@ describe('Parser utils', () => {
                         'label': 'Complex Label',
                         'icon': 'icons/component.svg',
                         'properties': [
-                            'checkboxProperty', 'dirProperty:image'
+                            'checkboxProperty',
+                            { name: 'dirProperty', directiveKey: 'image' }
                         ]
                     }
                 ],
@@ -130,28 +131,25 @@ describe('Parser utils', () => {
                                 'tag': 'p'
                             }
                         },
-                        'properties': {
-                            'selectProperty': {
-                                'property': {
-                                    'name': 'selectProperty',
-                                    'label': 'Select property sample',
-                                    'control': {
-                                        'type': 'select',
-                                        'options': [
-                                            {
-                                                'caption': 'Default'
-                                            },
-                                            {
-                                                'caption': 'Option 1',
-                                                'value': '_option1'
-                                            }
-                                        ]
-                                    },
-                                    'dataType': 'styles'
+                        'properties': [
+                            {
+                                'name': 'selectProperty',
+                                'label': 'Select property sample',
+                                'control': {
+                                    'type': 'select',
+                                    'options': [
+                                        {
+                                            'caption': 'Default'
+                                        },
+                                        {
+                                            'caption': 'Option 1',
+                                            'value': '_option1'
+                                        }
+                                    ]
                                 },
-                                'directiveKey': null
+                                'dataType': 'styles'
                             }
-                        }
+                        ]
                     },
                     'complex': {
                         'component': {
@@ -160,7 +158,7 @@ describe('Parser utils', () => {
                             'icon': 'icons/component.svg',
                             'properties': [
                                 'checkboxProperty',
-                                'dirProperty:image'
+                                { 'name': 'dirProperty', 'directiveKey': 'image' }
                             ]
                         },
                         'directives': {
@@ -181,32 +179,27 @@ describe('Parser utils', () => {
                                 'tag': 'p'
                             }
                         },
-                        'properties': {
-                            'checkboxProperty': {
-                                'property': {
-                                    'name': 'checkboxProperty',
-                                    'label': 'Checkbox property sample',
-                                    'control': {
-                                        'type': 'checkbox',
-                                        'value': '_valueWhenOn'
-                                    },
-                                    'dataType': 'styles'
+                        'properties': [
+                            {
+                                'name': 'checkboxProperty',
+                                'label': 'Checkbox property sample',
+                                'control': {
+                                    'type': 'checkbox',
+                                    'value': '_valueWhenOn'
                                 },
-                                'directiveKey': null
+                                'dataType': 'styles',
                             },
-                            'dirProperty:image': {
-                                'property': {
-                                    'name': 'dirProperty',
-                                    'label': 'Directive property sample',
-                                    'control': {
-                                        'type': 'image-editor',
-                                        'focuspoint': true
-                                    },
-                                    'dataType': 'doc-image'
+                            {
+                                'name': 'dirProperty',
+                                'label': 'Directive property sample',
+                                'control': {
+                                    'type': 'image-editor',
+                                    'focuspoint': true
                                 },
+                                'dataType': 'doc-image',
                                 'directiveKey': 'image'
                             }
-                        }
+                        ]
                     }
                 },
                 groups: {
@@ -301,7 +294,7 @@ describe('Parser utils', () => {
             } catch(e) {
                 er = e.message;
             }
-            expect(er).toEqual(`Directive with key "image" is not found. Property name is "dirProperty:image"`);
+            expect(er).toEqual(`Directive with key "image" is not found. Property name is "dirProperty"`);
         });
 
         it('should throw an error if there is a property which cannot be found', async () => {

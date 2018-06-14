@@ -26,12 +26,7 @@ export interface ParsedComponentsDefinition {
                     tag: string;    // tag name (lowercased)
                 };
             };
-            properties: {
-                [name: string]: {
-                    property: ComponentsDefinition['componentProperties'][0];
-                    directiveKey: string | null;
-                };
-            };
+            properties: ComponentsDefinition['componentProperties'][0][];
         };
     };
     groups: {
@@ -42,6 +37,5 @@ export interface ParsedComponentsDefinition {
 }
 // a few shortcuts
 export type ParsedComponentsDefinitionComponent = ParsedComponentsDefinition['components']['name'];
-export type ParsedComponentsDefinitionProperty = ParsedComponentsDefinitionComponent['properties']['name'];
 export type ParsedComponentsDefinitionDirective = ParsedComponentsDefinitionComponent['directives']['key'];
 export type ParsedComponentsDefinitionGroup = ParsedComponentsDefinition['groups']['name'];

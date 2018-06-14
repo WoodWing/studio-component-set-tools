@@ -17,18 +17,16 @@ describe('FocuspointValidator', () => {
                             tag: 'div'
                         }
                     },
-                    properties: {
-                        p1: {
-                            property: {
-                                name: 'test',
-                                control: {
-                                    type: 'image-editor',
-                                    focuspoint: true
-                                }
+                    properties: [
+                        {
+                            name: 'test',
+                            control: {
+                                type: 'image-editor',
+                                focuspoint: true
                             },
                             directiveKey: 'slide',
                         }
-                    }
+                    ],
                 }
             }
         };
@@ -46,7 +44,7 @@ describe('FocuspointValidator', () => {
         });
         it('should pass if directive is applied to <img> tag but "focuspoint" is not set', () => {
             definition.components.picture.directives.slide.tag = 'img';
-            delete definition.components.picture.properties.p1.property.control.focuspoint;
+            delete definition.components.picture.properties[0].control.focuspoint;
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();
             expect(reporter).not.toHaveBeenCalled();
