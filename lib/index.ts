@@ -14,7 +14,7 @@ import {
     Validator, RestrictChildrenValidator, DocContainerValidator, DefaultComponentOnEnterValidator,
     UnitTypeValidator, ImageEditorValidator, FocuspointValidator, DirectivePropertiesValidator, GroupsValidator,
     ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
-    InteractiveValidator, ComponentsValidator
+    InteractiveValidator, ComponentsValidator, DisableFullscreenCheckboxValidator
 } from './validators';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
@@ -105,20 +105,21 @@ export async function validate(
 
     const validators: Validator[] = [
         new ComponentsValidator(filePaths, componentsDefinition),
-        new RestrictChildrenValidator(parsedDefinition),
+        new ConversionRulesValidator(parsedDefinition),
+        new DefaultComponentOnEnterValidator(parsedDefinition),
+        new DirectivePropertiesValidator(parsedDefinition),
+        new DisableFullscreenCheckboxValidator(componentsDefinition),
         new DocContainerValidator(parsedDefinition),
         new DocSlideshowValidator(parsedDefinition),
-        new DefaultComponentOnEnterValidator(parsedDefinition),
-        new UnitTypeValidator(componentsDefinition),
-        new ImageEditorValidator(componentsDefinition),
         new DropCapitalValidator(componentsDefinition, parsedDefinition),
-        new FocuspointValidator(parsedDefinition),
-        new DirectivePropertiesValidator(parsedDefinition),
-        new GroupsValidator(parsedDefinition),
-        new ConversionRulesValidator(parsedDefinition),
-        new PropertiesValidator(filePaths, componentsDefinition),
         new FittingValidator(parsedDefinition),
+        new FocuspointValidator(parsedDefinition),
+        new GroupsValidator(parsedDefinition),
+        new ImageEditorValidator(componentsDefinition),
         new InteractiveValidator(componentsDefinition),
+        new PropertiesValidator(filePaths, componentsDefinition),
+        new RestrictChildrenValidator(parsedDefinition),
+        new UnitTypeValidator(componentsDefinition),
     ];
 
     let valid = true;
