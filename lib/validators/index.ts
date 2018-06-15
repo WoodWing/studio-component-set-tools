@@ -13,4 +13,5 @@ export * from './interactive-validator';
 export * from './properties-validator';
 export * from './restrict-children-validator';
 export * from './unit-type-validator';
+export * from './slides-validator';
 export * from './validator';

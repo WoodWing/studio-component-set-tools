@@ -82,27 +82,33 @@ export async function parseDefinition(
     for (const component of componentsDefinition.components) {
         const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`));
         const directives = parseDirectives(htmlContent);
-        let propertyId = 0;
+
         result.components[component.name] = {
             component: component,
             directives: directives,
             properties: component.properties && component.properties.reduce((properties, property) => {
                 let propertyName: string;
 
+                // Parse the property. Can either be defined as just a name or an object
                 let propertyConfiguration;
                 if (isPropertyObject(property)) {
+                    // The object form may have a nam set
                     propertyName = property.name;
                     if (!propertyName) {
-                        propertyName = `__internal__${propertyId++}`;
+                        // No name means the property is defined anonymously. This property should be validated.
                         propertyConfiguration = property;
                     } else {
+                        // Otherwise the property is merged with componentProperties entry. This entry must exist
                         propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
                         if (!propertyConfiguration) {
-                            throw new Error(`Property is not found "${property}"`);
+                            throw new Error(`Property is not found "${property.name}"`);
                         }
                         propertyConfiguration = merge(propertyConfiguration, property);
                     }
+
+                    // Validate result property.
                 } else {
+                    // String form refers to an entry in componentProperties. Already validated by json schema.
                     propertyName = <string>property;
 
                     propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
@@ -113,7 +119,7 @@ export async function parseDefinition(
 
                 properties.push(propertyConfiguration);
                 if (propertyConfiguration.directiveKey && !(propertyConfiguration.directiveKey in directives)) {
-                    throw new Error(`Directive with key "${propertyConfiguration.directiveKey}" is not found. Property name is "${propertyName}"`);
+                    throw new Error(`Directive with key "${propertyConfiguration.directiveKey}" is not found. Property name is "${propertyName || '<anonymous property>'}"`);
                 }
                 return properties;
             }, [] as ParsedComponentsDefinition['components']['name']['properties']) || [],
@@ -133,4 +139,4 @@ export async function parseDefinition(
 
 function isPropertyObject(property: any): property is ComponentsDefinition['componentProperties'][0] {
     return property instanceof Object;
- }
+}

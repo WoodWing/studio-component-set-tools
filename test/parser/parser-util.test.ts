@@ -28,7 +28,8 @@ describe('Parser utils', () => {
                         'icon': 'icons/component.svg',
                         'properties': [
                             'checkboxProperty',
-                            { name: 'dirProperty', directiveKey: 'image' }
+                            { name: 'dirProperty', directiveKey: 'image' },
+                            { control: { type: 'header' }, label: 'Header Label' }
                         ]
                     }
                 ],
@@ -158,7 +159,8 @@ describe('Parser utils', () => {
                             'icon': 'icons/component.svg',
                             'properties': [
                                 'checkboxProperty',
-                                { 'name': 'dirProperty', 'directiveKey': 'image' }
+                                { 'name': 'dirProperty', 'directiveKey': 'image' },
+                                { 'control': { 'type': 'header' }, 'label': 'Header Label' }
                             ]
                         },
                         'directives': {
@@ -198,6 +200,12 @@ describe('Parser utils', () => {
                                 },
                                 'dataType': 'doc-image',
                                 'directiveKey': 'image'
+                            },
+                            {
+                                'control': {
+                                    'type': 'header'
+                                },
+                                'label': 'Header Label'
                             }
                         ]
                     }
@@ -299,6 +307,18 @@ describe('Parser utils', () => {
 
         it('should throw an error if there is a property which cannot be found', async () => {
             componentsDefinition.components[0].properties[0] = 'cucicaca';
+
+            let er = '';
+            try {
+                await parseDefinition(componentsDefinition, getFileContent)
+            } catch(e) {
+                er = e.message;
+            }
+            expect(er).toEqual(`Property is not found "cucicaca"`);
+        });
+
+        it('should throw an error if there is a property which cannot be found for merging', async () => {
+            (<any>componentsDefinition.components[1].properties[1]).name = 'cucicaca';
 
             let er = '';
             try {
