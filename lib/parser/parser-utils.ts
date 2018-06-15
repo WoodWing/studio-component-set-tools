@@ -95,7 +95,7 @@ export async function parseDefinition(
                     // The object form may have a nam set
                     propertyName = property.name;
                     if (!propertyName) {
-                        // No name means the property is defined anonymously. This property should be validated.
+                        // No name means the property is defined anonymously.
                         propertyConfiguration = property;
                     } else {
                         // Otherwise the property is merged with componentProperties entry. This entry must exist
@@ -105,8 +105,6 @@ export async function parseDefinition(
                         }
                         propertyConfiguration = merge(propertyConfiguration, property);
                     }
-
-                    // Validate result property.
                 } else {
                     // String form refers to an entry in componentProperties. Already validated by json schema.
                     propertyName = <string>property;
