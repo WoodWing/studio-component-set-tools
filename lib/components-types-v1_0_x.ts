@@ -108,7 +108,6 @@ export interface ComponentsDefinitionV10X {
                  * Checkbox toggling between value and no value with additional checking of link directives. The property is set and disabled if the component has a non empty link directive
                  */
                 type: "disable-fullscreen-checkbox";
-                value: string;
               }
             | {
                 /**
@@ -354,7 +353,6 @@ export interface ComponentsDefinitionV10X {
            * Checkbox toggling between value and no value with additional checking of link directives. The property is set and disabled if the component has a non empty link directive
            */
           type: "disable-fullscreen-checkbox";
-          value: string;
         }
       | {
           /**

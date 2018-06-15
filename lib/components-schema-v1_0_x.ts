@@ -93,13 +93,13 @@ const componentPropertyDefinition = {
             },
             {
                 additionalProperties: false,
-                required: ['type', 'value'],
+                required: ['type'],
                 properties: {
                     type: {
                         enum: ['disable-fullscreen-checkbox'],
-                        description: 'Checkbox toggling between value and no value with additional checking of link directives. The property is set and disabled if the component has a non empty link directive',
-                    },
-                    value: { type: 'string' },
+                        description: 'Checkbox toggling between value and no value with additional checking of link directives. ' +
+                        'The property is set and disabled if the component has a non empty link directive',
+                    }
                 },
             },
             {
