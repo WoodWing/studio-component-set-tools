@@ -216,6 +216,10 @@ export interface ComponentsDefinitionV10X {
            * Enables media properties field property
            */
           type: "media-properties";
+          /**
+           * Defines media type. If omitted then both types are supported
+           */
+          mediaType?: "video" | "social";
         }
       | {
           /**

@@ -282,6 +282,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                                         enum: ['media-properties'],
                                         description: 'Enables media properties field property',
                                     },
+                                    mediaType: {
+                                        enum: ['video', 'social'],
+                                        description: 'Defines media type. If omitted then both types are supported',
+                                    },
                                 },
                             },
                             {
