@@ -4,6 +4,7 @@
 
 import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
+const merge = require('lodash/merge');
 import { DirectiveType, ParsedComponentsDefinition, ComponentsDefinition } from '../models';
 
 /**
@@ -60,7 +61,7 @@ function getDirectiveType(directiveName: string) : DirectiveType {
  * - existing of directive which properties point to
  * - if directive keys are unique within a component html template
  * - if group names are unique
- * 
+ *
  * @param componentsDefinition
  * @param getFileContent
  * @returns Promise<ParsedComponentsDefinition>
@@ -81,24 +82,45 @@ export async function parseDefinition(
     for (const component of componentsDefinition.components) {
         const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`));
         const directives = parseDirectives(htmlContent);
+
         result.components[component.name] = {
             component: component,
             directives: directives,
             properties: component.properties && component.properties.reduce((properties, property) => {
-                const [propertyName, directiveKey] = property.split(':');
-                const propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
-                if (!propertyConfiguration) {
-                    throw new Error(`Property is not found "${property}"`);
+                let propertyName: string;
+
+                // Parse the property. Can either be defined as just a name or an object
+                let propertyConfiguration;
+                if (isPropertyObject(property)) {
+                    // The object form may have a nam set
+                    propertyName = property.name;
+                    if (!propertyName) {
+                        // No name means the property is defined anonymously.
+                        propertyConfiguration = property;
+                    } else {
+                        // Otherwise the property is merged with componentProperties entry. This entry must exist
+                        propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
+                        if (!propertyConfiguration) {
+                            throw new Error(`Property is not found "${property.name}"`);
+                        }
+                        propertyConfiguration = merge(propertyConfiguration, property);
+                    }
+                } else {
+                    // String form refers to an entry in componentProperties. Already validated by json schema.
+                    propertyName = <string>property;
+
+                    propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
+                    if (!propertyConfiguration) {
+                        throw new Error(`Property is not found "${property}"`);
+                    }
                 }
-                properties[property] = {
-                    property: propertyConfiguration,
-                    directiveKey: directiveKey || null,
-                };
-                if (directiveKey && !(directiveKey in directives)) {
-                    throw new Error(`Directive with key "${directiveKey}" is not found. Property name is "${property}"`);
+
+                properties.push(propertyConfiguration);
+                if (propertyConfiguration.directiveKey && !(propertyConfiguration.directiveKey in directives)) {
+                    throw new Error(`Directive with key "${propertyConfiguration.directiveKey}" is not found. Property name is "${propertyName || '<anonymous property>'}"`);
                 }
                 return properties;
-            }, {} as ParsedComponentsDefinition['components']['name']['properties']) || {},
+            }, [] as ParsedComponentsDefinition['components']['name']['properties']) || [],
         };
     }
 
@@ -111,4 +133,8 @@ export async function parseDefinition(
     }
 
     return result;
+}
+
+function isPropertyObject(property: any): property is ComponentsDefinition['componentProperties'][0] {
+    return property instanceof Object;
 }
