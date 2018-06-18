@@ -1,6 +1,6 @@
 {
   "name": "@woodwing/csde-components-validator",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Validation module for Content Station Digital Editor components packages.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,14 +37,14 @@
     "typescript": "^2.7.2"
   },
   "dependencies": {
-    "@types/deepmerge": "^2.1.0",
     "@types/htmlparser2": "^3.7.31",
+    "@types/lodash": "^4.14.109",
     "@types/semver": "^5.5.0",
     "ajv": "^6.1.1",
     "ajv-errors": "^1.0.0",
     "colors": "^1.2.1",
-    "deepmerge": "^2.1.1",
     "htmlparser2": "^3.9.2",
+    "lodash": "^4.17.10",
     "recursive-readdir": "^2.2.1",
     "semver": "^5.5.0"
   }

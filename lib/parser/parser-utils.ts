@@ -4,7 +4,7 @@
 
 import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
-import * as merge from 'deepmerge';
+const merge = require('lodash/merge');
 import { DirectiveType, ParsedComponentsDefinition, ComponentsDefinition } from '../models';
 
 /**
