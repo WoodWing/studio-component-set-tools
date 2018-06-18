@@ -21,24 +21,20 @@ describe('DropCapitalValidator', () => {
                     component: {
                         name: 'c1',
                     },
-                    properties: {
-                        p1: {
-                            property: {
-                                name: 'p1',
-                                control: {
-                                    type: 'drop-capital',
-                                },
+                    properties: [
+                        {
+                            name: 'p1',
+                            control: {
+                                type: 'drop-capital',
                             },
                         },
-                        p2: {
-                            property: {
-                                name: 'p2',
-                                control: {
-                                    type: 'text',
-                                },
+                        {
+                            name: 'p2',
+                            control: {
+                                type: 'text',
                             },
                         },
-                    },
+                    ],
                 },
             },
         };
@@ -61,14 +57,12 @@ describe('DropCapitalValidator', () => {
             expect(reporter).toHaveBeenCalledWith(`Property "p1" uses "drop-capital" control type which is allowed to use with dataType="data" only`);
         });
         it('should not pass if there is a component which uses "drop-capital" property more then one time', () => {
-            parsedDefinition.components.c1.properties.p3 = {
-                property: {
-                    name: 'p3',
-                    control: {
-                        type: 'drop-capital',
-                    },
+            parsedDefinition.components.c1.properties.push({
+                name: 'p3',
+                control: {
+                    type: 'drop-capital',
                 },
-            };
+            });
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Component "c1" uses properties with "drop-capital" control type more that one time`);

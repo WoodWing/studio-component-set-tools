@@ -5,6 +5,302 @@
  */
 
  /* tslint:disable:max-line-length variable-name */
+
+const componentPropertyDefinition = {
+    name: {
+        type: 'string',
+        description: 'Unique identifier of component property',
+        minLength: 3,
+    },
+    label: { type: 'string', description: 'Display label of Component property' },
+    directiveKey: { type: 'string', description: 'Directive key for properties that use a directive data type' },
+    control: {
+        type: 'object',
+        description: 'Type of UI element and options.',
+        oneOf: [
+            {
+                additionalProperties: false,
+                required: ['type', 'options'],
+                properties: {
+                    type: {
+                        enum: ['select'],
+                        description: 'Dropdown with fixed number of options',
+                    },
+                    options: {
+                        type: 'array',
+                        minItems: 1,
+                        items: {
+                            type: 'object',
+                            properties: {
+                                caption: {
+                                    type: 'string',
+                                    description: 'Label of the item',
+                                },
+                                value: {
+                                    type: 'string',
+                                    description: 'Value of the item. Omit it if the option should simply clean the property up',
+                                },
+                            },
+                            additionalProperties: false,
+                            required: ['caption'],
+                        },
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type', 'options'],
+                properties: {
+                    type: {
+                        enum: ['radio'],
+                        description: 'Radio control type with fixed number of options',
+                    },
+                    options: {
+                        type: 'array',
+                        minItems: 1,
+                        items: {
+                            type: 'object',
+                            additionalProperties: false,
+                            required: ['caption', 'icon'],
+                            properties: {
+                                caption: {
+                                    type: 'string',
+                                    description: 'Label of the item',
+                                },
+                                icon: {
+                                    type: 'string',
+                                    description: 'Icon shown for the option',
+                                },
+                                value: {
+                                    type: 'string',
+                                    description: 'Value of the item. Omit it if the option should simply clean the property up',
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type', 'value'],
+                properties: {
+                    type: {
+                        enum: ['checkbox'],
+                        description: 'Checkbox toggling between value and no value',
+                    },
+                    value: { type: 'string' },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['disable-fullscreen-checkbox'],
+                        description: 'Checkbox toggling between value and no value with additional checking of link directives. ' +
+                        'The property is set and disabled if the component has a non empty link directive',
+                    }
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['text'],
+                        description: 'Text field property',
+                    },
+                    pattern: {
+                        type: 'string',
+                        description: 'Value validation regexp pattern',
+                    },
+                    defaultValue: {
+                        type: 'string',
+                        description: 'Default value which is used instead of empty value',
+                    },
+                    unit: {
+                        type: 'string',
+                        description: 'Unit type like em, px etc',
+                    },
+                    inputPlaceholder: {
+                        type: 'string',
+                        description: 'Input placeholder',
+                    },
+                    readonly: {
+                        type: 'boolean',
+                        description: 'Makes the text field read only from the editor UI',
+                    },
+                },
+            },
+            {
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['time'],
+                        description: 'Time field property',
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['colorPicker'],
+                        description: 'Color picker field property',
+                    },
+                    opacity: {
+                        type: 'boolean',
+                        description: 'Enable opacity setting',
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['image-editor'],
+                        description: 'Image editor field property',
+                    },
+                    focuspoint: {
+                        type: 'boolean',
+                        description: 'Enable focuspoint feature',
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['drop-capital'],
+                        description: 'Drop capital field property',
+                    },
+                    charactersMinimum: {
+                        type: 'number',
+                        description: 'Minimum value of characters number',
+                    },
+                    charactersDefault: {
+                        type: 'number',
+                        description: 'Default value of characters number',
+                    },
+                    charactersMaximum: {
+                        type: 'number',
+                        description: 'Maximum value of characters number',
+                    },
+                    linesMinimum: {
+                        type: 'number',
+                        description: 'Minimum value of lines number',
+                    },
+                    linesDefault: {
+                        type: 'number',
+                        description: 'Default value of lines number',
+                    },
+                    linesMaximum: {
+                        type: 'number',
+                        description: 'Maximum value of lines number',
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['media-properties'],
+                        description: 'Enables media properties field property',
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['fitting'],
+                        description: 'Enables fitting option for an image directive',
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['slides'],
+                        description: 'Adds slides section to component properties (for doc-slideshow)',
+                    },
+                    include: {
+                        type: 'array',
+                        description: 'List of properties to include from active slide component properties',
+                    },
+                    exclude: {
+                        type: 'array',
+                        description: 'List of properties to exclude from active slide component properties',
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type', 'defaultConfig', 'viewLink'],
+                properties: {
+                    type: {
+                        enum: ['interactive'],
+                        description: 'Configuration of interactive directive',
+                    },
+                    defaultConfig: {
+                        type: 'object',
+                        description: 'Default configuration of interactive directive',
+                    },
+                    editLink: {
+                        type: 'string',
+                        format: 'uri',
+                        description: 'A link which is used to edit the configuration',
+                    },
+                    viewLink: {
+                        type: 'string',
+                        format: 'uri',
+                        description: 'A link which is used to show the directive',
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['header'],
+                        description: 'Adds a header at property position',
+                    },
+                },
+            },
+        ],
+    },
+    dataType: {
+        enum: [
+            'styles',
+            'inlineStyles',
+            'data',
+            'doc-editable',
+            'doc-image',
+            'doc-html',
+            'doc-slideshow',
+            'doc-media',
+            'doc-interactive',
+        ],
+    },
+    group: { type: 'string' },
+    selector: {
+        type: 'string',
+        description: 'Additional selector to define elements of the component which the property should be applied to',
+    },
+    featureFlag: {
+        type: 'string',
+        description: 'Feature flag that should be present for the property to show up. Always show if not specified.',
+    },
+};
+
 export const componentsDefinitionSchema_v1_0_x = {
     type: 'object',
     properties: {
@@ -40,7 +336,18 @@ export const componentsDefinitionSchema_v1_0_x = {
                     icon: { type: 'string', description: 'Icon shown for component in Digital Editor' },
                     properties: {
                         type: 'array',
-                        items: { type: 'string' },
+                        items: {
+                            oneOf: [
+                                {
+                                    type: 'string',
+                                },
+                                {
+                                    type: 'object',
+                                    additionalProperties: false,
+                                    properties: componentPropertyDefinition,
+                                },
+                            ],
+                        },
                         description: 'names of properties this component can use',
                     },
 
@@ -78,271 +385,7 @@ export const componentsDefinitionSchema_v1_0_x = {
                 type: 'object',
                 required: ['name', 'label', 'control', 'dataType'],
                 additionalProperties: false,
-                properties: {
-                    name: {
-                        type: 'string',
-                        description: 'Unique identifier of component property',
-                        minLength: 3,
-                    },
-                    label: { type: 'string', description: 'Display label of Component property' },
-                    control: {
-                        type: 'object',
-                        description: 'Type of UI element and options.',
-                        oneOf: [
-                            {
-                                additionalProperties: false,
-                                required: ['type', 'options'],
-                                properties: {
-                                    type: {
-                                        enum: ['select'],
-                                        description: 'Dropdown with fixed number of options',
-                                    },
-                                    options: {
-                                        type: 'array',
-                                        minItems: 1,
-                                        items: {
-                                            type: 'object',
-                                            properties: {
-                                                caption: {
-                                                    type: 'string',
-                                                    description: 'Label of the item',
-                                                },
-                                                value: {
-                                                    type: 'string',
-                                                    description: 'Value of the item. Omit it if the option should simply clean the property up',
-                                                },
-                                            },
-                                            additionalProperties: false,
-                                            required: ['caption'],
-                                        },
-                                    },
-                                },
-                            },
-                            {
-                                additionalProperties: false,
-                                required: ['type', 'options'],
-                                properties: {
-                                    type: {
-                                        enum: ['radio'],
-                                        description: 'Radio control type with fixed number of options',
-                                    },
-                                    options: {
-                                        type: 'array',
-                                        minItems: 1,
-                                        items: {
-                                            type: 'object',
-                                            additionalProperties: false,
-                                            required: ['caption', 'icon'],
-                                            properties: {
-                                                caption: {
-                                                    type: 'string',
-                                                    description: 'Label of the item',
-                                                },
-                                                icon: {
-                                                    type: 'string',
-                                                    description: 'Icon shown for the option',
-                                                },
-                                                value: {
-                                                    type: 'string',
-                                                    description: 'Value of the item. Omit it if the option should simply clean the property up',
-                                                },
-                                            },
-                                        },
-                                    },
-                                },
-                            },
-                            {
-                                additionalProperties: false,
-                                required: ['type', 'value'],
-                                properties: {
-                                    type: {
-                                        enum: ['checkbox'],
-                                        description: 'Checkbox toggling between value and no value',
-                                    },
-                                    value: { type: 'string' },
-                                },
-                            },
-                            {
-                                additionalProperties: false,
-                                required: ['type'],
-                                properties: {
-                                    type: {
-                                        enum: ['disable-fullscreen-checkbox'],
-                                        description: 'Checkbox toggling between value and no value with additional checking of link directives. ' +
-                                            'The property is set and disabled if the component has a non empty link directive',
-                                    },
-                                },
-                            },
-                            {
-                                additionalProperties: false,
-                                required: ['type'],
-                                properties: {
-                                    type: {
-                                        enum: ['text'],
-                                        description: 'Text field property',
-                                    },
-                                    pattern: {
-                                        type: 'string',
-                                        description: 'Value validation regexp pattern',
-                                    },
-                                    defaultValue: {
-                                        type: 'string',
-                                        description: 'Default value which is used instead of empty value',
-                                    },
-                                    unit: {
-                                        type: 'string',
-                                        description: 'Unit type like em, px etc',
-                                    },
-                                    inputPlaceholder: {
-                                        type: 'string',
-                                        description: 'Input placeholder',
-                                    },
-                                    readonly: {
-                                        type: 'boolean',
-                                        description: 'Makes the text field read only from the editor UI',
-                                    },
-                                },
-                            },
-                            {
-                                required: ['type'],
-                                properties: {
-                                    type: {
-                                        enum: ['time'],
-                                        description: 'Time field property',
-                                    },
-                                },
-                            },
-                            {
-                                additionalProperties: false,
-                                required: ['type'],
-                                properties: {
-                                    type: {
-                                        enum: ['colorPicker'],
-                                        description: 'Color picker field property',
-                                    },
-                                    opacity: {
-                                        type: 'boolean',
-                                        description: 'Enable opacity setting',
-                                    },
-                                },
-                            },
-                            {
-                                additionalProperties: false,
-                                required: ['type'],
-                                properties: {
-                                    type: {
-                                        enum: ['image-editor'],
-                                        description: 'Image editor field property',
-                                    },
-                                    focuspoint: {
-                                        type: 'boolean',
-                                        description: 'Enable focuspoint feature',
-                                    },
-                                },
-                            },
-                            {
-                                additionalProperties: false,
-                                required: ['type'],
-                                properties: {
-                                    type: {
-                                        enum: ['drop-capital'],
-                                        description: 'Drop capital field property',
-                                    },
-                                    charactersMinimum: {
-                                        type: 'number',
-                                        description: 'Minimum value of characters number',
-                                    },
-                                    charactersDefault: {
-                                        type: 'number',
-                                        description: 'Default value of characters number',
-                                    },
-                                    charactersMaximum: {
-                                        type: 'number',
-                                        description: 'Maximum value of characters number',
-                                    },
-                                    linesMinimum: {
-                                        type: 'number',
-                                        description: 'Minimum value of lines number',
-                                    },
-                                    linesDefault: {
-                                        type: 'number',
-                                        description: 'Default value of lines number',
-                                    },
-                                    linesMaximum: {
-                                        type: 'number',
-                                        description: 'Maximum value of lines number',
-                                    },
-                                },
-                            },
-                            {
-                                additionalProperties: false,
-                                required: ['type'],
-                                properties: {
-                                    type: {
-                                        enum: ['media-properties'],
-                                        description: 'Enables media properties field property',
-                                    },
-                                },
-                            },
-                            {
-                                additionalProperties: false,
-                                required: ['type'],
-                                properties: {
-                                    type: {
-                                        enum: ['fitting'],
-                                        description: 'Enables fitting option for an image directive',
-                                    },
-                                },
-                            },
-                            {
-                                additionalProperties: false,
-                                required: ['type', 'defaultConfig', 'viewLink'],
-                                properties: {
-                                    type: {
-                                        enum: ['interactive'],
-                                        description: 'Configuration of interactive directive',
-                                    },
-                                    defaultConfig: {
-                                        type: 'object',
-                                        description: 'Default configuration of interactive directive',
-                                    },
-                                    editLink: {
-                                        type: 'string',
-                                        format: 'uri',
-                                        description: 'A link which is used to edit the configuration',
-                                    },
-                                    viewLink: {
-                                        type: 'string',
-                                        format: 'uri',
-                                        description: 'A link which is used to show the directive',
-                                    },
-                                },
-                            },
-                        ],
-                    },
-                    dataType: {
-                        enum: [
-                            'styles',
-                            'inlineStyles',
-                            'data',
-                            'doc-editable',
-                            'doc-image',
-                            'doc-html',
-                            'doc-slideshow',
-                            'doc-media',
-                            'doc-interactive',
-                        ],
-                    },
-                    group: { type: 'string' },
-                    selector: {
-                        type: 'string',
-                        description: 'Additional selector to define elements of the component which the property should be applied to',
-                    },
-                    featureFlag: {
-                        type: 'string',
-                        description: 'Feature flag that should be present for the property to show up. Always show if not specified.',
-                    },
-                },
+                properties: componentPropertyDefinition,
             },
         },
 

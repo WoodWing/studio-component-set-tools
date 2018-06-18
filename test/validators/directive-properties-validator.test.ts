@@ -17,28 +17,24 @@ describe('DirectivePropertiesValidator', () => {
                             tag: 'div'
                         },
                     },
-                    properties: {
-                        p1: {
-                            property: {
-                                name: 'test',
-                                control: {
-                                    type: 'image-editor',
-                                    focuspoint: true
-                                }
+                    properties: [
+                        {
+                            name: 'test',
+                            control: {
+                                type: 'image-editor',
+                                focuspoint: true
                             },
                             directiveKey: 'slide',
                         },
-                        p2: {
-                            property: {
-                                name: 'test',
-                                control: {
-                                    type: 'test',
-                                },
-                                dataType: 'doc-editable'
+                        {
+                            name: 'test',
+                            control: {
+                                type: 'test',
                             },
+                            dataType: 'doc-editable',
                             directiveKey: 'slide',
                         },
-                    }
+                    ]
                 }
             }
         };
@@ -55,19 +51,19 @@ describe('DirectivePropertiesValidator', () => {
             expect(reporter).not.toHaveBeenCalled();
         });
         it('should pass on valid definition (other control type)', () => {
-            definition.components.picture.properties.p1.property.control.type = 'interactive';
+            definition.components.picture.properties[0].control.type = 'interactive';
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();
             expect(reporter).not.toHaveBeenCalled();
         });
         it('should not pass if directive key is not set', () => {
-            delete definition.components.picture.properties.p1.directiveKey;
+            delete definition.components.picture.properties[0].directiveKey;
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Property "test" of component "picture" must reference to a directive`);
         });
         it('should not pass if directive key is not set for directive dataType', () => {
-            delete definition.components.picture.properties.p2.directiveKey;
+            delete definition.components.picture.properties[1].directiveKey;
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Property "test" of component "picture" must reference to a directive because its dataType is a directive type`);

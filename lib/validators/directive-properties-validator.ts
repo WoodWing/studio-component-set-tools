@@ -23,19 +23,19 @@ export class DirectivePropertiesValidator implements Validator {
         const regexp = new RegExp(`^doc-(${Object.values(DirectiveType).filter(item => item !== DirectiveType.unknown).join('|')})`, 'i');
 
         for (const parsedComponent of Object.values(this.definition.components)) {
-            for (const parsedProperty of Object.values(parsedComponent.properties)) {
-                if (CONTROLS.indexOf(parsedProperty.property.control.type) >= 0 && !parsedProperty.directiveKey) {
-                    errorReporter(`Property "${parsedProperty.property.name}" of component "${parsedComponent.component.name}" must reference ` +
+            parsedComponent.properties.forEach((parsedProperty) => {
+                if (CONTROLS.indexOf(parsedProperty.control.type) >= 0 && !parsedProperty.directiveKey) {
+                    errorReporter(`Property "${parsedProperty.name}" of component "${parsedComponent.component.name}" must reference ` +
                         `to a directive`);
                     valid = false;
                 }
                 // check all dataType=doc-* properties
-                if (regexp.test(parsedProperty.property.dataType) && !parsedProperty.directiveKey) {
-                    errorReporter(`Property "${parsedProperty.property.name}" of component "${parsedComponent.component.name}" must reference ` +
+                if (regexp.test(parsedProperty.dataType) && !parsedProperty.directiveKey) {
+                    errorReporter(`Property "${parsedProperty.name}" of component "${parsedComponent.component.name}" must reference ` +
                         `to a directive because its dataType is a directive type`);
                     valid = false;
                 }
-            }
+            });
         }
 
         return valid;

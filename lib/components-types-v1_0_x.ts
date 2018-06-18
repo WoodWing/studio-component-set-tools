@@ -41,7 +41,229 @@ export interface ComponentsDefinitionV10X {
     /**
      * names of properties this component can use
      */
-    properties?: string[];
+    properties?: (
+      | string
+      | {
+          /**
+           * Unique identifier of component property
+           */
+          name?: string;
+          /**
+           * Display label of Component property
+           */
+          label?: string;
+          /**
+           * Directive key for properties that use a directive data type
+           */
+          directiveKey?: string;
+          /**
+           * Type of UI element and options.
+           */
+          control?:
+            | {
+                /**
+                 * Dropdown with fixed number of options
+                 */
+                type: "select";
+                options: {
+                  /**
+                   * Label of the item
+                   */
+                  caption: string;
+                  /**
+                   * Value of the item. Omit it if the option should simply clean the property up
+                   */
+                  value?: string;
+                }[];
+              }
+            | {
+                /**
+                 * Radio control type with fixed number of options
+                 */
+                type: "radio";
+                options: {
+                  /**
+                   * Label of the item
+                   */
+                  caption: string;
+                  /**
+                   * Icon shown for the option
+                   */
+                  icon: string;
+                  /**
+                   * Value of the item. Omit it if the option should simply clean the property up
+                   */
+                  value?: string;
+                }[];
+              }
+            | {
+                /**
+                 * Checkbox toggling between value and no value
+                 */
+                type: "checkbox";
+                value: string;
+              }
+            | {
+                /**
+                 * Checkbox toggling between value and no value with additional checking of link directives. The property is set and disabled if the component has a non empty link directive
+                 */
+                type: "disable-fullscreen-checkbox";
+              }
+            | {
+                /**
+                 * Text field property
+                 */
+                type: "text";
+                /**
+                 * Value validation regexp pattern
+                 */
+                pattern?: string;
+                /**
+                 * Default value which is used instead of empty value
+                 */
+                defaultValue?: string;
+                /**
+                 * Unit type like em, px etc
+                 */
+                unit?: string;
+                /**
+                 * Input placeholder
+                 */
+                inputPlaceholder?: string;
+                /**
+                 * Makes the text field read only from the editor UI
+                 */
+                readonly?: boolean;
+              }
+            | {
+                /**
+                 * Time field property
+                 */
+                type: "time";
+                [k: string]: any;
+              }
+            | {
+                /**
+                 * Color picker field property
+                 */
+                type: "colorPicker";
+                /**
+                 * Enable opacity setting
+                 */
+                opacity?: boolean;
+              }
+            | {
+                /**
+                 * Image editor field property
+                 */
+                type: "image-editor";
+                /**
+                 * Enable focuspoint feature
+                 */
+                focuspoint?: boolean;
+              }
+            | {
+                /**
+                 * Drop capital field property
+                 */
+                type: "drop-capital";
+                /**
+                 * Minimum value of characters number
+                 */
+                charactersMinimum?: number;
+                /**
+                 * Default value of characters number
+                 */
+                charactersDefault?: number;
+                /**
+                 * Maximum value of characters number
+                 */
+                charactersMaximum?: number;
+                /**
+                 * Minimum value of lines number
+                 */
+                linesMinimum?: number;
+                /**
+                 * Default value of lines number
+                 */
+                linesDefault?: number;
+                /**
+                 * Maximum value of lines number
+                 */
+                linesMaximum?: number;
+              }
+            | {
+                /**
+                 * Enables media properties field property
+                 */
+                type: "media-properties";
+              }
+            | {
+                /**
+                 * Enables fitting option for an image directive
+                 */
+                type: "fitting";
+              }
+            | {
+                /**
+                 * Adds slides section to component properties (for doc-slideshow)
+                 */
+                type: "slides";
+                /**
+                 * List of properties to include from active slide component properties
+                 */
+                include?: any[];
+                /**
+                 * List of properties to exclude from active slide component properties
+                 */
+                exclude?: any[];
+              }
+            | {
+                /**
+                 * Configuration of interactive directive
+                 */
+                type: "interactive";
+                /**
+                 * Default configuration of interactive directive
+                 */
+                defaultConfig: {
+                  [k: string]: any;
+                };
+                /**
+                 * A link which is used to edit the configuration
+                 */
+                editLink?: string;
+                /**
+                 * A link which is used to show the directive
+                 */
+                viewLink: string;
+              }
+            | {
+                /**
+                 * Adds a header at property position
+                 */
+                type: "header";
+              };
+          dataType?:
+            | "styles"
+            | "inlineStyles"
+            | "data"
+            | "doc-editable"
+            | "doc-image"
+            | "doc-html"
+            | "doc-slideshow"
+            | "doc-media"
+            | "doc-interactive";
+          group?: string;
+          /**
+           * Additional selector to define elements of the component which the property should be applied to
+           */
+          selector?: string;
+          /**
+           * Feature flag that should be present for the property to show up. Always show if not specified.
+           */
+          featureFlag?: string;
+        })[];
     /**
      * How this component is selectable, by default the user can select inside the component to select it
      */
@@ -75,6 +297,10 @@ export interface ComponentsDefinitionV10X {
      * Display label of Component property
      */
     label: string;
+    /**
+     * Directive key for properties that use a directive data type
+     */
+    directiveKey?: string;
     /**
      * Type of UI element and options.
      */
@@ -225,6 +451,20 @@ export interface ComponentsDefinitionV10X {
         }
       | {
           /**
+           * Adds slides section to component properties (for doc-slideshow)
+           */
+          type: "slides";
+          /**
+           * List of properties to include from active slide component properties
+           */
+          include?: any[];
+          /**
+           * List of properties to exclude from active slide component properties
+           */
+          exclude?: any[];
+        }
+      | {
+          /**
            * Configuration of interactive directive
            */
           type: "interactive";
@@ -242,6 +482,12 @@ export interface ComponentsDefinitionV10X {
            * A link which is used to show the directive
            */
           viewLink: string;
+        }
+      | {
+          /**
+           * Adds a header at property position
+           */
+          type: "header";
         };
     dataType:
       | "styles"
