@@ -119,8 +119,8 @@ export async function validate(
         new InteractiveValidator(componentsDefinition),
         new PropertiesValidator(filePaths, componentsDefinition),
         new RestrictChildrenValidator(parsedDefinition),
-        new UnitTypeValidator(componentsDefinition),
         new SlidesValidator(parsedDefinition),
+        new UnitTypeValidator(componentsDefinition),
     ];
 
     let valid = true;
