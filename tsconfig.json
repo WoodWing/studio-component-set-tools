@@ -13,6 +13,7 @@
     ]
   },
   "include": [
-      "lib/**/*"
+      "./generateComponentsTypes.ts",
+      "./lib/**/*"
   ]
 }

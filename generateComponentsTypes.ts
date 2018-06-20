@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { compile, compileFromFile } from 'json-schema-to-typescript';
+import { compile } from 'json-schema-to-typescript';
 import { componentsDefinitionSchema_v1_0_x } from './lib/components-schema-v1_0_x';
 
 async function compileSchema(componentsSchema: object, outPath: string, schemaName: string) {
