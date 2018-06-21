@@ -2,7 +2,7 @@ import * as path from 'path';
 import { ComponentsValidator } from '../../lib/validators/components-validator';
 
 describe('ComponentsValidator', () => {
-    let definition;
+    let definition: any;
     let validator: ComponentsValidator;
     let fileList: Set<string>;
     beforeEach(() => {
@@ -10,14 +10,14 @@ describe('ComponentsValidator', () => {
         definition = {
             components: [
                 {
-                    "name": "body",
-                    "label": "Body Label",
-                    "icon": "path1",
+                    name: 'body',
+                    label: 'Body Label',
+                    icon: 'path1',
                 },
                 {
-                    "name": "intro",
-                    "label": "Intro Label",
-                    "icon": "path2",
+                    name: 'intro',
+                    label: { key: 'Intro Label {{0}}', values: {'0': 'replacement'} },
+                    icon: 'path2',
                 }
             ]
         };
@@ -35,10 +35,10 @@ describe('ComponentsValidator', () => {
         validator = new ComponentsValidator(fileList, definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: any;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

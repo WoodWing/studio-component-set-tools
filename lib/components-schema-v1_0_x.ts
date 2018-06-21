@@ -4,7 +4,36 @@
  * See http://json-schema.org/ for documentation and examples.
  */
 
- /* tslint:disable:max-line-length variable-name */
+/* tslint:disable:max-line-length variable-name */
+
+const labelProperty = (description: string ) => {
+    return {
+        oneOf: [
+            {
+                type: 'string',
+                description
+            },
+            {
+                type: 'object',
+                description,
+                properties: {
+                    key: {
+                        type: 'string',
+                        description: 'String key',
+                    },
+                    values: {
+                        type: 'object',
+                        description: 'String replacement variables',
+                        properties: {},
+                        additionalProperties: true,
+                    },
+                },
+                additionalProperties: false,
+                required: ['key']
+            }
+        ]
+    };
+};
 
 const componentPropertyDefinition = {
     name: {
@@ -12,8 +41,8 @@ const componentPropertyDefinition = {
         description: 'Unique identifier of component property',
         minLength: 3,
     },
-    label: { type: 'string', description: 'Display label of Component property' },
-    directiveKey: { type: 'string', description: 'Directive key for properties that use a directive data type' },
+    label: labelProperty('Display label of Component property'),
+    directiveKey: {type: 'string', description: 'Directive key for properties that use a directive data type'},
     control: {
         type: 'object',
         description: 'Type of UI element and options.',
@@ -32,10 +61,7 @@ const componentPropertyDefinition = {
                         items: {
                             type: 'object',
                             properties: {
-                                caption: {
-                                    type: 'string',
-                                    description: 'Label of the item',
-                                },
+                                caption: labelProperty('Label of the item'),
                                 value: {
                                     type: 'string',
                                     description: 'Value of the item. Omit it if the option should simply clean the property up',
@@ -63,10 +89,7 @@ const componentPropertyDefinition = {
                             additionalProperties: false,
                             required: ['caption', 'icon'],
                             properties: {
-                                caption: {
-                                    type: 'string',
-                                    description: 'Label of the item',
-                                },
+                                caption: labelProperty('Label of the item'),
                                 icon: {
                                     type: 'string',
                                     description: 'Icon shown for the option',
@@ -88,7 +111,7 @@ const componentPropertyDefinition = {
                         enum: ['checkbox'],
                         description: 'Checkbox toggling between value and no value',
                     },
-                    value: { type: 'string' },
+                    value: {type: 'string'},
                 },
             },
             {
@@ -122,10 +145,7 @@ const componentPropertyDefinition = {
                         type: 'string',
                         description: 'Unit type like em, px etc',
                     },
-                    inputPlaceholder: {
-                        type: 'string',
-                        description: 'Input placeholder',
-                    },
+                    inputPlaceholder: labelProperty('Input placeholder'),
                     readonly: {
                         type: 'boolean',
                         description: 'Makes the text field read only from the editor UI',
@@ -294,7 +314,7 @@ const componentPropertyDefinition = {
             'doc-interactive',
         ],
     },
-    group: { type: 'string' },
+    group: {type: 'string'},
     selector: {
         type: 'string',
         description: 'Additional selector to define elements of the component which the property should be applied to',
@@ -313,7 +333,7 @@ export const componentsDefinitionSchema_v1_0_x = {
             description: 'Name of the components package',
             minLength: 3,
         },
-        description: { type: 'string', description: 'Description of components package' },
+        description: {type: 'string', description: 'Description of components package'},
         version: {
             type: 'string',
             description: 'Version of matching components model',
@@ -336,8 +356,8 @@ export const componentsDefinitionSchema_v1_0_x = {
                         description: 'Unique component identifier',
                         minLength: 3,
                     },
-                    label: { type: 'string', description: 'Component label shown in Digital Editor' },
-                    icon: { type: 'string', description: 'Icon shown for component in Digital Editor' },
+                    label: labelProperty('Component label shown in Digital Editor'),
+                    icon: {type: 'string', description: 'Icon shown for component in Digital Editor'},
                     properties: {
                         type: 'array',
                         items: {
@@ -370,12 +390,15 @@ export const componentsDefinitionSchema_v1_0_x = {
                         additionalProperties: {
                             type: 'object',
                             properties: {
-                                withContent: { type: 'string' },
+                                withContent: {type: 'string'},
                             },
                             additionalProperties: false,
                         },
                     },
-                    countStatistics: { type: 'boolean', description: 'Count characters, words and paragraphs of this component' },
+                    countStatistics: {
+                        type: 'boolean',
+                        description: 'Count characters, words and paragraphs of this component'
+                    },
                 },
                 required: ['name', 'label', 'icon'],
                 additionalProperties: false,
@@ -404,10 +427,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                         description: 'Unique group identifier',
                         minLength: 3,
                     },
-                    label: { type: 'string', description: 'Group label shown in Digital Editor' },
+                    label: labelProperty('Group label shown in Digital Editor'),
                     components: {
                         type: 'array',
-                        items: { type: 'string' },
+                        items: {type: 'string'},
                         description: 'names of components in this group',
                     },
                 },
@@ -430,10 +453,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                             type: 'object',
                             description: 'Map one component into another component by field mapping',
                             properties: {
-                                type: { enum: ['simple'] },
+                                type: {enum: ['simple']},
                                 map: {
                                     type: 'object',
-                                    additionalProperties: { type: 'string' },
+                                    additionalProperties: {type: 'string'},
                                 },
                             },
                             required: ['type', 'map'],
@@ -441,16 +464,16 @@ export const componentsDefinitionSchema_v1_0_x = {
                         {
                             type: 'object',
                             properties: {
-                                type: { enum: ['from-container'] },
-                                container: { type: 'string' },
+                                type: {enum: ['from-container']},
+                                container: {type: 'string'},
                             },
                             required: ['type', 'container'],
                         },
                         {
                             type: 'object',
                             properties: {
-                                type: { enum: ['to-container'] },
-                                container: { type: 'string' },
+                                type: {enum: ['to-container']},
+                                container: {type: 'string'},
                             },
                             required: ['type', 'container'],
                         },

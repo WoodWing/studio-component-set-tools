@@ -4,8 +4,8 @@ import { ComponentsDefinition } from '../../lib/models';
 
 describe('Parser utils', () => {
     describe('parseDefinition', () => {
-        let componentsDefinition: ComponentsDefinition;
-        let getFileContent;
+        let componentsDefinition: any;
+        let getFileContent: (filePath: string) => Promise<string>;
         beforeEach(() => {
             componentsDefinition = {
                 'name': 'minimal-sample',
@@ -24,7 +24,7 @@ describe('Parser utils', () => {
                     },
                     {
                         'name': 'complex',
-                        'label': 'Complex Label',
+                        'label': { 'key': 'Complex Label KEY' },
                         'icon': 'icons/component.svg',
                         'properties': [
                             'checkboxProperty',
@@ -54,7 +54,7 @@ describe('Parser utils', () => {
                                     'caption': 'Default'
                                 },
                                 {
-                                    'caption': 'Option 1',
+                                    'caption': { 'key': 'Option 1 {{0}}', 'values': {'0': 'Replacement'}},
                                     'value': '_option1'
                                 }
                             ]
@@ -143,7 +143,7 @@ describe('Parser utils', () => {
                                             'caption': 'Default'
                                         },
                                         {
-                                            'caption': 'Option 1',
+                                            'caption': { 'key': 'Option 1 {{0}}', 'values': {'0': 'Replacement'}},
                                             'value': '_option1'
                                         }
                                     ]
@@ -155,7 +155,7 @@ describe('Parser utils', () => {
                     'complex': {
                         'component': {
                             'name': 'complex',
-                            'label': 'Complex Label',
+                            'label': {'key' :'Complex Label KEY'},
                             'icon': 'icons/component.svg',
                             'properties': [
                                 'checkboxProperty',
