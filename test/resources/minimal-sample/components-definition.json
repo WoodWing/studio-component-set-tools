@@ -33,6 +33,13 @@
             "components": [
                 "body"
             ]
+        },
+        {
+            "label": { "key": "MINIMAL" },
+            "name": "minimal2",
+            "components": [
+                "body"
+            ]
         }
     ],
 
