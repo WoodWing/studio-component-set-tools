@@ -67,5 +67,7 @@
         "body": {
             "intro": "auto"
         }
-    }
+    },
+
+    "scripts": []
 }

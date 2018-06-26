@@ -561,4 +561,8 @@ export interface ComponentsDefinitionV10X {
           };
     };
   };
+  /**
+   * List of scripts to be included for html rendition of article
+   */
+  scripts?: string[];
 }
