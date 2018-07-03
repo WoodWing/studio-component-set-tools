@@ -3,6 +3,7 @@
  * - if names are unique
  * - if icons are present
  * - if reserved words are not used as names
+ * - if doc-media properties have a media-properties control type
  */
 
 import * as path from 'path';
@@ -48,6 +49,14 @@ export class PropertiesValidator implements Validator {
                         errorReporter(`Component properties "${compProp.name}" icon missing "${controlOption.icon}"`);
                         valid = false;
                     }
+                }
+            }
+
+            // Validate if the doc-media properties have a media-properties control type
+            if (compProp.dataType === 'doc-media') {
+                if (compProp.control.type !== 'media-properties') {
+                    errorReporter(`Component property "doc-media" requires the control type "media-properties"`);
+                    valid = false;
                 }
             }
         }

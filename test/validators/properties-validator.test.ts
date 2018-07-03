@@ -25,6 +25,13 @@ describe('PropertiesValidator', () => {
                         ],
                     },
                 },
+                {
+                    name: 'p3',
+                    control: {
+                        type: 'media-properties'
+                    },
+                    dataType: 'doc-media'
+                }
             ]
         };
         fileList = new Set<string>([
@@ -63,6 +70,18 @@ describe('PropertiesValidator', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Component properties "p2" icon missing "pathU"`);
+        });
+        it('should not pass if a doc-media properties does not have a media-properties control type', () => {
+            definition.componentProperties.push({
+                name: 'p4',
+                    control: {
+                        type: 'text'
+                    },
+                    dataType: 'doc-media'
+            });
+            const valid = validator.validate(reporter);
+            expect(reporter).toHaveBeenCalledWith(`Component property "doc-media" requires the control type "media-properties"`);
+            expect(valid).toBeFalsy();
         });
     });
 });

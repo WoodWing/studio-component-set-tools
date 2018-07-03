@@ -15,7 +15,7 @@ import {
     UnitTypeValidator, ImageEditorValidator, FocuspointValidator, DirectivePropertiesValidator, GroupsValidator,
     ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
     InteractiveValidator, ComponentsValidator, DisableFullscreenCheckboxValidator, SlidesValidator,
-    ScriptsValidator
+    ScriptsValidator, DocMediaValidator, IconsValidator
 } from './validators';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
@@ -111,11 +111,13 @@ export async function validate(
         new DirectivePropertiesValidator(parsedDefinition),
         new DisableFullscreenCheckboxValidator(componentsDefinition),
         new DocContainerValidator(parsedDefinition),
+        new DocMediaValidator(parsedDefinition),
         new DocSlideshowValidator(parsedDefinition),
         new DropCapitalValidator(componentsDefinition, parsedDefinition),
         new FittingValidator(parsedDefinition),
         new FocuspointValidator(parsedDefinition),
         new GroupsValidator(parsedDefinition),
+        new IconsValidator(componentsDefinition),
         new ImageEditorValidator(componentsDefinition),
         new InteractiveValidator(componentsDefinition),
         new PropertiesValidator(filePaths, componentsDefinition),
