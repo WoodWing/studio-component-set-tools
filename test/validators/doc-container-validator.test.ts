@@ -27,7 +27,7 @@ describe('DocContainerValidator', () => {
         let reporter;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();
@@ -43,14 +43,23 @@ describe('DocContainerValidator', () => {
             expect(valid).toBeTruthy();
             expect(reporter).not.toHaveBeenCalled();
         });
-        it('should not pass if there are a container directive and other one', () => {
+        it('should pass if there are a container directive and other one', () => {
             definition.components.container.directives.d2 = {
                 'type': 'editable',
                 'tag': 'div'
             };
             const valid = validator.validate(reporter);
+            expect(valid).toBeTruthy();
+            expect(reporter).not.toHaveBeenCalled();
+        });
+        it('should not pass if there are multiple container directives', () => {
+            definition.components.container.directives.d2 = {
+                'type': 'container',
+                'tag': 'div'
+            };
+            const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Component "container" contains container directive, it can be the only directive in the component, all other directives are restricted`);
+            expect(reporter).toHaveBeenCalledWith(`Component "container" can only have one container directive`);
         });
     });
 });
