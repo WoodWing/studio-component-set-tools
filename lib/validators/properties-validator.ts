@@ -51,14 +51,6 @@ export class PropertiesValidator implements Validator {
                     }
                 }
             }
-
-            // Validate if the doc-media properties have a media-properties control type
-            if (compProp.dataType === 'doc-media') {
-                if (compProp.control.type !== 'media-properties') {
-                    errorReporter(`Component property "doc-media" requires the control type "media-properties"`);
-                    valid = false;
-                }
-            }
         }
 
         return valid;
