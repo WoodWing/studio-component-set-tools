@@ -44,8 +44,14 @@ export class DocMediaValidator implements Validator {
                 if (numMediaDirectives === 1) {
                     // Check whether the media-properties control type property is applied to the doc-media directive.
                     Object.values(mediaProperties).forEach((mediaProperty) => {
-                        if (mediaProperty.directiveKey !== 'media') {
-                            errorReporter(`Control type "media-properties" is only applicable to "doc-media" directives`);
+                        if (mediaProperty.directiveKey) {
+                            const directive = parsedComponent.directives[mediaProperty.directiveKey];
+                            if (!directive || directive.type !== DirectiveType.media) {
+                                errorReporter(`Control type "media-properties" is only applicable to "doc-media" directives`);
+                                valid = false;
+                            }
+                        } else {
+                            errorReporter(`The directive key is required for properties of type "media-properties"`);
                             valid = false;
                         }
                     });
