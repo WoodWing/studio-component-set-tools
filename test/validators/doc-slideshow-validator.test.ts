@@ -42,7 +42,7 @@ describe('DocSlideshowValidator', () => {
             expect(valid).toBeTruthy();
             expect(reporter).not.toHaveBeenCalled();
         });
-        it('should not pass if there are a container directive and other one', () => {
+        it('should not pass if there are a slideshow directive and other one', () => {
             definition.components.slides.directives.d2 = {
                 'type': 'slideshow',
                 'tag': 'div'

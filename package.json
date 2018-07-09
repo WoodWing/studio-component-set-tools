@@ -45,6 +45,7 @@
     "colors": "^1.2.1",
     "htmlparser2": "^3.9.2",
     "lodash": "^4.17.10",
+    "pngjs": "^3.3.0",
     "recursive-readdir": "^2.2.1",
     "semver": "^5.5.0"
   }

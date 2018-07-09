@@ -25,6 +25,13 @@ describe('PropertiesValidator', () => {
                         ],
                     },
                 },
+                {
+                    name: 'p3',
+                    control: {
+                        type: 'media-properties'
+                    },
+                    dataType: 'doc-media'
+                }
             ]
         };
         fileList = new Set<string>([

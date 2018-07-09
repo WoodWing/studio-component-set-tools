@@ -92,7 +92,7 @@ export async function parseDefinition(
                 // Parse the property. Can either be defined as just a name or an object
                 let propertyConfiguration;
                 if (isPropertyObject(property)) {
-                    // The object form may have a nam set
+                    // The object form may have a name set
                     propertyName = property.name;
                     if (!propertyName) {
                         // No name means the property is defined anonymously.
