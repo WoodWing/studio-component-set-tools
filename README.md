@@ -1,29 +1,53 @@
 # csde-components-validator
-Validation module for Content Station Digital Editor components packages.
+Validation module for Content Station Digital Editor component sets.
 
-## Versioning
-The validator module should be capable of validating all supported versions.
-The version string in the component definition file is used to determine the right validation schema.
+## Usage
 
-The component definition model uses semantic versioning:
+The module provides two public api methods for validating a component set.
 
-- a new MAJOR version is introduced when breaking changes are made
-- a new MINOR version is introduced when additions are made to the component model in a non breaking fashion
-- a new PATCH version is introduced for bug fixes in the validator
+### validateFolder
+
+Validates a component set given an input folder.
+
+```ts
+import { validateFolder } from './lib/index';
+
+const validationResult: boolean = await validateFolder('path/to/component-set');
+```
+
+The validation result is returned as a boolean value and any error is logged to the console.
+
+### validate
+
+Lower level method that validates the component set given a set of paths, a function to get the file content given the path and a function that logs errors. This api is useful when the component set is validated in memory.
+
+```ts
+import { validate } from './lib/index';
+
+const filePaths = new Set(['path1', 'path2']);
+const getFileContent = async (filePath: string) => 'fileContent';
+const errorReporter = (errorMessage: string) => console.error(errorMessage);
+
+const validationResult: boolean = await validate(filePaths, getFileContent, errorReporter);
+```
 
 ## Publish
-Verify you are logged in as an user with access to the [Woodwing organization](https://www.npmjs.com/org/woodwing):
+In case you have never published a npm module before, make sure to read the official npm documentation about [publishing npm packages](https://docs.npmjs.com/getting-started/publishing-npm-packages).
+
+Before publishing update the [version number](https://docs.npmjs.com/getting-started/publishing-npm-packages#how-to-update-the-version-number) of this package.
+
+Next verify you are logged in as a user with access to the [Woodwing organization](https://www.npmjs.com/org/woodwing):
 
 ```npm whoami```
 
-Update the version number in package.json and run:
+Finally publish the [scoped package](https://www.npmjs.com/docs/orgs/publishing-an-org-scoped-package.html#publishing-a-public-scoped-package) by running:
 
 ```npm publish --access public```
 
 ## Update schema Typescript types
 Types for usage with Typescript are automatically generated using `json-schema-to-typescript`.
 
-When making changes to the schema, run the following the npm script to update the types:
+When making changes to the json schema, run the following the npm script to update the types:
 
 ```npm run update-types```
 
