@@ -86,7 +86,7 @@ describe('Parser utils', () => {
                     }
                 }
             };
-            getFileContent = (filePath: string) : string => {
+            getFileContent = (filePath: string) : Promise<string> => {
                 const filename = path.basename(filePath);
                 let result;
                 switch (filename) {
@@ -110,10 +110,10 @@ describe('Parser utils', () => {
                     default:
                         throw new Error(`Unknown filename "${filename}", cannot be handled`);
                 }
-                return result;
+                return Promise.resolve(result);
             };
         });
-        it('should parse components definition', () => {
+        it('should parse components definition', async () => {
             const expectedParsedComponentsDefinition = {
                 'components': {
                     'body': {
@@ -227,12 +227,12 @@ describe('Parser utils', () => {
                     }
                 }
             };
-            const parsedDefinition = parseDefinition(componentsDefinition, getFileContent);
+            const parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
             expect(parsedDefinition).toEqual(expectedParsedComponentsDefinition);
         });
 
-        it('should throw an error if there are directives with the same attribute values', () => {
-            getFileContent = (filePath: string) : string => {
+        it('should throw an error if there are directives with the same attribute values', async () => {
+            getFileContent = (filePath: string) : Promise<string> => {
                 const filename = path.basename(filePath);
                 let result;
                 switch (filename) {
@@ -256,20 +256,20 @@ describe('Parser utils', () => {
                     default:
                         throw new Error(`Unknown filename "${filename}", cannot be handled`);
                 }
-                return result;
+                return Promise.resolve(result);
             };
 
             let er = '';
             try {
-                parseDefinition(componentsDefinition, getFileContent)
+                await parseDefinition(componentsDefinition, getFileContent)
             } catch(e) {
                 er = e.message;
             }
             expect(er).toEqual(`Directive's attributes must be unique. Attribute value is "text"`);
         });
 
-        it('should throw an error if there is a property which points to non existing directive', () => {
-            getFileContent = (filePath: string) : string => {
+        it('should throw an error if there is a property which points to non existing directive', async () => {
+            getFileContent = (filePath: string) : Promise<string> => {
                 const filename = path.basename(filePath);
                 let result;
                 switch (filename) {
@@ -293,43 +293,43 @@ describe('Parser utils', () => {
                     default:
                         throw new Error(`Unknown filename "${filename}", cannot be handled`);
                 }
-                return result;
+                return Promise.resolve(result);
             };
 
             let er = '';
             try {
-                parseDefinition(componentsDefinition, getFileContent)
+                await parseDefinition(componentsDefinition, getFileContent)
             } catch(e) {
                 er = e.message;
             }
             expect(er).toEqual(`Directive with key "image" is not found. Property name is "dirProperty"`);
         });
 
-        it('should throw an error if there is a property which cannot be found', () => {
+        it('should throw an error if there is a property which cannot be found', async () => {
             componentsDefinition.components[0].properties[0] = 'cucicaca';
 
             let er = '';
             try {
-                parseDefinition(componentsDefinition, getFileContent)
+                await parseDefinition(componentsDefinition, getFileContent)
             } catch(e) {
                 er = e.message;
             }
             expect(er).toEqual(`Property is not found "cucicaca"`);
         });
 
-        it('should throw an error if there is a property which cannot be found for merging', () => {
+        it('should throw an error if there is a property which cannot be found for merging', async () => {
             (<any>componentsDefinition.components[1].properties[1]).name = 'cucicaca';
 
             let er = '';
             try {
-                parseDefinition(componentsDefinition, getFileContent)
+                await parseDefinition(componentsDefinition, getFileContent)
             } catch(e) {
                 er = e.message;
             }
             expect(er).toEqual(`Property is not found "cucicaca"`);
         });
 
-        it('should throw an error if there are duplicating group names', () => {
+        it('should throw an error if there are duplicating group names', async () => {
             componentsDefinition.groups.push({
                 'label': 'Minimal',
                 'name': 'minimal',
@@ -340,7 +340,7 @@ describe('Parser utils', () => {
 
             let er = '';
             try {
-                parseDefinition(componentsDefinition, getFileContent)
+                await parseDefinition(componentsDefinition, getFileContent)
             } catch(e) {
                 er = e.message;
             }

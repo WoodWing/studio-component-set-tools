@@ -65,12 +65,12 @@ function getDirectiveType(directiveName: string) : DirectiveType {
  *
  * @param componentsDefinition
  * @param getFileContent
- * @returns ParsedComponentsDefinition
+ * @returns Promise<ParsedComponentsDefinition>
  */
-export function parseDefinition(
+export async function parseDefinition(
     componentsDefinition: ComponentsDefinition,
     getFileContent: GetFileContentType,
-) : ParsedComponentsDefinition {
+) : Promise<ParsedComponentsDefinition> {
 
     const result: ParsedComponentsDefinition = {
         components: {},
@@ -81,7 +81,7 @@ export function parseDefinition(
 
     // parse components
     for (const component of componentsDefinition.components) {
-        const htmlContent = getFileContent(path.normalize(`./templates/html/${component.name}.html`), { encoding: 'utf8'});
+        const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`), { encoding: 'utf8' });
         const directives = parseDirectives(htmlContent);
 
         result.components[component.name] = {

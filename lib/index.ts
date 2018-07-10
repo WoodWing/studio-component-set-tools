@@ -22,6 +22,17 @@ const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
 
 const componentsDefinitionPath = path.normalize('./components-definition.json');
 
+export const readFile: GetFileContentType = (pathToFile: fs.PathLike, options?: GetFileContentOptionsType) =>
+    new Promise<any>((resolve, reject) => {
+        return fs.readFile(pathToFile, options, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+
 /**
  * Validates a components package based on folder path.
  *
@@ -37,27 +48,35 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
             new RegExp(`^${folderPath.replace(/\\/g, '\\\\')}(/|\\\\)?`), '')),
     );
 
-    return validate(files, (filePath: string, options?: { encoding: string|null } | null) => {
-        return fs.readFileSync(path.resolve(folderPath, filePath), options);
-    }, (errorMessage) => {
-        console.log(colors.red(errorMessage));
-    });
+    return validate(
+        files,
+        async (filePath: string, options?: GetFileContentOptionsType) =>
+            readFile(path.resolve(folderPath, filePath), options),
+        (errorMessage) => {
+            console.log(colors.red(errorMessage));
+        }
+    );
 }
+
+/**
+ * Getting file options type
+ */
+export type GetFileContentOptionsType = { encoding: string|null } | null;
 
 /**
  * return string if encoding is string and Buffer otherwise
  */
-export type GetFileContentType = (filePath: string, options?: { encoding: string|null } | null) => any;
+export type GetFileContentType = (filePath: string, options?: GetFileContentOptionsType) => Promise<any>;
 
 /**
  * Validates a components package given an array of paths
  * and a function to get the file content.
  *
  * @param filePaths paths to files, relative to root folder of components package
- * @param getFileContent a sync function that resolves with the file content
+ * @param getFileContent an async function that resolves with the file content
  * @param errorReporter error reporter
  */
-export function validate(
+export async function validate(
     filePaths: Set<string>,
     getFileContent: GetFileContentType,
     errorReporter: (errorMessage: string) => void,
@@ -69,7 +88,7 @@ export function validate(
     }
 
     // Validate the schema of the component definition file
-    const componentsDefinition: ComponentsDefinitionV10X = JSON.parse(getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
+    const componentsDefinition: ComponentsDefinitionV10X = JSON.parse(await getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
 
     const validateSchema = getValidationSchema(componentsDefinition.version);
     if (!validateSchema) {
@@ -89,7 +108,7 @@ export function validate(
     // parse everything for deeper testing
     let parsedDefinition: ParsedComponentsDefinition|null = null;
     try {
-        parsedDefinition = parseDefinition(componentsDefinition, getFileContent);
+        parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
     } catch (e) {
         errorReporter(e);
     }
@@ -123,7 +142,7 @@ export function validate(
 
     let valid = true;
     for (const validator of validators) {
-        valid = validator.validate(errorReporter) && valid;
+        valid = (await validator.validate(errorReporter)) && valid;
     }
 
     return valid;

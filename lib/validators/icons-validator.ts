@@ -19,18 +19,18 @@ export class IconsValidator implements Validator {
     ) {
     }
 
-    validate(
+    async validate(
         errorReporter: (errorMessage: string) => void,
-    ): boolean {
+    ): Promise<boolean> {
         let valid = true;
 
-        Object.values(this.definition.components).forEach(async (component) => {
+        for (const component of Object.values(this.definition.components)) {
             const ext = path.extname(component.icon).toLowerCase();
             if (this.supportedFormats.indexOf(ext) === -1) {
                 errorReporter(`Icons are only supported in SVG or transparent PNG format`);
                 valid = false;
             } else if (ext === '.png') {
-                let data = this.getFileContent(path.normalize(component.icon));
+                let data = await this.getFileContent(path.normalize(component.icon));
                 let png = PNG.sync.read(data);
 
                 if (png.alpha === false) {
@@ -38,7 +38,7 @@ export class IconsValidator implements Validator {
                     errorReporter(`PNG icons are only supported when they are transparent`);
                 }
             }
-        });
+        }
 
         return valid;
     }
