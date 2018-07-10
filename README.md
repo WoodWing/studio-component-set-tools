@@ -34,21 +34,23 @@ const validationResult: boolean = await validate(filePaths, getFileContent, erro
 ## Publish
 In case you have never published a npm module before, make sure to read the official npm documentation about [publishing npm packages](https://docs.npmjs.com/getting-started/publishing-npm-packages).
 
-Before publishing update the [version number](https://docs.npmjs.com/getting-started/publishing-npm-packages#how-to-update-the-version-number) of this package.
+Before publishing update the [version number](https://docs.npmjs.com/getting-started/publishing-npm-packages#how-to-update-the-version-number) of this package. For example, to increase the patch version:
+
+    $ npm version patch -m "Bump validator version to %s"
 
 Next verify you are logged in as a user with access to the [Woodwing organization](https://www.npmjs.com/org/woodwing):
 
-```npm whoami```
+    $ npm whoami
 
 Finally publish the [scoped package](https://www.npmjs.com/docs/orgs/publishing-an-org-scoped-package.html#publishing-a-public-scoped-package) by running:
 
-```npm publish --access public```
+    $ npm publish --access public
 
 ## Update schema Typescript types
 Types for usage with Typescript are automatically generated using `json-schema-to-typescript`.
 
 When making changes to the json schema, run the following the npm script to update the types:
 
-```npm run update-types```
+    $ npm run update-types
 
 After updating, run the tests and commit the files.
