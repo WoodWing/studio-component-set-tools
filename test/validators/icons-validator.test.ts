@@ -32,7 +32,7 @@ describe('IconsValidator', () => {
         });
         validator = new IconsValidator(definition, getFileContent);
     });
-    fdescribe('validate', () => {
+    describe('validate', () => {
         let reporter;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
@@ -60,7 +60,7 @@ describe('IconsValidator', () => {
             expect(reporter).toHaveBeenCalledWith(`Icons are only supported in SVG or transparent PNG format`);
             expect(valid).toBeFalsy();
         });
-        fit('should fail for non-transparent PNG icons', async () => {
+        it('should fail for non-transparent PNG icons', async () => {
             definition.components.push({
                 name: 'opaque',
                 icon: './test/resources/minimal-sample/icons/opaque.png'
