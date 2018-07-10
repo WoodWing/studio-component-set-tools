@@ -22,17 +22,6 @@ const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
 
 const componentsDefinitionPath = path.normalize('./components-definition.json');
 
-export const readFile = (pathToFile: fs.PathLike, options: { encoding: string }) =>
-    new Promise<string>((resolve, reject) => {
-        return fs.readFile(pathToFile, options, (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data.toString());
-            }
-        });
-    });
-
 /**
  * Validates a components package based on folder path.
  *
@@ -48,24 +37,29 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
             new RegExp(`^${folderPath.replace(/\\/g, '\\\\')}(/|\\\\)?`), '')),
     );
 
-    return await validate(files, async (filePath: string) => {
-        return await readFile(path.resolve(folderPath, filePath), {encoding: 'utf8'});
+    return validate(files, (filePath: string, options?: { encoding: string|null } | null) => {
+        return fs.readFileSync(path.resolve(folderPath, filePath), options);
     }, (errorMessage) => {
         console.log(colors.red(errorMessage));
     });
 }
 
 /**
+ * return string if encoding is string and Buffer otherwise
+ */
+export type GetFileContentType = (filePath: string, options?: { encoding: string|null } | null) => any;
+
+/**
  * Validates a components package given an array of paths
  * and a function to get the file content.
  *
  * @param filePaths paths to files, relative to root folder of components package
- * @param getFileContent an async function that resolves with the file content
+ * @param getFileContent a sync function that resolves with the file content
  * @param errorReporter error reporter
  */
-export async function validate(
+export function validate(
     filePaths: Set<string>,
-    getFileContent: (filePath: string) => Promise<string>,
+    getFileContent: GetFileContentType,
     errorReporter: (errorMessage: string) => void,
 ) {
     // Validate it has a component definition file
@@ -75,7 +69,7 @@ export async function validate(
     }
 
     // Validate the schema of the component definition file
-    const componentsDefinition: ComponentsDefinitionV10X = JSON.parse(await getFileContent(componentsDefinitionPath));
+    const componentsDefinition: ComponentsDefinitionV10X = JSON.parse(getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
 
     const validateSchema = getValidationSchema(componentsDefinition.version);
     if (!validateSchema) {
@@ -95,7 +89,7 @@ export async function validate(
     // parse everything for deeper testing
     let parsedDefinition: ParsedComponentsDefinition|null = null;
     try {
-        parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
+        parsedDefinition = parseDefinition(componentsDefinition, getFileContent);
     } catch (e) {
         errorReporter(e);
     }
@@ -117,7 +111,7 @@ export async function validate(
         new FittingValidator(parsedDefinition),
         new FocuspointValidator(parsedDefinition),
         new GroupsValidator(parsedDefinition),
-        new IconsValidator(componentsDefinition),
+        new IconsValidator(componentsDefinition, getFileContent),
         new ImageEditorValidator(componentsDefinition),
         new InteractiveValidator(componentsDefinition),
         new PropertiesValidator(filePaths, componentsDefinition),

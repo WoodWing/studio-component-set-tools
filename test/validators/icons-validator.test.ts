@@ -1,8 +1,10 @@
 import { IconsValidator } from '../../lib/validators/icons-validator';
+import { readFileSync } from 'fs';
 
 describe('IconsValidator', () => {
     let definition;
     let validator: IconsValidator;
+    let getFileContent;
     beforeEach(() => {
         // valid definition (cut)
         definition = {
@@ -17,7 +19,8 @@ describe('IconsValidator', () => {
                 }
             ]
         };
-        validator = new IconsValidator(definition);
+        getFileContent = jasmine.createSpy('getFileContent').and.callFake(path => readFileSync(path));
+        validator = new IconsValidator(definition, getFileContent);
     });
     describe('validate', () => {
         let reporter;

@@ -6,6 +6,7 @@ import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
 const merge = require('lodash/merge');
 import { DirectiveType, ParsedComponentsDefinition, ComponentsDefinition } from '../models';
+import { GetFileContentType } from '..';
 
 /**
  * Returns information about directives
@@ -64,12 +65,12 @@ function getDirectiveType(directiveName: string) : DirectiveType {
  *
  * @param componentsDefinition
  * @param getFileContent
- * @returns Promise<ParsedComponentsDefinition>
+ * @returns ParsedComponentsDefinition
  */
-export async function parseDefinition(
+export function parseDefinition(
     componentsDefinition: ComponentsDefinition,
-    getFileContent: (filePath: string) => Promise<string>,
-) : Promise<ParsedComponentsDefinition> {
+    getFileContent: GetFileContentType,
+) : ParsedComponentsDefinition {
 
     const result: ParsedComponentsDefinition = {
         components: {},
@@ -80,7 +81,7 @@ export async function parseDefinition(
 
     // parse components
     for (const component of componentsDefinition.components) {
-        const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`));
+        const htmlContent = getFileContent(path.normalize(`./templates/html/${component.name}.html`), { encoding: 'utf8'});
         const directives = parseDirectives(htmlContent);
 
         result.components[component.name] = {
