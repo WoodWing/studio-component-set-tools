@@ -22,13 +22,13 @@ const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
 
 const componentsDefinitionPath = path.normalize('./components-definition.json');
 
-export const readFile = (pathToFile: fs.PathLike, options: { encoding: string }) =>
-    new Promise<string>((resolve, reject) => {
+export const readFile: GetFileContentType = (pathToFile: fs.PathLike, options?: GetFileContentOptionsType) =>
+    new Promise<any>((resolve, reject) => {
         return fs.readFile(pathToFile, options, (err, data) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(data.toString());
+                resolve(data);
             }
         });
     });
@@ -48,12 +48,25 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
             new RegExp(`^${folderPath.replace(/\\/g, '\\\\')}(/|\\\\)?`), '')),
     );
 
-    return await validate(files, async (filePath: string) => {
-        return await readFile(path.resolve(folderPath, filePath), {encoding: 'utf8'});
-    }, (errorMessage) => {
-        console.log(colors.red(errorMessage));
-    });
+    return validate(
+        files,
+        async (filePath: string, options?: GetFileContentOptionsType) =>
+            readFile(path.resolve(folderPath, filePath), options),
+        (errorMessage) => {
+            console.log(colors.red(errorMessage));
+        }
+    );
 }
+
+/**
+ * Getting file options type
+ */
+export type GetFileContentOptionsType = { encoding: string|null } | null;
+
+/**
+ * return string if encoding is string and Buffer otherwise
+ */
+export type GetFileContentType = (filePath: string, options?: GetFileContentOptionsType) => Promise<any>;
 
 /**
  * Validates a components package given an array of paths
@@ -65,7 +78,7 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
  */
 export async function validate(
     filePaths: Set<string>,
-    getFileContent: (filePath: string) => Promise<string>,
+    getFileContent: GetFileContentType,
     errorReporter: (errorMessage: string) => void,
 ) {
     // Validate it has a component definition file
@@ -75,7 +88,7 @@ export async function validate(
     }
 
     // Validate the schema of the component definition file
-    const componentsDefinition: ComponentsDefinitionV10X = JSON.parse(await getFileContent(componentsDefinitionPath));
+    const componentsDefinition: ComponentsDefinitionV10X = JSON.parse(await getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
 
     const validateSchema = getValidationSchema(componentsDefinition.version);
     if (!validateSchema) {
@@ -117,7 +130,7 @@ export async function validate(
         new FittingValidator(parsedDefinition),
         new FocuspointValidator(parsedDefinition),
         new GroupsValidator(parsedDefinition),
-        new IconsValidator(componentsDefinition),
+        new IconsValidator(componentsDefinition, getFileContent),
         new ImageEditorValidator(componentsDefinition),
         new InteractiveValidator(componentsDefinition),
         new PropertiesValidator(filePaths, componentsDefinition),
@@ -129,7 +142,7 @@ export async function validate(
 
     let valid = true;
     for (const validator of validators) {
-        valid = validator.validate(errorReporter) && valid;
+        valid = (await validator.validate(errorReporter)) && valid;
     }
 
     return valid;
