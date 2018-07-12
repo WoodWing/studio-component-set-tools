@@ -24,8 +24,6 @@ const labelProperty = (description: string ) => {
                     values: {
                         type: 'object',
                         description: 'String replacement variables',
-                        properties: {},
-                        additionalProperties: true,
                     },
                 },
                 additionalProperties: false,
