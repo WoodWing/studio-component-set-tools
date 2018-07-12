@@ -1,16 +1,5 @@
 {
-  "compilerOptions": {
-    "target": "ES2015",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "declaration": true,
-    "strict": true,
-    "lib": [
-      "es2015",
-      "es2017.object"
-    ]
-  },
+  "extends": "../tsconfig",
   "include": [
       "./index.test.ts",
       "./**/*"
