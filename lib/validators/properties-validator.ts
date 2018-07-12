@@ -3,6 +3,7 @@
  * - if names are unique
  * - if icons are present
  * - if reserved words are not used as names
+ * - if doc-media properties have a media-properties control type
  */
 
 import * as path from 'path';

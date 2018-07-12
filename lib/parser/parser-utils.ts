@@ -6,6 +6,7 @@ import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
 const merge = require('lodash/merge');
 import { DirectiveType, ParsedComponentsDefinition, ComponentsDefinition } from '../models';
+import { GetFileContentType } from '..';
 
 /**
  * Returns information about directives
@@ -68,7 +69,7 @@ function getDirectiveType(directiveName: string) : DirectiveType {
  */
 export async function parseDefinition(
     componentsDefinition: ComponentsDefinition,
-    getFileContent: (filePath: string) => Promise<string>,
+    getFileContent: GetFileContentType,
 ) : Promise<ParsedComponentsDefinition> {
 
     const result: ParsedComponentsDefinition = {
@@ -80,7 +81,7 @@ export async function parseDefinition(
 
     // parse components
     for (const component of componentsDefinition.components) {
-        const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`));
+        const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`), { encoding: 'utf8' });
         const directives = parseDirectives(htmlContent);
 
         result.components[component.name] = {
@@ -92,7 +93,7 @@ export async function parseDefinition(
                 // Parse the property. Can either be defined as just a name or an object
                 let propertyConfiguration;
                 if (isPropertyObject(property)) {
-                    // The object form may have a nam set
+                    // The object form may have a name set
                     propertyName = property.name;
                     if (!propertyName) {
                         // No name means the property is defined anonymously.

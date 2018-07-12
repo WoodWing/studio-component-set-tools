@@ -479,7 +479,16 @@ export const componentsDefinitionSchema_v1_0_x = {
                 },
             },
         },
+
+        scripts: {
+            type: 'array',
+            description: 'List of scripts to be included for html rendition of article',
+            items: {
+                type: 'string',
+            },
+        },
     },
+
     required: [
         'name',
         'version',
