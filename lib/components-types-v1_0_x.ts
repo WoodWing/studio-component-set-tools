@@ -30,10 +30,20 @@ export interface ComponentsDefinitionV10X {
      * Unique component identifier
      */
     name: string;
-    /**
-     * Component label shown in Digital Editor
-     */
-    label: string;
+    label:
+      | string
+      | {
+          /**
+           * String key
+           */
+          key: string;
+          /**
+           * String replacement variables
+           */
+          values?: {
+            [k: string]: any;
+          };
+        };
     /**
      * Icon shown for component in Digital Editor
      */
@@ -48,10 +58,20 @@ export interface ComponentsDefinitionV10X {
            * Unique identifier of component property
            */
           name?: string;
-          /**
-           * Display label of Component property
-           */
-          label?: string;
+          label?:
+            | string
+            | {
+                /**
+                 * String key
+                 */
+                key: string;
+                /**
+                 * String replacement variables
+                 */
+                values?: {
+                  [k: string]: any;
+                };
+              };
           /**
            * Directive key for properties that use a directive data type
            */
@@ -66,10 +86,20 @@ export interface ComponentsDefinitionV10X {
                  */
                 type: "select";
                 options: {
-                  /**
-                   * Label of the item
-                   */
-                  caption: string;
+                  caption:
+                    | string
+                    | {
+                        /**
+                         * String key
+                         */
+                        key: string;
+                        /**
+                         * String replacement variables
+                         */
+                        values?: {
+                          [k: string]: any;
+                        };
+                      };
                   /**
                    * Value of the item. Omit it if the option should simply clean the property up
                    */
@@ -82,10 +112,20 @@ export interface ComponentsDefinitionV10X {
                  */
                 type: "radio";
                 options: {
-                  /**
-                   * Label of the item
-                   */
-                  caption: string;
+                  caption:
+                    | string
+                    | {
+                        /**
+                         * String key
+                         */
+                        key: string;
+                        /**
+                         * String replacement variables
+                         */
+                        values?: {
+                          [k: string]: any;
+                        };
+                      };
                   /**
                    * Icon shown for the option
                    */
@@ -126,10 +166,20 @@ export interface ComponentsDefinitionV10X {
                  * Unit type like em, px etc
                  */
                 unit?: string;
-                /**
-                 * Input placeholder
-                 */
-                inputPlaceholder?: string;
+                inputPlaceholder?:
+                  | string
+                  | {
+                      /**
+                       * String key
+                       */
+                      key: string;
+                      /**
+                       * String replacement variables
+                       */
+                      values?: {
+                        [k: string]: any;
+                      };
+                    };
                 /**
                  * Makes the text field read only from the editor UI
                  */
@@ -297,10 +347,20 @@ export interface ComponentsDefinitionV10X {
      * Unique identifier of component property
      */
     name: string;
-    /**
-     * Display label of Component property
-     */
-    label: string;
+    label:
+      | string
+      | {
+          /**
+           * String key
+           */
+          key: string;
+          /**
+           * String replacement variables
+           */
+          values?: {
+            [k: string]: any;
+          };
+        };
     /**
      * Directive key for properties that use a directive data type
      */
@@ -315,10 +375,20 @@ export interface ComponentsDefinitionV10X {
            */
           type: "select";
           options: {
-            /**
-             * Label of the item
-             */
-            caption: string;
+            caption:
+              | string
+              | {
+                  /**
+                   * String key
+                   */
+                  key: string;
+                  /**
+                   * String replacement variables
+                   */
+                  values?: {
+                    [k: string]: any;
+                  };
+                };
             /**
              * Value of the item. Omit it if the option should simply clean the property up
              */
@@ -331,10 +401,20 @@ export interface ComponentsDefinitionV10X {
            */
           type: "radio";
           options: {
-            /**
-             * Label of the item
-             */
-            caption: string;
+            caption:
+              | string
+              | {
+                  /**
+                   * String key
+                   */
+                  key: string;
+                  /**
+                   * String replacement variables
+                   */
+                  values?: {
+                    [k: string]: any;
+                  };
+                };
             /**
              * Icon shown for the option
              */
@@ -375,10 +455,20 @@ export interface ComponentsDefinitionV10X {
            * Unit type like em, px etc
            */
           unit?: string;
-          /**
-           * Input placeholder
-           */
-          inputPlaceholder?: string;
+          inputPlaceholder?:
+            | string
+            | {
+                /**
+                 * String key
+                 */
+                key: string;
+                /**
+                 * String replacement variables
+                 */
+                values?: {
+                  [k: string]: any;
+                };
+              };
           /**
            * Makes the text field read only from the editor UI
            */
@@ -525,10 +615,20 @@ export interface ComponentsDefinitionV10X {
      * Unique group identifier
      */
     name: string;
-    /**
-     * Group label shown in Digital Editor
-     */
-    label: string;
+    label:
+      | string
+      | {
+          /**
+           * String key
+           */
+          key: string;
+          /**
+           * String replacement variables
+           */
+          values?: {
+            [k: string]: any;
+          };
+        };
     /**
      * names of components in this group
      */
