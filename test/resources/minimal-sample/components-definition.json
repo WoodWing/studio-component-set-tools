@@ -16,7 +16,9 @@
         },
         {
             "name": "intro",
-            "label": "Intro Label",
+            "label": {
+                "key": "INTRO_KEY"
+            },
             "icon": "icons/component.svg",
             "properties":[
                 "checkboxProperty"
@@ -28,6 +30,13 @@
         {
             "label": "Minimal",
             "name": "minimal",
+            "components": [
+                "body"
+            ]
+        },
+        {
+            "label": { "key": "MINIMAL" },
+            "name": "minimal2",
             "components": [
                 "body"
             ]
@@ -47,6 +56,15 @@
                     {
                         "caption": "Option 1",
                         "value": "_option1"
+                    },
+                    {
+                        "caption": {
+                            "key": "Option 2 {{0}}",
+                            "values": {
+                                "0": "Replacement"
+                            }
+                        },
+                        "value": "_option2"
                     }
                 ]
             },
