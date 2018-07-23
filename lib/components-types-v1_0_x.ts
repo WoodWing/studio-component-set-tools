@@ -297,6 +297,46 @@ export interface ComponentsDefinitionV10X {
                  * Adds a header at property position
                  */
                 type: "header";
+              }
+            | {
+                /**
+                 * Textarea field property
+                 */
+                type: "textarea";
+                inputPlaceholder?:
+                  | string
+                  | {
+                      /**
+                       * String key
+                       */
+                      key: string;
+                      /**
+                       * String replacement variables
+                       */
+                      values?: {
+                        [k: string]: any;
+                      };
+                    };
+              }
+            | {
+                /**
+                 * Url field property
+                 */
+                type: "url";
+                inputPlaceholder?:
+                  | string
+                  | {
+                      /**
+                       * String key
+                       */
+                      key: string;
+                      /**
+                       * String replacement variables
+                       */
+                      values?: {
+                        [k: string]: any;
+                      };
+                    };
               };
           dataType?:
             | "styles"
@@ -307,7 +347,8 @@ export interface ComponentsDefinitionV10X {
             | "doc-html"
             | "doc-slideshow"
             | "doc-media"
-            | "doc-interactive";
+            | "doc-interactive"
+            | "doc-link";
           group?: string;
           /**
            * Additional selector to define elements of the component which the property should be applied to
@@ -586,6 +627,46 @@ export interface ComponentsDefinitionV10X {
            * Adds a header at property position
            */
           type: "header";
+        }
+      | {
+          /**
+           * Textarea field property
+           */
+          type: "textarea";
+          inputPlaceholder?:
+            | string
+            | {
+                /**
+                 * String key
+                 */
+                key: string;
+                /**
+                 * String replacement variables
+                 */
+                values?: {
+                  [k: string]: any;
+                };
+              };
+        }
+      | {
+          /**
+           * Url field property
+           */
+          type: "url";
+          inputPlaceholder?:
+            | string
+            | {
+                /**
+                 * String key
+                 */
+                key: string;
+                /**
+                 * String replacement variables
+                 */
+                values?: {
+                  [k: string]: any;
+                };
+              };
         };
     dataType:
       | "styles"
@@ -596,7 +677,8 @@ export interface ComponentsDefinitionV10X {
       | "doc-html"
       | "doc-slideshow"
       | "doc-media"
-      | "doc-interactive";
+      | "doc-interactive"
+      | "doc-link";
     group?: string;
     /**
      * Additional selector to define elements of the component which the property should be applied to

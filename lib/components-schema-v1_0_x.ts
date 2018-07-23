@@ -297,6 +297,28 @@ const componentPropertyDefinition = {
                     },
                 },
             },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['textarea'],
+                        description: 'Textarea field property',
+                    },
+                    inputPlaceholder: labelProperty('Textarea placeholder'),
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['url'],
+                        description: 'Url field property',
+                    },
+                    inputPlaceholder: labelProperty('Url input placeholder'),
+                },
+            },
         ],
     },
     dataType: {
@@ -310,6 +332,7 @@ const componentPropertyDefinition = {
             'doc-slideshow',
             'doc-media',
             'doc-interactive',
+            'doc-link',
         ],
     },
     group: {type: 'string'},
