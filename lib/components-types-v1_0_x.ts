@@ -338,6 +338,9 @@ export interface ComponentsDefinitionV10X {
                       };
                     };
               };
+          /**
+           * Type of data being stored and how it is used. For directive data types it may also depend on the control type.
+           */
           dataType?:
             | "styles"
             | "inlineStyles"
@@ -349,9 +352,13 @@ export interface ComponentsDefinitionV10X {
             | "doc-media"
             | "doc-interactive"
             | "doc-link";
+          /**
+           * Default value of property upon component creation. By default the property value is not defined.
+           */
+          defaultValue?: string;
           group?: string;
           /**
-           * Additional selector to define elements of the component which the property should be applied to
+           * Additional selector to define elements of the component which the property should be applied to.
            */
           selector?: string;
           /**
@@ -668,6 +675,9 @@ export interface ComponentsDefinitionV10X {
                 };
               };
         };
+    /**
+     * Type of data being stored and how it is used. For directive data types it may also depend on the control type.
+     */
     dataType:
       | "styles"
       | "inlineStyles"
@@ -679,9 +689,13 @@ export interface ComponentsDefinitionV10X {
       | "doc-media"
       | "doc-interactive"
       | "doc-link";
+    /**
+     * Default value of property upon component creation. By default the property value is not defined.
+     */
+    defaultValue?: string;
     group?: string;
     /**
-     * Additional selector to define elements of the component which the property should be applied to
+     * Additional selector to define elements of the component which the property should be applied to.
      */
     selector?: string;
     /**

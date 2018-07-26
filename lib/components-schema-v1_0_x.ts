@@ -334,11 +334,16 @@ const componentPropertyDefinition = {
             'doc-interactive',
             'doc-link',
         ],
+        description: 'Type of data being stored and how it is used. For directive data types it may also depend on the control type.',
+    },
+    defaultValue: {
+        type: 'string',
+        description: 'Default value of property upon component creation. By default the property value is not defined.',
     },
     group: {type: 'string'},
     selector: {
         type: 'string',
-        description: 'Additional selector to define elements of the component which the property should be applied to',
+        description: 'Additional selector to define elements of the component which the property should be applied to.',
     },
     featureFlag: {
         type: 'string',

@@ -104,7 +104,7 @@ export async function parseDefinition(
                         if (!propertyConfiguration) {
                             throw new Error(`Property is not found "${property.name}"`);
                         }
-                        propertyConfiguration = merge(propertyConfiguration, property);
+                        propertyConfiguration = merge({}, propertyConfiguration, property);
                     }
                 } else {
                     // String form refers to an entry in componentProperties. Already validated by json schema.

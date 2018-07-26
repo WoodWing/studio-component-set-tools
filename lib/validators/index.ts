@@ -1,6 +1,7 @@
 export * from './components-validator';
 export * from './conversion-rules-validator';
 export * from './default-component-on-enter-validator';
+export * from './default-values-validator';
 export * from './directive-properties-validator';
 export * from './disable-fullscreen-checkbox-validator';
 export * from './doc-container-validator';
