@@ -3,12 +3,12 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinition, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionDirective } from '../models';
+import { DirectiveType, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionDirective } from '../models';
 
 export class DocSlideshowValidator implements Validator {
 
     constructor(
-        private definition: ParsedComponentsDefinition,
+        private definition: ParsedComponentsDefinitionV10X,
     ) {
     }
 

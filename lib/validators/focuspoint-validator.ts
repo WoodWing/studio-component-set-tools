@@ -3,12 +3,12 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinition } from '../models';
+import { ParsedComponentsDefinitionV10X } from '../models';
 
 export class FocuspointValidator implements Validator {
 
     constructor(
-        private definition: ParsedComponentsDefinition,
+        private definition: ParsedComponentsDefinitionV10X,
     ) {
     }
 

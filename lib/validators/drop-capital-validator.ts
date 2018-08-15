@@ -5,7 +5,7 @@
  */
 
 import { Validator } from './validator';
-import { ComponentsDefinition, ParsedComponentsDefinition, ParsedComponentsDefinitionComponent } from '../models';
+import { ComponentsDefinition, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent } from '../models';
 
 const CONTROL = 'drop-capital';
 const ALLOWED_DATA_TYPE = 'data';
@@ -14,7 +14,7 @@ export class DropCapitalValidator implements Validator {
 
     constructor(
         private definition: ComponentsDefinition,
-        private parsedDefinition: ParsedComponentsDefinition,
+        private parsedDefinition: ParsedComponentsDefinitionV10X,
     ) {
     }
 

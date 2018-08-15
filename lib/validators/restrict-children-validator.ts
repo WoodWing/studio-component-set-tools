@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinition, ParsedComponentsDefinitionComponent } from '../models';
+import { DirectiveType, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent } from '../models';
 
 const PROPERTY = 'restrictChildren';
 const ADDITIONAL_PROPERTY = 'withContent';
@@ -11,7 +11,7 @@ const ADDITIONAL_PROPERTY = 'withContent';
 export class RestrictChildrenValidator implements Validator {
 
     constructor(
-        private definition: ParsedComponentsDefinition,
+        private definition: ParsedComponentsDefinitionV10X,
     ) {
     }
 

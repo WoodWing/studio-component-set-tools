@@ -5,7 +5,7 @@
 import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
 const merge = require('lodash/merge');
-import { DirectiveType, ParsedComponentsDefinition, ComponentsDefinition } from '../models';
+import { DirectiveType, ParsedComponentsDefinitionV10X, ComponentsDefinition } from '../models';
 import { GetFileContentType } from '..';
 
 /**
@@ -14,8 +14,8 @@ import { GetFileContentType } from '..';
  * @param content HTML content of the component
  * @returns ParsedComponentsDefinition['components']['name']['directives']
  */
-function parseDirectives(content: string) : ParsedComponentsDefinition['components']['name']['directives'] {
-    const result = {} as ParsedComponentsDefinition['components']['name']['directives'];
+function parseDirectives(content: string) : ParsedComponentsDefinitionV10X['components']['name']['directives'] {
+    const result = {} as ParsedComponentsDefinitionV10X['components']['name']['directives'];
     const parser = new htmlparser.Parser({
         onopentag: (name, attributes) => {
             Object.keys(attributes).forEach(key => {
@@ -70,9 +70,9 @@ function getDirectiveType(directiveName: string) : DirectiveType {
 export async function parseDefinition(
     componentsDefinition: ComponentsDefinition,
     getFileContent: GetFileContentType,
-) : Promise<ParsedComponentsDefinition> {
+) : Promise<ParsedComponentsDefinitionV10X> {
 
-    const result: ParsedComponentsDefinition = {
+    const result: ParsedComponentsDefinitionV10X = {
         components: {},
         groups: {},
         defaultComponentOnEnter: componentsDefinition.defaultComponentOnEnter,
@@ -121,7 +121,7 @@ export async function parseDefinition(
                     throw new Error(`Directive with key "${propertyConfiguration.directiveKey}" is not found. Property name is "${propertyName || '<anonymous property>'}"`);
                 }
                 return properties;
-            }, [] as ParsedComponentsDefinition['components']['name']['properties']) || [],
+            }, [] as ParsedComponentsDefinitionV10X['components']['name']['properties']) || [],
         };
     }
 
