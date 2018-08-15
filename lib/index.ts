@@ -15,9 +15,8 @@ import {
     UnitTypeValidator, ImageEditorValidator, FocuspointValidator, DirectivePropertiesValidator, GroupsValidator,
     ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
     InteractiveValidator, ComponentsValidator, DisableFullscreenCheckboxValidator, SlidesValidator,
-    ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator
+    ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator, AutofillValidator
 } from './validators';
-import { AutofillValidator } from './validators/autofill-validator';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
 

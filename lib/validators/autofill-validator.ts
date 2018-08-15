@@ -5,6 +5,8 @@
 import { Validator } from './validator';
 import { DirectiveType, ParsedComponentsDefinitionV11X } from '../models';
 
+const supportedDestinationDirectives = [DirectiveType.editable, DirectiveType.link];
+
 export class AutofillValidator implements Validator {
 
     constructor(
@@ -26,9 +28,9 @@ export class AutofillValidator implements Validator {
                         errorReporter(`Component "${parsedComponent.component.name}" has incorrect autofill rule "${dstKey}". ` +
                         `This component doesn't have directive "${dstKey}".`);
                         valid = false;
-                    } else if ([DirectiveType.editable, DirectiveType.link].indexOf(parsedComponent.directives[dstKey].type) < 0) {
+                    } else if (supportedDestinationDirectives.indexOf(parsedComponent.directives[dstKey].type) < 0) {
                         errorReporter(`Component "${parsedComponent.component.name}" has incorrect autofill rule "${dstKey}". ` +
-                        `Supported types of destination directive are "${DirectiveType.editable}", "${DirectiveType.link}" only.`);
+                        `Supported types of destination directive are "${supportedDestinationDirectives.join('", "')}" only.`);
                         valid = false;
                     }
                     // check if source directive exists
