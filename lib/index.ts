@@ -7,15 +7,15 @@ import * as Ajv from 'ajv';
 import * as recursiveReadDir from 'recursive-readdir';
 
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
-import { ComponentsDefinitionV10X } from './components-types-v1_0_x';
+import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
 import { parseDefinition } from './parser/parser-utils';
-import { ParsedComponentsDefinition } from './models';
+import { ParsedComponentsDefinitionV10X, ComponentsDefinition } from './models';
 import {
     Validator, RestrictChildrenValidator, DocContainerValidator, DefaultComponentOnEnterValidator,
     UnitTypeValidator, ImageEditorValidator, FocuspointValidator, DirectivePropertiesValidator, GroupsValidator,
     ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
     InteractiveValidator, ComponentsValidator, DisableFullscreenCheckboxValidator, SlidesValidator,
-    ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator
+    ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator, AutofillValidator
 } from './validators';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
@@ -88,7 +88,7 @@ export async function validate(
     }
 
     // Validate the schema of the component definition file
-    const componentsDefinition: ComponentsDefinitionV10X = JSON.parse(await getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
+    const componentsDefinition: ComponentsDefinition = JSON.parse(await getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
 
     const validateSchema = getValidationSchema(componentsDefinition.version);
     if (!validateSchema) {
@@ -106,7 +106,7 @@ export async function validate(
     }
 
     // parse everything for deeper testing
-    let parsedDefinition: ParsedComponentsDefinition|null = null;
+    let parsedDefinition: ParsedComponentsDefinitionV10X|null = null;
     try {
         parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
     } catch (e) {
@@ -117,7 +117,54 @@ export async function validate(
         return false;
     }
 
-    const validators: Validator[] = [
+    const validators = getValidators(componentsDefinition.version, filePaths, componentsDefinition, parsedDefinition, getFileContent);
+    if (!validators) {
+        errorReporter(`Could not find validators for component model version "${componentsDefinition.version}"`);
+        return false;
+    }
+
+    let valid = true;
+    for (const validator of validators) {
+        valid = (await validator.validate(errorReporter)) && valid;
+    }
+
+    return valid;
+}
+
+/**
+ * Returns the validation function for given version.
+ *
+ * @param version
+ * @returns schema validation function if found, otherwise null.
+ */
+function getValidationSchema(version: string): Ajv.ValidateFunction | null {
+    // Only one version supported
+    // When introducing a patch version, make sure to update the supported range, e.g. '1.0.0 - 1.0.1'
+    if (semver.satisfies(version, '1.0.0')) {
+        return ajv.compile(componentsDefinitionSchema_v1_0_x);
+    } else if (semver.satisfies(version, '1.1.x')) {
+        return ajv.compile(componentsDefinitionSchema_v1_1_x);
+    }
+    return null;
+}
+
+/**
+ * Returns set of validators according to component definition version
+ *
+ * @param version
+ * @param filePaths
+ * @param componentsDefinition
+ * @param parsedDefinition
+ * @param getFileContent
+ */
+function getValidators(
+    version: string,
+    filePaths: Set<string>,
+    componentsDefinition: ComponentsDefinition,
+    parsedDefinition: ParsedComponentsDefinitionV10X,
+    getFileContent: GetFileContentType
+) : Validator[] | null {
+    const common: Validator[] = [
         new ComponentsValidator(filePaths, componentsDefinition),
         new ConversionRulesValidator(parsedDefinition),
         new DefaultComponentOnEnterValidator(parsedDefinition),
@@ -140,26 +187,12 @@ export async function validate(
         new SlidesValidator(parsedDefinition),
         new UnitTypeValidator(componentsDefinition),
     ];
-
-    let valid = true;
-    for (const validator of validators) {
-        valid = (await validator.validate(errorReporter)) && valid;
-    }
-
-    return valid;
-}
-
-/**
- * Returns the validation function for given version.
- *
- * @param version
- * @returns schema validation function if found, otherwise null.
- */
-function getValidationSchema(version: string): Ajv.ValidateFunction | null {
-    // Only one version supported
-    // When introducing a patch version, make sure to update the supported range, e.g. '1.0.0 - 1.0.1'
     if (semver.satisfies(version, '1.0.0')) {
-        return ajv.compile(componentsDefinitionSchema_v1_0_x);
+        return common;
+    } else if (semver.satisfies(version, '1.1.x')) {
+        return common.concat(
+            new AutofillValidator(parsedDefinition)
+        );
     }
     return null;
 }

@@ -1,6 +1,7 @@
 import { ComponentsDefinitionV10X } from './components-types-v1_0_x';
+import { ComponentsDefinitionV11X } from './components-types-v1_1_x';
 
-export type ComponentsDefinition = ComponentsDefinitionV10X;
+export type ComponentsDefinition = ComponentsDefinitionV10X | ComponentsDefinitionV11X;
 
 export enum DirectiveType {
     editable = 'editable',
@@ -16,27 +17,30 @@ export enum DirectiveType {
     unknown = 'unknown',
 }
 
-export interface ParsedComponentsDefinition {
+export interface ParsedComponentsDefinition<T extends ComponentsDefinition> {
     components: {
         [name: string]: {
-            component: ComponentsDefinition['components'][0];
+            component: T['components'][0];
             directives: {
                 [key: string]: {
                     type: DirectiveType;
                     tag: string;    // tag name (lowercased)
                 };
             };
-            properties: ComponentsDefinition['componentProperties'][0][];
+            properties: T['componentProperties'][0][];
         };
     };
     groups: {
-        [name: string]: ComponentsDefinition['groups'][0];
+        [name: string]: T['groups'][0];
     };
     defaultComponentOnEnter: string;
-    conversionRules: ComponentsDefinition['conversionRules'];
+    conversionRules: T['conversionRules'];
 }
+export type ParsedComponentsDefinitionV10X = ParsedComponentsDefinition<ComponentsDefinitionV10X>;
+export type ParsedComponentsDefinitionV11X = ParsedComponentsDefinition<ComponentsDefinitionV11X>;
+
 // a few shortcuts
-export type ParsedComponentsDefinitionComponent = ParsedComponentsDefinition['components']['name'];
-export type ParsedComponentsDefinitionProperty = ParsedComponentsDefinition['components']['name']['properties'][0];
+export type ParsedComponentsDefinitionComponent = ParsedComponentsDefinitionV10X['components']['name'];
+export type ParsedComponentsDefinitionProperty = ParsedComponentsDefinitionV10X['components']['name']['properties'][0];
 export type ParsedComponentsDefinitionDirective = ParsedComponentsDefinitionComponent['directives']['key'];
-export type ParsedComponentsDefinitionGroup = ParsedComponentsDefinition['groups']['name'];
+export type ParsedComponentsDefinitionGroup = ParsedComponentsDefinitionV10X['groups']['name'];

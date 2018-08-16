@@ -4,14 +4,14 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinition, ParsedComponentsDefinitionComponent } from '../models';
+import { ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent } from '../models';
 
 const CONTROL = 'fitting';
 
 export class FittingValidator implements Validator {
 
     constructor(
-        private parsedDefinition: ParsedComponentsDefinition,
+        private parsedDefinition: ParsedComponentsDefinitionV10X,
     ) {
     }
 

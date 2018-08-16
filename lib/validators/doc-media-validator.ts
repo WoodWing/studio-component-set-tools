@@ -9,12 +9,12 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinition, ParsedComponentsDefinitionComponent, ComponentsDefinition } from '../models';
+import { DirectiveType, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent, ComponentsDefinition } from '../models';
 
 export class DocMediaValidator implements Validator {
 
     constructor(
-        private definition: ParsedComponentsDefinition,
+        private definition: ParsedComponentsDefinitionV10X,
     ) {
     }
 

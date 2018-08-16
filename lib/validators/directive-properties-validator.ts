@@ -5,14 +5,14 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinition, DirectiveType } from '../models';
+import { ParsedComponentsDefinitionV10X, DirectiveType } from '../models';
 
 const CONTROLS = ['image-editor', 'interactive', 'media-properties'];
 
 export class DirectivePropertiesValidator implements Validator {
 
     constructor(
-        private definition: ParsedComponentsDefinition,
+        private definition: ParsedComponentsDefinitionV10X,
     ) {
     }
 

@@ -3,12 +3,12 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinition, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionProperty } from '../models';
+import { ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionProperty } from '../models';
 
 export class SlidesValidator implements Validator {
 
     constructor(
-        private parsedDefinition: ParsedComponentsDefinition,
+        private parsedDefinition: ParsedComponentsDefinitionV10X,
     ) {
     }
 

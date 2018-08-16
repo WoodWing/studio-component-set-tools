@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinition,
+import { ParsedComponentsDefinitionV10X,
     ParsedComponentsDefinitionComponent,
     ParsedComponentsDefinitionProperty } from '../models';
 
@@ -18,7 +18,7 @@ export class DefaultValuesValidator implements Validator {
     ]);
 
     constructor(
-        private definition: ParsedComponentsDefinition,
+        private definition: ParsedComponentsDefinitionV10X,
     ) {
     }
 

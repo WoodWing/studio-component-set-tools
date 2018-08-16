@@ -1,3 +1,4 @@
+export * from './autofill-validator';
 export * from './components-validator';
 export * from './conversion-rules-validator';
 export * from './default-component-on-enter-validator';
