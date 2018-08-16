@@ -31,12 +31,12 @@ describe('GroupsValidator', () => {
                     }
                 }
             },
-            groups: {
-                g1: {
+            groups: [
+                {
                     name: 'g1',
                     components: ['picture']
-                }
-            }
+                },
+            ],
         };
         validator = new GroupsValidator(definition);
     });
@@ -50,11 +50,20 @@ describe('GroupsValidator', () => {
             expect(valid).toBeTruthy();
             expect(reporter).not.toHaveBeenCalled();
         });
+        it('should not pass if a group name is not unique', () => {
+            definition.groups.push({
+                name: 'g1',
+                components: ['picture']
+            });
+            const valid = validator.validate(reporter);
+            expect(valid).toBeFalsy();
+            expect(reporter).toHaveBeenCalledWith(`Component group "g1" is not unique`);
+        });
         it('should not pass if a group contains non existing component', () => {
-            definition.groups.g2 = {
+            definition.groups.push({
                 name: 'g2',
                 components: ['none']
-            };
+            });
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Component "none" of group "g2" does not exist`);

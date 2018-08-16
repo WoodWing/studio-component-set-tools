@@ -15,7 +15,8 @@ import {
     UnitTypeValidator, ImageEditorValidator, FocuspointValidator, DirectivePropertiesValidator, GroupsValidator,
     ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
     InteractiveValidator, ComponentsValidator, DisableFullscreenCheckboxValidator, SlidesValidator,
-    ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator, AutofillValidator
+    ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator, AutofillValidator,
+    DocContainerGroupsValidator
 } from './validators';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
@@ -164,7 +165,8 @@ function getValidators(
     parsedDefinition: ParsedComponentsDefinitionV10X,
     getFileContent: GetFileContentType
 ) : Validator[] | null {
-    const common: Validator[] = [
+    // 1.0.0
+    let common: Validator[] = [
         new ComponentsValidator(filePaths, componentsDefinition),
         new ConversionRulesValidator(parsedDefinition),
         new DefaultComponentOnEnterValidator(parsedDefinition),
@@ -187,12 +189,11 @@ function getValidators(
         new SlidesValidator(parsedDefinition),
         new UnitTypeValidator(componentsDefinition),
     ];
-    if (semver.satisfies(version, '1.0.0')) {
-        return common;
-    } else if (semver.satisfies(version, '1.1.x')) {
-        return common.concat(
-            new AutofillValidator(parsedDefinition)
+    if (semver.satisfies(version, '1.1.x')) {
+        common = common.concat(
+            new AutofillValidator(parsedDefinition),
+            new DocContainerGroupsValidator(parsedDefinition),
         );
     }
-    return null;
+    return common;
 }

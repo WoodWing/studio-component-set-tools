@@ -405,6 +405,39 @@ export interface ComponentsDefinitionV11X {
         trigger?: "once" | "always";
       };
     };
+    /**
+     * Groups for doc-container component picker
+     */
+    groups?: {
+      /**
+       * List of groups shown in component chooser dialog
+       */
+      [k: string]: {
+        /**
+         * Unique group identifier
+         */
+        name: string;
+        label:
+          | string
+          | {
+              /**
+               * String key
+               */
+              key: string;
+              /**
+               * String replacement variables
+               */
+              values?: {
+                [k: string]: any;
+              };
+            };
+        /**
+         * names of components in this group
+         */
+        components: string[];
+        [k: string]: any;
+      }[];
+    };
   }[];
   /**
    * List of available component properties

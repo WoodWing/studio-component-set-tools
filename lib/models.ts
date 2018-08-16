@@ -30,9 +30,7 @@ export interface ParsedComponentsDefinition<T extends ComponentsDefinition> {
             properties: T['componentProperties'][0][];
         };
     };
-    groups: {
-        [name: string]: T['groups'][0];
-    };
+    groups: T['groups'];
     defaultComponentOnEnter: string;
     conversionRules: T['conversionRules'];
 }
@@ -43,4 +41,4 @@ export type ParsedComponentsDefinitionV11X = ParsedComponentsDefinition<Componen
 export type ParsedComponentsDefinitionComponent = ParsedComponentsDefinitionV10X['components']['name'];
 export type ParsedComponentsDefinitionProperty = ParsedComponentsDefinitionV10X['components']['name']['properties'][0];
 export type ParsedComponentsDefinitionDirective = ParsedComponentsDefinitionComponent['directives']['key'];
-export type ParsedComponentsDefinitionGroup = ParsedComponentsDefinitionV10X['groups']['name'];
+export type ParsedComponentsDefinitionGroup = ParsedComponentsDefinitionV10X['groups'][0];

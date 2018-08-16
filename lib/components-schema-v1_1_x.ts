@@ -33,6 +33,28 @@ const labelProperty = (description: string ) => {
     };
 };
 
+const componentGroupDefinition = {
+    type: 'array',
+    description: 'List of groups shown in component chooser dialog',
+    items: {
+        type: 'object',
+        properties: {
+            name: {
+                type: 'string',
+                description: 'Unique group identifier',
+                minLength: 3,
+            },
+            label: labelProperty('Group label shown in Digital Editor'),
+            components: {
+                type: 'array',
+                items: {type: 'string'},
+                description: 'names of components in this group',
+            },
+        },
+        required: ['name', 'label', 'components'],
+    },
+};
+
 const componentPropertyDefinition = {
     name: {
         type: 'string',
@@ -449,6 +471,12 @@ export const componentsDefinitionSchema_v1_1_x = {
                             },
                         },
                     },
+                    groups: {
+                        type: 'object',
+                        description: 'Groups for doc-container component picker',
+                        minProperties: 1,
+                        additionalProperties: componentGroupDefinition,
+                    }
                 },
                 required: ['name', 'label', 'icon'],
                 additionalProperties: false,
@@ -466,27 +494,7 @@ export const componentsDefinitionSchema_v1_1_x = {
             },
         },
 
-        groups: {
-            type: 'array',
-            description: 'List of groups shown in component chooser dialog',
-            items: {
-                type: 'object',
-                properties: {
-                    name: {
-                        type: 'string',
-                        description: 'Unique group identifier',
-                        minLength: 3,
-                    },
-                    label: labelProperty('Group label shown in Digital Editor'),
-                    components: {
-                        type: 'array',
-                        items: {type: 'string'},
-                        description: 'names of components in this group',
-                    },
-                },
-                required: ['name', 'label', 'components'],
-            },
-        },
+        groups: componentGroupDefinition,
 
         conversionRules: {
             type: 'object',
