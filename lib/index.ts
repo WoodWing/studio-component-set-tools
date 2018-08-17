@@ -16,7 +16,7 @@ import {
     ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
     InteractiveValidator, ComponentsValidator, DisableFullscreenCheckboxValidator, SlidesValidator,
     ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator, AutofillValidator,
-    DocContainerGroupsValidator
+    DefaultComponentOnEnterOverrideValidator, DocContainerGroupsValidator
 } from './validators';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
@@ -158,42 +158,45 @@ function getValidationSchema(version: string): Ajv.ValidateFunction | null {
  * @param parsedDefinition
  * @param getFileContent
  */
-function getValidators(
+export function getValidators(
     version: string,
     filePaths: Set<string>,
     componentsDefinition: ComponentsDefinition,
     parsedDefinition: ParsedComponentsDefinitionV10X,
     getFileContent: GetFileContentType
 ) : Validator[] | null {
-    // 1.0.0
-    let common: Validator[] = [
-        new ComponentsValidator(filePaths, componentsDefinition),
-        new ConversionRulesValidator(parsedDefinition),
-        new DefaultComponentOnEnterValidator(parsedDefinition),
-        new DefaultValuesValidator(parsedDefinition),
-        new DirectivePropertiesValidator(parsedDefinition),
-        new DisableFullscreenCheckboxValidator(componentsDefinition),
-        new DocContainerValidator(parsedDefinition),
-        new DocMediaValidator(parsedDefinition),
-        new DocSlideshowValidator(parsedDefinition),
-        new DropCapitalValidator(componentsDefinition, parsedDefinition),
-        new FittingValidator(parsedDefinition),
-        new FocuspointValidator(parsedDefinition),
-        new GroupsValidator(parsedDefinition),
-        new IconsValidator(componentsDefinition, getFileContent),
-        new ImageEditorValidator(componentsDefinition),
-        new InteractiveValidator(componentsDefinition),
-        new PropertiesValidator(filePaths, componentsDefinition),
-        new RestrictChildrenValidator(parsedDefinition),
-        new ScriptsValidator(filePaths, componentsDefinition),
-        new SlidesValidator(parsedDefinition),
-        new UnitTypeValidator(componentsDefinition),
-    ];
-    if (semver.satisfies(version, '1.1.x')) {
-        common = common.concat(
-            new AutofillValidator(parsedDefinition),
-            new DocContainerGroupsValidator(parsedDefinition),
+    let validators: Validator[] = [];
+    if (semver.satisfies(version, '>=1.0.0')) {
+        validators = validators.concat(
+            new ComponentsValidator(filePaths, componentsDefinition),
+            new ConversionRulesValidator(parsedDefinition),
+            new DefaultComponentOnEnterValidator(parsedDefinition),
+            new DefaultValuesValidator(parsedDefinition),
+            new DirectivePropertiesValidator(parsedDefinition),
+            new DisableFullscreenCheckboxValidator(componentsDefinition),
+            new DocContainerValidator(parsedDefinition),
+            new DocMediaValidator(parsedDefinition),
+            new DocSlideshowValidator(parsedDefinition),
+            new DropCapitalValidator(componentsDefinition, parsedDefinition),
+            new FittingValidator(parsedDefinition),
+            new FocuspointValidator(parsedDefinition),
+            new GroupsValidator(parsedDefinition),
+            new IconsValidator(componentsDefinition, getFileContent),
+            new ImageEditorValidator(componentsDefinition),
+            new InteractiveValidator(componentsDefinition),
+            new PropertiesValidator(filePaths, componentsDefinition),
+            new RestrictChildrenValidator(parsedDefinition),
+            new ScriptsValidator(filePaths, componentsDefinition),
+            new SlidesValidator(parsedDefinition),
+            new UnitTypeValidator(componentsDefinition),
         );
     }
-    return common;
+    if (semver.satisfies(version, '>=1.1.0')) {
+        validators = validators.concat(
+            new AutofillValidator(parsedDefinition),
+            new DefaultComponentOnEnterOverrideValidator(parsedDefinition),
+	    new DocContainerGroupsValidator(parsedDefinition),
+        );
+    }
+    return validators.length > 0 ? validators : null;
 }

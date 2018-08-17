@@ -406,6 +406,10 @@ export interface ComponentsDefinitionV11X {
       };
     };
     /**
+     * Default component inserted on pressing enter in a text field (optional, overrides global value)
+     */
+    defaultComponentOnEnter?: string;
+    /**
      * Configuration for directives in this component
      */
     directiveOptions?: {

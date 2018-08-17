@@ -471,6 +471,10 @@ export const componentsDefinitionSchema_v1_1_x = {
                             },
                         },
                     },
+                    defaultComponentOnEnter: {
+                        $ref: '#/definitions/nonEmptyString',
+                        description: 'Default component inserted on pressing enter in a text field (optional, overrides global value)',
+                    },
                     directiveOptions: {
                         type: 'object',
                         description: 'Configuration for directives in this component',
@@ -565,4 +569,11 @@ export const componentsDefinitionSchema_v1_1_x = {
         'conversionRules',
     ],
     additionalProperties: false,
+
+    definitions: {
+        nonEmptyString: {
+            type: 'string',
+            minLength: 1,
+        },
+    },
 };
