@@ -195,7 +195,7 @@ export function getValidators(
         validators = validators.concat(
             new AutofillValidator(parsedDefinition),
             new DefaultComponentOnEnterOverrideValidator(parsedDefinition),
-	    new DocContainerGroupsValidator(parsedDefinition),
+            new DocContainerGroupsValidator(parsedDefinition),
         );
     }
     return validators.length > 0 ? validators : null;
