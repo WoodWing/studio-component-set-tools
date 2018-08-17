@@ -21,10 +21,12 @@ describe('AutofillValidator', () => {
                 c2: {
                     component: {
                         name: 'c2',
-                        autofill: {
+                        directiveOptions: {
                             title: {
-                                source: 'figure',
-                                metadataField: 'group/property',
+                                autofill: {
+                                    source: 'figure',
+                                    metadataField: 'group/property',
+                                },
                             },
                         },
                     },
@@ -47,7 +49,7 @@ describe('AutofillValidator', () => {
         let reporter: any;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();
@@ -66,19 +68,19 @@ describe('AutofillValidator', () => {
             expect(reporter).toHaveBeenCalledWith(`Component "c2" has incorrect autofill rule "title". Supported types of destination directive are "editable", "link" only.`);
         });
         it('should not pass if source directive does not exist', () => {
-            definition.components.c2.component.autofill.title.source = 'figure2';
+            definition.components.c2.component.directiveOptions.title.autofill.source = 'figure2';
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Component "c2" has incorrect autofill rule "title". This component doesn't have directive "figure2".`);
         });
         it('should not pass if source directive is image and metadataField is not set', () => {
-            delete definition.components.c2.component.autofill.title.metadataField;
+            delete definition.components.c2.component.directiveOptions.title.autofill.metadataField;
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Component "c2" has incorrect autofill rule "title". If source directive is image kind then "metadataField" must be set.`);
         });
         it('should not pass if source and destination directives are the same', () => {
-            definition.components.c2.component.autofill.title.source = 'title';
+            definition.components.c2.component.directiveOptions.title.autofill.source = 'title';
             const valid = validator.validate(reporter);
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Component "c2" has incorrect autofill rule "title". There is no sense to fill directive content from itself.`);

@@ -447,30 +447,6 @@ export const componentsDefinitionSchema_v1_1_x = {
                         type: 'boolean',
                         description: 'Count characters, words and paragraphs of this component'
                     },
-                    autofill: {
-                        type: 'object',
-                        description: 'Rules for filling directives content automatically. Rule key is a key of destination directive',
-                        minProperties: 1,
-                        additionalProperties: {
-                            type: 'object',
-                            additionalProperties: false,
-                            required: ['source'],
-                            properties: {
-                                source: {
-                                    type: 'string',
-                                    description: 'A key of source directive',
-                                },
-                                metadataField: {
-                                    type: 'string',
-                                    description: 'Metadata property name. The field is case sensitive. Slashes should be used to separate levels',
-                                },
-                                trigger: {
-                                    enum: ['once', 'always'],
-                                    description: 'Defines when autofilling should be applied. If omitted then "once" is applied',
-                                },
-                            },
-                        },
-                    },
                     defaultComponentOnEnter: {
                         $ref: '#/definitions/nonEmptyString',
                         description: 'Default component inserted on pressing enter in a text field (optional, overrides global value)',
@@ -484,6 +460,25 @@ export const componentsDefinitionSchema_v1_1_x = {
                             additionalProperties: false,
                             properties: {
                                 groups: componentGroupDefinition,
+                                autofill: {
+                                    type: 'object',
+                                    additionalProperties: false,
+                                    required: ['source'],
+                                    properties: {
+                                        source: {
+                                            type: 'string',
+                                            description: 'A key of source directive',
+                                        },
+                                        metadataField: {
+                                            type: 'string',
+                                            description: 'Metadata property name. The field is case sensitive. Slashes should be used to separate levels',
+                                        },
+                                        trigger: {
+                                            enum: ['once', 'always'],
+                                            description: 'Defines when autofilling should be applied. If omitted then "once" is applied',
+                                        },
+                                    },
+                                },
                             },
                         },
                     },
