@@ -1,5 +1,5 @@
 /**
- * Validates defaultComponentOnEnter components property
+ * Validates defaultComponentOnEnter global property
  */
 
 import { Validator } from './validator';
