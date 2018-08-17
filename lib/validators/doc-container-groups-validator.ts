@@ -62,7 +62,7 @@ export class DocContainerGroupsValidator implements Validator {
             }
             if (parsedComponent.directives[key].type !== 'container') {
                 valid = false;
-                errorReporter(`Component "${parsedComponent.component.name}" has a group for directive "${key}" with incompatible type "${parsedComponent.directives[key].type}"`);
+                errorReporter(`Component "${parsedComponent.component.name}" has a group for directive "${key}" with incompatible type "${parsedComponent.directives[key].type}". Only type "container" is allowed.`);
                 continue;
             }
 

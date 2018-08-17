@@ -70,7 +70,7 @@ describe('DocContainerGroupsValidator', () => {
 
             const valid = validator.validate(reporter);
 
-            expect(reporter).toHaveBeenCalledWith(`Component \"c1\" has a group for directive \"main\" with incompatible type \"editable\"`);
+            expect(reporter).toHaveBeenCalledWith(`Component \"c1\" has a group for directive \"main\" with incompatible type \"editable\". Only type \"container\" is allowed.`);
             expect(valid).toBeFalsy();
         });
 
