@@ -8,7 +8,6 @@ import * as recursiveReadDir from 'recursive-readdir';
 
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
-import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
 import { parseDefinition } from './parser/parser-utils';
 import { ParsedComponentsDefinitionV10X, ComponentsDefinition } from './models';
 import {
@@ -146,8 +145,6 @@ function getValidationSchema(version: string): Ajv.ValidateFunction | null {
         return ajv.compile(componentsDefinitionSchema_v1_0_x);
     } else if (semver.satisfies(version, '1.1.x')) {
         return ajv.compile(componentsDefinitionSchema_v1_1_x);
-    } else if (semver.satisfies(version, '1.2.x')) {
-        return ajv.compile(componentsDefinitionSchema_v1_2_x);
     }
     return null;
 }
@@ -194,14 +191,10 @@ export function getValidators(
             new UnitTypeValidator(componentsDefinition),
         );
     }
-    if (semver.satisfies(version, '>=1.1.x')) {
+    if (semver.satisfies(version, '>=1.1.0')) {
         validators = validators.concat(
-            new AutofillValidator(parsedDefinition)
-        );
-    }
-    if (semver.satisfies(version, '>=1.2.x')) {
-        validators = validators.concat(
-            new DefaultComponentOnEnterOverrideValidator(parsedDefinition)
+            new AutofillValidator(parsedDefinition),
+            new DefaultComponentOnEnterOverrideValidator(parsedDefinition),
         );
     }
     return validators.length > 0 ? validators : null;

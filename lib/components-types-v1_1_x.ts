@@ -405,6 +405,10 @@ export interface ComponentsDefinitionV11X {
         trigger?: "once" | "always";
       };
     };
+    /**
+     * Default component inserted on pressing enter in a text field (optional, overrides global value)
+     */
+    defaultComponentOnEnter?: string;
   }[];
   /**
    * List of available component properties

@@ -3,12 +3,12 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionV12X } from '../models';
+import { ParsedComponentsDefinitionV11X } from '../models';
 
 export class DefaultComponentOnEnterOverrideValidator implements Validator {
 
     constructor(
-        private definition: ParsedComponentsDefinitionV12X,
+        private definition: ParsedComponentsDefinitionV11X,
     ) {
     }
 
