@@ -16,7 +16,7 @@ import {
     ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
     InteractiveValidator, ComponentsValidator, DisableFullscreenCheckboxValidator, SlidesValidator,
     ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator, AutofillValidator,
-    DefaultComponentOnEnterOverrideValidator
+    DefaultComponentOnEnterOverrideValidator, DocContainerGroupsValidator
 } from './validators';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
@@ -195,6 +195,7 @@ export function getValidators(
         validators = validators.concat(
             new AutofillValidator(parsedDefinition),
             new DefaultComponentOnEnterOverrideValidator(parsedDefinition),
+	    new DocContainerGroupsValidator(parsedDefinition),
         );
     }
     return validators.length > 0 ? validators : null;

@@ -7,6 +7,7 @@ export * from './default-values-validator';
 export * from './directive-properties-validator';
 export * from './disable-fullscreen-checkbox-validator';
 export * from './doc-container-validator';
+export * from './doc-container-groups-validator';
 export * from './doc-media-validator';
 export * from './doc-slideshow-validator';
 export * from './drop-capital-validator';

@@ -74,7 +74,7 @@ export async function parseDefinition(
 
     const result: ParsedComponentsDefinitionV10X = {
         components: {},
-        groups: {},
+        groups: componentsDefinition.groups,
         defaultComponentOnEnter: componentsDefinition.defaultComponentOnEnter,
         conversionRules: componentsDefinition.conversionRules,
     };
@@ -123,14 +123,6 @@ export async function parseDefinition(
                 return properties;
             }, [] as ParsedComponentsDefinitionV10X['components']['name']['properties']) || [],
         };
-    }
-
-    // parse groups
-    for (const group of componentsDefinition.groups) {
-        if (group.name in result.groups) {
-            throw new Error(`Component group "${group.name}" is not unique`);
-        }
-        result.groups[group.name] = group;
     }
 
     return result;

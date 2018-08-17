@@ -210,16 +210,16 @@ describe('Parser utils', () => {
                         ]
                     }
                 },
-                groups: {
-                    minimal: {
+                groups: [
+                    {
                         'label': 'Minimal',
                         'name': 'minimal',
                         'components': [
                             'body',
                             'complex'
                         ]
-                    }
-                },
+                    },
+                ],
                 defaultComponentOnEnter: 'body',
                 conversionRules: {
                     body: {
@@ -327,24 +327,6 @@ describe('Parser utils', () => {
                 er = e.message;
             }
             expect(er).toEqual(`Property is not found "cucicaca"`);
-        });
-
-        it('should throw an error if there are duplicating group names', async () => {
-            componentsDefinition.groups.push({
-                'label': 'Minimal',
-                'name': 'minimal',
-                'components': [
-                    'body',
-                ]
-            });
-
-            let er = '';
-            try {
-                await parseDefinition(componentsDefinition, getFileContent)
-            } catch(e) {
-                er = e.message;
-            }
-            expect(er).toEqual(`Component group "minimal" is not unique`);
         });
     });
 });

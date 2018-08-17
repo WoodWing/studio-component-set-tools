@@ -16,6 +16,6 @@ describe('getValidators', () => {
     });
     it('should return amount of validators for version >= 1.1.0', () => {
         const validators = getValidators('1.1.0', <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(23);
+        expect(validators && validators.length).toEqual(24);
     });
 });
