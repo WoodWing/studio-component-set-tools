@@ -13,13 +13,15 @@ describe('DocContainerGroupsValidator', () => {
                         restrictChildren: {
                             c2: { withContent: 'image' }
                         },
-                        groups: {
-                            'main': [
-                                {
-                                    name: 'g1',
-                                    components: ['picture'],
-                                },
-                            ],
+                        directiveOptions: {
+                            main: {
+                                groups: [
+                                    {
+                                        name: 'g1',
+                                        components: ['picture'],
+                                    },
+                                ],
+                            }
                         },
                     },
                     directives: {

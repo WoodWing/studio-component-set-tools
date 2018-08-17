@@ -471,12 +471,18 @@ export const componentsDefinitionSchema_v1_1_x = {
                             },
                         },
                     },
-                    groups: {
+                    directiveOptions: {
                         type: 'object',
-                        description: 'Groups for doc-container component picker',
+                        description: 'Configuration for directives in this component',
                         minProperties: 1,
-                        additionalProperties: componentGroupDefinition,
-                    }
+                        additionalProperties: {
+                            type: 'object',
+                            additionalProperties: false,
+                            properties: {
+                                groups: componentGroupDefinition,
+                            },
+                        },
+                    },
                 },
                 required: ['name', 'label', 'icon'],
                 additionalProperties: false,

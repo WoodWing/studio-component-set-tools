@@ -406,37 +406,39 @@ export interface ComponentsDefinitionV11X {
       };
     };
     /**
-     * Groups for doc-container component picker
+     * Configuration for directives in this component
      */
-    groups?: {
-      /**
-       * List of groups shown in component chooser dialog
-       */
+    directiveOptions?: {
       [k: string]: {
         /**
-         * Unique group identifier
+         * List of groups shown in component chooser dialog
          */
-        name: string;
-        label:
-          | string
-          | {
-              /**
-               * String key
-               */
-              key: string;
-              /**
-               * String replacement variables
-               */
-              values?: {
-                [k: string]: any;
+        groups?: {
+          /**
+           * Unique group identifier
+           */
+          name: string;
+          label:
+            | string
+            | {
+                /**
+                 * String key
+                 */
+                key: string;
+                /**
+                 * String replacement variables
+                 */
+                values?: {
+                  [k: string]: any;
+                };
               };
-            };
-        /**
-         * names of components in this group
-         */
-        components: string[];
-        [k: string]: any;
-      }[];
+          /**
+           * names of components in this group
+           */
+          components: string[];
+          [k: string]: any;
+        }[];
+      };
     };
   }[];
   /**

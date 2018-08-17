@@ -44,13 +44,17 @@ export class DocContainerGroupsValidator implements Validator {
     ): boolean {
         let valid = true;
 
-        if (!parsedComponent.component.groups) {
+        if (!parsedComponent.component.directiveOptions) {
             return valid;
         }
 
         const groupsValidator = new GroupsValidator(this.parsedDefinition);
 
-        for (const [key, group] of Object.entries(parsedComponent.component.groups)) {
+        for (const [key, directiveOptions] of Object.entries(parsedComponent.component.directiveOptions)) {
+            // Rules only apply when it has a groups property defined
+            if (!directiveOptions.groups) {
+                continue;
+            }
             if (!parsedComponent.directives[key]) {
                 valid = false;
                 errorReporter(`Component "${parsedComponent.component.name}" has a group for invalid directive "${key}"`);
@@ -62,7 +66,7 @@ export class DocContainerGroupsValidator implements Validator {
                 continue;
             }
 
-            valid = groupsValidator.validateGroupsList(errorReporter, group) && valid;
+            valid = groupsValidator.validateGroupsList(errorReporter, directiveOptions.groups) && valid;
         }
 
         return valid;
