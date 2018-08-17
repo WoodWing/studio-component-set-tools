@@ -387,25 +387,6 @@ export interface ComponentsDefinitionV11X {
      */
     countStatistics?: boolean;
     /**
-     * Rules for filling directives content automatically. Rule key is a key of destination directive
-     */
-    autofill?: {
-      [k: string]: {
-        /**
-         * A key of source directive
-         */
-        source: string;
-        /**
-         * Metadata property name. The field is case sensitive. Slashes should be used to separate levels
-         */
-        metadataField?: string;
-        /**
-         * Defines when autofilling should be applied. If omitted then "once" is applied
-         */
-        trigger?: "once" | "always";
-      };
-    };
-    /**
      * Default component inserted on pressing enter in a text field (optional, overrides global value)
      */
     defaultComponentOnEnter?: string;
@@ -442,6 +423,20 @@ export interface ComponentsDefinitionV11X {
           components: string[];
           [k: string]: any;
         }[];
+        autofill?: {
+          /**
+           * A key of source directive
+           */
+          source: string;
+          /**
+           * Metadata property name. The field is case sensitive. Slashes should be used to separate levels
+           */
+          metadataField?: string;
+          /**
+           * Defines when autofilling should be applied. If omitted then "once" is applied
+           */
+          trigger?: "once" | "always";
+        };
       };
     };
   }[];
