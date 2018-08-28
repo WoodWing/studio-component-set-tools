@@ -1,7 +1,7 @@
 import { FittingValidator } from '../../lib/validators/fitting-validator';
 
 describe('FittingValidator', () => {
-    let parsedDefinition;
+    let parsedDefinition: any;
     let validator: FittingValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -31,10 +31,10 @@ describe('FittingValidator', () => {
         validator = new FittingValidator(parsedDefinition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

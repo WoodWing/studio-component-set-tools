@@ -1,7 +1,7 @@
 import { DisableFullscreenCheckboxValidator } from '../../lib/validators/disable-fullscreen-checkbox-validator';
 
 describe('DisableFullscreenCheckboxValidator', () => {
-    let definition;
+    let definition: any;
     let validator: DisableFullscreenCheckboxValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -23,10 +23,10 @@ describe('DisableFullscreenCheckboxValidator', () => {
         validator = new DisableFullscreenCheckboxValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

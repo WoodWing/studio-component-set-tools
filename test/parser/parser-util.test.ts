@@ -261,7 +261,7 @@ describe('Parser utils', () => {
 
             let er = '';
             try {
-                await parseDefinition(componentsDefinition, getFileContent)
+                await parseDefinition(componentsDefinition, getFileContent);
             } catch(e) {
                 er = e.message;
             }
@@ -298,7 +298,7 @@ describe('Parser utils', () => {
 
             let er = '';
             try {
-                await parseDefinition(componentsDefinition, getFileContent)
+                await parseDefinition(componentsDefinition, getFileContent);
             } catch(e) {
                 er = e.message;
             }
@@ -310,7 +310,7 @@ describe('Parser utils', () => {
 
             let er = '';
             try {
-                await parseDefinition(componentsDefinition, getFileContent)
+                await parseDefinition(componentsDefinition, getFileContent);
             } catch(e) {
                 er = e.message;
             }
@@ -322,7 +322,7 @@ describe('Parser utils', () => {
 
             let er = '';
             try {
-                await parseDefinition(componentsDefinition, getFileContent)
+                await parseDefinition(componentsDefinition, getFileContent);
             } catch(e) {
                 er = e.message;
             }

@@ -8,9 +8,11 @@
     "prepare": "npm run build",
     "build": "rimraf ./dist && npm run tslint & tsc",
     "watch": "tsc --watch",
-    "test": "jest --forceExit --coverage --verbose",
+    "test": "npm run tslint && tsc -p tsconfig.test.json --noEmit && jest --forceExit --coverage --verbose",
     "watchtest": "jest --forceExit --coverage --verbose --watchAll",
-    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "tslint": "npm run tslint-lib && npm run tslint-test",
+    "tslint-lib": "tslint -c tslint.json -p tsconfig.json",
+    "tslint-test": "tslint -c tslint.json -p tsconfig.test.json",
     "update-types": "node -r ts-node/register generateComponentsTypes.ts"
   },
   "repository": {

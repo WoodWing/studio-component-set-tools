@@ -1,8 +1,8 @@
 import { DropCapitalValidator } from '../../lib/validators/drop-capital-validator';
 
 describe('DropCapitalValidator', () => {
-    let definition;
-    let parsedDefinition;
+    let definition: any;
+    let parsedDefinition: any;
     let validator: DropCapitalValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -41,10 +41,10 @@ describe('DropCapitalValidator', () => {
         validator = new DropCapitalValidator(definition, parsedDefinition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

@@ -23,10 +23,10 @@ describe('DefaultComponentOnEnterOverrideValidator', () => {
         validator = new DefaultComponentOnEnterOverrideValidator(definition);
     });
     describe('validate', () => {
-        let reporter: any;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

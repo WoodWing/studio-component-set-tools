@@ -2,7 +2,7 @@ import { IconsValidator } from '../../lib/validators/icons-validator';
 import { readFile } from 'fs';
 
 describe('IconsValidator', () => {
-    let definition;
+    let definition: any;
     let validator: IconsValidator;
     let getFileContent;
     beforeEach(() => {
@@ -33,7 +33,7 @@ describe('IconsValidator', () => {
         validator = new IconsValidator(definition, getFileContent);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
         });

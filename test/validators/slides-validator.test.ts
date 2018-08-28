@@ -1,7 +1,7 @@
 import { SlidesValidator } from '../../lib/validators/slides-validator';
 
 describe('SlidesValidator', () => {
-    let definition;
+    let definition: any;
     let validator: SlidesValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -41,7 +41,7 @@ describe('SlidesValidator', () => {
         validator = new SlidesValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
         });

@@ -46,7 +46,7 @@ describe('AutofillValidator', () => {
         validator = new AutofillValidator(definition);
     });
     describe('validate', () => {
-        let reporter: any;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
         });

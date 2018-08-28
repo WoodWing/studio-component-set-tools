@@ -1,7 +1,7 @@
 import { DocMediaValidator } from '../../lib/validators/doc-media-validator';
 
 describe('DocMediaValidator', () => {
-    let definition;
+    let definition: any;
     let validator: DocMediaValidator;
 
     beforeEach(() => {
@@ -46,7 +46,7 @@ describe('DocMediaValidator', () => {
         validator = new DocMediaValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
         });
