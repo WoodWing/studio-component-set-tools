@@ -35,7 +35,7 @@ describe('ComponentsValidator', () => {
         validator = new ComponentsValidator(fileList, definition);
     });
     describe('validate', () => {
-        let reporter: any;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
         });

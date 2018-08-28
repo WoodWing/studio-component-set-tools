@@ -1,7 +1,7 @@
 import { InteractiveValidator } from '../../lib/validators/interactive-validator';
 
 describe('InteractiveValidator', () => {
-    let definition;
+    let definition: any;
     let validator: InteractiveValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -23,10 +23,10 @@ describe('InteractiveValidator', () => {
         validator = new InteractiveValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

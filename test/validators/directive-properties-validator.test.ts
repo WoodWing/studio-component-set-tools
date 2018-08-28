@@ -1,7 +1,7 @@
 import { DirectivePropertiesValidator } from '../../lib/validators/directive-properties-validator';
 
 describe('DirectivePropertiesValidator', () => {
-    let definition;
+    let definition: any;
     let validator: DirectivePropertiesValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -41,10 +41,10 @@ describe('DirectivePropertiesValidator', () => {
         validator = new DirectivePropertiesValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

@@ -38,7 +38,7 @@ describe('DocContainerGroupsValidator', () => {
 
     });
     describe('validate', () => {
-        let reporter: any;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
         });

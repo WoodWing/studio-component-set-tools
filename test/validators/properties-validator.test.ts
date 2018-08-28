@@ -1,7 +1,7 @@
 import { PropertiesValidator } from '../../lib/validators/properties-validator';
 
 describe('PropertiesValidator', () => {
-    let definition;
+    let definition: any;
     let validator: PropertiesValidator;
     let fileList: Set<string>;
     beforeEach(() => {
@@ -44,10 +44,10 @@ describe('PropertiesValidator', () => {
         validator = new PropertiesValidator(fileList, definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

@@ -1,7 +1,7 @@
 import { DocContainerValidator } from '../../lib/validators/doc-container-validator';
 
 describe('DocContainerValidator', () => {
-    let definition;
+    let definition: any;
     let validator: DocContainerValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -24,7 +24,7 @@ describe('DocContainerValidator', () => {
         validator = new DocContainerValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
         });

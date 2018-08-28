@@ -1,7 +1,7 @@
 import { DocSlideshowValidator } from '../../lib/validators/doc-slideshow-validator';
 
 describe('DocSlideshowValidator', () => {
-    let definition;
+    let definition: any;
     let validator: DocSlideshowValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -24,10 +24,10 @@ describe('DocSlideshowValidator', () => {
         validator = new DocSlideshowValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

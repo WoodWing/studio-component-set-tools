@@ -1,8 +1,8 @@
 import { RestrictChildrenValidator } from '../../lib/validators/restrict-children-validator';
 
 describe('RestrictChildrenValidator', () => {
-    let definition;
-    let validator;
+    let definition: any;
+    let validator: any;
     beforeEach(() => {
         // valid definition (cut)
         definition = {
@@ -57,10 +57,10 @@ describe('RestrictChildrenValidator', () => {
         validator = new RestrictChildrenValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

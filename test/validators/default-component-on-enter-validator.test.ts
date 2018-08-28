@@ -1,7 +1,7 @@
 import { DefaultComponentOnEnterValidator } from '../../lib/validators/default-component-on-enter-validator';
 
 describe('DefaultComponentOnEnterValidator', () => {
-    let definition;
+    let definition: any;
     let validator: DefaultComponentOnEnterValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -25,10 +25,10 @@ describe('DefaultComponentOnEnterValidator', () => {
         validator = new DefaultComponentOnEnterValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

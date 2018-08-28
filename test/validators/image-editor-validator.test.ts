@@ -1,7 +1,7 @@
 import { ImageEditorValidator } from '../../lib/validators/image-editor-validator';
 
 describe('ImageEditorValidator', () => {
-    let definition;
+    let definition: any;
     let validator: ImageEditorValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -23,10 +23,10 @@ describe('ImageEditorValidator', () => {
         validator = new ImageEditorValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();

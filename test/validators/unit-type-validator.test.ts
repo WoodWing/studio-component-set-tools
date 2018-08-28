@@ -1,7 +1,7 @@
 import { UnitTypeValidator } from '../../lib/validators/unit-type-validator';
 
 describe('UnitTypeValidator', () => {
-    let definition;
+    let definition: any;
     let validator: UnitTypeValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -28,10 +28,10 @@ describe('UnitTypeValidator', () => {
         validator = new UnitTypeValidator(definition);
     });
     describe('validate', () => {
-        let reporter;
+        let reporter: jasmine.Spy;
         beforeEach(() => {
             reporter = jasmine.createSpy('reporter');
-        })
+        });
         it('should pass on valid definition', () => {
             const valid = validator.validate(reporter);
             expect(valid).toBeTruthy();
