@@ -73,6 +73,12 @@ describe('AutofillValidator', () => {
             expect(valid).toBeFalsy();
             expect(reporter).toHaveBeenCalledWith(`Component "c2" has incorrect autofill rule "title". This component doesn't have directive "figure2".`);
         });
+        it('should not pass if source directive type is unsupported', () => {
+            definition.components.c2.component.directiveOptions.title.autofill.source = 'editable';
+            const valid = validator.validate(reporter);
+            expect(valid).toBeFalsy();
+            expect(reporter).toHaveBeenCalledWith(`Component \"c2\" has incorrect autofill rule \"title\". This component doesn't have directive \"editable\".`);
+        });
         it('should not pass if source directive is image and metadataField is not set', () => {
             delete definition.components.c2.component.directiveOptions.title.autofill.metadataField;
             const valid = validator.validate(reporter);
