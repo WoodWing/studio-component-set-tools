@@ -6,6 +6,7 @@ import { Validator } from './validator';
 import { DirectiveType, ParsedComponentsDefinitionV11X } from '../models';
 
 const supportedDestinationDirectives = [DirectiveType.editable, DirectiveType.link];
+const supportedSourceDirectives = [DirectiveType.image];
 
 export class AutofillValidator implements Validator {
 
@@ -66,6 +67,11 @@ export class AutofillValidator implements Validator {
             if (!parsedComponent.directives[rule.source]) {
                 errorReporter(`Component "${parsedComponent.component.name}" has incorrect autofill rule "${dstKey}". ` +
                 `This component doesn't have directive "${rule.source}".`);
+                valid = false;
+            // Check if source directive is supported
+            } else if (supportedSourceDirectives.indexOf(parsedComponent.directives[rule.source].type) < 0) {
+                errorReporter(`Component "${parsedComponent.component.name}" has incorrect autofill rule "${dstKey}". ` +
+                `Supported types of source directive are "${supportedSourceDirectives.join('", "')}" only.`);
                 valid = false;
             // check if metadataField is set when source directive is image kind
             } else if (parsedComponent.directives[rule.source].type === DirectiveType.image && !('metadataField' in rule)) {
