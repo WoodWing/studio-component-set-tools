@@ -14,31 +14,27 @@ const RESERVED = [
     /^parallax$/,
 ];
 
-export class PropertiesValidator implements Validator {
+export class PropertiesValidator extends Validator {
 
     constructor(
+        error: (errorMessage: string) => false,
         private filePaths: Set<string>,
         private definition: ComponentsDefinition,
     ) {
+        super(error);
     }
 
-    validate(
-        errorReporter: (errorMessage: string) => void,
-    ): boolean {
-        let valid = true;
-
+    validate(): void {
         // Check component properties
         const componentPropertyNames = new Set<string>();
         for (const compProp of this.definition.componentProperties) {
             // reserved words
             if (RESERVED.some(regexp => regexp.test(compProp.name))) {
-                errorReporter(`Component property name "${compProp.name}" is a reserved word`);
-                valid = false;
+                this.error(`Component property name "${compProp.name}" is a reserved word`);
             }
             // Validate we have not seen the name yet
             if (componentPropertyNames.has(compProp.name)) {
-                errorReporter(`Component property "${compProp.name}" is not unique`);
-                valid = false;
+                this.error(`Component property "${compProp.name}" is not unique`);
             }
             componentPropertyNames.add(compProp.name);
 
@@ -46,13 +42,10 @@ export class PropertiesValidator implements Validator {
             if (compProp.control.type === 'radio') {
                 for (const controlOption of compProp.control.options) {
                     if (!this.filePaths.has(path.normalize(controlOption.icon))) {
-                        errorReporter(`Component properties "${compProp.name}" icon missing "${controlOption.icon}"`);
-                        valid = false;
+                        this.error(`Component properties "${compProp.name}" icon missing "${controlOption.icon}"`);
                     }
                 }
             }
         }
-
-        return valid;
     }
 }

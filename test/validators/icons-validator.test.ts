@@ -3,6 +3,7 @@ import { readFile } from 'fs';
 
 describe('IconsValidator', () => {
     let definition: any;
+    let error: jasmine.Spy;
     let validator: IconsValidator;
     let getFileContent;
     beforeEach(() => {
@@ -30,44 +31,37 @@ describe('IconsValidator', () => {
                 });
             });
         });
-        validator = new IconsValidator(definition, getFileContent);
+        error = jasmine.createSpy('error');
+        validator = new IconsValidator(error, definition, getFileContent);
     });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
         it('should pass on valid definition', async () => {
-            const valid = await validator.validate(reporter);
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBeTruthy();
+            await validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should pass with capitalized file extensions', async () => {
             definition.components.push({
                 name: 'capitals',
                 icon: 'component.SVG'
             });
-            const valid = await validator.validate(reporter);
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBeTruthy();
+            await validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should fail for a non-supported file extension', async () => {
             definition.components.push({
                 name: 'unsupported',
                 icon: 'unsupported.txt'
             });
-            const valid = await validator.validate(reporter);
-            expect(reporter).toHaveBeenCalledWith(`Icons are only supported in SVG or transparent PNG format`);
-            expect(valid).toBeFalsy();
+            await validator.validate();
+            expect(error).toHaveBeenCalledWith(`Icons are only supported in SVG or transparent PNG format`);
         });
         it('should fail for non-transparent PNG icons', async () => {
             definition.components.push({
                 name: 'opaque',
                 icon: './test/resources/minimal-sample/icons/opaque.png'
             });
-            const valid = await validator.validate(reporter);
-            expect(reporter).toHaveBeenCalledWith(`PNG icons are only supported when they are transparent`);
-            expect(valid).toBeFalsy();
+            await validator.validate();
+            expect(error).toHaveBeenCalledWith(`PNG icons are only supported when they are transparent`);
         });
     });
 });

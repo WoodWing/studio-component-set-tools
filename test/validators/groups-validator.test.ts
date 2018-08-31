@@ -1,7 +1,7 @@
 import { GroupsValidator } from '../../lib/validators/groups-validator';
 
 describe('GroupsValidator', () => {
-    let definition: any;
+    let error: jasmine.Spy, definition: any;
     let validator: GroupsValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -38,35 +38,29 @@ describe('GroupsValidator', () => {
                 },
             ],
         };
-        validator = new GroupsValidator(definition);
+        error = jasmine.createSpy('error');
+        validator = new GroupsValidator(error, definition);
     });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
         it('should pass on valid definition', () => {
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if a group name is not unique', () => {
             definition.groups.push({
                 name: 'g1',
                 components: ['picture']
             });
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Component group "g1" is not unique`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Component group "g1" is not unique`);
         });
         it('should not pass if a group contains non existing component', () => {
             definition.groups.push({
                 name: 'g2',
                 components: ['none']
             });
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Component "none" of group "g2" does not exist`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Component "none" of group "g2" does not exist`);
         });
     });
 });

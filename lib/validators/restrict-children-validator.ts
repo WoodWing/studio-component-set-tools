@@ -8,11 +8,13 @@ import { DirectiveType, ParsedComponentsDefinitionV10X, ParsedComponentsDefiniti
 const PROPERTY = 'restrictChildren';
 const ADDITIONAL_PROPERTY = 'withContent';
 
-export class RestrictChildrenValidator implements Validator {
+export class RestrictChildrenValidator extends Validator {
 
     constructor(
+        error: (errorMessage: string) => false,
         private definition: ParsedComponentsDefinitionV10X,
     ) {
+        super(error);
     }
 
     private hasSlideshowDirective(parsedComponent: ParsedComponentsDefinitionComponent) : boolean {
@@ -20,19 +22,14 @@ export class RestrictChildrenValidator implements Validator {
         .some(directive => directive.type === DirectiveType.slideshow);
     }
 
-    validate(
-        errorReporter: (errorMessage: string) => void,
-    ): boolean {
-        let valid = true;
-
+    validate(): void {
         Object.values(this.definition.components).forEach((parsedComponent: ParsedComponentsDefinitionComponent) => {
             const isPresent = PROPERTY in parsedComponent.component && parsedComponent.component[PROPERTY];
             const hasSlideshow = this.hasSlideshowDirective(parsedComponent);
             if (!isPresent) {
                 if (hasSlideshow) {
-                    errorReporter(`Component property "${PROPERTY}" must be defined in component "${parsedComponent.component.name}" because the ` +
+                    this.error(`Component property "${PROPERTY}" must be defined in component "${parsedComponent.component.name}" because the ` +
                         `component contains a slideshow directive`);
-                    valid = false;
                 }
                 return;
             }
@@ -42,15 +39,13 @@ export class RestrictChildrenValidator implements Validator {
             const propertyKeys = Object.keys(propertyValue);
             // slideshow component can have only one entry
             if (hasSlideshow && propertyKeys.length > 1) {
-                errorReporter(`Component property "${PROPERTY}" of component "${parsedComponent.component.name}" must contain only one entry` +
+                this.error(`Component property "${PROPERTY}" of component "${parsedComponent.component.name}" must contain only one entry` +
                 ` because the component contains a slideshow directive`);
-                valid = false;
             }
             // check if all keys point to correct component
             propertyKeys.forEach((componentName: string) => {
                 if (componentName === parsedComponent.component.name) {
-                    errorReporter(`Component property "${PROPERTY}.${componentName}" of component "${parsedComponent.component.name}" points to itself`);
-                    valid = false;
+                    this.error(`Component property "${PROPERTY}.${componentName}" of component "${parsedComponent.component.name}" points to itself`);
                     return;
                 }
                 if (componentName in this.definition.components) {
@@ -59,20 +54,16 @@ export class RestrictChildrenValidator implements Validator {
                     if (ADDITIONAL_PROPERTY in propertyValue[componentName]) {
                         const additionalPropertyValue = propertyValue[componentName][ADDITIONAL_PROPERTY] || '';
                         if (!(additionalPropertyValue in pointedParsedComponent.directives)) {
-                            errorReporter(`Additional property "${ADDITIONAL_PROPERTY}" of property "${PROPERTY}.${componentName}" of component ` +
+                            this.error(`Additional property "${ADDITIONAL_PROPERTY}" of property "${PROPERTY}.${componentName}" of component ` +
                                 `"${parsedComponent.component.name}" points to non existing directive key "${additionalPropertyValue}" of component ` +
                                 `"${pointedParsedComponent.component.name}"`);
-                            valid = false;
                         }
                     }
                 } else {
-                    errorReporter(`Component property "${PROPERTY}.${componentName}" of component "${parsedComponent.component.name}" points to ` +
+                    this.error(`Component property "${PROPERTY}.${componentName}" of component "${parsedComponent.component.name}" points to ` +
                         `non existing component`);
-                    valid = false;
                 }
             });
         });
-
-        return valid;
     }
 }

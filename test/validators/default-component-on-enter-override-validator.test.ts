@@ -2,6 +2,7 @@ import { DefaultComponentOnEnterOverrideValidator } from '../../lib/validators/d
 
 describe('DefaultComponentOnEnterOverrideValidator', () => {
     let definition: any;
+    let error: jasmine.Spy;
     let validator: DefaultComponentOnEnterOverrideValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -20,23 +21,18 @@ describe('DefaultComponentOnEnterOverrideValidator', () => {
                 },
             },
         };
-        validator = new DefaultComponentOnEnterOverrideValidator(definition);
+        error = jasmine.createSpy('error');
+        validator = new DefaultComponentOnEnterOverrideValidator(error, definition);
     });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
         it('should pass on valid definition', () => {
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if it points to non existing component', () => {
             definition.components.text.component.defaultComponentOnEnter = 'body2';
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Property "defaultComponentOnEnter" of "text" points to non existing component "body2"`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Property "defaultComponentOnEnter" of "text" points to non existing component "body2"`);
         });
     });
 });

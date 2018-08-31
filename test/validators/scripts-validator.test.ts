@@ -2,36 +2,32 @@ import * as path from 'path';
 import { ScriptsValidator } from '../../lib/validators/scripts-validator';
 
 describe('ScriptsValidator', () => {
+    let error: jasmine.Spy;
+    beforeEach(() => {
+        error = jasmine.createSpy('error');
+    });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
         it('should pass on valid definition', () => {
-            const validator = new ScriptsValidator(new Set<string>([
+            const validator = new ScriptsValidator(error, new Set<string>([
                 path.normalize('scripts/vendor.js'),
             ]), <any>{
                 scripts: ['scripts/vendor.js'],
             });
-            const valid = validator.validate(reporter);
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBeTruthy();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should pass when scripts is missing', () => {
-            const validator = new ScriptsValidator(new Set<string>([]), <any>{});
-            const valid = validator.validate(reporter);
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBeTruthy();
+            const validator = new ScriptsValidator(error, new Set<string>([]), <any>{});
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if "vendor.js" is missing', () => {
-            const validator = new ScriptsValidator(new Set<string>([
+            const validator = new ScriptsValidator(error, new Set<string>([
             ]), <any>{
                 scripts: ['scripts/vendor.js'],
             });
-
-            const valid = validator.validate(reporter);
-            expect(reporter).toHaveBeenCalledWith(`Script "scripts/vendor.js" does not exist`);
-            expect(valid).toBeFalsy();
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Script "scripts/vendor.js" does not exist`);
         });
     });
 });

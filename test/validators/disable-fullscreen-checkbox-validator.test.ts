@@ -2,6 +2,7 @@ import { DisableFullscreenCheckboxValidator } from '../../lib/validators/disable
 
 describe('DisableFullscreenCheckboxValidator', () => {
     let definition: any;
+    let error: jasmine.Spy;
     let validator: DisableFullscreenCheckboxValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -20,23 +21,18 @@ describe('DisableFullscreenCheckboxValidator', () => {
                 dataType: 'data'
             }]
         };
-        validator = new DisableFullscreenCheckboxValidator(definition);
+        error = jasmine.createSpy('error');
+        validator = new DisableFullscreenCheckboxValidator(error, definition);
     });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
         it('should pass on valid definition', () => {
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if dataType is not "styles"', () => {
             definition.componentProperties[0].dataType = 'data';
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Property "p1" uses "disable-fullscreen-checkbox" control type which is allowed to use with dataType="styles" only`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Property "p1" uses "disable-fullscreen-checkbox" control type which is allowed to use with dataType="styles" only`);
         });
     });
 });

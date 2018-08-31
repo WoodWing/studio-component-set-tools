@@ -2,6 +2,7 @@ import { ConversionRulesValidator } from '../../lib/validators/conversion-rules-
 
 describe('ConversionRulesValidator', () => {
     let definition: any;
+    let error: jasmine.Spy;
     let validator: ConversionRulesValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -36,17 +37,13 @@ describe('ConversionRulesValidator', () => {
                 }
             }
         };
-        validator = new ConversionRulesValidator(definition);
+        error = jasmine.createSpy('error');
+        validator = new ConversionRulesValidator(error, definition);
     });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
         it('should pass on valid definition', () => {
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should pass on valid definition (simple)', () => {
             definition.conversionRules.c1 = {
@@ -57,9 +54,8 @@ describe('ConversionRulesValidator', () => {
                     }
                 }
             };
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should pass on valid definition (from-container)', () => {
             definition.conversionRules.c1 = {
@@ -69,9 +65,8 @@ describe('ConversionRulesValidator', () => {
                 }
             };
             definition.components.c1.directives.slide.type = 'slideshow';
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should pass on valid definition (to-container)', () => {
             definition.conversionRules.c1 = {
@@ -81,23 +76,20 @@ describe('ConversionRulesValidator', () => {
                 }
             };
             definition.components.c2.directives.figure.type = 'slideshow';
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if source component does not exist', () => {
             definition.conversionRules.u1 = {};
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Conversion rule references to non existing component "u1"`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing component "u1"`);
         });
         it('should not pass if destination component does not exist', () => {
             definition.conversionRules.c1 = {
                 u2: 'auto'
             };
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Conversion rule references to non existing component "u2"`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing component "u2"`);
         });
         it('should not pass if source directive does not exist', () => {
             definition.conversionRules.c1 = {
@@ -108,9 +100,8 @@ describe('ConversionRulesValidator', () => {
                     }
                 }
             };
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud1"`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud1"`);
         });
         it('should not pass if destination directive does not exist', () => {
             definition.conversionRules.c1 = {
@@ -121,9 +112,8 @@ describe('ConversionRulesValidator', () => {
                     }
                 }
             };
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud2"`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud2"`);
         });
         it('should not pass if from-container directive does not exist', () => {
             definition.conversionRules.c1 = {
@@ -132,9 +122,8 @@ describe('ConversionRulesValidator', () => {
                     container: 'ud3'
                 }
             };
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud3"`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud3"`);
         });
         it('should not pass if from-container directive is not supported', () => {
             definition.conversionRules.c1 = {
@@ -143,9 +132,8 @@ describe('ConversionRulesValidator', () => {
                     container: 'slide'
                 }
             };
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Conversion rule references to a directive "slide" which must be "slideshow" or "container"`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Conversion rule references to a directive "slide" which must be "slideshow" or "container"`);
         });
         it('should not pass if to-container directive does not exist', () => {
             definition.conversionRules.c1 = {
@@ -154,9 +142,8 @@ describe('ConversionRulesValidator', () => {
                     container: 'ud4'
                 }
             };
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud4"`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud4"`);
         });
         it('should not pass if to-container directive is not supported', () => {
             definition.conversionRules.c1 = {
@@ -165,9 +152,8 @@ describe('ConversionRulesValidator', () => {
                     container: 'figure'
                 }
             };
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Conversion rule references to a directive "figure" which must be "slideshow" or "container"`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Conversion rule references to a directive "figure" which must be "slideshow" or "container"`);
         });
     });
 });

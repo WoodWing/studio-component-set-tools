@@ -2,6 +2,7 @@ import { ImageEditorValidator } from '../../lib/validators/image-editor-validato
 
 describe('ImageEditorValidator', () => {
     let definition: any;
+    let error: jasmine.Spy;
     let validator: ImageEditorValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -20,23 +21,18 @@ describe('ImageEditorValidator', () => {
                 dataType: 'data'
             }]
         };
-        validator = new ImageEditorValidator(definition);
+        error = jasmine.createSpy('error');
+        validator = new ImageEditorValidator(error, definition);
     });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
         it('should pass on valid definition', () => {
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if dataType is not "doc-image"', () => {
             definition.componentProperties[0].dataType = 'data';
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Property "p1" uses "image-editor" control type which is allowed to use with dataType="doc-image" only`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Property "p1" uses "image-editor" control type which is allowed to use with dataType="doc-image" only`);
         });
     });
 });

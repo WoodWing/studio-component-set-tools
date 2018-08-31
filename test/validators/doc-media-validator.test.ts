@@ -2,6 +2,7 @@ import { DocMediaValidator } from '../../lib/validators/doc-media-validator';
 
 describe('DocMediaValidator', () => {
     let definition: any;
+    let error: jasmine.Spy;
     let validator: DocMediaValidator;
 
     beforeEach(() => {
@@ -43,17 +44,13 @@ describe('DocMediaValidator', () => {
                 }
             }
         };
-        validator = new DocMediaValidator(definition);
+        error = jasmine.createSpy('error');
+        validator = new DocMediaValidator(error, definition);
     });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
         it('should pass on a valid definition', () => {
-            const valid = validator.validate(reporter);
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBeTruthy();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should pass with one media directives and other directive types', () => {
             definition.components.socialmedia.directives.d2 = {
@@ -64,18 +61,16 @@ describe('DocMediaValidator', () => {
                 type: 'link',
                 tag: 'a'
             };
-            const valid = validator.validate(reporter);
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBeTruthy();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should not pass with multiple media type directives', () => {
             definition.components.socialmedia.directives.d2 = {
                 type: 'media',
                 tag: 'div'
             };
-            const valid = validator.validate(reporter);
-            expect(reporter).toHaveBeenCalledWith(`A component can have only one "doc-media" directive in the HTML definition`);
-            expect(valid).toBeFalsy();
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`A component can have only one "doc-media" directive in the HTML definition`);
         });
         it('should fail if a component property with a media-properties control type is not applied to a media directive', () => {
             definition.components.wrongdirectivekey = {
@@ -103,9 +98,8 @@ describe('DocMediaValidator', () => {
                     }
                 ]
             };
-            const valid = validator.validate(reporter);
-            expect(reporter).toHaveBeenCalledWith(`Control type "media-properties" is only applicable to "doc-media" directives`);
-            expect(valid).toBeFalsy();
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Control type "media-properties" is only applicable to "doc-media" directives`);
         });
         it('should fail in case a component does not have a doc-media directive, but has a media-properties control type', () => {
             definition.components.nomediaproperties = {
@@ -129,9 +123,8 @@ describe('DocMediaValidator', () => {
                     }
                 ]
             };
-            const valid = validator.validate(reporter);
-            expect(reporter).toHaveBeenCalledWith(`Only components with a doc-media directive can have a "media-properties" control type`);
-            expect(valid).toBeFalsy();
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Only components with a doc-media directive can have a "media-properties" control type`);
         });
         it('should fail in case a "media-properties" property does not have a directive key', () => {
             definition.components.nodirectivekey = {
@@ -154,9 +147,8 @@ describe('DocMediaValidator', () => {
                     }
                 ]
             };
-            const valid = validator.validate(reporter);
-            expect(reporter).toHaveBeenCalledWith(`The directive key is required for properties of type "media-properties"`);
-            expect(valid).toBeFalsy();
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`The directive key is required for properties of type "media-properties"`);
         });
     });
 });

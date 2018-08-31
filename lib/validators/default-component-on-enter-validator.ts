@@ -5,23 +5,18 @@
 import { Validator } from './validator';
 import { ParsedComponentsDefinitionV10X } from '../models';
 
-export class DefaultComponentOnEnterValidator implements Validator {
+export class DefaultComponentOnEnterValidator extends Validator {
 
     constructor(
+        error: (errorMessage: string) => false,
         private definition: ParsedComponentsDefinitionV10X,
     ) {
+        super(error);
     }
 
-    validate(
-        errorReporter: (errorMessage: string) => void,
-    ): boolean {
-        let valid = true;
-
+    validate(): void {
         if (!(this.definition.defaultComponentOnEnter in this.definition.components)) {
-            errorReporter(`Property "defaultComponentOnEnter" points to non existing component "${this.definition.defaultComponentOnEnter}"`);
-            valid = false;
+            this.error(`Property "defaultComponentOnEnter" points to non existing component "${this.definition.defaultComponentOnEnter}"`);
         }
-
-        return valid;
     }
 }

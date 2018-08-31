@@ -9,37 +9,31 @@ import { ComponentsDefinition } from '../models';
 import { GetFileContentType } from '..';
 var PNG = require('pngjs').PNG;
 
-export class IconsValidator implements Validator {
+export class IconsValidator extends Validator {
 
     private supportedFormats = ['.svg', '.png'];
 
     constructor(
+        error: (errorMessage: string) => false,
         private definition: ComponentsDefinition,
         private getFileContent: GetFileContentType,
     ) {
+        super(error);
     }
 
-    async validate(
-        errorReporter: (errorMessage: string) => void,
-    ): Promise<boolean> {
-        let valid = true;
-
+    async validate(): Promise<void> {
         for (const component of Object.values(this.definition.components)) {
             const ext = path.extname(component.icon).toLowerCase();
             if (this.supportedFormats.indexOf(ext) === -1) {
-                errorReporter(`Icons are only supported in SVG or transparent PNG format`);
-                valid = false;
+                this.error(`Icons are only supported in SVG or transparent PNG format`);
             } else if (ext === '.png') {
                 let data = await this.getFileContent(path.normalize(component.icon));
                 let png = PNG.sync.read(data);
 
                 if (png.alpha === false) {
-                    valid = false;
-                    errorReporter(`PNG icons are only supported when they are transparent`);
+                    this.error(`PNG icons are only supported when they are transparent`);
                 }
             }
         }
-
-        return valid;
     }
 }

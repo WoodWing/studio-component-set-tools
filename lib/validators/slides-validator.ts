@@ -5,26 +5,22 @@
 import { Validator } from './validator';
 import { ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionProperty } from '../models';
 
-export class SlidesValidator implements Validator {
+export class SlidesValidator extends Validator {
 
     constructor(
+        error: (errorMessage: string) => false,
         private parsedDefinition: ParsedComponentsDefinitionV10X,
     ) {
+        super(error);
     }
 
-    validate(
-        errorReporter: (errorMessage: string) => void,
-    ): boolean {
-        let valid = true;
-
+    validate(): void {
         // Find slides control properties and check for include and exclude
         for (const parsedComponent of Object.values(this.parsedDefinition.components)) {
             parsedComponent.properties.forEach((property) => {
-                valid = this.validateComponent(errorReporter, parsedComponent, property) && valid;
+                this.validateComponent(parsedComponent, property);
             });
         }
-
-        return valid;
     }
 
     /**
@@ -37,34 +33,29 @@ export class SlidesValidator implements Validator {
      * @param property
      */
     validateComponent(
-        errorReporter: (errorMessage: string) => void,
         parsedComponent: ParsedComponentsDefinitionComponent,
         property: ParsedComponentsDefinitionProperty,
-    ): boolean {
+    ): void {
         if (property.control.type !== 'slides') {
-            return true;
+            return;
         }
 
         if (!parsedComponent.component.restrictChildren) {
-            errorReporter(`Component "${parsedComponent.component.name}" must have restrictChildren set to use the slides property`);
-            return false;
+            this.error(`Component "${parsedComponent.component.name}" must have restrictChildren set to use the slides property`);
+            return;
         }
 
         const slideComponentName = Object.keys(parsedComponent.component.restrictChildren)[0];
         const slideComponent = this.parsedDefinition.components[slideComponentName];
 
-        let valid = true;
-
         if (property.control.include) {
-            valid = this.validateHasProperties(errorReporter, slideComponent,
-                property, property.control.include) && valid;
+            this.validateHasProperties(slideComponent,
+                property, property.control.include);
         }
         if (property.control.exclude) {
-            valid = this.validateHasProperties(errorReporter, slideComponent,
-                property, property.control.exclude) && valid;
+            this.validateHasProperties(slideComponent,
+                property, property.control.exclude);
         }
-
-        return valid;
     }
 
     /**
@@ -75,19 +66,15 @@ export class SlidesValidator implements Validator {
      * @param property
      * @param properties
      */
-    private validateHasProperties(errorReporter: (errorMessage: string) => void,
-                                  parsedComponent: ParsedComponentsDefinitionComponent,
+    private validateHasProperties(parsedComponent: ParsedComponentsDefinitionComponent,
                                   property: ParsedComponentsDefinitionProperty,
-                                  properties: string[]): boolean {
-        let valid = true;
+                                  properties: string[]): void {
         properties.forEach((propertyName) => {
             if (!this.hasProperty(parsedComponent, propertyName)) {
-                errorReporter(`Property "${property.name}" is referring to an invalid property "${propertyName}"`
+                this.error(`Property "${property.name}" is referring to an invalid property "${propertyName}"`
                     + `not part of "${parsedComponent.component.name}"`);
-                valid = false;
             }
         });
-        return valid;
     }
 
     /**
