@@ -9,6 +9,7 @@ import * as recursiveReadDir from 'recursive-readdir';
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
 import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
+import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
 
 import { parseDefinition } from './parser/parser-utils';
 import { ParsedComponentsDefinitionV10X, ComponentsDefinition } from './models';
@@ -149,6 +150,8 @@ function getValidationSchema(version: string): Ajv.ValidateFunction | null {
         return ajv.compile(componentsDefinitionSchema_v1_1_x);
     } else if (semver.satisfies(version, '1.2.x')) {
         return ajv.compile(componentsDefinitionSchema_v1_2_x);
+    } else if (semver.satisfies(version, '1.3.x')) {
+        return ajv.compile(componentsDefinitionSchema_v1_3_x);
     }
     return null;
 }
