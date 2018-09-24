@@ -2,8 +2,8 @@ import { DefaultValuesValidator } from '../../lib/validators/default-values-vali
 
 describe('DefaultValuesValidator', () => {
     let definition: any;
+    let error: jasmine.Spy;
     let validator: DefaultValuesValidator;
-    let reporter: jasmine.Spy;
 
     beforeEach(() => {
         // valid definition (cut)
@@ -17,15 +17,14 @@ describe('DefaultValuesValidator', () => {
                 },
             },
         };
-        reporter = jasmine.createSpy('reporter');
+        error = jasmine.createSpy('error');
     });
     describe('validate', () => {
         it('should pass validation if property has no defaultValue set', () => {
-            validator = new DefaultValuesValidator(definition);
-            const valid = validator.validate(reporter);
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
 
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBe(true);
+            expect(error).not.toHaveBeenCalled();
         });
 
         ['styles', 'inlineStyles', 'data'].forEach((dataType) => {
@@ -37,11 +36,10 @@ describe('DefaultValuesValidator', () => {
                     control: { type: 'text' },
                 });
 
-                validator = new DefaultValuesValidator(definition);
-                const valid = validator.validate(reporter);
+                validator = new DefaultValuesValidator(error, definition);
+                validator.validate();
 
-                expect(reporter).not.toHaveBeenCalled();
-                expect(valid).toBe(true);
+                expect(error).not.toHaveBeenCalled();
             });
         });
 
@@ -53,12 +51,11 @@ describe('DefaultValuesValidator', () => {
                 control: { type: 'text' },
             });
 
-            validator = new DefaultValuesValidator(definition);
-            const valid = validator.validate(reporter);
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
 
-            expect(reporter).toHaveBeenCalledWith(
+            expect(error).toHaveBeenCalledWith(
                 'Property propertyName has a default value for an unsupported data type doc-editable');
-            expect(valid).toBe(false);
         });
 
         it('should not pass with unsupported control type', () => {
@@ -71,12 +68,11 @@ describe('DefaultValuesValidator', () => {
                 },
             });
 
-            validator = new DefaultValuesValidator(definition);
-            const valid = validator.validate(reporter);
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
 
-            expect(reporter).toHaveBeenCalledWith(
+            expect(error).toHaveBeenCalledWith(
                 'Property propertyName has a default value used with an unsupported control type unsupported');
-            expect(valid).toBe(false);
         });
 
         it('should pass with control type select and defaultValue being present in options', () => {
@@ -93,11 +89,10 @@ describe('DefaultValuesValidator', () => {
                 },
             });
 
-            validator = new DefaultValuesValidator(definition);
-            const valid = validator.validate(reporter);
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
 
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBe(true);
+            expect(error).not.toHaveBeenCalled();
         });
 
         it('should not pass with control type select and defaultValue not being present in options', () => {
@@ -114,12 +109,11 @@ describe('DefaultValuesValidator', () => {
                 },
             });
 
-            validator = new DefaultValuesValidator(definition);
-            const valid = validator.validate(reporter);
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
 
-            expect(reporter).toHaveBeenCalledWith(
+            expect(error).toHaveBeenCalledWith(
                 'Property propertyName defaultValue has no matching entry in select options');
-            expect(valid).toBe(false);
         });
 
         it('should pass with control type radio and defaultValue being present in options', () => {
@@ -136,11 +130,10 @@ describe('DefaultValuesValidator', () => {
                 },
             });
 
-            validator = new DefaultValuesValidator(definition);
-            const valid = validator.validate(reporter);
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
 
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBe(true);
+            expect(error).not.toHaveBeenCalled();
         });
 
         it('should not pass with control type radio and defaultValue not being present in options', () => {
@@ -157,12 +150,11 @@ describe('DefaultValuesValidator', () => {
                 },
             });
 
-            validator = new DefaultValuesValidator(definition);
-            const valid = validator.validate(reporter);
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
 
-            expect(reporter).toHaveBeenCalledWith(
+            expect(error).toHaveBeenCalledWith(
                 'Property propertyName defaultValue has no matching entry in radio options');
-            expect(valid).toBe(false);
         });
 
         it('should pass with control type checkbox and defaultValue being the checked value', () => {
@@ -176,11 +168,10 @@ describe('DefaultValuesValidator', () => {
                 },
             });
 
-            validator = new DefaultValuesValidator(definition);
-            const valid = validator.validate(reporter);
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
 
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBe(true);
+            expect(error).not.toHaveBeenCalled();
         });
 
         it('should pass with control type checkbox and defaultValue being the checked value', () => {
@@ -194,12 +185,11 @@ describe('DefaultValuesValidator', () => {
                 },
             });
 
-            validator = new DefaultValuesValidator(definition);
-            const valid = validator.validate(reporter);
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
 
-            expect(reporter).toHaveBeenCalledWith(
+            expect(error).toHaveBeenCalledWith(
                 'Property propertyName defaultValue does not match checkbox value');
-            expect(valid).toBe(false);
         });
     });
 });

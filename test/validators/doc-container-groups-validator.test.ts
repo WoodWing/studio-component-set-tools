@@ -2,6 +2,7 @@ import { DocContainerGroupsValidator } from '../../lib/validators/doc-container-
 
 describe('DocContainerGroupsValidator', () => {
     let definition: any;
+    let error: jasmine.Spy;
     let validator: DocContainerGroupsValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -35,55 +36,46 @@ describe('DocContainerGroupsValidator', () => {
                 },
             },
         };
-
+        error = jasmine.createSpy('error');
     });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
-
         it('should validate a correct definition', () => {
-            validator = new DocContainerGroupsValidator(definition);
+            validator = new DocContainerGroupsValidator(error, definition);
 
-            const valid = validator.validate(reporter);
+            validator.validate();
 
-            expect(reporter).not.toHaveBeenCalled();
-            expect(valid).toBeTruthy();
+            expect(error).not.toHaveBeenCalled();
         });
 
         it('should fail validation for invalid directive', () => {
             delete definition.components.c1.directives.main;
 
-            validator = new DocContainerGroupsValidator(definition);
+            validator = new DocContainerGroupsValidator(error, definition);
 
-            const valid = validator.validate(reporter);
+            validator.validate();
 
-            expect(reporter).toHaveBeenCalledWith(`Component \"c1\" has a group for invalid directive \"main\"`);
-            expect(valid).toBeFalsy();
+            expect(error).toHaveBeenCalledWith(`Component \"c1\" has a group for invalid directive \"main\"`);
         });
 
         it('should fail validation for invalid directive type', () => {
             definition.components.c1.directives.main.type = 'editable';
 
-            validator = new DocContainerGroupsValidator(definition);
+            validator = new DocContainerGroupsValidator(error, definition);
 
-            const valid = validator.validate(reporter);
+            validator.validate();
 
-            expect(reporter).toHaveBeenCalledWith(`Component \"c1\" has a group for directive \"main\" with incompatible type \"editable\". Only type \"container\" is allowed.`);
-            expect(valid).toBeFalsy();
+            expect(error).toHaveBeenCalledWith(`Component \"c1\" has a group for directive \"main\" with incompatible type \"editable\". Only type \"container\" is allowed.`);
         });
 
         it('should fail validation if component misses', () => {
             // Remove the component
             delete definition.components.picture;
 
-            validator = new DocContainerGroupsValidator(definition);
+            validator = new DocContainerGroupsValidator(error, definition);
 
-            const valid = validator.validate(reporter);
+            validator.validate();
 
-            expect(reporter).toHaveBeenCalledWith(`Component \"picture\" of group \"g1\" does not exist`);
-            expect(valid).toBeFalsy();
+            expect(error).toHaveBeenCalledWith(`Component \"picture\" of group \"g1\" does not exist`);
         });
     });
 });

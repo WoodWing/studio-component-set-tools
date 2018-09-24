@@ -9,13 +9,15 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent, ComponentsDefinition } from '../models';
+import { DirectiveType, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent } from '../models';
 
-export class DocMediaValidator implements Validator {
+export class DocMediaValidator extends Validator {
 
     constructor(
+        error: (errorMessage: string) => false,
         private definition: ParsedComponentsDefinitionV10X,
     ) {
+        super(error);
     }
 
     private countMediaDirectives(parsedComponent: ParsedComponentsDefinitionComponent) : number {
@@ -24,22 +26,17 @@ export class DocMediaValidator implements Validator {
             .length;
     }
 
-    validate(
-        errorReporter: (errorMessage: string) => void,
-    ): boolean {
-        let valid = true;
+    validate(): void {
         Object.values(this.definition.components).forEach((parsedComponent: ParsedComponentsDefinitionComponent) => {
 
             let numMediaDirectives = this.countMediaDirectives(parsedComponent);
             if (numMediaDirectives > 1) {
-                errorReporter(`A component can have only one "doc-media" directive in the HTML definition`);
-                valid = false;
+                this.error(`A component can have only one "doc-media" directive in the HTML definition`);
             } else {
                 let mediaProperties = Object.values(parsedComponent.properties).filter((property) => property.control.type === 'media-properties');
                 // Check whether the component has a media-properties control type
                 if (numMediaDirectives < 1 && mediaProperties.length > 0) {
-                    errorReporter(`Only components with a doc-media directive can have a "media-properties" control type`);
-                    valid = false;
+                    this.error(`Only components with a doc-media directive can have a "media-properties" control type`);
                 }
                 if (numMediaDirectives === 1) {
                     // Check whether the media-properties control type property is applied to the doc-media directive.
@@ -47,17 +44,14 @@ export class DocMediaValidator implements Validator {
                         if (mediaProperty.directiveKey) {
                             const directive = parsedComponent.directives[mediaProperty.directiveKey];
                             if (!directive || directive.type !== DirectiveType.media) {
-                                errorReporter(`Control type "media-properties" is only applicable to "doc-media" directives`);
-                                valid = false;
+                                this.error(`Control type "media-properties" is only applicable to "doc-media" directives`);
                             }
                         } else {
-                            errorReporter(`The directive key is required for properties of type "media-properties"`);
-                            valid = false;
+                            this.error(`The directive key is required for properties of type "media-properties"`);
                         }
                     });
                 }
             }
         });
-        return valid;
     }
 }

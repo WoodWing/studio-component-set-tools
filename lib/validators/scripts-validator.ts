@@ -6,28 +6,23 @@ import * as path from 'path';
 import { Validator } from './validator';
 import { ComponentsDefinition } from '../models';
 
-export class ScriptsValidator implements Validator {
+export class ScriptsValidator extends Validator {
 
     constructor(
+        error: (errorMessage: string) => false,
         private filePaths: Set<string>,
         private definition: ComponentsDefinition,
     ) {
+        super(error);
     }
 
-    validate(
-        errorReporter: (errorMessage: string) => void,
-    ): boolean {
-        let valid = true;
-
+    validate(): void {
         if (this.definition.scripts) {
             for (const scriptPath of this.definition.scripts) {
                 if (!this.filePaths.has(path.normalize(scriptPath))) {
-                    valid = false;
-                    errorReporter(`Script "${scriptPath}" does not exist`);
+                    this.error(`Script "${scriptPath}" does not exist`);
                 }
             }
         }
-
-        return valid;
     }
 }

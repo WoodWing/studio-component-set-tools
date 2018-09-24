@@ -10,24 +10,20 @@ import { Validator } from './validator';
 import { ParsedComponentsDefinitionV11X } from '../models';
 import { GroupsValidator } from './groups-validator';
 
-export class DocContainerGroupsValidator implements Validator {
+export class DocContainerGroupsValidator extends Validator {
 
     constructor(
+        error: (errorMessage: string) => false,
         private parsedDefinition: ParsedComponentsDefinitionV11X,
     ) {
+        super(error);
     }
 
-    validate(
-        errorReporter: (errorMessage: string) => void,
-    ): boolean {
-        let valid = true;
-
+    validate(): void {
         // Find slides control properties and check for include and exclude
         for (const parsedComponent of Object.values(this.parsedDefinition.components)) {
-            valid = this.validateComponent(errorReporter, parsedComponent) && valid;
+            this.validateComponent(parsedComponent);
         }
-
-        return valid;
     }
 
     /**
@@ -39,16 +35,13 @@ export class DocContainerGroupsValidator implements Validator {
      * @param parsedComponent
      */
     validateComponent(
-        errorReporter: (errorMessage: string) => void,
         parsedComponent: ParsedComponentsDefinitionV11X['components']['name'],
-    ): boolean {
-        let valid = true;
-
+    ): void {
         if (!parsedComponent.component.directiveOptions) {
-            return valid;
+            return;
         }
 
-        const groupsValidator = new GroupsValidator(this.parsedDefinition);
+        const groupsValidator = new GroupsValidator(this.error, this.parsedDefinition);
 
         for (const [key, directiveOptions] of Object.entries(parsedComponent.component.directiveOptions)) {
             // Rules only apply when it has a groups property defined
@@ -56,19 +49,15 @@ export class DocContainerGroupsValidator implements Validator {
                 continue;
             }
             if (!parsedComponent.directives[key]) {
-                valid = false;
-                errorReporter(`Component "${parsedComponent.component.name}" has a group for invalid directive "${key}"`);
+                this.error(`Component "${parsedComponent.component.name}" has a group for invalid directive "${key}"`);
                 continue;
             }
             if (parsedComponent.directives[key].type !== 'container') {
-                valid = false;
-                errorReporter(`Component "${parsedComponent.component.name}" has a group for directive "${key}" with incompatible type "${parsedComponent.directives[key].type}". Only type "container" is allowed.`);
+                this.error(`Component "${parsedComponent.component.name}" has a group for directive "${key}" with incompatible type "${parsedComponent.directives[key].type}". Only type "container" is allowed.`);
                 continue;
             }
 
-            valid = groupsValidator.validateGroupsList(errorReporter, directiveOptions.groups) && valid;
+            groupsValidator.validateGroupsList(directiveOptions.groups);
         }
-
-        return valid;
     }
 }

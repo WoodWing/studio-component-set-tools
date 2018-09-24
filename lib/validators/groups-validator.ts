@@ -5,17 +5,17 @@
 import { Validator } from './validator';
 import { ParsedComponentsDefinitionV10X } from '../models';
 
-export class GroupsValidator implements Validator {
+export class GroupsValidator extends Validator {
 
     constructor(
+        error: (errorMessage: string) => false,
         private definition: ParsedComponentsDefinitionV10X,
     ) {
+        super(error);
     }
 
-    validate(
-        errorReporter: (errorMessage: string) => void,
-    ): boolean {
-        return this.validateGroupsList(errorReporter, this.definition.groups);
+    validate(): void {
+        this.validateGroupsList(this.definition.groups);
     }
 
     /**
@@ -25,24 +25,18 @@ export class GroupsValidator implements Validator {
      * @param parsedGroup
      */
     validateGroupsList(
-        errorReporter: (errorMessage: string) => void,
         groups: ParsedComponentsDefinitionV10X['groups'],
-    ): boolean {
-        let valid = true;
-
+    ): void {
         const groupNames = new Set<string>();
 
         for (const group of groups) {
-            valid = this.validateGroup(errorReporter, group) && valid;
+            this.validateGroup(group);
 
             if (groupNames.has(group.name)) {
-                valid = false;
-                errorReporter(`Component group "${group.name}" is not unique`);
+                this.error(`Component group "${group.name}" is not unique`);
             }
             groupNames.add(group.name);
         }
-
-        return valid;
     }
 
     /**
@@ -52,18 +46,12 @@ export class GroupsValidator implements Validator {
      * @param parsedGroup
      */
     private validateGroup(
-        errorReporter: (errorMessage: string) => void,
         group: ParsedComponentsDefinitionV10X['groups'][0],
-    ): boolean {
-        let valid = true;
-
+    ): void {
         for (const componentName of group.components) {
             if (!(componentName in this.definition.components)) {
-                errorReporter(`Component "${componentName}" of group "${group.name}" does not exist`);
-                valid = false;
+                this.error(`Component "${componentName}" of group "${group.name}" does not exist`);
             }
         }
-
-        return valid;
     }
 }

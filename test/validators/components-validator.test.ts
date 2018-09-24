@@ -3,6 +3,7 @@ import { ComponentsValidator } from '../../lib/validators/components-validator';
 
 describe('ComponentsValidator', () => {
     let definition: any;
+    let error: jasmine.Spy;
     let validator: ComponentsValidator;
     let fileList: Set<string>;
     beforeEach(() => {
@@ -32,56 +33,46 @@ describe('ComponentsValidator', () => {
             path.normalize('./styles/design.scss'),
             path.normalize('./styles/design.css'),
         ]);
-        validator = new ComponentsValidator(fileList, definition);
+        error = jasmine.createSpy('error');
+        validator = new ComponentsValidator(error, fileList, definition);
     });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
         it('should pass on valid definition', () => {
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if the names are not unique', () => {
             definition.components[0].name = 'intro';
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Component "intro" is not unique`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Component "intro" is not unique`);
         });
         it('should not pass if reserved word is used as a name (__internal__)', () => {
             definition.components[0].name = '__internal__bla';
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Component name "__internal__bla" is a reserved word`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Component name "__internal__bla" is a reserved word`);
         });
         it('should not pass if there is no icon file', () => {
             definition.components[1].icon = 'pathU';
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Component "intro" icon missing "pathU"`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Component "intro" icon missing "pathU"`);
         });
         it('should not pass if "design.css" is missing', () => {
             const file = path.normalize('./styles/design.css');
             fileList.delete(file);
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`File "${file}" is missing`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`File "${file}" is missing`);
         });
         it('should not pass if "design.scss" is missing', () => {
             const file = path.normalize('./styles/design.scss');
             fileList.delete(file);
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`File "${file}" is missing`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`File "${file}" is missing`);
         });
         it('should not pass if "_common.scss" is missing', () => {
             const file = path.normalize('./styles/_common.scss');
             fileList.delete(file);
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`File "${file}" is missing`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`File "${file}" is missing`);
         });
     });
 });

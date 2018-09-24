@@ -8,11 +8,13 @@ import { ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent } f
 
 const CONTROL = 'fitting';
 
-export class FittingValidator implements Validator {
+export class FittingValidator extends Validator {
 
     constructor(
+        error: (errorMessage: string) => false,
         private parsedDefinition: ParsedComponentsDefinitionV10X,
     ) {
+        super(error);
     }
 
     private countPerComponent(component: ParsedComponentsDefinitionComponent) : number {
@@ -25,19 +27,12 @@ export class FittingValidator implements Validator {
         return amount;
     }
 
-    validate(
-        errorReporter: (errorMessage: string) => void,
-    ): boolean {
-        let valid = true;
-
+    validate(): void {
         for (const parsedComponent of Object.values(this.parsedDefinition.components)) {
             if (this.countPerComponent(parsedComponent) > 1) {
-                errorReporter(`Component "${parsedComponent.component.name}" uses properties with "${CONTROL}" control type ` +
+                this.error(`Component "${parsedComponent.component.name}" uses properties with "${CONTROL}" control type ` +
                     `more that one time`);
-                valid = false;
             }
         }
-
-        return valid;
     }
 }

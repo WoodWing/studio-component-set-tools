@@ -2,6 +2,7 @@ import { FittingValidator } from '../../lib/validators/fitting-validator';
 
 describe('FittingValidator', () => {
     let parsedDefinition: any;
+    let error: jasmine.Spy;
     let validator: FittingValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -28,17 +29,13 @@ describe('FittingValidator', () => {
                 },
             },
         };
-        validator = new FittingValidator(parsedDefinition);
+        error = jasmine.createSpy('error');
+        validator = new FittingValidator(error, parsedDefinition);
     });
     describe('validate', () => {
-        let reporter: jasmine.Spy;
-        beforeEach(() => {
-            reporter = jasmine.createSpy('reporter');
-        });
         it('should pass on valid definition', () => {
-            const valid = validator.validate(reporter);
-            expect(valid).toBeTruthy();
-            expect(reporter).not.toHaveBeenCalled();
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if there is a component which uses "fitting" property more then one time', () => {
             parsedDefinition.components.c1.properties.push({
@@ -47,9 +44,8 @@ describe('FittingValidator', () => {
                     type: 'fitting',
                 },
             });
-            const valid = validator.validate(reporter);
-            expect(valid).toBeFalsy();
-            expect(reporter).toHaveBeenCalledWith(`Component "c1" uses properties with "fitting" control type more that one time`);
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(`Component "c1" uses properties with "fitting" control type more that one time`);
         });
     });
 });

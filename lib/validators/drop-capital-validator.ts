@@ -10,12 +10,14 @@ import { ComponentsDefinition, ParsedComponentsDefinitionV10X, ParsedComponentsD
 const CONTROL = 'drop-capital';
 const ALLOWED_DATA_TYPE = 'data';
 
-export class DropCapitalValidator implements Validator {
+export class DropCapitalValidator extends Validator {
 
     constructor(
+        error: (errorMessage: string) => false,
         private definition: ComponentsDefinition,
         private parsedDefinition: ParsedComponentsDefinitionV10X,
     ) {
+        super(error);
     }
 
     private countPerComponent(component: ParsedComponentsDefinitionComponent) : number {
@@ -28,27 +30,19 @@ export class DropCapitalValidator implements Validator {
         return amount;
     }
 
-    validate(
-        errorReporter: (errorMessage: string) => void,
-    ): boolean {
-        let valid = true;
-
+    validate(): void {
         for (const property of this.definition.componentProperties) {
             if (property.control.type === CONTROL && property.dataType !== ALLOWED_DATA_TYPE) {
-                errorReporter(`Property "${property.name}" uses "${CONTROL}" control type which is allowed to use with ` +
+                this.error(`Property "${property.name}" uses "${CONTROL}" control type which is allowed to use with ` +
                     `dataType="${ALLOWED_DATA_TYPE}" only`);
-                valid = false;
             }
         }
 
         for (const parsedComponent of Object.values(this.parsedDefinition.components)) {
             if (this.countPerComponent(parsedComponent) > 1) {
-                errorReporter(`Component "${parsedComponent.component.name}" uses properties with "${CONTROL}" control type ` +
+                this.error(`Component "${parsedComponent.component.name}" uses properties with "${CONTROL}" control type ` +
                     `more that one time`);
-                valid = false;
             }
         }
-
-        return valid;
     }
 }
