@@ -24,7 +24,7 @@ export class ComponentsValidator extends Validator {
     constructor(
         error: (errorMessage: string) => false,
         definition: ParsedComponentsDefinitionV10X,
-        protected filePaths: Set<string>,
+        private filePaths: Set<string>,
     ) {
         super(error, definition);
     }
