@@ -9,14 +9,6 @@ const supportedDestinationDirectives = [DirectiveType.editable, DirectiveType.li
 const supportedSourceDirectives = [DirectiveType.image];
 
 export class AutofillValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV11X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         Object.values(this.definition.components).forEach((component) => {
             this.validateComponent(component);

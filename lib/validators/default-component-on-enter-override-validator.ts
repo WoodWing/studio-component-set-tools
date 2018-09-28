@@ -3,17 +3,8 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionV11X } from '../models';
 
 export class DefaultComponentOnEnterOverrideValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV11X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         for (const parsedComponent of Object.values(this.definition.components)) {
             if ('defaultComponentOnEnter' in parsedComponent.component &&

@@ -8,32 +8,47 @@ describe('PropertiesValidator', () => {
     beforeEach(() => {
         // valid definition (cut)
         definition = {
-            componentProperties: [
-                {
-                    name: 'p1',
-                    control: {
-                        type: 'text',
-                    },
+            components: {
+                c1: {
+                    properties: [
+                        {
+                            name: 'p1',
+                            control: {
+                                type: 'text',
+                            },
+                        },
+                        {
+                            name: 'p2',
+                            control: {
+                                type: 'radio',
+                                options: [
+                                    { icon: 'path1' },
+                                    { icon: 'path2' },
+                                    { icon: 'path5' },
+                                ],
+                            },
+                        },
+                        {
+                            name: 'p3',
+                            control: {
+                                type: 'media-properties'
+                            },
+                            dataType: 'doc-media'
+                        }
+                    ],
                 },
-                {
-                    name: 'p2',
-                    control: {
-                        type: 'radio',
-                        options: [
-                            { icon: 'path1' },
-                            { icon: 'path2' },
-                            { icon: 'path5' },
-                        ],
-                    },
+                // Add another component with same property to test uniqueness validation passes correctly
+                c2: {
+                    properties: [
+                        {
+                            name: 'p1',
+                            control: {
+                                type: 'text',
+                            },
+                        },
+                    ]
                 },
-                {
-                    name: 'p3',
-                    control: {
-                        type: 'media-properties'
-                    },
-                    dataType: 'doc-media'
-                }
-            ]
+            },
         };
         fileList = new Set<string>([
             'path1',
@@ -43,7 +58,7 @@ describe('PropertiesValidator', () => {
             'path5',
         ]);
         error = jasmine.createSpy('error');
-        validator = new PropertiesValidator(error, fileList, definition);
+        validator = new PropertiesValidator(error, definition, fileList);
     });
     describe('validate', () => {
         it('should pass on valid definition', () => {
@@ -51,17 +66,17 @@ describe('PropertiesValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if the names are not unique', () => {
-            definition.componentProperties[0].name = 'p2';
+            definition.components.c1.properties[0].name = 'p2';
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Component property "p2" is not unique`);
         });
         it('should not pass if reserved word is used as a name', () => {
-            definition.componentProperties[0].name = 'parallax';
+            definition.components.c1.properties[0].name = 'parallax';
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Component property name "parallax" is a reserved word`);
         });
         it('should not pass if there is no icon file', () => {
-            definition.componentProperties[1].control.options[0].icon = 'pathU';
+            definition.components.c1.properties[1].control.options[0].icon = 'pathU';
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Component properties "p2" icon missing "pathU"`);
         });

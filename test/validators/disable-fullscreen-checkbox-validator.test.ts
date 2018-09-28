@@ -7,19 +7,25 @@ describe('DisableFullscreenCheckboxValidator', () => {
     beforeEach(() => {
         // valid definition (cut)
         definition = {
-            componentProperties: [{
-                name: 'p1',
-                control: {
-                    type: 'disable-fullscreen-checkbox',
+            components: {
+                c1: {
+                    properties: [
+                        {
+                            name: 'p1',
+                            control: {
+                                type: 'disable-fullscreen-checkbox',
+                            },
+                            dataType: 'styles'
+                        }, {
+                            name: 'p2',
+                            control: {
+                                type: 'text',
+                            },
+                            dataType: 'data'
+                        }
+                    ],
                 },
-                dataType: 'styles'
-            }, {
-                name: 'p2',
-                control: {
-                    type: 'text',
-                },
-                dataType: 'data'
-            }]
+            },
         };
         error = jasmine.createSpy('error');
         validator = new DisableFullscreenCheckboxValidator(error, definition);
@@ -30,7 +36,7 @@ describe('DisableFullscreenCheckboxValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if dataType is not "styles"', () => {
-            definition.componentProperties[0].dataType = 'data';
+            definition.components.c1.properties[0].dataType = 'data';
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Property "p1" uses "disable-fullscreen-checkbox" control type which is allowed to use with dataType="styles" only`);
         });

@@ -4,16 +4,15 @@
 
 import * as path from 'path';
 import { Validator } from './validator';
-import { ComponentsDefinition } from '../models';
+import { ParsedComponentsDefinitionV10X } from '../models';
 
 export class ScriptsValidator extends Validator {
-
     constructor(
         error: (errorMessage: string) => false,
-        private filePaths: Set<string>,
-        private definition: ComponentsDefinition,
+        definition: ParsedComponentsDefinitionV10X,
+        protected filePaths: Set<string>,
     ) {
-        super(error);
+        super(error, definition);
     }
 
     validate(): void {

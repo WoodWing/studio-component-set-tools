@@ -6,14 +6,6 @@ import { Validator } from './validator';
 import { ParsedComponentsDefinitionV10X } from '../models';
 
 export class GroupsValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         this.validateGroupsList(this.definition.groups);
     }

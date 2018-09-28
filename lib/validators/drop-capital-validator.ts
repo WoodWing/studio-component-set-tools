@@ -5,21 +5,12 @@
  */
 
 import { Validator } from './validator';
-import { ComponentsDefinition, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent } from '../models';
+import { ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionProperty } from '../models';
 
 const CONTROL = 'drop-capital';
 const ALLOWED_DATA_TYPE = 'data';
 
 export class DropCapitalValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ComponentsDefinition,
-        private parsedDefinition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     private countPerComponent(component: ParsedComponentsDefinitionComponent) : number {
         let amount = 0;
         component.properties.forEach((parsedProperty) => {
@@ -31,18 +22,32 @@ export class DropCapitalValidator extends Validator {
     }
 
     validate(): void {
-        for (const property of this.definition.componentProperties) {
-            if (property.control.type === CONTROL && property.dataType !== ALLOWED_DATA_TYPE) {
-                this.error(`Property "${property.name}" uses "${CONTROL}" control type which is allowed to use with ` +
-                    `dataType="${ALLOWED_DATA_TYPE}" only`);
-            }
-        }
+        Object.values(this.definition.components).forEach((component) => this.validateComponent(component));
+    }
 
-        for (const parsedComponent of Object.values(this.parsedDefinition.components)) {
-            if (this.countPerComponent(parsedComponent) > 1) {
-                this.error(`Component "${parsedComponent.component.name}" uses properties with "${CONTROL}" control type ` +
-                    `more that one time`);
-            }
+    /**
+     * Iterate through all properties of given component.
+     *
+     * @param component
+     */
+    private validateComponent(component: ParsedComponentsDefinitionComponent): void {
+        component.properties.forEach((property) => this.validateProperty(property));
+
+        if (this.countPerComponent(component) > 1) {
+            this.error(`Component "${component.component.name}" uses properties with "${CONTROL}" control type ` +
+                `more that one time`);
+        }
+    }
+
+    /**
+     * Validate property with control type drop-capital uses the correct dataType.
+     *
+     * @param property
+     */
+    private validateProperty(property: ParsedComponentsDefinitionProperty) {
+        if (property.control.type === CONTROL && property.dataType !== ALLOWED_DATA_TYPE) {
+            this.error(`Property "${property.name}" uses "${CONTROL}" control type which is allowed to use with ` +
+                `dataType="${ALLOWED_DATA_TYPE}" only`);
         }
     }
 }

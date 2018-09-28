@@ -9,17 +9,9 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent } from '../models';
+import { DirectiveType, ParsedComponentsDefinitionComponent } from '../models';
 
 export class DocMediaValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     private countMediaDirectives(parsedComponent: ParsedComponentsDefinitionComponent) : number {
         return Object.values(parsedComponent.directives)
             .filter((directive) => (directive.type === DirectiveType.media))
