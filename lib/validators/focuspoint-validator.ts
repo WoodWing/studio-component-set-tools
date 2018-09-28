@@ -6,14 +6,6 @@ import { Validator } from './validator';
 import { ParsedComponentsDefinitionV10X } from '../models';
 
 export class FocuspointValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         for (const parsedComponent of Object.values(this.definition.components)) {
             parsedComponent.properties.forEach((parsedProperty) => {

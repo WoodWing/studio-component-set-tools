@@ -17,13 +17,6 @@ export class DefaultValuesValidator extends Validator {
         ['checkbox', this.validateCheckboxControlValue],
     ]);
 
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         Object.values(this.definition.components).forEach((component) => this.validateComponent(component));
     }

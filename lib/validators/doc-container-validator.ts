@@ -3,17 +3,9 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent } from '../models';
+import { DirectiveType, ParsedComponentsDefinitionComponent } from '../models';
 
 export class DocContainerValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         Object.values(this.definition.components).forEach((parsedComponent: ParsedComponentsDefinitionComponent) => {
             const containerCount = this.countContainerDirectives(parsedComponent);

@@ -33,8 +33,9 @@ export interface ParsedComponentsDefinition<T extends ComponentsDefinition> {
     groups: T['groups'];
     defaultComponentOnEnter: string;
     conversionRules: T['conversionRules'];
+    scripts: T['scripts'];
 }
-export type ParsedComponentsDefinitionV10X = ParsedComponentsDefinition<ComponentsDefinitionV10X>;
+export type ParsedComponentsDefinitionV10X = ParsedComponentsDefinition<ComponentsDefinitionV11X>;
 export type ParsedComponentsDefinitionV11X = ParsedComponentsDefinition<ComponentsDefinitionV11X>;
 
 // a few shortcuts

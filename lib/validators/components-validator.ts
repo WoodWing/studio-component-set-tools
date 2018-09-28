@@ -9,7 +9,7 @@
 
 import * as path from 'path';
 import { Validator } from './validator';
-import { ComponentsDefinition } from '../models';
+import { ParsedComponentsDefinitionV10X } from '../models';
 
 const RESERVED = [
     /^__internal__/,
@@ -21,20 +21,19 @@ const GENERIC_FILES = [
 ];
 
 export class ComponentsValidator extends Validator {
-
     constructor(
         error: (errorMessage: string) => false,
+        definition: ParsedComponentsDefinitionV10X,
         private filePaths: Set<string>,
-        private definition: ComponentsDefinition,
     ) {
-        super(error);
+        super(error, definition);
     }
 
     validate(): void {
-        let valid = true;
-
         const componentNames = new Set<string>();
-        for (const comp of this.definition.components) {
+        for (const compInfo of Object.values(this.definition.components)) {
+            const comp = compInfo.component;
+
             // reserved words
             if (RESERVED.some(regexp => regexp.test(comp.name))) {
                 this.error(`Component name "${comp.name}" is a reserved word`);

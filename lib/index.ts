@@ -128,8 +128,13 @@ export async function validate(
         return valid;
     };
 
-    const validators = getValidators(componentsDefinition.version, validateError, parsedDefinition,
-        filePaths, getFileContent, componentsDefinition);
+    const validators = getValidators(
+        componentsDefinition.version,
+        validateError,
+        parsedDefinition,
+        filePaths,
+        getFileContent
+    );
     if (!validators) {
         errorReporter(`Could not find validators for component model version "${componentsDefinition.version}"`);
         return false;
@@ -176,32 +181,31 @@ export function getValidators(
     parsedDefinition: ParsedComponentsDefinitionV10X,
     filePaths: Set<string>,
     getFileContent: GetFileContentType,
-    componentsDefinition: any,
 ) : Validator[] | null {
     let validators: Validator[] = [];
     if (semver.satisfies(version, '>=1.0.0')) {
         validators = validators.concat(
-            new ComponentsValidator(error, filePaths, componentsDefinition),
+            new ComponentsValidator(error, parsedDefinition, filePaths),
             new ConversionRulesValidator(error, parsedDefinition),
             new DefaultComponentOnEnterValidator(error, parsedDefinition),
             new DefaultValuesValidator(error, parsedDefinition),
             new DirectivePropertiesValidator(error, parsedDefinition),
-            new DisableFullscreenCheckboxValidator(error, componentsDefinition),
+            new DisableFullscreenCheckboxValidator(error, parsedDefinition),
             new DocContainerValidator(error, parsedDefinition),
             new DocMediaValidator(error, parsedDefinition),
             new DocSlideshowValidator(error, parsedDefinition),
-            new DropCapitalValidator(error, componentsDefinition, parsedDefinition),
+            new DropCapitalValidator(error, parsedDefinition),
             new FittingValidator(error, parsedDefinition),
             new FocuspointValidator(error, parsedDefinition),
             new GroupsValidator(error, parsedDefinition),
-            new IconsValidator(error, componentsDefinition, getFileContent),
-            new ImageEditorValidator(error, componentsDefinition),
-            new InteractiveValidator(error, componentsDefinition),
-            new PropertiesValidator(error, filePaths, componentsDefinition),
+            new IconsValidator(error, parsedDefinition, getFileContent),
+            new ImageEditorValidator(error, parsedDefinition),
+            new InteractiveValidator(error, parsedDefinition),
+            new PropertiesValidator(error, parsedDefinition, filePaths),
             new RestrictChildrenValidator(error, parsedDefinition),
-            new ScriptsValidator(error, filePaths, componentsDefinition),
+            new ScriptsValidator(error, parsedDefinition, filePaths),
             new SlidesValidator(error, parsedDefinition),
-            new UnitTypeValidator(error, componentsDefinition),
+            new UnitTypeValidator(error, parsedDefinition),
         );
     }
     if (semver.satisfies(version, '>=1.1.0')) {

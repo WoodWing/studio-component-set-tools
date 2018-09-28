@@ -5,19 +5,11 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionV10X, DirectiveType } from '../models';
+import { DirectiveType } from '../models';
 
 const CONTROLS = ['image-editor', 'interactive', 'media-properties'];
 
 export class DirectivePropertiesValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         const regexp = new RegExp(`^doc-(${Object.values(DirectiveType).filter(item => item !== DirectiveType.unknown).join('|')})`, 'i');
 

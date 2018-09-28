@@ -3,20 +3,12 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent } from '../models';
+import { DirectiveType, ParsedComponentsDefinitionComponent } from '../models';
 
 const PROPERTY = 'restrictChildren';
 const ADDITIONAL_PROPERTY = 'withContent';
 
 export class RestrictChildrenValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     private hasSlideshowDirective(parsedComponent: ParsedComponentsDefinitionComponent) : boolean {
         return Object.values(parsedComponent.directives)
         .some(directive => directive.type === DirectiveType.slideshow);

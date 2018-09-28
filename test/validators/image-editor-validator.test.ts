@@ -7,19 +7,25 @@ describe('ImageEditorValidator', () => {
     beforeEach(() => {
         // valid definition (cut)
         definition = {
-            componentProperties: [{
-                name: 'p1',
-                control: {
-                    type: 'image-editor',
+            components: {
+                c1: {
+                    properties: [
+                        {
+                            name: 'p1',
+                            control: {
+                                type: 'image-editor',
+                            },
+                            dataType: 'doc-image'
+                        }, {
+                            name: 'p2',
+                            control: {
+                                type: 'text',
+                            },
+                            dataType: 'data'
+                        }
+                    ]
                 },
-                dataType: 'doc-image'
-            }, {
-                name: 'p2',
-                control: {
-                    type: 'text',
-                },
-                dataType: 'data'
-            }]
+            },
         };
         error = jasmine.createSpy('error');
         validator = new ImageEditorValidator(error, definition);
@@ -30,7 +36,7 @@ describe('ImageEditorValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if dataType is not "doc-image"', () => {
-            definition.componentProperties[0].dataType = 'data';
+            definition.components.c1.properties[0].dataType = 'data';
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Property "p1" uses "image-editor" control type which is allowed to use with dataType="doc-image" only`);
         });

@@ -7,24 +7,30 @@ describe('UnitTypeValidator', () => {
     beforeEach(() => {
         // valid definition (cut)
         definition = {
-            componentProperties: [{
-                name: 'p1',
-                control: {
-                    type: 'text',
-                    unit: 'px',
+            components: {
+                c1: {
+                    properties: [
+                        {
+                            name: 'p1',
+                            control: {
+                                type: 'text',
+                                unit: 'px',
+                            },
+                        }, {
+                            name: 'p2',
+                            control: {
+                                type: 'text',
+                            },
+                        }, {
+                            name: 'p3',
+                            control: {
+                                type: 'text',
+                                unit: 'eM',     // test if it is case-insensitive
+                            },
+                        },
+                    ],
                 },
-            }, {
-                name: 'p2',
-                control: {
-                    type: 'text',
-                },
-            }, {
-                name: 'p3',
-                control: {
-                    type: 'text',
-                    unit: 'eM',     // test if it is case-insensitive
-                },
-            }]
+            },
         };
         error = jasmine.createSpy('error');
         validator = new UnitTypeValidator(error, definition);
@@ -35,9 +41,9 @@ describe('UnitTypeValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if unit type is unknown', () => {
-            definition.componentProperties[1].control.unit = 'xy';
+            definition.components.c1.properties[1].control.unit = 'xy';
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Property "p2" has unaccaptable unit type "xy", only "em,px" are allowed`);
+            expect(error).toHaveBeenCalledWith(`Property "p2" has unacceptable unit type "xy", only "em,px" are allowed`);
         });
     });
 });

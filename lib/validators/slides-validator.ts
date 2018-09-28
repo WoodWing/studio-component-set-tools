@@ -3,20 +3,12 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionProperty } from '../models';
+import { ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionProperty } from '../models';
 
 export class SlidesValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private parsedDefinition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         // Find slides control properties and check for include and exclude
-        for (const parsedComponent of Object.values(this.parsedDefinition.components)) {
+        for (const parsedComponent of Object.values(this.definition.components)) {
             parsedComponent.properties.forEach((property) => {
                 this.validateComponent(parsedComponent, property);
             });
@@ -46,7 +38,7 @@ export class SlidesValidator extends Validator {
         }
 
         const slideComponentName = Object.keys(parsedComponent.component.restrictChildren)[0];
-        const slideComponent = this.parsedDefinition.components[slideComponentName];
+        const slideComponent = this.definition.components[slideComponentName];
 
         if (property.control.include) {
             this.validateHasProperties(slideComponent,

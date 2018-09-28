@@ -3,17 +3,9 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionV10X, DirectiveType } from '../models';
+import { DirectiveType } from '../models';
 
 export class ConversionRulesValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         for (const srcComponentName of Object.keys(this.definition.conversionRules)) {
             if (!(srcComponentName in this.definition.components)) {

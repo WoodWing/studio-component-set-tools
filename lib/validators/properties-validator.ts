@@ -8,42 +8,61 @@
 
 import * as path from 'path';
 import { Validator } from './validator';
-import { ComponentsDefinition } from '../models';
+import {
+    ParsedComponentsDefinitionV10X,
+    ParsedComponentsDefinitionComponent,
+    ParsedComponentsDefinitionProperty
+} from '../models';
 
 const RESERVED = [
     /^parallax$/,
 ];
 
 export class PropertiesValidator extends Validator {
-
     constructor(
         error: (errorMessage: string) => false,
-        private filePaths: Set<string>,
-        private definition: ComponentsDefinition,
+        definition: ParsedComponentsDefinitionV10X,
+        protected filePaths: Set<string>,
     ) {
-        super(error);
+        super(error, definition);
     }
 
     validate(): void {
-        // Check component properties
-        const componentPropertyNames = new Set<string>();
-        for (const compProp of this.definition.componentProperties) {
-            // reserved words
-            if (RESERVED.some(regexp => regexp.test(compProp.name))) {
-                this.error(`Component property name "${compProp.name}" is a reserved word`);
-            }
-            // Validate we have not seen the name yet
-            if (componentPropertyNames.has(compProp.name)) {
-                this.error(`Component property "${compProp.name}" is not unique`);
-            }
-            componentPropertyNames.add(compProp.name);
+        Object.values(this.definition.components).forEach((component) => this.validateComponent(component));
+    }
 
-            // Validate the property has icons (for radio control type)
-            if (compProp.control.type === 'radio') {
-                for (const controlOption of compProp.control.options) {
-                    if (!this.filePaths.has(path.normalize(controlOption.icon))) {
-                        this.error(`Component properties "${compProp.name}" icon missing "${controlOption.icon}"`);
-                    }
+    /**
+     * Iterate through all properties of given component.
+     *
+     * @param component
+     */
+    private validateComponent(component: ParsedComponentsDefinitionComponent): void {
+        const componentPropertyNames = new Set<string>();
+
+        component.properties.forEach((property) => this.validateProperty(property, componentPropertyNames));
+    }
+
+    /**
+     * Validate property with control type interactive uses the correct dataType.
+     *
+     * @param property
+     */
+    private validateProperty(property: ParsedComponentsDefinitionProperty, componentPropertyNames: Set<string>) {
+        // reserved words
+        if (RESERVED.some(regexp => regexp.test(property.name))) {
+            this.error(`Component property name "${property.name}" is a reserved word`);
+        }
+        // Validate we have not seen the name yet
+        if (componentPropertyNames.has(property.name)) {
+            this.error(`Component property "${property.name}" is not unique`);
+        }
+        componentPropertyNames.add(property.name);
+
+        // Validate the property has icons (for radio control type)
+        if (property.control.type === 'radio') {
+            for (const controlOption of property.control.options) {
+                if (!this.filePaths.has(path.normalize(controlOption.icon))) {
+                    this.error(`Component properties "${property.name}" icon missing "${controlOption.icon}"`);
                 }
             }
         }

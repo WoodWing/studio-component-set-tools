@@ -7,7 +7,7 @@ describe('DefaultComponentOnEnterValidator', () => {
     beforeEach(() => {
         // valid definition (cut)
         definition = {
-            'components': {
+            components: {
                 'text': {
                     'component': {
                         'name': 'text',

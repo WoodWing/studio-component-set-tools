@@ -3,17 +3,9 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinitionV10X, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionDirective } from '../models';
+import { DirectiveType, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionDirective } from '../models';
 
 export class DocSlideshowValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private definition: ParsedComponentsDefinitionV10X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         Object.values(this.definition.components).forEach((parsedComponent: ParsedComponentsDefinitionComponent) => {
             const amountOfSlideshows = this.countSlideshowDirectives(parsedComponent);

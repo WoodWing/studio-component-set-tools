@@ -77,6 +77,7 @@ export async function parseDefinition(
         groups: componentsDefinition.groups,
         defaultComponentOnEnter: componentsDefinition.defaultComponentOnEnter,
         conversionRules: componentsDefinition.conversionRules,
+        scripts: componentsDefinition.scripts,
     };
 
     // parse components

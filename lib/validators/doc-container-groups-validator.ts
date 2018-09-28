@@ -11,17 +11,9 @@ import { ParsedComponentsDefinitionV11X } from '../models';
 import { GroupsValidator } from './groups-validator';
 
 export class DocContainerGroupsValidator extends Validator {
-
-    constructor(
-        error: (errorMessage: string) => false,
-        private parsedDefinition: ParsedComponentsDefinitionV11X,
-    ) {
-        super(error);
-    }
-
     validate(): void {
         // Find slides control properties and check for include and exclude
-        for (const parsedComponent of Object.values(this.parsedDefinition.components)) {
+        for (const parsedComponent of Object.values(this.definition.components)) {
             this.validateComponent(parsedComponent);
         }
     }
@@ -41,7 +33,7 @@ export class DocContainerGroupsValidator extends Validator {
             return;
         }
 
-        const groupsValidator = new GroupsValidator(this.error, this.parsedDefinition);
+        const groupsValidator = new GroupsValidator(this.error, this.definition);
 
         for (const [key, directiveOptions] of Object.entries(parsedComponent.component.directiveOptions)) {
             // Rules only apply when it has a groups property defined

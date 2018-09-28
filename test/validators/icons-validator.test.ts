@@ -9,16 +9,20 @@ describe('IconsValidator', () => {
     beforeEach(() => {
         // valid definition (cut)
         definition = {
-            components: [
-                {
-                    name: 'text',
-                    icon: './test/resources/minimal-sample/icons/transparent.png'
+            components: {
+                c1: {
+                    component: {
+                        name: 'c1',
+                        icon: './test/resources/minimal-sample/icons/transparent.png',
+                    },
                 },
-                {
-                    name: 'text',
-                    icon: './test/resources/minimal-sample/icons/component.svg'
-                }
-            ]
+                c2: {
+                    component: {
+                        name: 'c2',
+                        icon: './test/resources/minimal-sample/icons/component.svg',
+                    },
+                },
+            },
         };
         getFileContent = jasmine.createSpy('getFileContent').and.callFake(async (path) => {
             return new Promise((resolve, reject) => {
@@ -40,26 +44,32 @@ describe('IconsValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
         it('should pass with capitalized file extensions', async () => {
-            definition.components.push({
-                name: 'capitals',
-                icon: 'component.SVG'
-            });
+            definition.components.c3 = {
+                component: {
+                    name: 'capitals',
+                    icon: 'component.SVG',
+                },
+            };
             await validator.validate();
             expect(error).not.toHaveBeenCalled();
         });
         it('should fail for a non-supported file extension', async () => {
-            definition.components.push({
-                name: 'unsupported',
-                icon: 'unsupported.txt'
-            });
+            definition.components.c3 = {
+                component: {
+                    name: 'unsupported',
+                    icon: 'unsupported.txt',
+                },
+            };
             await validator.validate();
             expect(error).toHaveBeenCalledWith(`Icons are only supported in SVG or transparent PNG format`);
         });
         it('should fail for non-transparent PNG icons', async () => {
-            definition.components.push({
-                name: 'opaque',
-                icon: './test/resources/minimal-sample/icons/opaque.png'
-            });
+            definition.components.c3 = {
+                component: {
+                    name: 'opaque',
+                    icon: './test/resources/minimal-sample/icons/opaque.png',
+                },
+            };
             await validator.validate();
             expect(error).toHaveBeenCalledWith(`PNG icons are only supported when they are transparent`);
         });
