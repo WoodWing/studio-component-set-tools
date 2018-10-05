@@ -79,6 +79,9 @@ export async function parseDefinition(
         conversionRules: componentsDefinition.conversionRules,
         scripts: componentsDefinition.scripts,
     };
+    if (componentsDefinition.conversionShortcutComponents) {
+        result.conversionShortcutComponents = componentsDefinition.conversionShortcutComponents;
+    }
 
     // parse components
     for (const component of componentsDefinition.components) {

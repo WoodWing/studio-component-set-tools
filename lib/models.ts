@@ -1,7 +1,8 @@
 import { ComponentsDefinitionV10X } from './components-types-v1_0_x';
 import { ComponentsDefinitionV11X } from './components-types-v1_1_x';
+import { ComponentsDefinitionV13X } from './components-types-v1_3_x';
 
-export type ComponentsDefinition = ComponentsDefinitionV10X | ComponentsDefinitionV11X;
+export type ComponentsDefinition = ComponentsDefinitionV13X;
 
 export enum DirectiveType {
     editable = 'editable',
@@ -33,9 +34,10 @@ export interface ParsedComponentsDefinition<T extends ComponentsDefinition> {
     groups: T['groups'];
     defaultComponentOnEnter: string;
     conversionRules: T['conversionRules'];
+    conversionShortcutComponents?: T['conversionShortcutComponents'];
     scripts: T['scripts'];
 }
-export type ParsedComponentsDefinitionV10X = ParsedComponentsDefinition<ComponentsDefinitionV11X>;
+export type ParsedComponentsDefinitionV10X = ParsedComponentsDefinition<ComponentsDefinitionV13X>;
 export type ParsedComponentsDefinitionV11X = ParsedComponentsDefinition<ComponentsDefinitionV11X>;
 
 // a few shortcuts
