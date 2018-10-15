@@ -13,7 +13,7 @@ import { GroupsValidator } from './groups-validator';
 export class DocContainerGroupsValidator extends Validator {
     validate(): void {
         // Find slides control properties and check for include and exclude
-        for (const parsedComponent of Object.values(this.definition.components)) {
+        for (const parsedComponent of Object.values(this.componentSet.components)) {
             this.validateComponent(parsedComponent);
         }
     }
@@ -33,7 +33,7 @@ export class DocContainerGroupsValidator extends Validator {
             return;
         }
 
-        const groupsValidator = new GroupsValidator(this.error, this.definition);
+        const groupsValidator = new GroupsValidator(this.error, this.componentSet);
 
         for (const [key, directiveOptions] of Object.entries(parsedComponent.directiveOptions)) {
             // Rules only apply when it has a groups property defined

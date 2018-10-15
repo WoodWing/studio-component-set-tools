@@ -8,7 +8,7 @@ import { ParsedComponent, ComponentProperty, Component } from '../models';
 export class SlidesValidator extends Validator {
     validate(): void {
         // Find slides control properties and check for include and exclude
-        for (const parsedComponent of Object.values(this.definition.components)) {
+        for (const parsedComponent of Object.values(this.componentSet.components)) {
             parsedComponent.properties.forEach((property) => {
                 this.validateComponent(parsedComponent, property);
             });
@@ -38,7 +38,7 @@ export class SlidesValidator extends Validator {
         }
 
         const slideComponentName = Object.keys(parsedComponent.restrictChildren)[0];
-        const slideComponent = this.definition.components[slideComponentName];
+        const slideComponent = this.componentSet.components[slideComponentName];
 
         if (property.control.include) {
             this.validateHasProperties(slideComponent,

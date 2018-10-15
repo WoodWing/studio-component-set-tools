@@ -31,7 +31,7 @@ export class ComponentsValidator extends Validator {
 
     validate(): void {
         const componentNames = new Set<string>();
-        for (const comp of Object.values(this.definition.components)) {
+        for (const comp of Object.values(this.componentSet.components)) {
             // reserved words
             if (RESERVED.some(regexp => regexp.test(comp.name))) {
                 this.error(`Component name "${comp.name}" is a reserved word`);

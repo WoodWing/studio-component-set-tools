@@ -13,7 +13,7 @@ const TYPES_REGEXP = new RegExp(`^(${TYPES.join('|')})$`, 'i');
 
 export class UnitTypeValidator extends Validator {
     validate(): void {
-        Object.values(this.definition.components).forEach((component) => this.validateComponent(component));
+        Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 
     /**

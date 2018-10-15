@@ -113,7 +113,7 @@ describe('Parser utils', () => {
             };
         });
         it('should parse components definition', async () => {
-            const expectedParsedComponentsDefinition = {
+            const expectedComponentSet = {
                 'name': 'minimal-sample',
                 'description': 'Minimal components package sample touching most of the available options.',
                 'version': '1.0.0',
@@ -218,8 +218,8 @@ describe('Parser utils', () => {
                 },
                 scripts: [],
             };
-            const parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
-            expect(parsedDefinition).toEqual(expectedParsedComponentsDefinition);
+            const componentSet = await parseDefinition(componentsDefinition, getFileContent);
+            expect(componentSet).toEqual(expectedComponentSet);
         });
 
         it('should throw an error if there are directives with the same attribute values', async () => {

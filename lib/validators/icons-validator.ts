@@ -22,7 +22,7 @@ export class IconsValidator extends Validator {
     }
 
     async validate(): Promise<void> {
-        for (const component of Object.values(this.definition.components)) {
+        for (const component of Object.values(this.componentSet.components)) {
             const ext = path.extname(component.icon).toLowerCase();
             if (this.supportedFormats.indexOf(ext) === -1) {
                 this.error(`Icons are only supported in SVG or transparent PNG format`);

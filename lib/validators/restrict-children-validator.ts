@@ -15,7 +15,7 @@ export class RestrictChildrenValidator extends Validator {
     }
 
     validate(): void {
-        Object.values(this.definition.components).forEach((parsedComponent: ParsedComponent) => {
+        Object.values(this.componentSet.components).forEach((parsedComponent: ParsedComponent) => {
             const isPresent = PROPERTY in parsedComponent && parsedComponent[PROPERTY];
             const hasSlideshow = this.hasSlideshowDirective(parsedComponent);
             if (!isPresent) {
@@ -40,8 +40,8 @@ export class RestrictChildrenValidator extends Validator {
                     this.error(`Component property "${PROPERTY}.${componentName}" of component "${parsedComponent.name}" points to itself`);
                     return;
                 }
-                if (componentName in this.definition.components) {
-                    const pointedParsedComponent = this.definition.components[componentName];
+                if (componentName in this.componentSet.components) {
+                    const pointedParsedComponent = this.componentSet.components[componentName];
                     // check additional property
                     if (ADDITIONAL_PROPERTY in propertyValue[componentName]) {
                         const additionalPropertyValue = propertyValue[componentName][ADDITIONAL_PROPERTY] || '';

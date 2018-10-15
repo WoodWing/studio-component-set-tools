@@ -16,8 +16,8 @@ export class ScriptsValidator extends Validator {
     }
 
     validate(): void {
-        if (this.definition.scripts) {
-            for (const scriptPath of this.definition.scripts) {
+        if (this.componentSet.scripts) {
+            for (const scriptPath of this.componentSet.scripts) {
                 if (!this.filePaths.has(path.normalize(scriptPath))) {
                     this.error(`Script "${scriptPath}" does not exist`);
                 }

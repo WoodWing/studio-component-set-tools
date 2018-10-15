@@ -20,7 +20,7 @@ export class FittingValidator extends Validator {
     }
 
     validate(): void {
-        for (const parsedComponent of Object.values(this.definition.components)) {
+        for (const parsedComponent of Object.values(this.componentSet.components)) {
             if (this.countPerComponent(parsedComponent) > 1) {
                 this.error(`Component "${parsedComponent.name}" uses properties with "${CONTROL}" control type ` +
                     `more that one time`);

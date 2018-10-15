@@ -10,7 +10,7 @@ const supportedSourceDirectives = [DirectiveType.image];
 
 export class AutofillValidator extends Validator {
     validate(): void {
-        Object.values(this.definition.components).forEach((component) => {
+        Object.values(this.componentSet.components).forEach((component) => {
             this.validateComponent(component);
         });
     }

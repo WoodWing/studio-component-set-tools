@@ -10,7 +10,7 @@ const ALLOWED_DATA_TYPE = 'doc-image';
 
 export class ImageEditorValidator extends Validator {
     validate(): void {
-        Object.values(this.definition.components).forEach((component) => this.validateComponent(component));
+        Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 
     /**

@@ -7,7 +7,7 @@ import { DirectiveType, ParsedComponent } from '../models';
 
 export class DocSlideshowValidator extends Validator {
     validate(): void {
-        Object.values(this.definition.components).forEach((parsedComponent: ParsedComponent) => {
+        Object.values(this.componentSet.components).forEach((parsedComponent: ParsedComponent) => {
             const amountOfSlideshows = this.countSlideshowDirectives(parsedComponent);
             // check if it's the only one
             if (amountOfSlideshows > 1) {

@@ -19,7 +19,7 @@ export class DocMediaValidator extends Validator {
     }
 
     validate(): void {
-        Object.values(this.definition.components).forEach((parsedComponent: ParsedComponent) => {
+        Object.values(this.componentSet.components).forEach((parsedComponent: ParsedComponent) => {
 
             let numMediaDirectives = this.countMediaDirectives(parsedComponent);
             if (numMediaDirectives > 1) {

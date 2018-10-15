@@ -1,12 +1,12 @@
 import { FittingValidator } from '../../lib/validators/fitting-validator';
 
 describe('FittingValidator', () => {
-    let parsedDefinition: any;
+    let componentSet: any;
     let error: jasmine.Spy;
     let validator: FittingValidator;
     beforeEach(() => {
         // valid definition (cut)
-        parsedDefinition = {
+        componentSet = {
             components: {
                 c1: {
                     name: 'c1',
@@ -28,7 +28,7 @@ describe('FittingValidator', () => {
             },
         };
         error = jasmine.createSpy('error');
-        validator = new FittingValidator(error, parsedDefinition);
+        validator = new FittingValidator(error, componentSet);
     });
     describe('validate', () => {
         it('should pass on valid definition', () => {
@@ -36,7 +36,7 @@ describe('FittingValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if there is a component which uses "fitting" property more then one time', () => {
-            parsedDefinition.components.c1.properties.push({
+            componentSet.components.c1.properties.push({
                 name: 'p3',
                 control: {
                     type: 'fitting',

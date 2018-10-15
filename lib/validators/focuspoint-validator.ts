@@ -6,7 +6,7 @@ import { Validator } from './validator';
 
 export class FocuspointValidator extends Validator {
     validate(): void {
-        for (const parsedComponent of Object.values(this.definition.components)) {
+        for (const parsedComponent of Object.values(this.componentSet.components)) {
             parsedComponent.properties.forEach((parsedProperty) => {
                 if (parsedProperty.control.type === 'image-editor' && parsedProperty.control.focuspoint &&
                     parsedProperty.directiveKey &&  // skip, it's covered in other validator

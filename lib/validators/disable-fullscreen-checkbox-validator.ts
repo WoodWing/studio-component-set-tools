@@ -10,7 +10,7 @@ const ALLOWED_DATA_TYPE = 'styles';
 
 export class DisableFullscreenCheckboxValidator extends Validator {
     validate(): void {
-        Object.values(this.definition.components).forEach((component) => this.validateComponent(component));
+        Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 
     /**

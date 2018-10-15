@@ -3,7 +3,7 @@ import { ComponentSet } from '../models';
 export abstract class Validator {
     constructor(
         protected error: (errorMessage: string) => false,
-        protected definition: ComponentSet,
+        protected componentSet: ComponentSet,
     ) {
     }
 
