@@ -305,7 +305,7 @@ describe('Parser utils', () => {
             } catch(e) {
                 er = e.message;
             }
-            expect(er).toEqual(`Property is not found "cucicaca"`);
+            expect(er).toEqual(`Property "cucicaca" is not found in definition componentProperties`);
         });
 
         it('should throw an error if there is a property which cannot be found for merging', async () => {
@@ -317,7 +317,7 @@ describe('Parser utils', () => {
             } catch(e) {
                 er = e.message;
             }
-            expect(er).toEqual(`Property is not found "cucicaca"`);
+            expect(er).toEqual(`Property "cucicaca" is not found in definition componentProperties`);
         });
     });
 });

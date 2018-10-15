@@ -68,7 +68,7 @@ export interface Component {
      */
     icon: string;
 
-    properties: (string | ComponentProperty)[];
+    properties?: (string | ComponentProperty)[];
 
     /**
      * How this component is selectable, by default the user can select inside the component to select it

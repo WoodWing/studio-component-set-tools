@@ -101,42 +101,49 @@ async function parseComponent(
 
     return merge(component, {
         directives: directives,
-        properties: component.properties && component.properties.reduce((properties, property) => {
-            let propertyName: string;
+        properties: (component.properties || []).map((componentProperty) => {
+            const property = parseProperty(
+                componentProperty,
+                componentProperties
+            );
 
-            // Parse the property. Can either be defined as just a name or an object
-            let propertyConfiguration;
-            if (isPropertyObject(property)) {
-                // The object form may have a name set
-                propertyName = property.name;
-                if (!propertyName) {
-                    // No name means the property is defined anonymously.
-                    propertyConfiguration = property;
-                } else {
-                    // Otherwise the property is merged with componentProperties entry. This entry must exist
-                    propertyConfiguration = componentProperties.find((item) => item.name === propertyName);
-                    if (!propertyConfiguration) {
-                        throw new Error(`Property is not found "${property.name}"`);
-                    }
-                    propertyConfiguration = merge({}, propertyConfiguration, property);
-                }
-            } else {
-                // String form refers to an entry in componentProperties. Already validated by json schema.
-                propertyName = <string>property;
-
-                propertyConfiguration = componentProperties.find((item) => item.name === propertyName);
-                if (!propertyConfiguration) {
-                    throw new Error(`Property is not found "${property}"`);
-                }
+            if (property.directiveKey && !(property.directiveKey in directives)) {
+                throw new Error(`Directive with key "${property.directiveKey}" is not found. Property name is "${property.name || '<anonymous property>'}"`);
             }
-
-            properties.push(propertyConfiguration);
-            if (propertyConfiguration.directiveKey && !(propertyConfiguration.directiveKey in directives)) {
-                throw new Error(`Directive with key "${propertyConfiguration.directiveKey}" is not found. Property name is "${propertyName || '<anonymous property>'}"`);
-            }
-            return properties;
-        }, [] as ComponentProperty[]) || [],
+            return property;
+        }),
     });
+}
+
+function parseProperty(
+    componentProperty: ComponentProperty|string,
+    componentProperties: ComponentProperty[]
+) : ComponentProperty {
+    return isPropertyObject(componentProperty) ?
+        parseComponentPropertyObject(componentProperty, componentProperties) :
+        findComponentPropertyTemplate(componentProperty, componentProperties);
+}
+
+function parseComponentPropertyObject(
+    componentProperty: ComponentProperty,
+    componentProperties: ComponentProperty[]
+) {
+    // No name means the property is defined anonymously.
+    // Otherwise the property is merged with componentProperties entry. This entry must exist
+    return componentProperty.name ?
+        merge({}, findComponentPropertyTemplate(componentProperty.name, componentProperties), componentProperty) :
+        componentProperty;
+}
+
+function findComponentPropertyTemplate(
+    propertyName: string,
+    componentProperties: ComponentProperty[]
+) {
+    const propertyTemplate = componentProperties.find((item) => item.name === propertyName);
+    if (!propertyTemplate) {
+        throw new Error(`Property "${propertyName}" is not found in definition componentProperties`);
+    }
+    return propertyTemplate;
 }
 
 function isPropertyObject(property: any): property is ComponentProperty {
