@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionProperty } from '../models';
+import { ParsedComponent, ComponentProperty} from '../models';
 
 const CONTROL = 'disable-fullscreen-checkbox';
 const ALLOWED_DATA_TYPE = 'styles';
@@ -19,7 +19,7 @@ export class DisableFullscreenCheckboxValidator extends Validator {
      * @param errorReporter
      * @param component
      */
-    private validateComponent(component: ParsedComponentsDefinitionComponent): void {
+    private validateComponent(component: ParsedComponent): void {
         component.properties.forEach((property) => this.validateProperty(property));
     }
 
@@ -29,7 +29,7 @@ export class DisableFullscreenCheckboxValidator extends Validator {
      * @param errorReporter
      * @param property
      */
-    private validateProperty(property: ParsedComponentsDefinitionProperty) {
+    private validateProperty(property: ComponentProperty) {
         if (property.control.type === CONTROL && property.dataType !== ALLOWED_DATA_TYPE) {
             this.error(`Property "${property.name}" uses "${CONTROL}" control type which is allowed to use with ` +
                 `dataType="${ALLOWED_DATA_TYPE}" only`);

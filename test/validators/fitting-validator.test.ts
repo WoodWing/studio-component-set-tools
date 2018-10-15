@@ -9,9 +9,7 @@ describe('FittingValidator', () => {
         parsedDefinition = {
             components: {
                 c1: {
-                    component: {
-                        name: 'c1',
-                    },
+                    name: 'c1',
                     properties: [
                         {
                             name: 'p1',

@@ -5,7 +5,7 @@
 import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
 const merge = require('lodash/merge');
-import { DirectiveType, ParsedComponentsDefinitionV10X, ComponentsDefinition } from '../models';
+import { DirectiveType, ComponentSet, ComponentsDefinition, Component, ParsedComponent, ComponentProperty } from '../models';
 import { GetFileContentType } from '..';
 
 /**
@@ -14,8 +14,8 @@ import { GetFileContentType } from '..';
  * @param content HTML content of the component
  * @returns ParsedComponentsDefinition['components']['name']['directives']
  */
-function parseDirectives(content: string) : ParsedComponentsDefinitionV10X['components']['name']['directives'] {
-    const result = {} as ParsedComponentsDefinitionV10X['components']['name']['directives'];
+function parseDirectives(content: string) : ComponentSet['components']['name']['directives'] {
+    const result = {} as ComponentSet['components']['name']['directives'];
     const parser = new htmlparser.Parser({
         onopentag: (name, attributes) => {
             Object.keys(attributes).forEach(key => {
@@ -70,65 +70,75 @@ function getDirectiveType(directiveName: string) : DirectiveType {
 export async function parseDefinition(
     componentsDefinition: ComponentsDefinition,
     getFileContent: GetFileContentType,
-) : Promise<ParsedComponentsDefinitionV10X> {
+) : Promise<ComponentSet> {
 
-    const result: ParsedComponentsDefinitionV10X = {
+    const result: ComponentSet = {
+        name: componentsDefinition.name,
+        description: componentsDefinition.description,
+        version: componentsDefinition.version,
+
         components: {},
         groups: componentsDefinition.groups,
         defaultComponentOnEnter: componentsDefinition.defaultComponentOnEnter,
         conversionRules: componentsDefinition.conversionRules,
-        scripts: componentsDefinition.scripts,
+        scripts: componentsDefinition.scripts || [],
     };
-
-    // parse components
-    for (const component of componentsDefinition.components) {
-        const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`), { encoding: 'utf8' });
-        const directives = parseDirectives(htmlContent);
-
-        result.components[component.name] = {
-            component: component,
-            directives: directives,
-            properties: component.properties && component.properties.reduce((properties, property) => {
-                let propertyName: string;
-
-                // Parse the property. Can either be defined as just a name or an object
-                let propertyConfiguration;
-                if (isPropertyObject(property)) {
-                    // The object form may have a name set
-                    propertyName = property.name;
-                    if (!propertyName) {
-                        // No name means the property is defined anonymously.
-                        propertyConfiguration = property;
-                    } else {
-                        // Otherwise the property is merged with componentProperties entry. This entry must exist
-                        propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
-                        if (!propertyConfiguration) {
-                            throw new Error(`Property is not found "${property.name}"`);
-                        }
-                        propertyConfiguration = merge({}, propertyConfiguration, property);
-                    }
-                } else {
-                    // String form refers to an entry in componentProperties. Already validated by json schema.
-                    propertyName = <string>property;
-
-                    propertyConfiguration = componentsDefinition.componentProperties.find((item) => item.name === propertyName);
-                    if (!propertyConfiguration) {
-                        throw new Error(`Property is not found "${property}"`);
-                    }
-                }
-
-                properties.push(propertyConfiguration);
-                if (propertyConfiguration.directiveKey && !(propertyConfiguration.directiveKey in directives)) {
-                    throw new Error(`Directive with key "${propertyConfiguration.directiveKey}" is not found. Property name is "${propertyName || '<anonymous property>'}"`);
-                }
-                return properties;
-            }, [] as ParsedComponentsDefinitionV10X['components']['name']['properties']) || [],
-        };
+    for (let i = 0; i < componentsDefinition.components.length; i++) {
+        const compDef = componentsDefinition.components[i];
+        result.components[compDef.name] = await parseComponent(compDef, componentsDefinition.componentProperties, getFileContent);
     }
 
     return result;
 }
 
-function isPropertyObject(property: any): property is ComponentsDefinition['componentProperties'][0] {
+async function parseComponent(
+    component: Component,
+    componentProperties: ComponentProperty[],
+    getFileContent: GetFileContentType
+) : Promise<ParsedComponent> {
+    const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`), { encoding: 'utf8' });
+    const directives = parseDirectives(htmlContent);
+
+    return merge(component, {
+        directives: directives,
+        properties: component.properties && component.properties.reduce((properties, property) => {
+            let propertyName: string;
+
+            // Parse the property. Can either be defined as just a name or an object
+            let propertyConfiguration;
+            if (isPropertyObject(property)) {
+                // The object form may have a name set
+                propertyName = property.name;
+                if (!propertyName) {
+                    // No name means the property is defined anonymously.
+                    propertyConfiguration = property;
+                } else {
+                    // Otherwise the property is merged with componentProperties entry. This entry must exist
+                    propertyConfiguration = componentProperties.find((item) => item.name === propertyName);
+                    if (!propertyConfiguration) {
+                        throw new Error(`Property is not found "${property.name}"`);
+                    }
+                    propertyConfiguration = merge({}, propertyConfiguration, property);
+                }
+            } else {
+                // String form refers to an entry in componentProperties. Already validated by json schema.
+                propertyName = <string>property;
+
+                propertyConfiguration = componentProperties.find((item) => item.name === propertyName);
+                if (!propertyConfiguration) {
+                    throw new Error(`Property is not found "${property}"`);
+                }
+            }
+
+            properties.push(propertyConfiguration);
+            if (propertyConfiguration.directiveKey && !(propertyConfiguration.directiveKey in directives)) {
+                throw new Error(`Directive with key "${propertyConfiguration.directiveKey}" is not found. Property name is "${propertyName || '<anonymous property>'}"`);
+            }
+            return properties;
+        }, [] as ComponentProperty[]) || [],
+    });
+}
+
+function isPropertyObject(property: any): property is ComponentProperty {
     return property instanceof Object;
 }

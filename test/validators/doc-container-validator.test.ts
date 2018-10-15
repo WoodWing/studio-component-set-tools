@@ -9,9 +9,7 @@ describe('DocContainerValidator', () => {
         definition = {
             'components': {
                 'container': {
-                    'component': {
-                        'name': 'container',
-                    },
+                    'name': 'container',
                     'directives': {
                         'd1': {
                             'type': 'container',

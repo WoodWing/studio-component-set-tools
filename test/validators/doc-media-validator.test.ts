@@ -10,9 +10,7 @@ describe('DocMediaValidator', () => {
             // valid definition (cut)
             components: {
                 socialmedia: {
-                    component: {
-                        name: 'likes',
-                    },
+                    name: 'socialmedia',
                     directives: {
                         d1: {
                             type: 'media',
@@ -31,9 +29,7 @@ describe('DocMediaValidator', () => {
                     ]
                 },
                 nomediaproperties: {
-                    component: {
-                        name: 'likes',
-                    },
+                    name: 'nomediaproperties',
                     directives: {
                         d1: {
                             type: 'media',

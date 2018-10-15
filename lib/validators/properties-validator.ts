@@ -9,9 +9,9 @@
 import * as path from 'path';
 import { Validator } from './validator';
 import {
-    ParsedComponentsDefinitionV10X,
-    ParsedComponentsDefinitionComponent,
-    ParsedComponentsDefinitionProperty
+    ComponentSet,
+    ParsedComponent,
+    ComponentProperty
 } from '../models';
 
 const RESERVED = [
@@ -21,7 +21,7 @@ const RESERVED = [
 export class PropertiesValidator extends Validator {
     constructor(
         error: (errorMessage: string) => false,
-        definition: ParsedComponentsDefinitionV10X,
+        definition: ComponentSet,
         protected filePaths: Set<string>,
     ) {
         super(error, definition);
@@ -36,7 +36,7 @@ export class PropertiesValidator extends Validator {
      *
      * @param component
      */
-    private validateComponent(component: ParsedComponentsDefinitionComponent): void {
+    private validateComponent(component: ParsedComponent): void {
         const componentPropertyNames = new Set<string>();
 
         component.properties.forEach((property) => this.validateProperty(property, componentPropertyNames));
@@ -47,7 +47,7 @@ export class PropertiesValidator extends Validator {
      *
      * @param property
      */
-    private validateProperty(property: ParsedComponentsDefinitionProperty, componentPropertyNames: Set<string>) {
+    private validateProperty(property: ComponentProperty, componentPropertyNames: Set<string>) {
         // reserved words
         if (RESERVED.some(regexp => regexp.test(property.name))) {
             this.error(`Component property name "${property.name}" is a reserved word`);

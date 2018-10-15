@@ -9,9 +9,7 @@ describe('ConversionRulesValidator', () => {
         definition = {
             components: {
                 c1: {
-                    component: {
-                        name: 'c1',
-                    },
+                    name: 'c1',
                     directives: {
                         slide: {
                             type: 'image',
@@ -20,9 +18,7 @@ describe('ConversionRulesValidator', () => {
                     },
                 },
                 c2: {
-                    component: {
-                        name: 'c2',
-                    },
+                    name: 'c2',
                     directives: {
                         figure: {
                             type: 'image',

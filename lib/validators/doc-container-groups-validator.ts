@@ -7,7 +7,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionV11X } from '../models';
+import { ParsedComponent } from '../models';
 import { GroupsValidator } from './groups-validator';
 
 export class DocContainerGroupsValidator extends Validator {
@@ -27,25 +27,25 @@ export class DocContainerGroupsValidator extends Validator {
      * @param parsedComponent
      */
     validateComponent(
-        parsedComponent: ParsedComponentsDefinitionV11X['components']['name'],
+        parsedComponent: ParsedComponent,
     ): void {
-        if (!parsedComponent.component.directiveOptions) {
+        if (!parsedComponent.directiveOptions) {
             return;
         }
 
         const groupsValidator = new GroupsValidator(this.error, this.definition);
 
-        for (const [key, directiveOptions] of Object.entries(parsedComponent.component.directiveOptions)) {
+        for (const [key, directiveOptions] of Object.entries(parsedComponent.directiveOptions)) {
             // Rules only apply when it has a groups property defined
             if (!directiveOptions.groups) {
                 continue;
             }
             if (!parsedComponent.directives[key]) {
-                this.error(`Component "${parsedComponent.component.name}" has a group for invalid directive "${key}"`);
+                this.error(`Component "${parsedComponent.name}" has a group for invalid directive "${key}"`);
                 continue;
             }
             if (parsedComponent.directives[key].type !== 'container') {
-                this.error(`Component "${parsedComponent.component.name}" has a group for directive "${key}" with incompatible type "${parsedComponent.directives[key].type}". Only type "container" is allowed.`);
+                this.error(`Component "${parsedComponent.name}" has a group for directive "${key}" with incompatible type "${parsedComponent.directives[key].type}". Only type "container" is allowed.`);
                 continue;
             }
 

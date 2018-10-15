@@ -11,16 +11,12 @@ describe('IconsValidator', () => {
         definition = {
             components: {
                 c1: {
-                    component: {
-                        name: 'c1',
-                        icon: './test/resources/minimal-sample/icons/transparent.png',
-                    },
+                    name: 'c1',
+                    icon: './test/resources/minimal-sample/icons/transparent.png',
                 },
                 c2: {
-                    component: {
-                        name: 'c2',
-                        icon: './test/resources/minimal-sample/icons/component.svg',
-                    },
+                    name: 'c2',
+                    icon: './test/resources/minimal-sample/icons/component.svg',
                 },
             },
         };
@@ -45,30 +41,24 @@ describe('IconsValidator', () => {
         });
         it('should pass with capitalized file extensions', async () => {
             definition.components.c3 = {
-                component: {
-                    name: 'capitals',
-                    icon: 'component.SVG',
-                },
+                name: 'capitals',
+                icon: 'component.SVG',
             };
             await validator.validate();
             expect(error).not.toHaveBeenCalled();
         });
         it('should fail for a non-supported file extension', async () => {
             definition.components.c3 = {
-                component: {
-                    name: 'unsupported',
-                    icon: 'unsupported.txt',
-                },
+                name: 'unsupported',
+                icon: 'unsupported.txt',
             };
             await validator.validate();
             expect(error).toHaveBeenCalledWith(`Icons are only supported in SVG or transparent PNG format`);
         });
         it('should fail for non-transparent PNG icons', async () => {
             definition.components.c3 = {
-                component: {
-                    name: 'opaque',
-                    icon: './test/resources/minimal-sample/icons/opaque.png',
-                },
+                name: 'opaque',
+                icon: './test/resources/minimal-sample/icons/opaque.png',
             };
             await validator.validate();
             expect(error).toHaveBeenCalledWith(`PNG icons are only supported when they are transparent`);

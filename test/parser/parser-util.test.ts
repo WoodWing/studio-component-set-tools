@@ -1,6 +1,5 @@
 import * as path from 'path';
 import { parseDefinition } from '../../lib/parser/parser-utils';
-import { ComponentsDefinition } from '../../lib/models';
 
 describe('Parser utils', () => {
     describe('parseDefinition', () => {
@@ -115,17 +114,15 @@ describe('Parser utils', () => {
         });
         it('should parse components definition', async () => {
             const expectedParsedComponentsDefinition = {
+                'name': 'minimal-sample',
+                'description': 'Minimal components package sample touching most of the available options.',
+                'version': '1.0.0',
                 'components': {
                     'body': {
-                        'component': {
-                            'name': 'body',
-                            'label': 'Body Label',
-                            'icon': 'icons/component.svg',
-                            'properties': [
-                                'selectProperty'
-                            ],
-                            'countStatistics': true
-                        },
+                        'name': 'body',
+                        'label': 'Body Label',
+                        'icon': 'icons/component.svg',
+                        'countStatistics': true,
                         'directives': {
                             'text': {
                                 'type': 'editable',
@@ -150,19 +147,12 @@ describe('Parser utils', () => {
                                 },
                                 'dataType': 'styles'
                             }
-                        ]
+                        ],
                     },
                     'complex': {
-                        'component': {
-                            'name': 'complex',
-                            'label': {'key' :'Complex Label KEY'},
-                            'icon': 'icons/component.svg',
-                            'properties': [
-                                'checkboxProperty',
-                                { 'name': 'dirProperty', 'directiveKey': 'image' },
-                                { 'control': { 'type': 'header' }, 'label': 'Header Label' }
-                            ]
-                        },
+                        'name': 'complex',
+                        'label': {'key' :'Complex Label KEY'},
+                        'icon': 'icons/component.svg',
                         'directives': {
                             'text': {
                                 'type': 'editable',
@@ -225,7 +215,8 @@ describe('Parser utils', () => {
                     body: {
                         complex: 'auto'
                     }
-                }
+                },
+                scripts: [],
             };
             const parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
             expect(parsedDefinition).toEqual(expectedParsedComponentsDefinition);

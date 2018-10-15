@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionV10X } from '../models';
+import { ComponentGroup } from '../models';
 
 export class GroupsValidator extends Validator {
     validate(): void {
@@ -17,7 +17,7 @@ export class GroupsValidator extends Validator {
      * @param parsedGroup
      */
     validateGroupsList(
-        groups: ParsedComponentsDefinitionV10X['groups'],
+        groups: ComponentGroup[],
     ): void {
         const groupNames = new Set<string>();
 
@@ -38,7 +38,7 @@ export class GroupsValidator extends Validator {
      * @param parsedGroup
      */
     private validateGroup(
-        group: ParsedComponentsDefinitionV10X['groups'][0],
+        group: ComponentGroup,
     ): void {
         for (const componentName of group.components) {
             if (!(componentName in this.definition.components)) {

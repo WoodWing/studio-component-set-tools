@@ -1,9 +1,9 @@
-import { ParsedComponentsDefinitionV10X } from '../models';
+import { ComponentSet } from '../models';
 
 export abstract class Validator {
     constructor(
         protected error: (errorMessage: string) => false,
-        protected definition: ParsedComponentsDefinitionV10X,
+        protected definition: ComponentSet,
     ) {
     }
 

@@ -11,7 +11,7 @@ import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
 import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
 
 import { parseDefinition } from './parser/parser-utils';
-import { ParsedComponentsDefinitionV10X, ComponentsDefinition } from './models';
+import { ComponentsDefinition, ComponentSet } from './models';
 import {
     Validator, RestrictChildrenValidator, DocContainerValidator, DefaultComponentOnEnterValidator,
     UnitTypeValidator, ImageEditorValidator, FocuspointValidator, DirectivePropertiesValidator, GroupsValidator,
@@ -109,7 +109,7 @@ export async function validate(
     }
 
     // parse everything for deeper testing
-    let parsedDefinition: ParsedComponentsDefinitionV10X|null = null;
+    let parsedDefinition: ComponentSet|null = null;
     try {
         parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
     } catch (e) {
@@ -178,7 +178,7 @@ function getValidationSchema(version: string): Ajv.ValidateFunction | null {
 export function getValidators(
     version: string,
     error: (errorMessage: string) => false,
-    parsedDefinition: ParsedComponentsDefinitionV10X,
+    parsedDefinition: ComponentSet,
     filePaths: Set<string>,
     getFileContent: GetFileContentType,
 ) : Validator[] | null {

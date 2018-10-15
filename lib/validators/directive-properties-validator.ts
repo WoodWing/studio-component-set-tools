@@ -16,12 +16,12 @@ export class DirectivePropertiesValidator extends Validator {
         for (const parsedComponent of Object.values(this.definition.components)) {
             parsedComponent.properties.forEach((parsedProperty) => {
                 if (CONTROLS.indexOf(parsedProperty.control.type) >= 0 && !parsedProperty.directiveKey) {
-                    this.error(`Property "${parsedProperty.name}" of component "${parsedComponent.component.name}" must reference ` +
+                    this.error(`Property "${parsedProperty.name}" of component "${parsedComponent.name}" must reference ` +
                         `to a directive`);
                 }
                 // check all dataType=doc-* properties
                 if (regexp.test(parsedProperty.dataType) && !parsedProperty.directiveKey) {
-                    this.error(`Property "${parsedProperty.name}" of component "${parsedComponent.component.name}" must reference ` +
+                    this.error(`Property "${parsedProperty.name}" of component "${parsedComponent.name}" must reference ` +
                         `to a directive because its dataType is a directive type`);
                 }
             });
