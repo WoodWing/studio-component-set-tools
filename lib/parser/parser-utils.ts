@@ -99,7 +99,7 @@ async function parseComponent(
     const htmlContent = await getFileContent(path.normalize(`./templates/html/${component.name}.html`), { encoding: 'utf8' });
     const directives = parseDirectives(htmlContent);
 
-    return merge(component, {
+    return merge({}, component, {
         directives: directives,
         properties: (component.properties || []).map((componentProperty) => {
             const property = parseProperty(

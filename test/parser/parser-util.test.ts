@@ -1,5 +1,6 @@
 import * as path from 'path';
 import { parseDefinition } from '../../lib/parser/parser-utils';
+const cloneDeep = require('lodash/clonedeep');
 
 describe('Parser utils', () => {
     describe('parseDefinition', () => {
@@ -220,6 +221,12 @@ describe('Parser utils', () => {
             };
             const componentSet = await parseDefinition(componentsDefinition, getFileContent);
             expect(componentSet).toEqual(expectedComponentSet);
+        });
+
+        it('should not modify the input components definition', async () => {
+            const originalComponentsDefinition = cloneDeep(componentsDefinition);
+            await parseDefinition(componentsDefinition, getFileContent);
+            expect(componentsDefinition).toEqual(originalComponentsDefinition);
         });
 
         it('should throw an error if there are directives with the same attribute values', async () => {
