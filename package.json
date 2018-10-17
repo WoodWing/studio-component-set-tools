@@ -12,8 +12,7 @@
     "watchtest": "jest --forceExit --coverage --verbose --watchAll",
     "tslint": "npm run tslint-lib && npm run tslint-test",
     "tslint-lib": "tslint -c tslint.json -p tsconfig.json",
-    "tslint-test": "tslint -c tslint.json -p tsconfig.test.json",
-    "update-types": "node -r ts-node/register generateComponentsTypes.ts"
+    "tslint-test": "tslint -c tslint.json -p tsconfig.test.json"
   },
   "repository": {
     "type": "git",
@@ -31,7 +30,6 @@
     "@types/node": "^9.6.23",
     "@types/recursive-readdir": "^2.2.0",
     "jest": "^22.4.4",
-    "json-schema-to-typescript": "^5.5.0",
     "rimraf": "^2.6.2",
     "ts-jest": "^22.4.6",
     "ts-node": "^4.1.0",

@@ -9,11 +9,9 @@ describe('SlidesValidator', () => {
         definition = {
             components: {
                 'c1': {
-                    component: {
-                        name: 'c1',
-                        restrictChildren: {
-                            c2: { withContent: 'image' }
-                        },
+                    name: 'c1',
+                    restrictChildren: {
+                        c2: { withContent: 'image' }
                     },
                     properties: [
                         {
@@ -25,7 +23,7 @@ describe('SlidesValidator', () => {
                     ],
                 },
                 'c2': {
-                    component: { name: 'c2' },
+                    name: 'c2',
                     properties: [
                         {
                             name: 'p2',
@@ -73,7 +71,7 @@ describe('SlidesValidator', () => {
         });
 
         it('should require restrictChildren to be set on slideshow component', () => {
-            definition.components.c1.component.restrictChildren = null;
+            definition.components.c1.restrictChildren = null;
             validator.validate();
             expect(error).toHaveBeenCalledWith('Component \"c1\" must have restrictChildren set to use the slides property');
         });

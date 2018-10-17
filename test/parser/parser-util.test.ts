@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { parseDefinition } from '../../lib/parser/parser-utils';
-import { ComponentsDefinition } from '../../lib/models';
+const cloneDeep = require('lodash/clonedeep');
 
 describe('Parser utils', () => {
     describe('parseDefinition', () => {
@@ -114,18 +114,16 @@ describe('Parser utils', () => {
             };
         });
         it('should parse components definition', async () => {
-            const expectedParsedComponentsDefinition = {
+            const expectedComponentSet = {
+                'name': 'minimal-sample',
+                'description': 'Minimal components package sample touching most of the available options.',
+                'version': '1.0.0',
                 'components': {
                     'body': {
-                        'component': {
-                            'name': 'body',
-                            'label': 'Body Label',
-                            'icon': 'icons/component.svg',
-                            'properties': [
-                                'selectProperty'
-                            ],
-                            'countStatistics': true
-                        },
+                        'name': 'body',
+                        'label': 'Body Label',
+                        'icon': 'icons/component.svg',
+                        'countStatistics': true,
                         'directives': {
                             'text': {
                                 'type': 'editable',
@@ -150,19 +148,12 @@ describe('Parser utils', () => {
                                 },
                                 'dataType': 'styles'
                             }
-                        ]
+                        ],
                     },
                     'complex': {
-                        'component': {
-                            'name': 'complex',
-                            'label': {'key' :'Complex Label KEY'},
-                            'icon': 'icons/component.svg',
-                            'properties': [
-                                'checkboxProperty',
-                                { 'name': 'dirProperty', 'directiveKey': 'image' },
-                                { 'control': { 'type': 'header' }, 'label': 'Header Label' }
-                            ]
-                        },
+                        'name': 'complex',
+                        'label': {'key' :'Complex Label KEY'},
+                        'icon': 'icons/component.svg',
                         'directives': {
                             'text': {
                                 'type': 'editable',
@@ -225,10 +216,17 @@ describe('Parser utils', () => {
                     body: {
                         complex: 'auto'
                     }
-                }
+                },
+                scripts: [],
             };
-            const parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
-            expect(parsedDefinition).toEqual(expectedParsedComponentsDefinition);
+            const componentSet = await parseDefinition(componentsDefinition, getFileContent);
+            expect(componentSet).toEqual(expectedComponentSet);
+        });
+
+        it('should not modify the input components definition', async () => {
+            const originalComponentsDefinition = cloneDeep(componentsDefinition);
+            await parseDefinition(componentsDefinition, getFileContent);
+            expect(componentsDefinition).toEqual(originalComponentsDefinition);
         });
 
         it('should throw an error if there are directives with the same attribute values', async () => {
@@ -314,7 +312,7 @@ describe('Parser utils', () => {
             } catch(e) {
                 er = e.message;
             }
-            expect(er).toEqual(`Property is not found "cucicaca"`);
+            expect(er).toEqual(`Property "cucicaca" is not found in definition componentProperties`);
         });
 
         it('should throw an error if there is a property which cannot be found for merging', async () => {
@@ -326,7 +324,7 @@ describe('Parser utils', () => {
             } catch(e) {
                 er = e.message;
             }
-            expect(er).toEqual(`Property is not found "cucicaca"`);
+            expect(er).toEqual(`Property "cucicaca" is not found in definition componentProperties`);
         });
     });
 });

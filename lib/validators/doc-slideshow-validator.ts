@@ -3,23 +3,23 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinitionComponent, ParsedComponentsDefinitionDirective } from '../models';
+import { DirectiveType, ParsedComponent } from '../models';
 
 export class DocSlideshowValidator extends Validator {
     validate(): void {
-        Object.values(this.definition.components).forEach((parsedComponent: ParsedComponentsDefinitionComponent) => {
+        Object.values(this.componentSet.components).forEach((parsedComponent: ParsedComponent) => {
             const amountOfSlideshows = this.countSlideshowDirectives(parsedComponent);
             // check if it's the only one
             if (amountOfSlideshows > 1) {
-                this.error(`Component "${parsedComponent.component.name}" contains more then one slideshow directive, ` +
+                this.error(`Component "${parsedComponent.name}" contains more then one slideshow directive, ` +
                     `only one is allowed per component`);
             }
         });
     }
 
-    private countSlideshowDirectives(parsedComponent: ParsedComponentsDefinitionComponent) : number {
+    private countSlideshowDirectives(parsedComponent: ParsedComponent) : number {
         return Object.values(parsedComponent.directives)
-        .reduce((acc: number, directive: ParsedComponentsDefinitionDirective) => {
+        .reduce((acc, directive) => {
             if (directive.type === DirectiveType.slideshow) {
                 acc++;
             }

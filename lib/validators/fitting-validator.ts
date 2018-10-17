@@ -4,12 +4,12 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionComponent } from '../models';
+import { ParsedComponent } from '../models';
 
 const CONTROL = 'fitting';
 
 export class FittingValidator extends Validator {
-    private countPerComponent(component: ParsedComponentsDefinitionComponent) : number {
+    private countPerComponent(component: ParsedComponent) : number {
         let amount = 0;
         component.properties.forEach((parsedProperty) => {
             if (parsedProperty.control.type === CONTROL) {
@@ -20,9 +20,9 @@ export class FittingValidator extends Validator {
     }
 
     validate(): void {
-        for (const parsedComponent of Object.values(this.definition.components)) {
+        for (const parsedComponent of Object.values(this.componentSet.components)) {
             if (this.countPerComponent(parsedComponent) > 1) {
-                this.error(`Component "${parsedComponent.component.name}" uses properties with "${CONTROL}" control type ` +
+                this.error(`Component "${parsedComponent.name}" uses properties with "${CONTROL}" control type ` +
                     `more that one time`);
             }
         }

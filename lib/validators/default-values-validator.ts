@@ -3,9 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionV10X,
-    ParsedComponentsDefinitionComponent,
-    ParsedComponentsDefinitionProperty } from '../models';
+import { ParsedComponent, ComponentProperty } from '../models';
 
 const validDataTypes = new Set(['styles', 'inlineStyles', 'data']);
 
@@ -18,7 +16,7 @@ export class DefaultValuesValidator extends Validator {
     ]);
 
     validate(): void {
-        Object.values(this.definition.components).forEach((component) => this.validateComponent(component));
+        Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 
     /**
@@ -27,7 +25,7 @@ export class DefaultValuesValidator extends Validator {
      * @param errorReporter
      * @param component
      */
-    private validateComponent(component: ParsedComponentsDefinitionComponent): void {
+    private validateComponent(component: ParsedComponent): void {
         component.properties.forEach((property) => this.validateProperty(property));
     }
 
@@ -37,7 +35,7 @@ export class DefaultValuesValidator extends Validator {
      * @param errorReporter
      * @param property
      */
-    private validateProperty(property: ParsedComponentsDefinitionProperty) {
+    private validateProperty(property: ComponentProperty) {
         if (!property.defaultValue) {
             return;
         }
@@ -61,7 +59,7 @@ export class DefaultValuesValidator extends Validator {
      * @param _errorReporter
      * @param property
      */
-    private validateTextControlValue(_property: ParsedComponentsDefinitionProperty) {
+    private validateTextControlValue(_property: ComponentProperty) {
         // Allow any default value for text
     }
 
@@ -71,7 +69,7 @@ export class DefaultValuesValidator extends Validator {
      * @param errorReporter
      * @param property
      */
-    private validateSelectOrRadioControlValue(property: ParsedComponentsDefinitionProperty) {
+    private validateSelectOrRadioControlValue(property: ComponentProperty) {
         if (!(<any>property.control).options.find((option: any) => option.value === property.defaultValue)) {
             this.error(`Property ${property.name} defaultValue has no matching entry in ${property.control.type} options`);
         }
@@ -83,7 +81,7 @@ export class DefaultValuesValidator extends Validator {
      * @param errorReporter
      * @param property
      */
-    private validateCheckboxControlValue(property: ParsedComponentsDefinitionProperty) {
+    private validateCheckboxControlValue(property: ComponentProperty) {
         if (property.defaultValue !== (<any>property.control).value) {
             this.error(`Property ${property.name} defaultValue does not match ${property.control.type} value`);
         }

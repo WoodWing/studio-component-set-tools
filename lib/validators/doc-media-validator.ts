@@ -9,17 +9,17 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponentsDefinitionComponent } from '../models';
+import { DirectiveType, ParsedComponent } from '../models';
 
 export class DocMediaValidator extends Validator {
-    private countMediaDirectives(parsedComponent: ParsedComponentsDefinitionComponent) : number {
+    private countMediaDirectives(parsedComponent: ParsedComponent) : number {
         return Object.values(parsedComponent.directives)
             .filter((directive) => (directive.type === DirectiveType.media))
             .length;
     }
 
     validate(): void {
-        Object.values(this.definition.components).forEach((parsedComponent: ParsedComponentsDefinitionComponent) => {
+        Object.values(this.componentSet.components).forEach((parsedComponent: ParsedComponent) => {
 
             let numMediaDirectives = this.countMediaDirectives(parsedComponent);
             if (numMediaDirectives > 1) {

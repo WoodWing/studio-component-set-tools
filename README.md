@@ -45,12 +45,3 @@ Next verify you are logged in as a user with access to the [Woodwing organizatio
 Finally publish the [scoped package](https://www.npmjs.com/docs/orgs/publishing-an-org-scoped-package.html#publishing-a-public-scoped-package) by running:
 
     $ npm publish --access public
-
-## Update schema Typescript types
-Types for usage with Typescript are automatically generated using `json-schema-to-typescript`.
-
-When making changes to the json schema, run the following the npm script to update the types:
-
-    $ npm run update-types
-
-After updating, run the tests and commit the files.

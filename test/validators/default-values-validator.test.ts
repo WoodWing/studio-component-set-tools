@@ -10,9 +10,7 @@ describe('DefaultValuesValidator', () => {
         definition = {
             'components': {
                 'text': {
-                    'component': {
-                        'name': 'text',
-                    },
+                    'name': 'text',
                     'properties': [],
                 },
             },

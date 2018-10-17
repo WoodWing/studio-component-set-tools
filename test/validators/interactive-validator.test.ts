@@ -9,9 +9,6 @@ describe('InteractiveValidator', () => {
         definition = {
             components: {
                 c1: {
-                    component: {
-
-                    },
                     properties: [
                         {
                             name: 'p1',
