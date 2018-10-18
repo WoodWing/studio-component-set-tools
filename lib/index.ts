@@ -220,7 +220,7 @@ export function getValidators(
     }
     if (semver.satisfies(version, '>=1.3.0')) {
         validators = validators.concat(
-            new ConversionShortcutsValidator(error, parsedDefinition),
+            new ConversionShortcutsValidator(error, componentSet),
         );
     }
     return validators.length > 0 ? validators : null;

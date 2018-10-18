@@ -540,15 +540,20 @@ export const componentsDefinitionSchema_v1_3_x = {
                 },
             },
         },
-
-        conversionShortcutComponents: {
-            type: 'array',
-            description: 'List of components for conversion using the shortcuts',
-            minItems: 1,
-            maxItems: 10,
-            items: {
-                $ref: '#/definitions/nonEmptyString',
-                description: 'Component\'s name',
+        shortcuts: {
+            type: 'object',
+            description: 'Shortcuts configurations',
+            properties: {
+                conversionComponents: {
+                    type: 'array',
+                    description: 'List of components for conversion using the shortcuts',
+                    minItems: 1,
+                    maxItems: 10,
+                    items: {
+                        $ref: '#/definitions/nonEmptyString',
+                        description: 'Component\'s name',
+                    },
+                },
             },
         },
 

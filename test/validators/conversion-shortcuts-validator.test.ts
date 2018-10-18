@@ -31,9 +31,11 @@ describe('ConversionShortcutsValidator', () => {
                     }
                 }
             },
-            conversionShortcutComponents: [
-                'picture',
-            ],
+            shortcuts: {
+                conversionComponents: [
+                    'picture',
+                ],
+            }
         };
         error = jasmine.createSpy('error');
         validator = new ConversionShortcutsValidator(error, definition);
@@ -44,7 +46,7 @@ describe('ConversionShortcutsValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if the list contains non existing component', () => {
-            definition.conversionShortcutComponents.push('none');
+            definition.shortcuts.conversionComponents.push('none');
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Component "none" does not exist`);
         });
