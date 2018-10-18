@@ -9,15 +9,11 @@ describe('DefaultComponentOnEnterOverrideValidator', () => {
         definition = {
             components: {
                 text: {
-                    component: {
-                        name: 'text',
-                        defaultComponentOnEnter: 'body',
-                    },
+                    name: 'text',
+                    defaultComponentOnEnter: 'body',
                 },
                 body: {
-                    component: {
-                        name: 'body',
-                    },
+                    name: 'body',
                 },
             },
         };
@@ -30,7 +26,7 @@ describe('DefaultComponentOnEnterOverrideValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if it points to non existing component', () => {
-            definition.components.text.component.defaultComponentOnEnter = 'body2';
+            definition.components.text.defaultComponentOnEnter = 'body2';
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Property "defaultComponentOnEnter" of "text" points to non existing component "body2"`);
         });

@@ -8,9 +8,7 @@ describe('GroupsValidator', () => {
         definition = {
             components: {
                 picture: {
-                    component: {
-                        name: 'picture',
-                    },
+                    name: 'picture',
                     directives: {
                         slide: {
                             type: 'image',

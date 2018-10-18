@@ -9,9 +9,7 @@ describe('DocSlideshowValidator', () => {
         definition = {
             'components': {
                 'slides': {
-                    'component': {
-                        'name': 'slides',
-                    },
+                    'name': 'slides',
                     'directives': {
                         'd1': {
                             'type': 'slideshow',

@@ -9,21 +9,19 @@ describe('DocContainerGroupsValidator', () => {
         definition = {
             components: {
                 'c1': {
-                    component: {
-                        name: 'c1',
-                        restrictChildren: {
-                            c2: { withContent: 'image' }
-                        },
-                        directiveOptions: {
-                            main: {
-                                groups: [
-                                    {
-                                        name: 'g1',
-                                        components: ['picture'],
-                                    },
-                                ],
-                            }
-                        },
+                    name: 'c1',
+                    restrictChildren: {
+                        c2: { withContent: 'image' }
+                    },
+                    directiveOptions: {
+                        main: {
+                            groups: [
+                                {
+                                    name: 'g1',
+                                    components: ['picture'],
+                                },
+                            ],
+                        }
                     },
                     directives: {
                         main: {

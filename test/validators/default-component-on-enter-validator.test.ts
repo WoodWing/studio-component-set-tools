@@ -9,9 +9,7 @@ describe('DefaultComponentOnEnterValidator', () => {
         definition = {
             components: {
                 'text': {
-                    'component': {
-                        'name': 'text',
-                    },
+                    'name': 'text',
                     'directives': {
                         'd1': {
                             'type': 'editable',

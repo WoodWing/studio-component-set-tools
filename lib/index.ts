@@ -12,7 +12,7 @@ import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
 import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
 
 import { parseDefinition } from './parser/parser-utils';
-import { ParsedComponentsDefinitionV10X, ComponentsDefinition } from './models';
+import { ComponentsDefinition, ComponentSet } from './models';
 import {
     Validator, RestrictChildrenValidator, DocContainerValidator, DefaultComponentOnEnterValidator,
     UnitTypeValidator, ImageEditorValidator, FocuspointValidator, DirectivePropertiesValidator, GroupsValidator,
@@ -110,14 +110,14 @@ export async function validate(
     }
 
     // parse everything for deeper testing
-    let parsedDefinition: ParsedComponentsDefinitionV10X|null = null;
+    let componentSet: ComponentSet|null = null;
     try {
-        parsedDefinition = await parseDefinition(componentsDefinition, getFileContent);
+        componentSet = await parseDefinition(componentsDefinition, getFileContent);
     } catch (e) {
         errorReporter(e);
     }
     // can't run validators if the parser has failed
-    if (!parsedDefinition) {
+    if (!componentSet) {
         return false;
     }
 
@@ -132,7 +132,7 @@ export async function validate(
     const validators = getValidators(
         componentsDefinition.version,
         validateError,
-        parsedDefinition,
+        componentSet,
         filePaths,
         getFileContent
     );
@@ -175,47 +175,47 @@ function getValidationSchema(version: string): Ajv.ValidateFunction | null {
  * @param version
  * @param filePaths
  * @param componentsDefinition
- * @param parsedDefinition
+ * @param componentSet
  * @param getFileContent
  */
 export function getValidators(
     version: string,
     error: (errorMessage: string) => false,
-    parsedDefinition: ParsedComponentsDefinitionV10X,
+    componentSet: ComponentSet,
     filePaths: Set<string>,
     getFileContent: GetFileContentType,
 ) : Validator[] | null {
     let validators: Validator[] = [];
     if (semver.satisfies(version, '>=1.0.0')) {
         validators = validators.concat(
-            new ComponentsValidator(error, parsedDefinition, filePaths),
-            new ConversionRulesValidator(error, parsedDefinition),
-            new DefaultComponentOnEnterValidator(error, parsedDefinition),
-            new DefaultValuesValidator(error, parsedDefinition),
-            new DirectivePropertiesValidator(error, parsedDefinition),
-            new DisableFullscreenCheckboxValidator(error, parsedDefinition),
-            new DocContainerValidator(error, parsedDefinition),
-            new DocMediaValidator(error, parsedDefinition),
-            new DocSlideshowValidator(error, parsedDefinition),
-            new DropCapitalValidator(error, parsedDefinition),
-            new FittingValidator(error, parsedDefinition),
-            new FocuspointValidator(error, parsedDefinition),
-            new GroupsValidator(error, parsedDefinition),
-            new IconsValidator(error, parsedDefinition, getFileContent),
-            new ImageEditorValidator(error, parsedDefinition),
-            new InteractiveValidator(error, parsedDefinition),
-            new PropertiesValidator(error, parsedDefinition, filePaths),
-            new RestrictChildrenValidator(error, parsedDefinition),
-            new ScriptsValidator(error, parsedDefinition, filePaths),
-            new SlidesValidator(error, parsedDefinition),
-            new UnitTypeValidator(error, parsedDefinition),
+            new ComponentsValidator(error, componentSet, filePaths),
+            new ConversionRulesValidator(error, componentSet),
+            new DefaultComponentOnEnterValidator(error, componentSet),
+            new DefaultValuesValidator(error, componentSet),
+            new DirectivePropertiesValidator(error, componentSet),
+            new DisableFullscreenCheckboxValidator(error, componentSet),
+            new DocContainerValidator(error, componentSet),
+            new DocMediaValidator(error, componentSet),
+            new DocSlideshowValidator(error, componentSet),
+            new DropCapitalValidator(error, componentSet),
+            new FittingValidator(error, componentSet),
+            new FocuspointValidator(error, componentSet),
+            new GroupsValidator(error, componentSet),
+            new IconsValidator(error, componentSet, getFileContent),
+            new ImageEditorValidator(error, componentSet),
+            new InteractiveValidator(error, componentSet),
+            new PropertiesValidator(error, componentSet, filePaths),
+            new RestrictChildrenValidator(error, componentSet),
+            new ScriptsValidator(error, componentSet, filePaths),
+            new SlidesValidator(error, componentSet),
+            new UnitTypeValidator(error, componentSet),
         );
     }
     if (semver.satisfies(version, '>=1.1.0')) {
         validators = validators.concat(
-            new AutofillValidator(error, parsedDefinition),
-            new DefaultComponentOnEnterOverrideValidator(error, parsedDefinition),
-            new DocContainerGroupsValidator(error, parsedDefinition),
+            new AutofillValidator(error, componentSet),
+            new DefaultComponentOnEnterOverrideValidator(error, componentSet),
+            new DocContainerGroupsValidator(error, componentSet),
         );
     }
     if (semver.satisfies(version, '>=1.3.0')) {

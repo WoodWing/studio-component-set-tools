@@ -4,20 +4,20 @@
 
 import * as path from 'path';
 import { Validator } from './validator';
-import { ParsedComponentsDefinitionV10X } from '../models';
+import { ComponentSet } from '../models';
 
 export class ScriptsValidator extends Validator {
     constructor(
         error: (errorMessage: string) => false,
-        definition: ParsedComponentsDefinitionV10X,
+        definition: ComponentSet,
         protected filePaths: Set<string>,
     ) {
         super(error, definition);
     }
 
     validate(): void {
-        if (this.definition.scripts) {
-            for (const scriptPath of this.definition.scripts) {
+        if (this.componentSet.scripts) {
+            for (const scriptPath of this.componentSet.scripts) {
                 if (!this.filePaths.has(path.normalize(scriptPath))) {
                     this.error(`Script "${scriptPath}" does not exist`);
                 }

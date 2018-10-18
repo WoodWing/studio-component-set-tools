@@ -11,18 +11,14 @@ describe('ComponentsValidator', () => {
         definition = {
             components: {
                 body: {
-                    component: {
-                        name: 'body',
-                        label: 'Body Label',
-                        icon: 'path1',
-                    },
+                    name: 'body',
+                    label: 'Body Label',
+                    icon: 'path1',
                 },
                 intro: {
-                    component: {
-                        name: 'intro',
-                        label: { key: 'Intro Label {{0}}', values: {'0': 'replacement'} },
-                        icon: 'path2',
-                    },
+                    name: 'intro',
+                    label: { key: 'Intro Label {{0}}', values: {'0': 'replacement'} },
+                    icon: 'path2',
                 },
             },
         };
@@ -46,17 +42,17 @@ describe('ComponentsValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if the names are not unique', () => {
-            definition.components.body.component.name = 'intro';
+            definition.components.body.name = 'intro';
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Component "intro" is not unique`);
         });
         it('should not pass if reserved word is used as a name (__internal__)', () => {
-            definition.components.body.component.name = '__internal__bla';
+            definition.components.body.name = '__internal__bla';
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Component name "__internal__bla" is a reserved word`);
         });
         it('should not pass if there is no icon file', () => {
-            definition.components.intro.component.icon = 'pathU';
+            definition.components.intro.icon = 'pathU';
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Component "intro" icon missing "pathU"`);
         });
