@@ -8,8 +8,8 @@
     "prepare": "npm run build",
     "build": "rimraf ./dist && npm run tslint & tsc",
     "watch": "tsc --watch",
-    "test": "npm run tslint && tsc -p tsconfig.test.json --noEmit && jest --forceExit --coverage --verbose",
-    "watchtest": "jest --forceExit --coverage --verbose --watchAll",
+    "test": "npm run tslint && tsc -p tsconfig.test.json --noEmit && jest --forceExit --coverage --verbose --detectOpenHandles",
+    "watchtest": "jest --forceExit --coverage --verbose --detectOpenHandles --watchAll",
     "tslint": "npm run tslint-lib && npm run tslint-test",
     "tslint-lib": "tslint -c tslint.json -p tsconfig.json",
     "tslint-test": "tslint -c tslint.json -p tsconfig.test.json"
