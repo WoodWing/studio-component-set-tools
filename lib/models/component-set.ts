@@ -1,4 +1,4 @@
-import { Component, ComponentProperty, ComponentGroup, ComponentConversionRules } from './components-definition';
+import { Component, ComponentProperty, ComponentGroup, ComponentConversionRules, ComponentsDefinitionShortcuts } from './components-definition';
 
 /**
  * Defines the model for component sets.
@@ -44,6 +44,11 @@ export interface ComponentSet {
      * Conversion rules for transforming one component into another component
      */
     conversionRules: ComponentConversionRules;
+
+    /**
+     * Shortcuts configurations
+     */
+    shortcuts?: ComponentsDefinitionShortcuts;
 
     /**
      * List of scripts to be included for html rendition of article

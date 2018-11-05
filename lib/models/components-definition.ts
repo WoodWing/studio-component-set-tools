@@ -50,6 +50,11 @@ export interface ComponentsDefinition {
     conversionRules: ComponentConversionRules;
 
     /**
+     * Shortcuts configurations
+     */
+    shortcuts?: ComponentsDefinitionShortcuts;
+
+    /**
      * List of scripts to be included for html rendition of article
      */
     scripts?: string[];
@@ -233,4 +238,14 @@ export interface ComponentConversionRule {
             container: string;
             [k: string]: any;
         };
+}
+
+/**
+ * Shortcuts configurations for the ComponentsDefinition
+ */
+export interface ComponentsDefinitionShortcuts {
+    /**
+     * List of components for conversion using the shortcuts
+     */
+    conversionComponents: string[];
 }

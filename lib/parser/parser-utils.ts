@@ -81,6 +81,7 @@ export async function parseDefinition(
         groups: componentsDefinition.groups,
         defaultComponentOnEnter: componentsDefinition.defaultComponentOnEnter,
         conversionRules: componentsDefinition.conversionRules,
+        shortcuts: componentsDefinition.shortcuts,
         scripts: componentsDefinition.scripts || [],
     };
     for (let i = 0; i < componentsDefinition.components.length; i++) {

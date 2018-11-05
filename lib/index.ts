@@ -9,6 +9,7 @@ import * as recursiveReadDir from 'recursive-readdir';
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
 import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
+import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
 
 import { parseDefinition } from './parser/parser-utils';
 import { ComponentsDefinition, ComponentSet } from './models';
@@ -18,7 +19,7 @@ import {
     ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
     InteractiveValidator, ComponentsValidator, DisableFullscreenCheckboxValidator, SlidesValidator,
     ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator, AutofillValidator,
-    DefaultComponentOnEnterOverrideValidator, DocContainerGroupsValidator
+    DefaultComponentOnEnterOverrideValidator, DocContainerGroupsValidator, ConversionShortcutsValidator
 } from './validators';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
@@ -162,6 +163,8 @@ function getValidationSchema(version: string): Ajv.ValidateFunction | null {
         return ajv.compile(componentsDefinitionSchema_v1_1_x);
     } else if (semver.satisfies(version, '1.2.x')) {
         return ajv.compile(componentsDefinitionSchema_v1_2_x);
+    } else if (semver.satisfies(version, '1.3.x')) {
+        return ajv.compile(componentsDefinitionSchema_v1_3_x);
     }
     return null;
 }
@@ -213,6 +216,11 @@ export function getValidators(
             new AutofillValidator(error, componentSet),
             new DefaultComponentOnEnterOverrideValidator(error, componentSet),
             new DocContainerGroupsValidator(error, componentSet),
+        );
+    }
+    if (semver.satisfies(version, '>=1.3.0')) {
+        validators = validators.concat(
+            new ConversionShortcutsValidator(error, componentSet),
         );
     }
     return validators.length > 0 ? validators : null;
