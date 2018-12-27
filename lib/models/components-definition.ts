@@ -148,6 +148,15 @@ export interface Component {
             };
         };
     };
+
+    renditions?: {
+        [rendition in ComponentRendition]?: string;
+    };
+}
+
+export enum ComponentRendition {
+    HTML = 'html',
+    PSV = 'psv',
 }
 
 export interface ComponentProperty {

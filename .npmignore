@@ -1,5 +1,0 @@
-lib/
-coverage/
-test/
-generateComponentsTypes.ts
-jest.config.js

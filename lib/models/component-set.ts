@@ -29,6 +29,17 @@ export interface ComponentSet {
     defaultComponentOnEnter: string;
 
     /**
+     * Default components content
+     */
+    defaultComponentContent: {
+        [componentName: string]: {
+            [dataType in ComponentProperty['dataType']]? : {
+                [propertyName: string]: string;
+            };
+        };
+    };
+
+    /**
      * Map component identifiers to their parsed model.
      */
     components: {
