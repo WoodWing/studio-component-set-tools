@@ -1,13 +1,13 @@
 import * as path from 'path';
 import { parseDefinition } from '../../lib/parser/parser-utils';
-import { ComponentSet, DirectiveType, ComponentRendition } from '../../lib/models';
+import { DirectiveType, ComponentRendition } from '../../lib/models';
 const cloneDeep = require('lodash/cloneDeep');
 
 describe('Parser utils', () => {
     describe('parseDefinition', () => {
         let componentsDefinition: any;
         let getFileContent: (filePath: string) => Promise<string>;
-        let bodyHtml: string, complexHtml: string;
+        let html: {[s: string]: string};
         beforeEach(() => {
             componentsDefinition = {
                 name: 'minimal-sample',
@@ -20,7 +20,9 @@ describe('Parser utils', () => {
                         label: 'Body Label',
                         icon: 'icons/component.svg',
                         properties: [
-                            { name: 'selectProperty', defaultValue: '_option1' }
+                            { name: 'selectProperty', defaultValue: '_option1' },
+                            { name: 'letter-spacing', defaultValue: '2' },
+                            { name: 'drop-capital', defaultValue: { numberOfCharacters: 1, numberOfLines: 3, padding: 5 } },
                         ],
                         countStatistics: true
                     },
@@ -70,7 +72,7 @@ describe('Parser utils', () => {
                             type: 'checkbox',
                             value: '_valueWhenOn'
                         },
-                        dataType: 'styles'
+                        dataType: 'styles',
                     },
                     {
                         name: 'dirProperty',
@@ -79,40 +81,62 @@ describe('Parser utils', () => {
                             type: 'image-editor',
                             focuspoint: true
                         },
-                        dataType: 'doc-image'
-                    }
+                        dataType: 'doc-image',
+                    },
+                    {
+                        name: 'letter-spacing',
+                        label: 'Character spacing',
+                        control: {
+                            type: 'text',
+                            pattern: '^(([+-]{0,1})([0-9]|[0-9][.][0-9]{1,}|[0-9]{2}|[0-9]{2}[.][0-9]{1,}|[1-4][0-9]{0,2}|[1-4][0-9]{0,2}[.][0-9]{1,}|(500))|auto)$',
+                            defaultValue: '',
+                            unit: 'em',
+                            inputPlaceholder: 'Type ‘auto’ or any number…',
+                        },
+                        selector: '[doc-editable]',
+                        dataType: 'inlineStyles',
+                    },
+                    {
+                        name: 'drop-capital',
+                        label: 'Drop cap',
+                        control: {
+                            type: 'drop-capital',
+                            charactersMinimum: 1,
+                            charactersDefault: 1,
+                            charactersMaximum: 10,
+                            linesMinimum: 1,
+                            linesDefault: 3,
+                            linesMaximum: 10
+                        },
+                        dataType: 'data',
+                        featureFlag: 'ContentStation-LocalStyleOverrides',
+                    },
                 ],
                 conversionRules: {
                     body: {
-                        complex: 'auto'
-                    }
+                        complex: 'auto',
+                    },
                 },
                 shortcuts: { conversionComponents: ['shortcuts'] },
             };
-            bodyHtml = `<p doc-editable="text"></p>`;
-            complexHtml =
-            `<div>` +
-                `<p doc-editable="text"></p>` +
-                `<figure doc-image="image"></figure>` +
-                `<div>` +
-                    `<img doc-image="second-image">` +
-                    `<p doc-editable="caption"></p>` +
-                `</div>` +
-            `</div>`;
+            html = {
+                body: `<p doc-editable="text"></p>`,
+                complex:
+                    `<div>` +
+                        `<p doc-editable="text"></p>` +
+                        `<figure doc-image="image"></figure>` +
+                        `<div>` +
+                            `<img doc-image="second-image">` +
+                            `<p doc-editable="caption"></p>` +
+                        `</div>` +
+                    `</div>`,
+            };
             getFileContent = (filePath: string) : Promise<string> => {
-                const filename = path.basename(filePath);
-                let result;
-                switch (filename) {
-                    case 'body.html':
-                        result = bodyHtml;
-                        break;
-                    case 'complex.html':
-                        result = complexHtml;
-                        break;
-                    default:
-                        throw new Error(`Unknown filename "${filename}", cannot be handled`);
+                const filename = path.basename(filePath).split('.').shift();
+                if (!filename || !(filename in html)) {
+                    throw new Error(`Unknown filename "${filename}", cannot be handled`);
                 }
-                return Promise.resolve(result);
+                return Promise.resolve(html[filename]);
             };
         });
 
@@ -153,11 +177,42 @@ describe('Parser utils', () => {
                                     },
                                     dataType: 'styles',
                                     defaultValue: '_option1',
-                                }
+                                },
+                                {
+                                    name: 'letter-spacing',
+                                    label: 'Character spacing',
+                                    control: {
+                                        type: 'text',
+                                        pattern: '^(([+-]{0,1})([0-9]|[0-9][.][0-9]{1,}|[0-9]{2}|[0-9]{2}[.][0-9]{1,}|[1-4][0-9]{0,2}|[1-4][0-9]{0,2}[.][0-9]{1,}|(500))|auto)$',
+                                        defaultValue: '',
+                                        unit: 'em',
+                                        inputPlaceholder: 'Type ‘auto’ or any number…',
+                                    },
+                                    selector: '[doc-editable]',
+                                    dataType: 'inlineStyles',
+                                    defaultValue: '2',
+                                },
+                                {
+                                    name: 'drop-capital',
+                                    label: 'Drop cap',
+                                    control: {
+                                        type: 'drop-capital',
+                                        charactersMinimum: 1,
+                                        charactersDefault: 1,
+                                        charactersMaximum: 10,
+                                        linesMinimum: 1,
+                                        linesDefault: 3,
+                                        linesMaximum: 10
+                                    },
+                                    dataType: 'data',
+                                    featureFlag: 'ContentStation-LocalStyleOverrides',
+                                    defaultValue: { numberOfCharacters: 1, numberOfLines: 3, padding: 5 },
+                                },
                             ],
                             renditions: {
-                                html: bodyHtml,
+                                html: html.body,
                             },
+                            noCreatePermission: false,
                         },
                         complex: {
                             name: 'complex',
@@ -209,8 +264,9 @@ describe('Parser utils', () => {
                                 }
                             ],
                             renditions: {
-                                html: complexHtml,
+                                html: html.complex,
                             },
+                            noCreatePermission: false,
                         }
                     },
                     groups: [
@@ -229,6 +285,12 @@ describe('Parser utils', () => {
                             styles: {
                                 selectProperty: '_option1',
                             },
+                            inlineStyles: {
+                                'letter-spacing': '2',
+                            },
+                            data: {
+                                'drop-capital': { numberOfCharacters: 1, numberOfLines: 3, padding: 5 },
+                            },
                         },
                     },
                     conversionRules: {
@@ -246,10 +308,10 @@ describe('Parser utils', () => {
             });
             it('should be fine when components definition with renditions', async () => {
                 componentsDefinition.components[0].renditions = {
-                    [ComponentRendition.HTML]: bodyHtml,
+                    [ComponentRendition.HTML]: html.body,
                 };
                 componentsDefinition.components[1].renditions = {
-                    [ComponentRendition.HTML]: complexHtml,
+                    [ComponentRendition.HTML]: html.complex,
                 };
                 const componentSet = await parseDefinition(componentsDefinition);
                 expect(componentSet).toEqual(expectedComponentSet);
@@ -272,32 +334,16 @@ describe('Parser utils', () => {
         });
 
         it('should throw an error if there are directives with the same attribute values', async () => {
-            getFileContent = (filePath: string) : Promise<string> => {
-                const filename = path.basename(filePath);
-                let result;
-                switch (filename) {
-                    case 'body.html':
-                        result = `
-                            <p doc-editable="text"></p>
-                        `;
-                        break;
-                    case 'complex.html':
-                        result = `
-                            <div>
-                                <p doc-editable="text"></p>
-                                <figure doc-image="image"></figure>
-                                <div>
-                                    <img doc-image="second-image">
-                                    <p doc-editable="text"></p>
-                                </div>
-                            </div>
-                        `;
-                        break;
-                    default:
-                        throw new Error(`Unknown filename "${filename}", cannot be handled`);
-                }
-                return Promise.resolve(result);
-            };
+            html.complex = `
+                <div>
+                    <p doc-editable="text"></p>
+                    <figure doc-image="image"></figure>
+                    <div>
+                        <img doc-image="second-image">
+                        <p doc-editable="text"></p>
+                    </div>
+                </div>
+            `;
 
             let er = '';
             try {
@@ -309,32 +355,16 @@ describe('Parser utils', () => {
         });
 
         it('should throw an error if there is a property which points to non existing directive', async () => {
-            getFileContent = (filePath: string) : Promise<string> => {
-                const filename = path.basename(filePath);
-                let result;
-                switch (filename) {
-                    case 'body.html':
-                        result = `
-                            <p doc-editable="text"></p>
-                        `;
-                        break;
-                    case 'complex.html':
-                        result = `
-                            <div>
-                                <p doc-editable="text"></p>
-                                <figure doc-image="image2"></figure>
-                                <div>
-                                    <img doc-image="second-image">
-                                    <p doc-editable="text2"></p>
-                                </div>
-                            </div>
-                        `;
-                        break;
-                    default:
-                        throw new Error(`Unknown filename "${filename}", cannot be handled`);
-                }
-                return Promise.resolve(result);
-            };
+            html.complex = `
+                <div>
+                    <p doc-editable="text"></p>
+                    <figure doc-image="image2"></figure>
+                    <div>
+                        <img doc-image="second-image">
+                        <p doc-editable="text2"></p>
+                    </div>
+                </div>
+            `;
 
             let er = '';
             try {

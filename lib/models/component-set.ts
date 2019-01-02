@@ -82,6 +82,11 @@ export interface ParsedComponent extends Component {
             tag: string;    // tag name (lowercased)
         };
     };
+
+    /**
+     * Flag which forbids creating of the component
+     */
+    noCreatePermission: boolean;
 }
 
 export enum DirectiveType {

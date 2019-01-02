@@ -191,7 +191,7 @@ export interface ComponentProperty {
     /**
      * Default value of property upon component creation. By default the property value is not defined.
      */
-    defaultValue?: string;
+    defaultValue?: string | {[key: string]: any};
     group?: string;
     /**
      * Additional selector to define elements of the component which the property should be applied to.

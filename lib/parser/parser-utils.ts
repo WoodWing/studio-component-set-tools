@@ -167,6 +167,7 @@ function parseComponent(
             }
             return property;
         }),
+        noCreatePermission: false,
     });
 }
 
@@ -279,7 +280,6 @@ function buildComponentPropertyDefaultContent(
             break;
         default:
             // Note: validator doesn't allow such a value in component definitions
-            throw new Error(`Unexpected data type ${property.dataType} for default property value of ${property.name}!`);
     }
 }
 
@@ -298,7 +298,7 @@ function addDefaultPropertyContent(
     dataTypeKey: ComponentProperty['dataType'],
     componentName: string,
     propertyName: string,
-    value: string
+    value: string | object,
 ) : void {
     if (!defaultComponentContent[componentName]) {
         defaultComponentContent[componentName] = {};
