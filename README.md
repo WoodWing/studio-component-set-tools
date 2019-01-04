@@ -31,6 +31,22 @@ const errorReporter = (errorMessage: string) => console.error(errorMessage);
 const validationResult: boolean = await validate(filePaths, getFileContent, errorReporter);
 ```
 
+### parser
+
+If published version (from "dist" folder) of the package is used then:
+- if parser is going to be used in the browser remember that package's target is ES6 which may be unsupported or partly supported by the browsers
+- also polyfills may be needed for IE browsers
+
+An example of possible usage:
+```ts
+import { parseDefinition } from '@woodwing/csde-components-validator/dist/parser';
+
+const componentsDefinition = getComponentsDefinitionJson();
+parseDefinition(componentsDefinition).then(componentSet => {
+    // componentSet is a parsed definition
+});
+```
+
 ## Publish
 In case you have never published a npm module before, make sure to read the official npm documentation about [publishing npm packages](https://docs.npmjs.com/getting-started/publishing-npm-packages).
 
