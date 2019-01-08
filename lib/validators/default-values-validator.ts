@@ -13,6 +13,7 @@ export class DefaultValuesValidator extends Validator {
         ['select', this.validateSelectOrRadioControlValue],
         ['radio', this.validateSelectOrRadioControlValue],
         ['checkbox', this.validateCheckboxControlValue],
+        ['drop-capital', this.validateDropCapitalControlValue],
     ]);
 
     validate(): void {
@@ -22,7 +23,6 @@ export class DefaultValuesValidator extends Validator {
     /**
      * Iterate through all properties of given component.
      *
-     * @param errorReporter
      * @param component
      */
     private validateComponent(component: ParsedComponent): void {
@@ -32,7 +32,6 @@ export class DefaultValuesValidator extends Validator {
     /**
      * Validate property has a valid dataType for the given default value if any.
      *
-     * @param errorReporter
      * @param property
      */
     private validateProperty(property: ComponentProperty) {
@@ -55,21 +54,50 @@ export class DefaultValuesValidator extends Validator {
     }
 
     /**
-     * Validate defaultValue against text control type.
-     * @param _errorReporter
+     * String validation
+     *
      * @param property
      */
-    private validateTextControlValue(_property: ComponentProperty) {
-        // Allow any default value for text
+    private validateStringValue(property: ComponentProperty) : boolean {
+        if (typeof property.defaultValue !== 'string') {
+            this.error(`Property ${property.name} defaultValue must be a string`);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Object validation
+     *
+     * @param property
+     */
+    private validateObjectValue(property: ComponentProperty) : boolean {
+        if (typeof property.defaultValue !== 'object') {
+            this.error(`Property ${property.name} defaultValue must be an object`);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Validate defaultValue against text control type.
+     *
+     * @param property
+     */
+    private validateTextControlValue(property: ComponentProperty) {
+        // Allow any default string value for text
+        this.validateStringValue(property);
     }
 
     /**
      * Validate defaultValue against select or radio control type.
      *
-     * @param errorReporter
      * @param property
      */
     private validateSelectOrRadioControlValue(property: ComponentProperty) {
+        if (!this.validateStringValue(property)) {
+            return;
+        }
         if (!(<any>property.control).options.find((option: any) => option.value === property.defaultValue)) {
             this.error(`Property ${property.name} defaultValue has no matching entry in ${property.control.type} options`);
         }
@@ -78,12 +106,35 @@ export class DefaultValuesValidator extends Validator {
     /**
      * Validate defaultValue for checkbox control type.
      *
-     * @param errorReporter
      * @param property
      */
     private validateCheckboxControlValue(property: ComponentProperty) {
+        if (!this.validateStringValue(property)) {
+            return;
+        }
         if (property.defaultValue !== (<any>property.control).value) {
             this.error(`Property ${property.name} defaultValue does not match ${property.control.type} value`);
         }
+    }
+
+    /**
+     * Validates defaultValue for drop-capital control type.
+     *
+     * @param property
+     */
+    private validateDropCapitalControlValue(property: ComponentProperty) {
+        if (!this.validateObjectValue(property)) {
+            return;
+        }
+        const expectedKeys = ['numberOfCharacters', 'numberOfLines', 'padding'];
+        const presentKeys = Object.keys(<any>property.defaultValue);
+        if (expectedKeys.length !== presentKeys.length || !expectedKeys.every(key => presentKeys.indexOf(key) >= 0)) {
+            this.error(`Property ${property.name} defaultValue must be an object with keys "${expectedKeys.join(', ')}"`);
+        }
+        presentKeys.forEach(key => {
+            if (typeof (<any>property.defaultValue)[key] !== 'number') {
+                this.error(`Property ${property.name} defaultValue must be an object of number type values`);
+            }
+        });
     }
 }

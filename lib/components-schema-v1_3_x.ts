@@ -359,8 +359,12 @@ const componentPropertyDefinition = {
         description: 'Type of data being stored and how it is used. For directive data types it may also depend on the control type.',
     },
     defaultValue: {
-        type: 'string',
         description: 'Default value of property upon component creation. By default the property value is not defined.',
+        oneOf: [{
+            type: 'string',
+        }, {
+            type: 'object',
+        }],
     },
     group: {type: 'string'},
     selector: {

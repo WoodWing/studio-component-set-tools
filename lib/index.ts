@@ -11,8 +11,8 @@ import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
 import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
 import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
 
-import { parseDefinition } from './parser/parser-utils';
-import { ComponentsDefinition, ComponentSet } from './models';
+import { parseDefinition } from './parser';
+import { ComponentsDefinition, ComponentSet, GetFileContentType, GetFileContentOptionsType } from './models';
 import {
     Validator, RestrictChildrenValidator, DocContainerValidator, DefaultComponentOnEnterValidator,
     UnitTypeValidator, ImageEditorValidator, FocuspointValidator, DirectivePropertiesValidator, GroupsValidator,
@@ -61,16 +61,6 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
         }
     );
 }
-
-/**
- * Getting file options type
- */
-export type GetFileContentOptionsType = { encoding: string|null } | null;
-
-/**
- * return string if encoding is string and Buffer otherwise
- */
-export type GetFileContentType = (filePath: string, options?: GetFileContentOptionsType) => Promise<any>;
 
 /**
  * Validates a components package given an array of paths

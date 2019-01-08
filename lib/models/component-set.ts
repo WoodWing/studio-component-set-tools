@@ -29,6 +29,17 @@ export interface ComponentSet {
     defaultComponentOnEnter: string;
 
     /**
+     * Default components content
+     */
+    defaultComponentContent: {
+        [componentName: string]: {
+            [dataType in ComponentProperty['dataType']]? : {
+                [propertyName: string]: string;
+            };
+        };
+    };
+
+    /**
      * Map component identifiers to their parsed model.
      */
     components: {
@@ -71,6 +82,11 @@ export interface ParsedComponent extends Component {
             tag: string;    // tag name (lowercased)
         };
     };
+
+    /**
+     * Flag which forbids creating of the component
+     */
+    noCreatePermission: boolean;
 }
 
 export enum DirectiveType {

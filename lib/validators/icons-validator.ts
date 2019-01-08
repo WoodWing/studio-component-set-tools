@@ -5,8 +5,7 @@
 
 import * as path from 'path';
 import { Validator } from './validator';
-import { ComponentSet } from '../models';
-import { GetFileContentType } from '..';
+import { ComponentSet, GetFileContentType } from '../models';
 
 var PNG = require('pngjs').PNG;
 

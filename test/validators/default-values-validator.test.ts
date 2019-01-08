@@ -73,6 +73,25 @@ describe('DefaultValuesValidator', () => {
                 'Property propertyName has a default value used with an unsupported control type unsupported');
         });
 
+        ['text', 'select', 'radio', 'checkbox'].forEach((controlType) => {
+            it(`should not pass with control type ${controlType} and defaultValue not being string`, () => {
+                definition.components.text.properties.push({
+                    name: 'propertyName',
+                    defaultValue: {},
+                    dataType: 'styles',
+                    control: {
+                        type: `${controlType}`,
+                    },
+                });
+
+                validator = new DefaultValuesValidator(error, definition);
+                validator.validate();
+
+                expect(error).toHaveBeenCalledWith(
+                    'Property propertyName defaultValue must be a string');
+            });
+        });
+
         it('should pass with control type select and defaultValue being present in options', () => {
             definition.components.text.properties.push({
                 name: 'propertyName',
@@ -188,6 +207,73 @@ describe('DefaultValuesValidator', () => {
 
             expect(error).toHaveBeenCalledWith(
                 'Property propertyName defaultValue does not match checkbox value');
+        });
+
+        it('should pass with control type drop-capital and defaultValue being a correct object', () => {
+            definition.components.text.properties.push({
+                name: 'propertyName',
+                defaultValue: { numberOfCharacters: 2, numberOfLines: 3, padding: 5 },
+                dataType: 'data',
+                control: {
+                    type: 'drop-capital',
+                },
+            });
+
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
+
+            expect(error).not.toHaveBeenCalled();
+        });
+
+        it('should not pass with control type drop-capital and defaultValue not being an object', () => {
+            definition.components.text.properties.push({
+                name: 'propertyName',
+                defaultValue: 5,
+                dataType: 'data',
+                control: {
+                    type: 'drop-capital',
+                },
+            });
+
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
+
+            expect(error).toHaveBeenCalledWith(
+                'Property propertyName defaultValue must be an object');
+        });
+
+        it('should not pass with control type drop-capital and defaultValue not being a correct object', () => {
+            definition.components.text.properties.push({
+                name: 'propertyName',
+                defaultValue: { numberOfCharacters: 2, a: 2 },
+                dataType: 'data',
+                control: {
+                    type: 'drop-capital',
+                },
+            });
+
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
+
+            expect(error).toHaveBeenCalledWith(
+                'Property propertyName defaultValue must be an object with keys "numberOfCharacters, numberOfLines, padding"');
+        });
+
+        it('should not pass with control type drop-capital and defaultValue being a correct object but wrong values', () => {
+            definition.components.text.properties.push({
+                name: 'propertyName',
+                defaultValue: { numberOfCharacters: 2, numberOfLines: '3', padding: 5 },
+                dataType: 'data',
+                control: {
+                    type: 'drop-capital',
+                },
+            });
+
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
+
+            expect(error).toHaveBeenCalledWith(
+                'Property propertyName defaultValue must be an object of number type values');
         });
     });
 });
