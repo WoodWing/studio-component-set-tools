@@ -1,11 +1,12 @@
 {
   "name": "@woodwing/csde-components-validator",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Validation module for Content Station Digital Editor components packages.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/"
+    "dist/",
+    "lib/"
   ],
   "scripts": {
     "prepare": "npm run build",
