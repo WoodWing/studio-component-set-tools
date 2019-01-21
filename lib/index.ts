@@ -19,7 +19,8 @@ import {
     ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
     InteractiveValidator, ComponentsValidator, DisableFullscreenCheckboxValidator, SlidesValidator,
     ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator, AutofillValidator,
-    DefaultComponentOnEnterOverrideValidator, DocContainerGroupsValidator, ConversionShortcutsValidator
+    DefaultComponentOnEnterOverrideValidator, DocContainerGroupsValidator, ConversionShortcutsValidator,
+    LocalizationValidator,
 } from './validators';
 
 const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
@@ -199,6 +200,7 @@ export function getValidators(
             new ScriptsValidator(error, componentSet, filePaths),
             new SlidesValidator(error, componentSet),
             new UnitTypeValidator(error, componentSet),
+            new LocalizationValidator(error, componentSet, filePaths, getFileContent),
         );
     }
     if (semver.satisfies(version, '>=1.1.0')) {
