@@ -18,6 +18,7 @@ export * from './groups-validator';
 export * from './icons-validator';
 export * from './image-editor-validator';
 export * from './interactive-validator';
+export * from './localization-validator';
 export * from './properties-validator';
 export * from './restrict-children-validator';
 export * from './unit-type-validator';
