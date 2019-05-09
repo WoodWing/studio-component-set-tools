@@ -94,7 +94,6 @@ export enum DirectiveType {
     container = 'container',
     image = 'image',
     html = 'html',
-    if = 'if',
     slideshow = 'slideshow',
     link = 'link',
     media = 'media',
