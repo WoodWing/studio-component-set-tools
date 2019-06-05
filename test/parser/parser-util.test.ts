@@ -140,7 +140,7 @@ describe('Parser utils', () => {
             };
         });
 
-        describe('parsing', async() => {
+        describe('parsing', () => {
             let expectedComponentSet: any;
             beforeEach(() => {
                 expectedComponentSet = {
