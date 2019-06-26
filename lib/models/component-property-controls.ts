@@ -239,3 +239,11 @@ export interface ComponentPropertyControlUrl {
     type: 'url';
     inputPlaceholder?: Label;
 }
+
+/**
+ * Fitting property possible values
+ */
+export const COMPONENT_PROPERTY_CONTROL_FITTING_VALUES = {
+    FRAME_HEIGHT_TO_CONTENT_TYPE: '_fit-frame-height-to-content',
+    FRAME_TO_CONTENT_TYPE: '_fit-frame-to-content',
+};
