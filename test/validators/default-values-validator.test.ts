@@ -1,4 +1,5 @@
 import { DefaultValuesValidator } from '../../lib/validators/default-values-validator';
+import { COMPONENT_PROPERTY_CONTROL_FITTING_VALUES } from '../../lib/models/component-property-controls';
 
 describe('DefaultValuesValidator', () => {
     let definition: any;
@@ -73,7 +74,7 @@ describe('DefaultValuesValidator', () => {
                 'Property propertyName has a default value used with an unsupported control type unsupported');
         });
 
-        ['text', 'select', 'radio', 'checkbox'].forEach((controlType) => {
+        ['text', 'select', 'radio', 'checkbox', 'fitting'].forEach((controlType) => {
             it(`should not pass with control type ${controlType} and defaultValue not being string`, () => {
                 definition.components.text.properties.push({
                     name: 'propertyName',
@@ -274,6 +275,41 @@ describe('DefaultValuesValidator', () => {
 
             expect(error).toHaveBeenCalledWith(
                 'Property propertyName defaultValue must be an object of number type values');
+        });
+
+        Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES).forEach(fittingOption => {
+            it(`should pass with control type fitting and defaultValue is '${fittingOption}'`, () => {
+                definition.components.text.properties.push({
+                    name: 'propertyName',
+                    defaultValue: fittingOption,
+                    dataType: 'styles',
+                    control: {
+                        type: 'fitting',
+                    },
+                });
+
+                validator = new DefaultValuesValidator(error, definition);
+                validator.validate();
+
+                expect(error).not.toHaveBeenCalled();
+            });
+        });
+
+        it('should not pass with control type fitting and defaultValue not being present in options', () => {
+            definition.components.text.properties.push({
+                name: 'propertyName',
+                defaultValue: 'value',
+                dataType: 'styles',
+                control: {
+                    type: 'fitting',
+                },
+            });
+
+            validator = new DefaultValuesValidator(error, definition);
+            validator.validate();
+
+            expect(error).toHaveBeenCalledWith(
+                `Property propertyName defaultValue has to be one of '_fit-frame-height-to-content', '_fit-frame-to-content'`);
         });
     });
 });

@@ -4,6 +4,7 @@
 
 import { Validator } from './validator';
 import { ParsedComponent, ComponentProperty } from '../models';
+import { COMPONENT_PROPERTY_CONTROL_FITTING_VALUES } from '../models/component-property-controls';
 
 const validDataTypes = new Set(['styles', 'inlineStyles', 'data']);
 
@@ -14,6 +15,7 @@ export class DefaultValuesValidator extends Validator {
         ['radio', this.validateSelectOrRadioControlValue],
         ['checkbox', this.validateCheckboxControlValue],
         ['drop-capital', this.validateDropCapitalControlValue],
+        ['fitting', this.validateFittingControlValue],
     ]);
 
     validate(): void {
@@ -136,5 +138,18 @@ export class DefaultValuesValidator extends Validator {
                 this.error(`Property ${property.name} defaultValue must be an object of number type values`);
             }
         });
+    }
+
+    /**
+     * Validates defaultValue for fitting control type.
+     */
+    private validateFittingControlValue(property: ComponentProperty) {
+        if (!this.validateStringValue(property)) {
+            return;
+        }
+        const values = Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES);
+        if (!values.find(value => value === property.defaultValue)) {
+            this.error(`Property ${property.name} defaultValue has to be one of '${values.join("', '")}'`);
+        }
     }
 }
