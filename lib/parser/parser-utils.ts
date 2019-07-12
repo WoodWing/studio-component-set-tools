@@ -4,7 +4,7 @@
 
 import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
-const merge = require('lodash/merge');
+const merge = require('lodash.merge');
 import {
     DirectiveType, ComponentSet, ComponentsDefinition, Component, ParsedComponent, ComponentProperty,
     ComponentRendition, GetFileContentType
