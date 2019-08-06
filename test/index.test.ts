@@ -1,8 +1,27 @@
 import { validateFolder, getValidators } from '../lib/index';
+import * as colors from 'colors/safe';
 
 describe('validateFolder', () => {
-    it('Should pass on minimal sample', async () => {
+    it('should pass on minimal sample', async () => {
         expect(await validateFolder('./test/resources/minimal-sample')).toBe(true);
+    });
+
+    it('should fail on sample with components definition missing', async () => {
+        spyOn(global.console, 'log');
+
+        expect(await validateFolder('./test/resources/missing-components-definition-sample')).toBe(false);
+        expect(global.console.log).toHaveBeenCalledWith(
+            colors.red('Components definition file "components-definition.json" is missing')
+        );
+    });
+
+    it('should fail on sample with invalid json', async () => {
+        spyOn(global.console, 'log');
+
+        expect(await validateFolder('./test/resources/invalid-definition-json-sample')).toBe(false);
+        expect(global.console.log).toHaveBeenCalledWith(
+            colors.red('Components definition file "components-definition.json" is not valid')
+        );
     });
 });
 

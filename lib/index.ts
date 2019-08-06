@@ -69,21 +69,23 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
  *
  * @param filePaths paths to files, relative to root folder of components package
  * @param getFileContent an async function that resolves with the file content
- * @param errorReporter error reporter
+ * @param errorReporter called when there is a validation error
  */
 export async function validate(
     filePaths: Set<string>,
     getFileContent: GetFileContentType,
     errorReporter: (errorMessage: string) => void,
 ) {
-    // Validate it has a component definition file
     if (!filePaths.has(componentsDefinitionPath)) {
-        errorReporter(`Components definition file missing ${componentsDefinitionPath}`);
+        errorReporter(`Components definition file "${componentsDefinitionPath}" is missing`);
         return false;
     }
 
-    // Validate the schema of the component definition file
-    const componentsDefinition: ComponentsDefinition = JSON.parse(await getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
+    const componentsDefinition = await getComponentsDefinition(getFileContent);
+    if (!componentsDefinition) {
+        errorReporter(`Components definition file "${componentsDefinitionPath}" is not valid`);
+        return false;
+    }
 
     const validateSchema = getValidationSchema(componentsDefinition.version);
     if (!validateSchema) {
@@ -137,6 +139,13 @@ export async function validate(
     }
 
     return valid;
+}
+
+async function getComponentsDefinition(getFileContent: GetFileContentType): Promise<ComponentsDefinition|null> {
+    try {
+        return JSON.parse(await getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
+    } catch(e) {}
+    return null;
 }
 
 /**
