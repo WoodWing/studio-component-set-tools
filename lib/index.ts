@@ -81,9 +81,8 @@ export async function validate(
         return false;
     }
 
-    const componentsDefinition = await getComponentsDefinition(getFileContent);
+    const componentsDefinition = await getComponentsDefinition(getFileContent, errorReporter);
     if (!componentsDefinition) {
-        errorReporter(`Components definition file "${componentsDefinitionPath}" is not valid`);
         return false;
     }
 
@@ -141,10 +140,17 @@ export async function validate(
     return valid;
 }
 
-async function getComponentsDefinition(getFileContent: GetFileContentType): Promise<ComponentsDefinition|null> {
+async function getComponentsDefinition(
+    getFileContent: GetFileContentType,
+    errorReporter: (errorMessage: string) => void
+): Promise<ComponentsDefinition|null> {
     try {
         return JSON.parse(await getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
-    } catch(e) {}
+    } catch(e) {
+        errorReporter(
+            colors.red(`Components definition file "${componentsDefinitionPath}" is not valid json: \n${e}`)
+        );
+    }
     return null;
 }
 
