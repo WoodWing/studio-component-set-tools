@@ -8,6 +8,7 @@ describe('PropertiesValidator', () => {
     beforeEach(() => {
         // valid definition (cut)
         definition = {
+            version: '1.0.0',
             components: {
                 c1: {
                     properties: [
@@ -79,6 +80,18 @@ describe('PropertiesValidator', () => {
             definition.components.c1.properties[1].control.options[0].icon = 'pathU';
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Component properties "p2" icon missing "pathU"`);
+        });
+        it('should pass if parallax word is used as a name in version 1.4.0 or higher', () => {
+            definition.version = '1.4.0';
+            definition.components.c1.properties[0].name = 'parallax';
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
+        });
+        it('should pass if parallax word is used as a name in version 1.5.0 or higher', () => {
+            definition.version = '1.5.0';
+            definition.components.c1.properties[0].name = 'parallax';
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
         });
     });
 });
