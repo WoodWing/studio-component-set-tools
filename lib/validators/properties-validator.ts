@@ -13,6 +13,7 @@ import {
     ParsedComponent,
     ComponentProperty
 } from '../models';
+import * as semver from 'semver';
 
 const RESERVED = [
     /^parallax$/,
@@ -48,10 +49,9 @@ export class PropertiesValidator extends Validator {
      * @param property
      */
     private validateProperty(property: ComponentProperty, componentPropertyNames: Set<string>) {
-        // reserved words
-        if (RESERVED.some(regexp => regexp.test(property.name))) {
-            this.error(`Component property name "${property.name}" is a reserved word`);
-        }
+        
+        this.validateReservedPropertyName(property);
+
         // Validate we have not seen the name yet
         if (componentPropertyNames.has(property.name)) {
             this.error(`Component property "${property.name}" is not unique`);
@@ -65,6 +65,16 @@ export class PropertiesValidator extends Validator {
                     this.error(`Component properties "${property.name}" icon missing "${controlOption.icon}"`);
                 }
             }
+        }
+    }
+
+    private validateReservedPropertyName(property: ComponentProperty) {
+        if (semver.satisfies(this.componentSet.version, '>=1.4.x')) {
+            return;
+        }
+
+        if (RESERVED.some(regexp => regexp.test(property.name))) {
+            this.error(`Component property name "${property.name}" is a reserved word`);
         }
     }
 }

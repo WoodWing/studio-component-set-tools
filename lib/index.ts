@@ -10,6 +10,7 @@ import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
 import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
 import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
+import { componentsDefinitionSchema_v1_4_x } from './components-schema-v1_4_x';
 
 import { parseDefinition } from './parser';
 import { ComponentsDefinition, ComponentSet, GetFileContentType, GetFileContentOptionsType } from './models';
@@ -171,6 +172,8 @@ function getValidationSchema(version: string): Ajv.ValidateFunction | null {
         return ajv.compile(componentsDefinitionSchema_v1_2_x);
     } else if (semver.satisfies(version, '1.3.x')) {
         return ajv.compile(componentsDefinitionSchema_v1_3_x);
+    } else if (semver.satisfies(version, '1.4.x')) {
+        return ajv.compile(componentsDefinitionSchema_v1_4_x);
     }
     return null;
 }
@@ -199,7 +202,6 @@ export function getValidators(
             new DefaultComponentOnEnterValidator(error, componentSet),
             new DefaultValuesValidator(error, componentSet),
             new DirectivePropertiesValidator(error, componentSet),
-            new DisableFullscreenCheckboxValidator(error, componentSet),
             new DocContainerValidator(error, componentSet),
             new DocMediaValidator(error, componentSet),
             new DocSlideshowValidator(error, componentSet),
@@ -228,6 +230,11 @@ export function getValidators(
     if (semver.satisfies(version, '>=1.3.0')) {
         validators = validators.concat(
             new ConversionShortcutsValidator(error, componentSet),
+        );
+    }
+    if (semver.satisfies(version, '>=1.0.0') && semver.satisfies(version, '<1.4.0')) {
+        validators = validators.concat(
+            new DisableFullscreenCheckboxValidator(error, componentSet),
         );
     }
     return validators.length > 0 ? validators : null;
