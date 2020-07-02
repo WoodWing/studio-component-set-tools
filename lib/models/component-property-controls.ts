@@ -4,6 +4,7 @@ export type ComponentPropertyControl =
     | ComponentPropertyControlSelect
     | ComponentPropertyControlRadio
     | ComponentPropertyControlCheckbox
+    | ComponentPropertyControlDisableFullscreenCheckbox
     | ComponentPropertyControlText
     | ComponentPropertyControlTime
     | ComponentPropertyControlColorPicker
@@ -58,6 +59,13 @@ export interface ComponentPropertyControlRadio {
 export interface ComponentPropertyControlCheckbox {
     type: 'checkbox';
     value: string;
+}
+
+/**
+ * Checkbox toggling between value and no value with additional checking of link directives. The property is set and disabled if the component has a non empty link directive
+ */
+export interface ComponentPropertyControlDisableFullscreenCheckbox {
+    type: 'disable-fullscreen-checkbox';
 }
 
 /**
