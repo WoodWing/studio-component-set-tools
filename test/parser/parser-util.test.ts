@@ -372,7 +372,7 @@ describe('Parser utils', () => {
             } catch(e) {
                 er = e.message;
             }
-            expect(er).toEqual(`Directive with key "image" is not found. Property name is "dirProperty"`);
+            expect(er).toEqual(`Directive with key "image" is not found in component "complex". Property name is "dirProperty".`);
         });
 
         it('should throw an error if there is a property which cannot be found', async () => {
