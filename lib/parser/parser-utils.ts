@@ -163,7 +163,7 @@ function parseComponent(
             );
 
             if (property.directiveKey && !(property.directiveKey in directives)) {
-                throw new Error(`Directive with key "${property.directiveKey}" is not found. Property name is "${property.name || '<anonymous property>'}"`);
+                throw new Error(`Directive with key "${property.directiveKey}" is not found in component "${component.name}". Property name is "${property.name || '<anonymous property>'}".`);
             }
             return property;
         }),
