@@ -1,5 +1,6 @@
-import { validateFolder, getValidators } from '../lib/index';
+import { validateFolder, getValidators, validate } from '../lib/index';
 import * as colors from 'colors/safe';
+import { listFilesRelativeToFolder } from '../lib/util/files';
 
 describe('validateFolder', () => {
     it('should pass on minimal sample', async () => {
@@ -34,14 +35,14 @@ describe('getValidators', () => {
     });
     it('should return amount of validators for version >= 1.0.0 and < 1.1.0', () => {
         const validators = getValidators('1.0.0', <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(22);
+        expect(validators && validators.length).toEqual(23);
     });
     it('should return amount of validators for version >= 1.1.0', () => {
         const validators = getValidators('1.1.0', <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(25);
+        expect(validators && validators.length).toEqual(26);
     });
     it('should return amount of validators for version >= 1.3.0', () => {
         const validators = getValidators('1.3.0', <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(26);
+        expect(validators && validators.length).toEqual(27);
     });
 });

@@ -2,9 +2,7 @@ import * as colors from 'colors/safe';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as semver from 'semver';
-
 import * as Ajv from 'ajv';
-import * as recursiveReadDir from 'recursive-readdir';
 
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
@@ -43,6 +41,8 @@ import {
     ConversionShortcutsValidator,
     LocalizationValidator,
 } from './validators';
+import { listFilesRelativeToFolder } from './util/files';
+import { PackageValidator } from './validators/package-validator';
 
 const ajv = new Ajv({ allErrors: true, jsonPointers: true, verbose: true });
 
@@ -65,15 +65,7 @@ export const readFile: GetFileContentType = (pathToFile: fs.PathLike, options?: 
  * @param folderPath Path to folder containing the components.
  */
 export async function validateFolder(folderPath: string): Promise<boolean> {
-    folderPath = path.normalize(folderPath);
-
-    // List files, make relative to input folder and normalize.
-    const files = new Set(
-        (await recursiveReadDir(folderPath)).map((p) =>
-            path.normalize(p).replace(new RegExp(`^${folderPath.replace(/\\/g, '\\\\')}(/|\\\\)?`), ''),
-        ),
-    );
-
+    const files = await listFilesRelativeToFolder(folderPath);
     return validate(
         files,
         async (filePath: string, options?: GetFileContentOptionsType) =>
@@ -236,6 +228,7 @@ export function getValidators(
             new SlidesValidator(error, componentSet),
             new UnitTypeValidator(error, componentSet),
             new LocalizationValidator(error, componentSet, filePaths, getFileContent),
+            new PackageValidator(error, componentSet, filePaths, getFileContent),
         );
     }
     if (semver.satisfies(version, '>=1.1.0')) {
