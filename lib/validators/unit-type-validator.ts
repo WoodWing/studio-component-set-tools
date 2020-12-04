@@ -5,10 +5,7 @@
 import { Validator } from './validator';
 import { ParsedComponent, ComponentProperty } from '../models';
 
-const TYPES = [
-    'em',
-    'px',
-];
+const TYPES = ['em', 'px'];
 const TYPES_REGEXP = new RegExp(`^(${TYPES.join('|')})$`, 'i');
 
 export class UnitTypeValidator extends Validator {
@@ -32,8 +29,10 @@ export class UnitTypeValidator extends Validator {
      */
     private validateProperty(property: ComponentProperty) {
         if (property.control.type === 'text' && property.control.unit && !TYPES_REGEXP.test(property.control.unit)) {
-            this.error(`Property "${property.name}" has unacceptable unit type "${property.control.unit}", ` +
-                `only "${TYPES.join(',')}" are allowed`);
+            this.error(
+                `Property "${property.name}" has unacceptable unit type "${property.control.unit}", ` +
+                    `only "${TYPES.join(',')}" are allowed`,
+            );
         }
     }
 }

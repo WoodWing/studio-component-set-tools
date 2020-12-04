@@ -1,4 +1,10 @@
-import { Component, ComponentProperty, ComponentGroup, ComponentConversionRules, ComponentsDefinitionShortcuts } from './components-definition';
+import {
+    Component,
+    ComponentProperty,
+    ComponentGroup,
+    ComponentConversionRules,
+    ComponentsDefinitionShortcuts,
+} from './components-definition';
 
 /**
  * Defines the model for component sets.
@@ -33,7 +39,7 @@ export interface ComponentSet {
      */
     defaultComponentContent: {
         [componentName: string]: {
-            [dataType in ComponentProperty['dataType']]? : {
+            [dataType in ComponentProperty['dataType']]?: {
                 [propertyName: string]: string;
             };
         };
@@ -79,7 +85,7 @@ export interface ParsedComponent extends Component {
     directives: {
         [key: string]: {
             type: DirectiveType;
-            tag: string;    // tag name (lowercased)
+            tag: string; // tag name (lowercased)
         };
     };
 

@@ -14,8 +14,8 @@ describe('ConversionShortcutsValidator', () => {
                     directives: {
                         slide: {
                             type: 'image',
-                            tag: 'div'
-                        }
+                            tag: 'div',
+                        },
                     },
                     properties: {
                         p1: {
@@ -23,19 +23,17 @@ describe('ConversionShortcutsValidator', () => {
                                 name: 'test',
                                 control: {
                                     type: 'image-editor',
-                                    focuspoint: true
-                                }
+                                    focuspoint: true,
+                                },
                             },
                             directiveKey: 'slide',
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             },
             shortcuts: {
-                conversionComponents: [
-                    'picture',
-                ],
-            }
+                conversionComponents: ['picture'],
+            },
         };
         error = jasmine.createSpy('error');
         validator = new ConversionShortcutsValidator(error, definition);

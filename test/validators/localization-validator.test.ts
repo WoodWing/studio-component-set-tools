@@ -34,9 +34,7 @@ describe('LocalizationValidator', () => {
         });
 
         it('should skip non json files', async () => {
-            filePaths = new Set([
-                'localization/some-file',
-            ]);
+            filePaths = new Set(['localization/some-file']);
 
             validator = new LocalizationValidator(error, definition, filePaths, getFileContent);
 
@@ -87,21 +85,20 @@ describe('LocalizationValidator', () => {
         });
 
         it('should complain about invalid language', async () => {
-            filePaths = new Set([
-                'localization/invalid.json',
-            ]);
+            filePaths = new Set(['localization/invalid.json']);
 
             validator = new LocalizationValidator(error, definition, filePaths, getFileContent);
 
             await validator.validate();
-            expect(error).toHaveBeenCalledWith(expect.stringMatching(
-                /^Localization file "localization\/invalid.json" is not a supported language. Supported languages:/));
+            expect(error).toHaveBeenCalledWith(
+                expect.stringMatching(
+                    /^Localization file "localization\/invalid.json" is not a supported language. Supported languages:/,
+                ),
+            );
         });
 
         it('should complain about invalid json', async () => {
-            filePaths = new Set([
-                'localization/enUS.json',
-            ]);
+            filePaths = new Set(['localization/enUS.json']);
             fileContent = {
                 'localization/enUS.json': '{ "bla": "bla", }',
             };
@@ -109,8 +106,9 @@ describe('LocalizationValidator', () => {
             validator = new LocalizationValidator(error, definition, filePaths, getFileContent);
 
             await validator.validate();
-            expect(error).toHaveBeenCalledWith(expect.stringMatching(
-                /^Localization file "localization\/enUS.json" is not valid json:/));
+            expect(error).toHaveBeenCalledWith(
+                expect.stringMatching(/^Localization file "localization\/enUS.json" is not valid json:/),
+            );
         });
     });
 });

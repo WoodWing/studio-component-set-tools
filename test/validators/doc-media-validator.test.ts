@@ -14,8 +14,8 @@ describe('DocMediaValidator', () => {
                     directives: {
                         d1: {
                             type: 'media',
-                            tag: 'div'
-                        }
+                            tag: 'div',
+                        },
                     },
                     properties: [
                         {
@@ -23,10 +23,10 @@ describe('DocMediaValidator', () => {
                             directiveKey: 'd1',
                             control: {
                                 type: 'media-properties',
-                                mediaType: 'social'
-                            }
-                        }
-                    ]
+                                mediaType: 'social',
+                            },
+                        },
+                    ],
                 },
                 // Do not fail on different components without media directive
                 body: {
@@ -34,12 +34,12 @@ describe('DocMediaValidator', () => {
                     directives: {
                         d1: {
                             type: 'editable',
-                            tag: 'p'
-                        }
+                            tag: 'p',
+                        },
                     },
                     properties: [],
-                }
-            }
+                },
+            },
         };
         error = jasmine.createSpy('error');
         validator = new DocMediaValidator(error, definition);
@@ -53,16 +53,18 @@ describe('DocMediaValidator', () => {
             definition.components.socialmedia.properties = [];
 
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Component \"socialmedia\" with \"doc-media\" directive must have exactly one \"media-properties\" property (found 0)`);
+            expect(error).toHaveBeenCalledWith(
+                `Component \"socialmedia\" with \"doc-media\" directive must have exactly one \"media-properties\" property (found 0)`,
+            );
         });
         it('should pass with one media directives and other directive types', () => {
             definition.components.socialmedia.directives.d2 = {
                 type: 'editable',
-                tag: 'p'
+                tag: 'p',
             };
             definition.components.socialmedia.directives.d3 = {
                 type: 'link',
-                tag: 'a'
+                tag: 'a',
             };
             validator.validate();
             expect(error).not.toHaveBeenCalled();
@@ -70,10 +72,12 @@ describe('DocMediaValidator', () => {
         it('should not pass with multiple media type directives', () => {
             definition.components.socialmedia.directives.d2 = {
                 type: 'media',
-                tag: 'div'
+                tag: 'div',
             };
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Component \"socialmedia\" can only have one \"doc-media\" directive in the HTML definition`);
+            expect(error).toHaveBeenCalledWith(
+                `Component \"socialmedia\" can only have one \"doc-media\" directive in the HTML definition`,
+            );
         });
         it('should fail if a component property with a media-properties control type is not applied to a media directive', () => {
             definition.components.wrongdirectivekey = {
@@ -81,12 +85,12 @@ describe('DocMediaValidator', () => {
                 directives: {
                     d1: {
                         type: 'editable',
-                        tag: 'p'
+                        tag: 'p',
                     },
                     d2: {
                         type: 'media',
-                        tag: 'div'
-                    }
+                        tag: 'div',
+                    },
                 },
                 properties: [
                     {
@@ -94,13 +98,15 @@ describe('DocMediaValidator', () => {
                         directiveKey: 'd1',
                         control: {
                             type: 'media-properties',
-                            mediaType: 'social'
-                        }
-                    }
-                ]
+                            mediaType: 'social',
+                        },
+                    },
+                ],
             };
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Component \"wrongdirectivekey\" has a control type \"media-properties\" applied to the wrong directive, which can only be used with \"doc-media\" directives`);
+            expect(error).toHaveBeenCalledWith(
+                `Component \"wrongdirectivekey\" has a control type \"media-properties\" applied to the wrong directive, which can only be used with \"doc-media\" directives`,
+            );
         });
         it('should fail in case a "media-properties" property does not have a directive key', () => {
             definition.components.nodirectivekey = {
@@ -108,21 +114,23 @@ describe('DocMediaValidator', () => {
                 directives: {
                     d1: {
                         type: 'media',
-                        tag: 'div'
-                    }
+                        tag: 'div',
+                    },
                 },
                 properties: [
                     {
                         name: 'mediaproperty',
                         control: {
                             type: 'media-properties',
-                            mediaType: 'social'
-                        }
-                    }
-                ]
+                            mediaType: 'social',
+                        },
+                    },
+                ],
             };
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Component \"nodirectivekey\" must configure \"directiveKey\" for the property with control type \"media-properties\"`);
+            expect(error).toHaveBeenCalledWith(
+                `Component \"nodirectivekey\" must configure \"directiveKey\" for the property with control type \"media-properties\"`,
+            );
         });
 
         it('should fail in case a component without a media directive has "media-properties" property', () => {
@@ -132,13 +140,15 @@ describe('DocMediaValidator', () => {
                     directiveKey: 'd1',
                     control: {
                         type: 'media-properties',
-                        mediaType: 'social'
-                    }
-                }
+                        mediaType: 'social',
+                    },
+                },
             ];
 
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Component \"body\" has a \"media-properties\" control type, but only components with a \"doc-media\" directive can have a property with this control type`);
+            expect(error).toHaveBeenCalledWith(
+                `Component \"body\" has a \"media-properties\" control type, but only components with a \"doc-media\" directive can have a property with this control type`,
+            );
         });
     });
 });

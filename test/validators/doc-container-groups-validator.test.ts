@@ -8,10 +8,10 @@ describe('DocContainerGroupsValidator', () => {
         // valid definition (cut)
         definition = {
             components: {
-                'c1': {
+                c1: {
                     name: 'c1',
                     restrictChildren: {
-                        c2: { withContent: 'image' }
+                        c2: { withContent: 'image' },
                     },
                     directiveOptions: {
                         main: {
@@ -21,7 +21,7 @@ describe('DocContainerGroupsValidator', () => {
                                     components: ['picture'],
                                 },
                             ],
-                        }
+                        },
                     },
                     directives: {
                         main: {
@@ -29,7 +29,7 @@ describe('DocContainerGroupsValidator', () => {
                         },
                     },
                 },
-                'picture': {
+                picture: {
                     component: {},
                 },
             },
@@ -62,7 +62,9 @@ describe('DocContainerGroupsValidator', () => {
 
             validator.validate();
 
-            expect(error).toHaveBeenCalledWith(`Component \"c1\" has a group for directive \"main\" with incompatible type \"editable\". Only type \"container\" is allowed.`);
+            expect(error).toHaveBeenCalledWith(
+                `Component \"c1\" has a group for directive \"main\" with incompatible type \"editable\". Only type \"container\" is allowed.`,
+            );
         });
 
         it('should fail validation if component misses', () => {

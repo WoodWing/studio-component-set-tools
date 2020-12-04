@@ -15,14 +15,15 @@ describe('DisableFullscreenCheckboxValidator', () => {
                             control: {
                                 type: 'disable-fullscreen-checkbox',
                             },
-                            dataType: 'styles'
-                        }, {
+                            dataType: 'styles',
+                        },
+                        {
                             name: 'p2',
                             control: {
                                 type: 'text',
                             },
-                            dataType: 'data'
-                        }
+                            dataType: 'data',
+                        },
                     ],
                 },
             },
@@ -38,7 +39,9 @@ describe('DisableFullscreenCheckboxValidator', () => {
         it('should not pass if dataType is not "styles"', () => {
             definition.components.c1.properties[0].dataType = 'data';
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Property "p1" uses "disable-fullscreen-checkbox" control type which is allowed to use with dataType="styles" only`);
+            expect(error).toHaveBeenCalledWith(
+                `Property "p1" uses "disable-fullscreen-checkbox" control type which is allowed to use with dataType="styles" only`,
+            );
         });
     });
 });

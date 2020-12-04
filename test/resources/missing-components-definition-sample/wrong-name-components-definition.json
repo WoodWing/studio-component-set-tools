@@ -4,17 +4,13 @@
     "version": "1.0.0",
     "defaultComponentOnEnter": "body",
 
-    "components":[
-    ],
+    "components": [],
 
-    "groups": [
-    ],
+    "groups": [],
 
-    "componentProperties": [
-    ],
+    "componentProperties": [],
 
-    "conversionRules": {
-    },
+    "conversionRules": {},
 
     "scripts": []
 }

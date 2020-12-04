@@ -15,13 +15,14 @@ describe('InteractiveValidator', () => {
                             control: {
                                 type: 'interactive',
                             },
-                            dataType: 'doc-interactive'
-                        }, {
+                            dataType: 'doc-interactive',
+                        },
+                        {
                             name: 'p2',
                             control: {
                                 type: 'text',
                             },
-                            dataType: 'data'
+                            dataType: 'data',
                         },
                     ],
                 },
@@ -38,7 +39,9 @@ describe('InteractiveValidator', () => {
         it('should not pass if dataType is not "interactive"', () => {
             definition.components.c1.properties[0].dataType = 'data';
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Property "p1" uses "interactive" control type which is allowed to use with dataType="doc-interactive" only`);
+            expect(error).toHaveBeenCalledWith(
+                `Property "p1" uses "interactive" control type which is allowed to use with dataType="doc-interactive" only`,
+            );
         });
     });
 });

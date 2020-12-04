@@ -8,11 +8,13 @@ describe('ScriptsValidator', () => {
     });
     describe('validate', () => {
         it('should pass on valid definition', () => {
-            const validator = new ScriptsValidator(error, <any>{
-                scripts: ['scripts/vendor.js'],
-            }, new Set<string>([
-                path.normalize('scripts/vendor.js'),
-            ]));
+            const validator = new ScriptsValidator(
+                error,
+                <any>{
+                    scripts: ['scripts/vendor.js'],
+                },
+                new Set<string>([path.normalize('scripts/vendor.js')]),
+            );
             validator.validate();
             expect(error).not.toHaveBeenCalled();
         });
@@ -22,9 +24,13 @@ describe('ScriptsValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
         it('should not pass if "vendor.js" is missing', () => {
-            const validator = new ScriptsValidator(error, <any>{
-                scripts: ['scripts/vendor.js'],
-            }, new Set<string>([]));
+            const validator = new ScriptsValidator(
+                error,
+                <any>{
+                    scripts: ['scripts/vendor.js'],
+                },
+                new Set<string>([]),
+            );
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Script "scripts/vendor.js" does not exist`);
         });

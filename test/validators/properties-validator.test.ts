@@ -22,20 +22,16 @@ describe('PropertiesValidator', () => {
                             name: 'p2',
                             control: {
                                 type: 'radio',
-                                options: [
-                                    { icon: 'path1' },
-                                    { icon: 'path2' },
-                                    { icon: 'path5' },
-                                ],
+                                options: [{ icon: 'path1' }, { icon: 'path2' }, { icon: 'path5' }],
                             },
                         },
                         {
                             name: 'p3',
                             control: {
-                                type: 'media-properties'
+                                type: 'media-properties',
                             },
-                            dataType: 'doc-media'
-                        }
+                            dataType: 'doc-media',
+                        },
                     ],
                 },
                 // Add another component with same property to test uniqueness validation passes correctly
@@ -47,17 +43,11 @@ describe('PropertiesValidator', () => {
                                 type: 'text',
                             },
                         },
-                    ]
+                    ],
                 },
             },
         };
-        fileList = new Set<string>([
-            'path1',
-            'path2',
-            'path3',
-            'path4',
-            'path5',
-        ]);
+        fileList = new Set<string>(['path1', 'path2', 'path3', 'path4', 'path5']);
         error = jasmine.createSpy('error');
         validator = new PropertiesValidator(error, definition, fileList);
     });

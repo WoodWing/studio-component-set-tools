@@ -42,13 +42,17 @@ export class DefaultValuesValidator extends Validator {
         }
 
         if (!validDataTypes.has(property.dataType)) {
-            this.error(`Property ${property.name} has a default value for an unsupported data type ${property.dataType}`);
+            this.error(
+                `Property ${property.name} has a default value for an unsupported data type ${property.dataType}`,
+            );
             return;
         }
 
         const validateControl = this.controlTypeToValidateMethod.get(property.control.type);
         if (!validateControl) {
-            this.error(`Property ${property.name} has a default value used with an unsupported control type ${property.control.type}`);
+            this.error(
+                `Property ${property.name} has a default value used with an unsupported control type ${property.control.type}`,
+            );
             return;
         }
 
@@ -60,7 +64,7 @@ export class DefaultValuesValidator extends Validator {
      *
      * @param property
      */
-    private validateStringValue(property: ComponentProperty) : boolean {
+    private validateStringValue(property: ComponentProperty): boolean {
         if (typeof property.defaultValue !== 'string') {
             this.error(`Property ${property.name} defaultValue must be a string`);
             return false;
@@ -73,7 +77,7 @@ export class DefaultValuesValidator extends Validator {
      *
      * @param property
      */
-    private validateObjectValue(property: ComponentProperty) : boolean {
+    private validateObjectValue(property: ComponentProperty): boolean {
         if (typeof property.defaultValue !== 'object') {
             this.error(`Property ${property.name} defaultValue must be an object`);
             return false;
@@ -101,7 +105,9 @@ export class DefaultValuesValidator extends Validator {
             return;
         }
         if (!(<any>property.control).options.find((option: any) => option.value === property.defaultValue)) {
-            this.error(`Property ${property.name} defaultValue has no matching entry in ${property.control.type} options`);
+            this.error(
+                `Property ${property.name} defaultValue has no matching entry in ${property.control.type} options`,
+            );
         }
     }
 
@@ -130,10 +136,12 @@ export class DefaultValuesValidator extends Validator {
         }
         const expectedKeys = ['numberOfCharacters', 'numberOfLines', 'padding'];
         const presentKeys = Object.keys(<any>property.defaultValue);
-        if (expectedKeys.length !== presentKeys.length || !expectedKeys.every(key => presentKeys.indexOf(key) >= 0)) {
-            this.error(`Property ${property.name} defaultValue must be an object with keys "${expectedKeys.join(', ')}"`);
+        if (expectedKeys.length !== presentKeys.length || !expectedKeys.every((key) => presentKeys.indexOf(key) >= 0)) {
+            this.error(
+                `Property ${property.name} defaultValue must be an object with keys "${expectedKeys.join(', ')}"`,
+            );
         }
-        presentKeys.forEach(key => {
+        presentKeys.forEach((key) => {
             if (typeof (<any>property.defaultValue)[key] !== 'number') {
                 this.error(`Property ${property.name} defaultValue must be an object of number type values`);
             }
@@ -148,7 +156,7 @@ export class DefaultValuesValidator extends Validator {
             return;
         }
         const values = Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES);
-        if (!values.find(value => value === property.defaultValue)) {
+        if (!values.find((value) => value === property.defaultValue)) {
             this.error(`Property ${property.name} defaultValue has to be one of '${values.join("', '")}'`);
         }
     }

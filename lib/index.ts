@@ -15,16 +15,36 @@ import { componentsDefinitionSchema_v1_4_x } from './components-schema-v1_4_x';
 import { parseDefinition } from './parser';
 import { ComponentsDefinition, ComponentSet, GetFileContentType, GetFileContentOptionsType } from './models';
 import {
-    Validator, RestrictChildrenValidator, DocContainerValidator, DefaultComponentOnEnterValidator,
-    UnitTypeValidator, ImageEditorValidator, FocuspointValidator, DirectivePropertiesValidator, GroupsValidator,
-    ConversionRulesValidator, DocSlideshowValidator, DropCapitalValidator, PropertiesValidator, FittingValidator,
-    InteractiveValidator, ComponentsValidator, DisableFullscreenCheckboxValidator, SlidesValidator,
-    ScriptsValidator, DocMediaValidator, IconsValidator, DefaultValuesValidator, AutofillValidator,
-    DefaultComponentOnEnterOverrideValidator, DocContainerGroupsValidator, ConversionShortcutsValidator,
+    Validator,
+    RestrictChildrenValidator,
+    DocContainerValidator,
+    DefaultComponentOnEnterValidator,
+    UnitTypeValidator,
+    ImageEditorValidator,
+    FocuspointValidator,
+    DirectivePropertiesValidator,
+    GroupsValidator,
+    ConversionRulesValidator,
+    DocSlideshowValidator,
+    DropCapitalValidator,
+    PropertiesValidator,
+    FittingValidator,
+    InteractiveValidator,
+    ComponentsValidator,
+    DisableFullscreenCheckboxValidator,
+    SlidesValidator,
+    ScriptsValidator,
+    DocMediaValidator,
+    IconsValidator,
+    DefaultValuesValidator,
+    AutofillValidator,
+    DefaultComponentOnEnterOverrideValidator,
+    DocContainerGroupsValidator,
+    ConversionShortcutsValidator,
     LocalizationValidator,
 } from './validators';
 
-const ajv = new Ajv({allErrors: true, jsonPointers: true, verbose: true});
+const ajv = new Ajv({ allErrors: true, jsonPointers: true, verbose: true });
 
 const componentsDefinitionPath = path.normalize('./components-definition.json');
 
@@ -49,9 +69,9 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
 
     // List files, make relative to input folder and normalize.
     const files = new Set(
-        (await recursiveReadDir(folderPath))
-        .map((p) => path.normalize(p).replace(
-            new RegExp(`^${folderPath.replace(/\\/g, '\\\\')}(/|\\\\)?`), '')),
+        (await recursiveReadDir(folderPath)).map((p) =>
+            path.normalize(p).replace(new RegExp(`^${folderPath.replace(/\\/g, '\\\\')}(/|\\\\)?`), ''),
+        ),
     );
 
     return validate(
@@ -60,7 +80,7 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
             readFile(path.resolve(folderPath, filePath), options),
         (errorMessage) => {
             console.log(colors.red(errorMessage));
-        }
+        },
     );
 }
 
@@ -103,7 +123,7 @@ export async function validate(
     }
 
     // parse everything for deeper testing
-    let componentSet: ComponentSet|null = null;
+    let componentSet: ComponentSet | null = null;
     try {
         componentSet = await parseDefinition(componentsDefinition, getFileContent);
     } catch (e) {
@@ -116,7 +136,7 @@ export async function validate(
 
     // Wrap the error reporter to detect if it's called
     let valid = true;
-    const validateError = (errorMessage: string) : false => {
+    const validateError = (errorMessage: string): false => {
         valid = false;
         errorReporter(errorMessage);
         return valid;
@@ -127,7 +147,7 @@ export async function validate(
         validateError,
         componentSet,
         filePaths,
-        getFileContent
+        getFileContent,
     );
     if (!validators) {
         errorReporter(`Could not find validators for component model version "${componentsDefinition.version}"`);
@@ -143,14 +163,12 @@ export async function validate(
 
 async function getComponentsDefinition(
     getFileContent: GetFileContentType,
-    errorReporter: (errorMessage: string) => void
-): Promise<ComponentsDefinition|null> {
+    errorReporter: (errorMessage: string) => void,
+): Promise<ComponentsDefinition | null> {
     try {
         return JSON.parse(await getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
-    } catch(e) {
-        errorReporter(
-            colors.red(`Components definition file "${componentsDefinitionPath}" is not valid json: \n${e}`)
-        );
+    } catch (e) {
+        errorReporter(colors.red(`Components definition file "${componentsDefinitionPath}" is not valid json: \n${e}`));
     }
     return null;
 }
@@ -193,7 +211,7 @@ export function getValidators(
     componentSet: ComponentSet,
     filePaths: Set<string>,
     getFileContent: GetFileContentType,
-) : Validator[] | null {
+): Validator[] | null {
     let validators: Validator[] = [];
     if (semver.satisfies(version, '>=1.0.0')) {
         validators = validators.concat(
@@ -228,14 +246,10 @@ export function getValidators(
         );
     }
     if (semver.satisfies(version, '>=1.3.0')) {
-        validators = validators.concat(
-            new ConversionShortcutsValidator(error, componentSet),
-        );
+        validators = validators.concat(new ConversionShortcutsValidator(error, componentSet));
     }
     if (semver.satisfies(version, '>=1.0.0') && semver.satisfies(version, '<1.4.0')) {
-        validators = validators.concat(
-            new DisableFullscreenCheckboxValidator(error, componentSet),
-        );
+        validators = validators.concat(new DisableFullscreenCheckboxValidator(error, componentSet));
     }
     return validators.length > 0 ? validators : null;
 }

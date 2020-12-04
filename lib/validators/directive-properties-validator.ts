@@ -11,18 +11,27 @@ const CONTROLS = ['image-editor', 'interactive', 'media-properties'];
 
 export class DirectivePropertiesValidator extends Validator {
     validate(): void {
-        const regexp = new RegExp(`^doc-(${Object.values(DirectiveType).filter(item => item !== DirectiveType.unknown).join('|')})`, 'i');
+        const regexp = new RegExp(
+            `^doc-(${Object.values(DirectiveType)
+                .filter((item) => item !== DirectiveType.unknown)
+                .join('|')})`,
+            'i',
+        );
 
         for (const parsedComponent of Object.values(this.componentSet.components)) {
             parsedComponent.properties.forEach((parsedProperty) => {
                 if (CONTROLS.indexOf(parsedProperty.control.type) >= 0 && !parsedProperty.directiveKey) {
-                    this.error(`Property "${parsedProperty.name}" of component "${parsedComponent.name}" must reference ` +
-                        `to a directive`);
+                    this.error(
+                        `Property "${parsedProperty.name}" of component "${parsedComponent.name}" must reference ` +
+                            `to a directive`,
+                    );
                 }
                 // check all dataType=doc-* properties
                 if (regexp.test(parsedProperty.dataType) && !parsedProperty.directiveKey) {
-                    this.error(`Property "${parsedProperty.name}" of component "${parsedComponent.name}" must reference ` +
-                        `to a directive because its dataType is a directive type`);
+                    this.error(
+                        `Property "${parsedProperty.name}" of component "${parsedComponent.name}" must reference ` +
+                            `to a directive because its dataType is a directive type`,
+                    );
                 }
             });
         }

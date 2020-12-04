@@ -13,7 +13,7 @@ describe('DirectivePropertiesValidator', () => {
                     directives: {
                         slide: {
                             type: 'image',
-                            tag: 'div'
+                            tag: 'div',
                         },
                     },
                     properties: [
@@ -21,7 +21,7 @@ describe('DirectivePropertiesValidator', () => {
                             name: 'test',
                             control: {
                                 type: 'image-editor',
-                                focuspoint: true
+                                focuspoint: true,
                             },
                             directiveKey: 'slide',
                         },
@@ -33,9 +33,9 @@ describe('DirectivePropertiesValidator', () => {
                             dataType: 'doc-editable',
                             directiveKey: 'slide',
                         },
-                    ]
-                }
-            }
+                    ],
+                },
+            },
         };
         error = jasmine.createSpy('error');
         validator = new DirectivePropertiesValidator(error, definition);
@@ -58,7 +58,9 @@ describe('DirectivePropertiesValidator', () => {
         it('should not pass if directive key is not set for directive dataType', () => {
             delete definition.components.picture.properties[1].directiveKey;
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Property "test" of component "picture" must reference to a directive because its dataType is a directive type`);
+            expect(error).toHaveBeenCalledWith(
+                `Property "test" of component "picture" must reference to a directive because its dataType is a directive type`,
+            );
         });
     });
 });
