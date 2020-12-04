@@ -6,7 +6,7 @@ import { Validator } from './validator';
 import { DirectiveType, ParsedComponent } from '../models';
 
 export class DocContainerValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         Object.values(this.componentSet.components).forEach((parsedComponent: ParsedComponent) => {
             const containerCount = this.countContainerDirectives(parsedComponent);
             const slideshowCount = this.countSlideshowDirectives(parsedComponent);

@@ -18,7 +18,7 @@ export class DefaultValuesValidator extends Validator {
         ['fitting', this.validateFittingControlValue],
     ]);
 
-    validate(): void {
+    async validate(): Promise<void> {
         Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 

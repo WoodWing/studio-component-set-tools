@@ -9,7 +9,7 @@ const CONTROL = 'disable-fullscreen-checkbox';
 const ALLOWED_DATA_TYPE = 'styles';
 
 export class DisableFullscreenCheckboxValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 

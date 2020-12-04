@@ -15,7 +15,7 @@ export class ScriptsValidator extends Validator {
         super(error, definition);
     }
 
-    validate(): void {
+    async validate(): Promise<void> {
         if (this.componentSet.scripts) {
             for (const scriptPath of this.componentSet.scripts) {
                 if (!this.filePaths.has(path.normalize(scriptPath))) {

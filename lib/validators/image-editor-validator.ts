@@ -9,7 +9,7 @@ const CONTROL = 'image-editor';
 const ALLOWED_DATA_TYPE = 'doc-image';
 
 export class ImageEditorValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 

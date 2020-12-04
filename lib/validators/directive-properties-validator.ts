@@ -10,7 +10,7 @@ import { DirectiveType } from '../models';
 const CONTROLS = ['image-editor', 'interactive', 'media-properties'];
 
 export class DirectivePropertiesValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         const regexp = new RegExp(`^doc-(${Object.values(DirectiveType).filter(item => item !== DirectiveType.unknown).join('|')})`, 'i');
 
         for (const parsedComponent of Object.values(this.componentSet.components)) {

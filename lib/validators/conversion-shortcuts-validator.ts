@@ -5,7 +5,7 @@
 import { Validator } from './validator';
 
 export class ConversionShortcutsValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         if (!this.componentSet.shortcuts || !this.componentSet.shortcuts.conversionComponents) {
             return;
         }
