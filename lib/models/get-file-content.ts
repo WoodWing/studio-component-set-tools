@@ -1,7 +1,7 @@
 /**
  * Getting file options type
  */
-export type GetFileContentOptionsType = { encoding: string|null } | null;
+export type GetFileContentOptionsType = { encoding: string | null } | null;
 
 /**
  * return string if encoding is string and Buffer otherwise

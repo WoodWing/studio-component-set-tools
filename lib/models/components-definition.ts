@@ -108,43 +108,43 @@ export interface Component {
              * List of groups shown in component chooser dialog
              */
             groups?: {
-            /**
-             * Unique group identifier
-             */
-            name: string;
-            label:
-                | string
-                | {
-                    /**
-                     * String key
-                     */
-                    key: string;
-                    /**
-                     * String replacement variables
-                     */
-                    values?: {
-                    [k: string]: any;
-                    };
-                };
-            /**
-             * names of components in this group
-             */
-            components: string[];
-            [k: string]: any;
+                /**
+                 * Unique group identifier
+                 */
+                name: string;
+                label:
+                    | string
+                    | {
+                          /**
+                           * String key
+                           */
+                          key: string;
+                          /**
+                           * String replacement variables
+                           */
+                          values?: {
+                              [k: string]: any;
+                          };
+                      };
+                /**
+                 * names of components in this group
+                 */
+                components: string[];
+                [k: string]: any;
             }[];
             autofill?: {
-            /**
-             * A key of source directive
-             */
-            source: string;
-            /**
-             * Metadata property name. The field is case sensitive. Slashes should be used to separate levels
-             */
-            metadataField?: string;
-            /**
-             * Defines when autofilling should be applied. If omitted then 'once' is applied
-             */
-            trigger?: 'once' | 'always';
+                /**
+                 * A key of source directive
+                 */
+                source: string;
+                /**
+                 * Metadata property name. The field is case sensitive. Slashes should be used to separate levels
+                 */
+                metadataField?: string;
+                /**
+                 * Defines when autofilling should be applied. If omitted then 'once' is applied
+                 */
+                trigger?: 'once' | 'always';
             };
         };
     };
@@ -178,20 +178,20 @@ export interface ComponentProperty {
      * Type of data being stored and how it is used. For directive data types it may also depend on the control type.
      */
     dataType:
-    | 'styles'
-    | 'inlineStyles'
-    | 'data'
-    | 'doc-editable'
-    | 'doc-image'
-    | 'doc-html'
-    | 'doc-slideshow'
-    | 'doc-media'
-    | 'doc-interactive'
-    | 'doc-link';
+        | 'styles'
+        | 'inlineStyles'
+        | 'data'
+        | 'doc-editable'
+        | 'doc-image'
+        | 'doc-html'
+        | 'doc-slideshow'
+        | 'doc-media'
+        | 'doc-interactive'
+        | 'doc-link';
     /**
      * Default value of property upon component creation. By default the property value is not defined.
      */
-    defaultValue?: string | {[key: string]: any};
+    defaultValue?: string | { [key: string]: any };
     group?: string;
     /**
      * Additional selector to define elements of the component which the property should be applied to.
@@ -231,22 +231,22 @@ export interface ComponentConversionRule {
     [k: string]:
         | 'auto'
         | {
-            type: 'simple';
-            map: {
-            [k: string]: string;
-            };
-            [k: string]: any;
-        }
+              type: 'simple';
+              map: {
+                  [k: string]: string;
+              };
+              [k: string]: any;
+          }
         | {
-            type: 'from-container';
-            container: string;
-            [k: string]: any;
-        }
+              type: 'from-container';
+              container: string;
+              [k: string]: any;
+          }
         | {
-            type: 'to-container';
-            container: string;
-            [k: string]: any;
-        };
+              type: 'to-container';
+              container: string;
+              [k: string]: any;
+          };
 }
 
 /**

@@ -7,7 +7,7 @@ describe('Parser utils', () => {
     describe('parseDefinition', () => {
         let componentsDefinition: any;
         let getFileContent: (filePath: string) => Promise<string>;
-        let html: {[s: string]: string};
+        let html: { [s: string]: string };
         beforeEach(() => {
             componentsDefinition = {
                 name: 'minimal-sample',
@@ -22,9 +22,12 @@ describe('Parser utils', () => {
                         properties: [
                             { name: 'selectProperty', defaultValue: '_option1' },
                             { name: 'letter-spacing', defaultValue: '2' },
-                            { name: 'drop-capital', defaultValue: { numberOfCharacters: 1, numberOfLines: 3, padding: 5 } },
+                            {
+                                name: 'drop-capital',
+                                defaultValue: { numberOfCharacters: 1, numberOfLines: 3, padding: 5 },
+                            },
                         ],
-                        countStatistics: true
+                        countStatistics: true,
                     },
                     {
                         name: 'complex',
@@ -33,19 +36,16 @@ describe('Parser utils', () => {
                         properties: [
                             'checkboxProperty',
                             { name: 'dirProperty', directiveKey: 'image' },
-                            { control: { type: 'header' }, label: 'Header Label' }
-                        ]
-                    }
+                            { control: { type: 'header' }, label: 'Header Label' },
+                        ],
+                    },
                 ],
                 groups: [
                     {
                         label: 'Minimal',
                         name: 'minimal',
-                        components: [
-                            'body',
-                            'complex'
-                        ]
-                    }
+                        components: ['body', 'complex'],
+                    },
                 ],
                 componentProperties: [
                     {
@@ -55,13 +55,13 @@ describe('Parser utils', () => {
                             type: 'select',
                             options: [
                                 {
-                                    caption: 'Default'
+                                    caption: 'Default',
                                 },
                                 {
-                                    caption: { key: 'Option 1 {{0}}', values: {0: 'Replacement'}},
-                                    value: '_option1'
-                                }
-                            ]
+                                    caption: { key: 'Option 1 {{0}}', values: { 0: 'Replacement' } },
+                                    value: '_option1',
+                                },
+                            ],
                         },
                         dataType: 'styles',
                     },
@@ -70,7 +70,7 @@ describe('Parser utils', () => {
                         label: 'Checkbox property sample',
                         control: {
                             type: 'checkbox',
-                            value: '_valueWhenOn'
+                            value: '_valueWhenOn',
                         },
                         dataType: 'styles',
                     },
@@ -79,7 +79,7 @@ describe('Parser utils', () => {
                         label: 'Directive property sample',
                         control: {
                             type: 'image-editor',
-                            focuspoint: true
+                            focuspoint: true,
                         },
                         dataType: 'doc-image',
                     },
@@ -88,7 +88,8 @@ describe('Parser utils', () => {
                         label: 'Character spacing',
                         control: {
                             type: 'text',
-                            pattern: '^(([+-]{0,1})([0-9]|[0-9][.][0-9]{1,}|[0-9]{2}|[0-9]{2}[.][0-9]{1,}|[1-4][0-9]{0,2}|[1-4][0-9]{0,2}[.][0-9]{1,}|(500))|auto)$',
+                            pattern:
+                                '^(([+-]{0,1})([0-9]|[0-9][.][0-9]{1,}|[0-9]{2}|[0-9]{2}[.][0-9]{1,}|[1-4][0-9]{0,2}|[1-4][0-9]{0,2}[.][0-9]{1,}|(500))|auto)$',
                             defaultValue: '',
                             unit: 'em',
                             inputPlaceholder: 'Type ‘auto’ or any number…',
@@ -106,7 +107,7 @@ describe('Parser utils', () => {
                             charactersMaximum: 10,
                             linesMinimum: 1,
                             linesDefault: 3,
-                            linesMaximum: 10
+                            linesMaximum: 10,
                         },
                         dataType: 'data',
                         featureFlag: 'ContentStation-LocalStyleOverrides',
@@ -123,15 +124,15 @@ describe('Parser utils', () => {
                 body: `<p doc-editable="text"></p>`,
                 complex:
                     `<div>` +
-                        `<p doc-editable="text"></p>` +
-                        `<figure doc-image="image"></figure>` +
-                        `<div>` +
-                            `<img doc-image="second-image">` +
-                            `<p doc-editable="caption"></p>` +
-                        `</div>` +
+                    `<p doc-editable="text"></p>` +
+                    `<figure doc-image="image"></figure>` +
+                    `<div>` +
+                    `<img doc-image="second-image">` +
+                    `<p doc-editable="caption"></p>` +
+                    `</div>` +
                     `</div>`,
             };
-            getFileContent = (filePath: string) : Promise<string> => {
+            getFileContent = (filePath: string): Promise<string> => {
                 const filename = path.basename(filePath).split('.').shift();
                 if (!filename || !(filename in html)) {
                     throw new Error(`Unknown filename "${filename}", cannot be handled`);
@@ -156,8 +157,8 @@ describe('Parser utils', () => {
                             directives: {
                                 text: {
                                     type: DirectiveType.editable,
-                                    tag: 'p'
-                                }
+                                    tag: 'p',
+                                },
                             },
                             properties: [
                                 {
@@ -167,11 +168,11 @@ describe('Parser utils', () => {
                                         type: 'select',
                                         options: [
                                             {
-                                                caption: 'Default'
+                                                caption: 'Default',
                                             },
                                             {
-                                                caption: { key: 'Option 1 {{0}}', values: {'0': 'Replacement'}},
-                                                value: '_option1'
+                                                caption: { key: 'Option 1 {{0}}', values: { '0': 'Replacement' } },
+                                                value: '_option1',
                                             },
                                         ],
                                     },
@@ -183,7 +184,8 @@ describe('Parser utils', () => {
                                     label: 'Character spacing',
                                     control: {
                                         type: 'text',
-                                        pattern: '^(([+-]{0,1})([0-9]|[0-9][.][0-9]{1,}|[0-9]{2}|[0-9]{2}[.][0-9]{1,}|[1-4][0-9]{0,2}|[1-4][0-9]{0,2}[.][0-9]{1,}|(500))|auto)$',
+                                        pattern:
+                                            '^(([+-]{0,1})([0-9]|[0-9][.][0-9]{1,}|[0-9]{2}|[0-9]{2}[.][0-9]{1,}|[1-4][0-9]{0,2}|[1-4][0-9]{0,2}[.][0-9]{1,}|(500))|auto)$',
                                         defaultValue: '',
                                         unit: 'em',
                                         inputPlaceholder: 'Type ‘auto’ or any number…',
@@ -202,7 +204,7 @@ describe('Parser utils', () => {
                                         charactersMaximum: 10,
                                         linesMinimum: 1,
                                         linesDefault: 3,
-                                        linesMaximum: 10
+                                        linesMaximum: 10,
                                     },
                                     dataType: 'data',
                                     featureFlag: 'ContentStation-LocalStyleOverrides',
@@ -216,33 +218,33 @@ describe('Parser utils', () => {
                         },
                         complex: {
                             name: 'complex',
-                            label: {'key' :'Complex Label KEY'},
+                            label: { key: 'Complex Label KEY' },
                             icon: 'icons/component.svg',
                             directives: {
                                 text: {
                                     type: DirectiveType.editable,
-                                    tag: 'p'
+                                    tag: 'p',
                                 },
                                 image: {
                                     type: DirectiveType.image,
-                                    tag: 'figure'
+                                    tag: 'figure',
                                 },
                                 'second-image': {
                                     type: DirectiveType.image,
-                                    tag: 'img'
+                                    tag: 'img',
                                 },
                                 caption: {
                                     type: DirectiveType.editable,
-                                    tag: 'p'
-                                }
+                                    tag: 'p',
+                                },
                             },
                             properties: [
                                 {
                                     name: 'checkboxProperty',
                                     label: 'Checkbox property sample',
                                     control: {
-                                        'type': 'checkbox',
-                                        'value': '_valueWhenOn'
+                                        type: 'checkbox',
+                                        value: '_valueWhenOn',
                                     },
                                     dataType: 'styles',
                                 },
@@ -251,32 +253,29 @@ describe('Parser utils', () => {
                                     label: 'Directive property sample',
                                     control: {
                                         type: 'image-editor',
-                                        focuspoint: true
+                                        focuspoint: true,
                                     },
                                     dataType: 'doc-image',
-                                    directiveKey: 'image'
+                                    directiveKey: 'image',
                                 },
                                 {
                                     control: {
-                                        type: 'header'
+                                        type: 'header',
                                     },
-                                    label: 'Header Label'
-                                }
+                                    label: 'Header Label',
+                                },
                             ],
                             renditions: {
                                 html: html.complex,
                             },
                             noCreatePermission: false,
-                        }
+                        },
                     },
                     groups: [
                         {
                             label: 'Minimal',
                             name: 'minimal',
-                            components: [
-                                'body',
-                                'complex'
-                            ]
+                            components: ['body', 'complex'],
                         },
                     ],
                     defaultComponentOnEnter: 'body',
@@ -295,8 +294,8 @@ describe('Parser utils', () => {
                     },
                     conversionRules: {
                         body: {
-                            complex: 'auto'
-                        }
+                            complex: 'auto',
+                        },
                     },
                     scripts: [],
                     shortcuts: { conversionComponents: ['shortcuts'] },
@@ -320,7 +319,7 @@ describe('Parser utils', () => {
                 let er = '';
                 try {
                     await parseDefinition(componentsDefinition);
-                } catch(e) {
+                } catch (e) {
                     er = e.message;
                 }
                 expect(er).toEqual(`Component "body" doesn't have "html" rendition`);
@@ -348,7 +347,7 @@ describe('Parser utils', () => {
             let er = '';
             try {
                 await parseDefinition(componentsDefinition, getFileContent);
-            } catch(e) {
+            } catch (e) {
                 er = e.message;
             }
             expect(er).toEqual(`Directive's attributes must be unique. Attribute value is "text"`);
@@ -369,10 +368,12 @@ describe('Parser utils', () => {
             let er = '';
             try {
                 await parseDefinition(componentsDefinition, getFileContent);
-            } catch(e) {
+            } catch (e) {
                 er = e.message;
             }
-            expect(er).toEqual(`Directive with key "image" is not found in component "complex". Property name is "dirProperty".`);
+            expect(er).toEqual(
+                `Directive with key "image" is not found in component "complex". Property name is "dirProperty".`,
+            );
         });
 
         it('should throw an error if there is a property which cannot be found', async () => {
@@ -381,7 +382,7 @@ describe('Parser utils', () => {
             let er = '';
             try {
                 await parseDefinition(componentsDefinition, getFileContent);
-            } catch(e) {
+            } catch (e) {
                 er = e.message;
             }
             expect(er).toEqual(`Property "cucicaca" is not found in definition componentProperties`);
@@ -393,7 +394,7 @@ describe('Parser utils', () => {
             let er = '';
             try {
                 await parseDefinition(componentsDefinition, getFileContent);
-            } catch(e) {
+            } catch (e) {
                 er = e.message;
             }
             expect(er).toEqual(`Property "cucicaca" is not found in definition componentProperties`);

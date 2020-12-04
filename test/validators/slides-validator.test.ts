@@ -8,10 +8,10 @@ describe('SlidesValidator', () => {
         // valid definition (cut)
         definition = {
             components: {
-                'c1': {
+                c1: {
                     name: 'c1',
                     restrictChildren: {
-                        c2: { withContent: 'image' }
+                        c2: { withContent: 'image' },
                     },
                     properties: [
                         {
@@ -22,7 +22,7 @@ describe('SlidesValidator', () => {
                         },
                     ],
                 },
-                'c2': {
+                c2: {
                     name: 'c2',
                     properties: [
                         {
@@ -61,19 +61,25 @@ describe('SlidesValidator', () => {
         it('should not pass if include has an invalid property', () => {
             definition.components.c1.properties[0].control.include = ['p_invalid'];
             validator.validate();
-            expect(error).toHaveBeenCalledWith('Property \"p1\" is referring to an invalid property \"p_invalid\"not part of \"c2\"');
+            expect(error).toHaveBeenCalledWith(
+                'Property "p1" is referring to an invalid property "p_invalid"not part of "c2"',
+            );
         });
 
         it('should not pass if exclude has an invalid property', () => {
             definition.components.c1.properties[0].control.exclude = ['p_invalid'];
             validator.validate();
-            expect(error).toHaveBeenCalledWith('Property \"p1\" is referring to an invalid property \"p_invalid\"not part of \"c2\"');
+            expect(error).toHaveBeenCalledWith(
+                'Property "p1" is referring to an invalid property "p_invalid"not part of "c2"',
+            );
         });
 
         it('should require restrictChildren to be set on slideshow component', () => {
             definition.components.c1.restrictChildren = null;
             validator.validate();
-            expect(error).toHaveBeenCalledWith('Component \"c1\" must have restrictChildren set to use the slides property');
+            expect(error).toHaveBeenCalledWith(
+                'Component "c1" must have restrictChildren set to use the slides property',
+            );
         });
     });
 });

@@ -17,7 +17,7 @@ describe('ComponentsValidator', () => {
                 },
                 intro: {
                     name: 'intro',
-                    label: { key: 'Intro Label {{0}}', values: {'0': 'replacement'} },
+                    label: { key: 'Intro Label {{0}}', values: { '0': 'replacement' } },
                     icon: 'path2',
                 },
             },

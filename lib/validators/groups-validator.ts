@@ -16,9 +16,7 @@ export class GroupsValidator extends Validator {
      * @param errorReporter
      * @param parsedGroup
      */
-    validateGroupsList(
-        groups: ComponentGroup[],
-    ): void {
+    validateGroupsList(groups: ComponentGroup[]): void {
         const groupNames = new Set<string>();
 
         for (const group of groups) {
@@ -37,9 +35,7 @@ export class GroupsValidator extends Validator {
      * @param errorReporter
      * @param parsedGroup
      */
-    private validateGroup(
-        group: ComponentGroup,
-    ): void {
+    private validateGroup(group: ComponentGroup): void {
         for (const componentName of group.components) {
             if (!(componentName in this.componentSet.components)) {
                 this.error(`Component "${componentName}" of group "${group.name}" does not exist`);

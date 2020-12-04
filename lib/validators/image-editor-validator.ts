@@ -29,8 +29,10 @@ export class ImageEditorValidator extends Validator {
      */
     private validateProperty(property: ComponentProperty) {
         if (property.control.type === CONTROL && property.dataType !== ALLOWED_DATA_TYPE) {
-            this.error(`Property "${property.name}" uses "${CONTROL}" control type which is allowed to use with ` +
-                `dataType="${ALLOWED_DATA_TYPE}" only`);
+            this.error(
+                `Property "${property.name}" uses "${CONTROL}" control type which is allowed to use with ` +
+                    `dataType="${ALLOWED_DATA_TYPE}" only`,
+            );
         }
     }
 }

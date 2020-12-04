@@ -8,16 +8,16 @@ describe('DefaultComponentOnEnterValidator', () => {
         // valid definition (cut)
         definition = {
             components: {
-                'text': {
-                    'name': 'text',
-                    'directives': {
-                        'd1': {
-                            'type': 'editable',
-                            'tag': 'div'
-                        }
+                text: {
+                    name: 'text',
+                    directives: {
+                        d1: {
+                            type: 'editable',
+                            tag: 'div',
+                        },
                     },
-                    'properties': {}
-                }
+                    properties: {},
+                },
             },
             defaultComponentOnEnter: 'text',
         };
@@ -32,7 +32,9 @@ describe('DefaultComponentOnEnterValidator', () => {
         it('should not pass if it points to non existing component', () => {
             definition.defaultComponentOnEnter = 'body';
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Property "defaultComponentOnEnter" points to non existing component "body"`);
+            expect(error).toHaveBeenCalledWith(
+                `Property "defaultComponentOnEnter" points to non existing component "body"`,
+            );
         });
     });
 });

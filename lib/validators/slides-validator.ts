@@ -24,10 +24,7 @@ export class SlidesValidator extends Validator {
      * @param parsedComponent
      * @param property
      */
-    validateComponent(
-        parsedComponent: ParsedComponent,
-        property: ComponentProperty,
-    ): void {
+    validateComponent(parsedComponent: ParsedComponent, property: ComponentProperty): void {
         if (property.control.type !== 'slides') {
             return;
         }
@@ -41,12 +38,10 @@ export class SlidesValidator extends Validator {
         const slideComponent = this.componentSet.components[slideComponentName];
 
         if (property.control.include) {
-            this.validateHasProperties(slideComponent,
-                property, property.control.include);
+            this.validateHasProperties(slideComponent, property, property.control.include);
         }
         if (property.control.exclude) {
-            this.validateHasProperties(slideComponent,
-                property, property.control.exclude);
+            this.validateHasProperties(slideComponent, property, property.control.exclude);
         }
     }
 
@@ -58,13 +53,17 @@ export class SlidesValidator extends Validator {
      * @param property
      * @param properties
      */
-    private validateHasProperties(parsedComponent: ParsedComponent,
-                                  property: ComponentProperty,
-                                  properties: string[]): void {
+    private validateHasProperties(
+        parsedComponent: ParsedComponent,
+        property: ComponentProperty,
+        properties: string[],
+    ): void {
         properties.forEach((propertyName) => {
             if (!this.hasProperty(parsedComponent, propertyName)) {
-                this.error(`Property "${property.name}" is referring to an invalid property "${propertyName}"`
-                    + `not part of "${parsedComponent.name}"`);
+                this.error(
+                    `Property "${property.name}" is referring to an invalid property "${propertyName}"` +
+                        `not part of "${parsedComponent.name}"`,
+                );
             }
         });
     }

@@ -16,21 +16,23 @@ export class DocContainerValidator extends Validator {
             if (containerCount > 1) {
                 this.error(`Component "${parsedComponent.name}" can only have one container directive`);
             } else if (containerCount === 1 && slideshowCount > 0) {
-                this.error(`Component "${parsedComponent.name}" contains both a container and slideshow directive,` +
-                `but can only contain one of those directive types`);
+                this.error(
+                    `Component "${parsedComponent.name}" contains both a container and slideshow directive,` +
+                        `but can only contain one of those directive types`,
+                );
             }
         });
     }
 
-    private countContainerDirectives(parsedComponent: ParsedComponent) : number {
-        return Object.values(parsedComponent.directives)
-        .filter(directive => directive.type === DirectiveType.container)
-        .length;
+    private countContainerDirectives(parsedComponent: ParsedComponent): number {
+        return Object.values(parsedComponent.directives).filter(
+            (directive) => directive.type === DirectiveType.container,
+        ).length;
     }
 
-    private countSlideshowDirectives(parsedComponent: ParsedComponent) : number {
-        return Object.values(parsedComponent.directives)
-        .filter(directive => directive.type === DirectiveType.slideshow)
-        .length;
+    private countSlideshowDirectives(parsedComponent: ParsedComponent): number {
+        return Object.values(parsedComponent.directives).filter(
+            (directive) => directive.type === DirectiveType.slideshow,
+        ).length;
     }
 }

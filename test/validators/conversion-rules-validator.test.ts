@@ -13,7 +13,7 @@ describe('ConversionRulesValidator', () => {
                     directives: {
                         slide: {
                             type: 'image',
-                            tag: 'div'
+                            tag: 'div',
                         },
                     },
                 },
@@ -22,7 +22,7 @@ describe('ConversionRulesValidator', () => {
                     directives: {
                         figure: {
                             type: 'image',
-                            tag: 'div'
+                            tag: 'div',
                         },
                     },
                 },
@@ -30,8 +30,8 @@ describe('ConversionRulesValidator', () => {
             conversionRules: {
                 c1: {
                     c2: 'auto',
-                }
-            }
+                },
+            },
         };
         error = jasmine.createSpy('error');
         validator = new ConversionRulesValidator(error, definition);
@@ -46,9 +46,9 @@ describe('ConversionRulesValidator', () => {
                 c2: {
                     type: 'simple',
                     map: {
-                        figure: 'slide'
-                    }
-                }
+                        figure: 'slide',
+                    },
+                },
             };
             validator.validate();
             expect(error).not.toHaveBeenCalled();
@@ -57,8 +57,8 @@ describe('ConversionRulesValidator', () => {
             definition.conversionRules.c1 = {
                 c2: {
                     type: 'from-container',
-                    container: 'slide'
-                }
+                    container: 'slide',
+                },
             };
             definition.components.c1.directives.slide.type = 'slideshow';
             validator.validate();
@@ -68,8 +68,8 @@ describe('ConversionRulesValidator', () => {
             definition.conversionRules.c1 = {
                 c2: {
                     type: 'to-container',
-                    container: 'figure'
-                }
+                    container: 'figure',
+                },
             };
             definition.components.c2.directives.figure.type = 'slideshow';
             validator.validate();
@@ -82,7 +82,7 @@ describe('ConversionRulesValidator', () => {
         });
         it('should not pass if destination component does not exist', () => {
             definition.conversionRules.c1 = {
-                u2: 'auto'
+                u2: 'auto',
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing component "u2"`);
@@ -92,9 +92,9 @@ describe('ConversionRulesValidator', () => {
                 c2: {
                     type: 'simple',
                     map: {
-                        figure: 'ud1'
-                    }
-                }
+                        figure: 'ud1',
+                    },
+                },
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud1"`);
@@ -104,9 +104,9 @@ describe('ConversionRulesValidator', () => {
                 c2: {
                     type: 'simple',
                     map: {
-                        ud2: 'slide'
-                    }
-                }
+                        ud2: 'slide',
+                    },
+                },
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud2"`);
@@ -115,8 +115,8 @@ describe('ConversionRulesValidator', () => {
             definition.conversionRules.c1 = {
                 c2: {
                     type: 'from-container',
-                    container: 'ud3'
-                }
+                    container: 'ud3',
+                },
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud3"`);
@@ -125,18 +125,20 @@ describe('ConversionRulesValidator', () => {
             definition.conversionRules.c1 = {
                 c2: {
                     type: 'from-container',
-                    container: 'slide'
-                }
+                    container: 'slide',
+                },
             };
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Conversion rule references to a directive "slide" which must be "slideshow" or "container"`);
+            expect(error).toHaveBeenCalledWith(
+                `Conversion rule references to a directive "slide" which must be "slideshow" or "container"`,
+            );
         });
         it('should not pass if to-container directive does not exist', () => {
             definition.conversionRules.c1 = {
                 c2: {
                     type: 'to-container',
-                    container: 'ud4'
-                }
+                    container: 'ud4',
+                },
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Conversion rule references to non existing directive "ud4"`);
@@ -145,11 +147,13 @@ describe('ConversionRulesValidator', () => {
             definition.conversionRules.c1 = {
                 c2: {
                     type: 'to-container',
-                    container: 'figure'
-                }
+                    container: 'figure',
+                },
             };
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Conversion rule references to a directive "figure" which must be "slideshow" or "container"`);
+            expect(error).toHaveBeenCalledWith(
+                `Conversion rule references to a directive "figure" which must be "slideshow" or "container"`,
+            );
         });
     });
 });

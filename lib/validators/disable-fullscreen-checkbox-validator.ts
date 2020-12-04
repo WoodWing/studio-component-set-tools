@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent, ComponentProperty} from '../models';
+import { ParsedComponent, ComponentProperty } from '../models';
 
 const CONTROL = 'disable-fullscreen-checkbox';
 const ALLOWED_DATA_TYPE = 'styles';
@@ -31,8 +31,10 @@ export class DisableFullscreenCheckboxValidator extends Validator {
      */
     private validateProperty(property: ComponentProperty) {
         if (property.control.type === CONTROL && property.dataType !== ALLOWED_DATA_TYPE) {
-            this.error(`Property "${property.name}" uses "${CONTROL}" control type which is allowed to use with ` +
-                `dataType="${ALLOWED_DATA_TYPE}" only`);
+            this.error(
+                `Property "${property.name}" uses "${CONTROL}" control type which is allowed to use with ` +
+                    `dataType="${ALLOWED_DATA_TYPE}" only`,
+            );
         }
     }
 }

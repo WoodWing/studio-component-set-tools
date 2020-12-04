@@ -11,9 +11,7 @@ import * as path from 'path';
 import { Validator } from './validator';
 import { ComponentSet } from '../models';
 
-const RESERVED = [
-    /^__internal__/,
-];
+const RESERVED = [/^__internal__/];
 const GENERIC_FILES = [
     path.normalize('./styles/_common.scss'),
     path.normalize('./styles/design.scss'),
@@ -21,11 +19,7 @@ const GENERIC_FILES = [
 ];
 
 export class ComponentsValidator extends Validator {
-    constructor(
-        error: (errorMessage: string) => false,
-        definition: ComponentSet,
-        private filePaths: Set<string>,
-    ) {
+    constructor(error: (errorMessage: string) => false, definition: ComponentSet, private filePaths: Set<string>) {
         super(error, definition);
     }
 
@@ -33,7 +27,7 @@ export class ComponentsValidator extends Validator {
         const componentNames = new Set<string>();
         for (const comp of Object.values(this.componentSet.components)) {
             // reserved words
-            if (RESERVED.some(regexp => regexp.test(comp.name))) {
+            if (RESERVED.some((regexp) => regexp.test(comp.name))) {
                 this.error(`Component name "${comp.name}" is a reserved word`);
             }
 

@@ -26,9 +26,7 @@ export class DocContainerGroupsValidator extends Validator {
      * @param errorReporter
      * @param parsedComponent
      */
-    validateComponent(
-        parsedComponent: ParsedComponent,
-    ): void {
+    validateComponent(parsedComponent: ParsedComponent): void {
         if (!parsedComponent.directiveOptions) {
             return;
         }
@@ -45,7 +43,9 @@ export class DocContainerGroupsValidator extends Validator {
                 continue;
             }
             if (parsedComponent.directives[key].type !== 'container') {
-                this.error(`Component "${parsedComponent.name}" has a group for directive "${key}" with incompatible type "${parsedComponent.directives[key].type}". Only type "container" is allowed.`);
+                this.error(
+                    `Component "${parsedComponent.name}" has a group for directive "${key}" with incompatible type "${parsedComponent.directives[key].type}". Only type "container" is allowed.`,
+                );
                 continue;
             }
 

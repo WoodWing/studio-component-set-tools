@@ -6,8 +6,14 @@ import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
 const merge = require('lodash.merge');
 import {
-    DirectiveType, ComponentSet, ComponentsDefinition, Component, ParsedComponent, ComponentProperty,
-    ComponentRendition, GetFileContentType
+    DirectiveType,
+    ComponentSet,
+    ComponentsDefinition,
+    Component,
+    ParsedComponent,
+    ComponentProperty,
+    ComponentRendition,
+    GetFileContentType,
 } from '../models';
 
 /**
@@ -26,7 +32,7 @@ import {
 export async function parseDefinition(
     componentsDefinition: ComponentsDefinition,
     getFileContent?: GetFileContentType,
-) : Promise<ComponentSet> {
+): Promise<ComponentSet> {
     const componentSet: ComponentSet = {
         name: componentsDefinition.name,
         description: componentsDefinition.description,
@@ -47,7 +53,11 @@ export async function parseDefinition(
         if (getFileContent && !hasRendition(compDef, rendition)) {
             await loadRendition(compDef, rendition, getFileContent);
         }
-        componentSet.components[compDef.name] = parseComponent(compDef, sourceDefinition.componentProperties, rendition);
+        componentSet.components[compDef.name] = parseComponent(
+            compDef,
+            sourceDefinition.componentProperties,
+            rendition,
+        );
     }
     // build "defaultComponentContent" property
     buildComponentSetDefaultContent(componentSet);
@@ -61,11 +71,11 @@ export async function parseDefinition(
  * @param content HTML content of the component
  * @returns ParsedComponentsDefinition['components']['name']['directives']
  */
-function parseDirectives(content: string) : ComponentSet['components']['name']['directives'] {
+function parseDirectives(content: string): ComponentSet['components']['name']['directives'] {
     const result = {} as ComponentSet['components']['name']['directives'];
     const parser = new htmlparser.Parser({
         onopentag: (name, attributes) => {
-            Object.keys(attributes).forEach(key => {
+            Object.keys(attributes).forEach((key) => {
                 const keyLowerCased = key.toLowerCase();
                 const prefix = 'doc-';
                 if (keyLowerCased.indexOf(prefix) === 0) {
@@ -80,7 +90,7 @@ function parseDirectives(content: string) : ComponentSet['components']['name']['
                     };
                 }
             });
-        }
+        },
     });
     parser.write(content);
     parser.end();
@@ -93,7 +103,7 @@ function parseDirectives(content: string) : ComponentSet['components']['name']['
  * @param directiveName
  * @returns DirectiveType
  */
-function getDirectiveType(directiveName: string) : DirectiveType {
+function getDirectiveType(directiveName: string): DirectiveType {
     for (let key in DirectiveType) {
         if (DirectiveType[key] === directiveName) {
             return DirectiveType[<DirectiveType>key];
@@ -108,10 +118,7 @@ function getDirectiveType(directiveName: string) : DirectiveType {
  * @param component
  * @param rendition
  */
-function hasRendition(
-    component: Component,
-    rendition: ComponentRendition,
-) : boolean {
+function hasRendition(component: Component, rendition: ComponentRendition): boolean {
     return Boolean(component.renditions && rendition in component.renditions);
 }
 
@@ -126,13 +133,13 @@ async function loadRendition(
     component: Component,
     rendition: ComponentRendition,
     getFileContent: GetFileContentType,
-) : Promise<Component> {
+): Promise<Component> {
     if (!component.renditions) {
         component.renditions = {};
     }
     component.renditions[rendition] = await getFileContent(
         path.normalize(`./templates/${rendition}/${component.name}.html`),
-        { encoding: 'utf8' }
+        { encoding: 'utf8' },
     );
     return component;
 }
@@ -148,22 +155,23 @@ function parseComponent(
     component: Component,
     componentProperties: ComponentProperty[],
     rendition: ComponentRendition,
-) : ParsedComponent {
+): ParsedComponent {
     if (!hasRendition(component, rendition)) {
         throw new Error(`Component "${component.name}" doesn't have "${rendition}" rendition`);
     }
-    const directives = parseDirectives(component.renditions && component.renditions[rendition] || '');
+    const directives = parseDirectives((component.renditions && component.renditions[rendition]) || '');
 
     return merge({}, component, {
         directives: directives,
         properties: (component.properties || []).map((componentProperty) => {
-            const property = parseProperty(
-                componentProperty,
-                componentProperties
-            );
+            const property = parseProperty(componentProperty, componentProperties);
 
             if (property.directiveKey && !(property.directiveKey in directives)) {
-                throw new Error(`Directive with key "${property.directiveKey}" is not found in component "${component.name}". Property name is "${property.name || '<anonymous property>'}".`);
+                throw new Error(
+                    `Directive with key "${property.directiveKey}" is not found in component "${
+                        component.name
+                    }". Property name is "${property.name || '<anonymous property>'}".`,
+                );
             }
             return property;
         }),
@@ -178,29 +186,23 @@ function parseComponent(
  * @param componentProperties
  */
 function parseProperty(
-    componentProperty: ComponentProperty|string,
-    componentProperties: ComponentProperty[]
-) : ComponentProperty {
-    return isPropertyObject(componentProperty) ?
-        parseComponentPropertyObject(componentProperty, componentProperties) :
-        findComponentPropertyTemplate(componentProperty, componentProperties);
+    componentProperty: ComponentProperty | string,
+    componentProperties: ComponentProperty[],
+): ComponentProperty {
+    return isPropertyObject(componentProperty)
+        ? parseComponentPropertyObject(componentProperty, componentProperties)
+        : findComponentPropertyTemplate(componentProperty, componentProperties);
 }
 
-function parseComponentPropertyObject(
-    componentProperty: ComponentProperty,
-    componentProperties: ComponentProperty[]
-) {
+function parseComponentPropertyObject(componentProperty: ComponentProperty, componentProperties: ComponentProperty[]) {
     // No name means the property is defined anonymously.
     // Otherwise the property is merged with componentProperties entry. This entry must exist
-    return componentProperty.name ?
-        merge({}, findComponentPropertyTemplate(componentProperty.name, componentProperties), componentProperty) :
-        componentProperty;
+    return componentProperty.name
+        ? merge({}, findComponentPropertyTemplate(componentProperty.name, componentProperties), componentProperty)
+        : componentProperty;
 }
 
-function findComponentPropertyTemplate(
-    propertyName: string,
-    componentProperties: ComponentProperty[]
-) {
+function findComponentPropertyTemplate(propertyName: string, componentProperties: ComponentProperty[]) {
     const propertyTemplate = componentProperties.find((item) => item.name === propertyName);
     if (!propertyTemplate) {
         throw new Error(`Property "${propertyName}" is not found in definition componentProperties`);
@@ -227,7 +229,7 @@ function isPropertyObject(property: any): property is ComponentProperty {
  *
  * @param componentSet
  */
-function buildComponentSetDefaultContent(componentSet: ComponentSet) : void {
+function buildComponentSetDefaultContent(componentSet: ComponentSet): void {
     for (let component of Object.values(componentSet.components)) {
         buildComponentDefaultContent(componentSet.defaultComponentContent, component);
     }
@@ -241,8 +243,8 @@ function buildComponentSetDefaultContent(componentSet: ComponentSet) : void {
  */
 function buildComponentDefaultContent(
     defaultComponentContent: ComponentSet['defaultComponentContent'],
-    component: ParsedComponent
-) : void {
+    component: ParsedComponent,
+): void {
     for (let property of component.properties) {
         buildComponentPropertyDefaultContent(defaultComponentContent, component.name, property);
     }
@@ -259,7 +261,7 @@ function buildComponentPropertyDefaultContent(
     defaultComponentContent: ComponentSet['defaultComponentContent'],
     componentName: string,
     property: ComponentProperty,
-) : void {
+): void {
     // No default value
     if (!property.defaultValue) {
         return;
@@ -268,18 +270,33 @@ function buildComponentPropertyDefaultContent(
     switch (property.dataType) {
         case 'styles':
             addDefaultPropertyContent(
-                defaultComponentContent, 'styles', componentName, property.name, property.defaultValue);
+                defaultComponentContent,
+                'styles',
+                componentName,
+                property.name,
+                property.defaultValue,
+            );
             break;
         case 'inlineStyles':
             addDefaultPropertyContent(
-                defaultComponentContent, 'inlineStyles', componentName, property.name, property.defaultValue);
+                defaultComponentContent,
+                'inlineStyles',
+                componentName,
+                property.name,
+                property.defaultValue,
+            );
             break;
         case 'data':
             addDefaultPropertyContent(
-                defaultComponentContent, 'data', componentName, property.name, property.defaultValue);
+                defaultComponentContent,
+                'data',
+                componentName,
+                property.name,
+                property.defaultValue,
+            );
             break;
         default:
-            // Note: validator doesn't allow such a value in component definitions
+        // Note: validator doesn't allow such a value in component definitions
     }
 }
 
@@ -299,7 +316,7 @@ function addDefaultPropertyContent(
     componentName: string,
     propertyName: string,
     value: string | object,
-) : void {
+): void {
     if (!defaultComponentContent[componentName]) {
         defaultComponentContent[componentName] = {};
     }

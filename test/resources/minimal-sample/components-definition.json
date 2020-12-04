@@ -4,14 +4,12 @@
     "version": "1.0.0",
     "defaultComponentOnEnter": "body",
 
-    "components":[
+    "components": [
         {
             "name": "body",
             "label": "Body Label",
             "icon": "icons/component.svg",
-            "properties":[
-                "selectProperty"
-            ],
+            "properties": ["selectProperty"],
             "countStatistics": true
         },
         {
@@ -20,9 +18,7 @@
                 "key": "INTRO_KEY"
             },
             "icon": "icons/component.svg",
-            "properties":[
-                "checkboxProperty"
-            ]
+            "properties": ["checkboxProperty"]
         }
     ],
 
@@ -30,16 +26,12 @@
         {
             "label": "Minimal",
             "name": "minimal",
-            "components": [
-                "body"
-            ]
+            "components": ["body"]
         },
         {
             "label": { "key": "MINIMAL" },
             "name": "minimal2",
-            "components": [
-                "body"
-            ]
+            "components": ["body"]
         }
     ],
 

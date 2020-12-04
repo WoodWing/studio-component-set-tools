@@ -4,15 +4,17 @@
  * or an object with a translation key and
  * translation replacement variables.
  */
-export type Label = string | {
-    /**
-     * String key
-     */
-    key: string;
-    /**
-     * String replacement variables
-     */
-    values?: {
-      [k: string]: any;
-    };
-};
+export type Label =
+    | string
+    | {
+          /**
+           * String key
+           */
+          key: string;
+          /**
+           * String replacement variables
+           */
+          values?: {
+              [k: string]: any;
+          };
+      };
