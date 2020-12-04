@@ -15,15 +15,16 @@ describe('ImageEditorValidator', () => {
                             control: {
                                 type: 'image-editor',
                             },
-                            dataType: 'doc-image'
-                        }, {
+                            dataType: 'doc-image',
+                        },
+                        {
                             name: 'p2',
                             control: {
                                 type: 'text',
                             },
-                            dataType: 'data'
-                        }
-                    ]
+                            dataType: 'data',
+                        },
+                    ],
                 },
             },
         };
@@ -38,7 +39,9 @@ describe('ImageEditorValidator', () => {
         it('should not pass if dataType is not "doc-image"', () => {
             definition.components.c1.properties[0].dataType = 'data';
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Property "p1" uses "image-editor" control type which is allowed to use with dataType="doc-image" only`);
+            expect(error).toHaveBeenCalledWith(
+                `Property "p1" uses "image-editor" control type which is allowed to use with dataType="doc-image" only`,
+            );
         });
     });
 });

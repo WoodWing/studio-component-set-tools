@@ -43,7 +43,9 @@ describe('FittingValidator', () => {
                 },
             });
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Component "c1" uses properties with "fitting" control type more that one time`);
+            expect(error).toHaveBeenCalledWith(
+                `Component "c1" uses properties with "fitting" control type more that one time`,
+            );
         });
     });
 });

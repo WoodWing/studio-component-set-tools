@@ -14,7 +14,7 @@ describe('validateFolder', () => {
 
         expect(await validateFolder('./test/resources/missing-components-definition-sample')).toBe(false);
         expect(global.console.log).toHaveBeenCalledWith(
-            colors.red('Components definition file "components-definition.json" is missing')
+            colors.red('Components definition file "components-definition.json" is missing'),
         );
     });
 
@@ -23,7 +23,7 @@ describe('validateFolder', () => {
 
         expect(await validateFolder('./test/resources/invalid-definition-json-sample')).toBe(false);
         expect(global.console.log).toHaveBeenCalledWith(
-            expect.stringMatching('Components definition file \"components-definition.json\" is not valid json:')
+            expect.stringMatching('Components definition file "components-definition.json" is not valid json:'),
         );
     });
 });

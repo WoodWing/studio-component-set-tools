@@ -9,10 +9,10 @@ describe('DefaultValuesValidator', () => {
     beforeEach(() => {
         // valid definition (cut)
         definition = {
-            'components': {
-                'text': {
-                    'name': 'text',
-                    'properties': [],
+            components: {
+                text: {
+                    name: 'text',
+                    properties: [],
                 },
             },
         };
@@ -54,7 +54,8 @@ describe('DefaultValuesValidator', () => {
             validator.validate();
 
             expect(error).toHaveBeenCalledWith(
-                'Property propertyName has a default value for an unsupported data type doc-editable');
+                'Property propertyName has a default value for an unsupported data type doc-editable',
+            );
         });
 
         it('should not pass with unsupported control type', () => {
@@ -71,7 +72,8 @@ describe('DefaultValuesValidator', () => {
             validator.validate();
 
             expect(error).toHaveBeenCalledWith(
-                'Property propertyName has a default value used with an unsupported control type unsupported');
+                'Property propertyName has a default value used with an unsupported control type unsupported',
+            );
         });
 
         ['text', 'select', 'radio', 'checkbox', 'fitting'].forEach((controlType) => {
@@ -88,8 +90,7 @@ describe('DefaultValuesValidator', () => {
                 validator = new DefaultValuesValidator(error, definition);
                 validator.validate();
 
-                expect(error).toHaveBeenCalledWith(
-                    'Property propertyName defaultValue must be a string');
+                expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be a string');
             });
         });
 
@@ -100,10 +101,7 @@ describe('DefaultValuesValidator', () => {
                 dataType: 'styles',
                 control: {
                     type: 'select',
-                    options: [
-                        { caption: '1' },
-                        { caption: '2', value: 'value' },
-                    ],
+                    options: [{ caption: '1' }, { caption: '2', value: 'value' }],
                 },
             });
 
@@ -120,10 +118,7 @@ describe('DefaultValuesValidator', () => {
                 dataType: 'styles',
                 control: {
                     type: 'select',
-                    options: [
-                        { caption: '1' },
-                        { caption: '2', value: 'other-value' },
-                    ],
+                    options: [{ caption: '1' }, { caption: '2', value: 'other-value' }],
                 },
             });
 
@@ -131,7 +126,8 @@ describe('DefaultValuesValidator', () => {
             validator.validate();
 
             expect(error).toHaveBeenCalledWith(
-                'Property propertyName defaultValue has no matching entry in select options');
+                'Property propertyName defaultValue has no matching entry in select options',
+            );
         });
 
         it('should pass with control type radio and defaultValue being present in options', () => {
@@ -141,10 +137,7 @@ describe('DefaultValuesValidator', () => {
                 dataType: 'styles',
                 control: {
                     type: 'radio',
-                    options: [
-                        { caption: '1' },
-                        { caption: '2', value: 'value' },
-                    ],
+                    options: [{ caption: '1' }, { caption: '2', value: 'value' }],
                 },
             });
 
@@ -161,10 +154,7 @@ describe('DefaultValuesValidator', () => {
                 dataType: 'styles',
                 control: {
                     type: 'radio',
-                    options: [
-                        { caption: '1' },
-                        { caption: '2', value: 'other-value' },
-                    ],
+                    options: [{ caption: '1' }, { caption: '2', value: 'other-value' }],
                 },
             });
 
@@ -172,7 +162,8 @@ describe('DefaultValuesValidator', () => {
             validator.validate();
 
             expect(error).toHaveBeenCalledWith(
-                'Property propertyName defaultValue has no matching entry in radio options');
+                'Property propertyName defaultValue has no matching entry in radio options',
+            );
         });
 
         it('should pass with control type checkbox and defaultValue being the checked value', () => {
@@ -206,8 +197,7 @@ describe('DefaultValuesValidator', () => {
             validator = new DefaultValuesValidator(error, definition);
             validator.validate();
 
-            expect(error).toHaveBeenCalledWith(
-                'Property propertyName defaultValue does not match checkbox value');
+            expect(error).toHaveBeenCalledWith('Property propertyName defaultValue does not match checkbox value');
         });
 
         it('should pass with control type drop-capital and defaultValue being a correct object', () => {
@@ -239,8 +229,7 @@ describe('DefaultValuesValidator', () => {
             validator = new DefaultValuesValidator(error, definition);
             validator.validate();
 
-            expect(error).toHaveBeenCalledWith(
-                'Property propertyName defaultValue must be an object');
+            expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be an object');
         });
 
         it('should not pass with control type drop-capital and defaultValue not being a correct object', () => {
@@ -257,7 +246,8 @@ describe('DefaultValuesValidator', () => {
             validator.validate();
 
             expect(error).toHaveBeenCalledWith(
-                'Property propertyName defaultValue must be an object with keys "numberOfCharacters, numberOfLines, padding"');
+                'Property propertyName defaultValue must be an object with keys "numberOfCharacters, numberOfLines, padding"',
+            );
         });
 
         it('should not pass with control type drop-capital and defaultValue being a correct object but wrong values', () => {
@@ -274,10 +264,11 @@ describe('DefaultValuesValidator', () => {
             validator.validate();
 
             expect(error).toHaveBeenCalledWith(
-                'Property propertyName defaultValue must be an object of number type values');
+                'Property propertyName defaultValue must be an object of number type values',
+            );
         });
 
-        Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES).forEach(fittingOption => {
+        Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES).forEach((fittingOption) => {
             it(`should pass with control type fitting and defaultValue is '${fittingOption}'`, () => {
                 definition.components.text.properties.push({
                     name: 'propertyName',
@@ -309,7 +300,8 @@ describe('DefaultValuesValidator', () => {
             validator.validate();
 
             expect(error).toHaveBeenCalledWith(
-                `Property propertyName defaultValue has to be one of '_fit-frame-height-to-content', '_fit-frame-to-content'`);
+                `Property propertyName defaultValue has to be one of '_fit-frame-height-to-content', '_fit-frame-to-content'`,
+            );
         });
     });
 });

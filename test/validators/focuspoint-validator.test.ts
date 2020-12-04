@@ -13,21 +13,21 @@ describe('FocuspointValidator', () => {
                     directives: {
                         slide: {
                             type: 'image',
-                            tag: 'div'
-                        }
+                            tag: 'div',
+                        },
                     },
                     properties: [
                         {
                             name: 'test',
                             control: {
                                 type: 'image-editor',
-                                focuspoint: true
+                                focuspoint: true,
                             },
                             directiveKey: 'slide',
-                        }
+                        },
                     ],
-                }
-            }
+                },
+            },
         };
         error = jasmine.createSpy('error');
         validator = new FocuspointValidator(error, definition);
@@ -46,7 +46,9 @@ describe('FocuspointValidator', () => {
         it('should not pass if directive is applied to <img> tag', () => {
             definition.components.picture.directives.slide.tag = 'img';
             validator.validate();
-            expect(error).toHaveBeenCalledWith(`Property "test" of component "picture" uses "focuspoint" feature on <img> html tag, which is not supported, "focuspoint" can be applied to other html tags, whereimage is a background`);
+            expect(error).toHaveBeenCalledWith(
+                `Property "test" of component "picture" uses "focuspoint" feature on <img> html tag, which is not supported, "focuspoint" can be applied to other html tags, whereimage is a background`,
+            );
         });
     });
 });

@@ -25,9 +25,7 @@ export class AutofillValidator extends Validator {
      * @param errorReporter
      * @param parsedComponent
      */
-    validateComponent(
-        parsedComponent: ParsedComponent,
-    ): void {
+    validateComponent(parsedComponent: ParsedComponent): void {
         // Only check when it has directiveOptions configured
         if (!parsedComponent.directiveOptions) {
             return;
@@ -43,30 +41,47 @@ export class AutofillValidator extends Validator {
 
             // check if destination directive exists
             if (!parsedComponent.directives[dstKey]) {
-                this.error(`Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
-                `This component doesn't have directive "${dstKey}".`);
+                this.error(
+                    `Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
+                        `This component doesn't have directive "${dstKey}".`,
+                );
             } else if (supportedDestinationDirectives.indexOf(parsedComponent.directives[dstKey].type) < 0) {
-                this.error(`Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
-                `Supported types of destination directive are "${supportedDestinationDirectives.join('", "')}" only.`);
+                this.error(
+                    `Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
+                        `Supported types of destination directive are "${supportedDestinationDirectives.join(
+                            '", "',
+                        )}" only.`,
+                );
             }
 
             // check if source directive exists
             if (!parsedComponent.directives[rule.source]) {
-                this.error(`Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
-                `This component doesn't have directive "${rule.source}".`);
-            // Check if source directive is supported
+                this.error(
+                    `Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
+                        `This component doesn't have directive "${rule.source}".`,
+                );
+                // Check if source directive is supported
             } else if (supportedSourceDirectives.indexOf(parsedComponent.directives[rule.source].type) < 0) {
-                this.error(`Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
-                `Supported types of source directive are "${supportedSourceDirectives.join('", "')}" only.`);
-            // check if metadataField is set when source directive is image kind
-            } else if (parsedComponent.directives[rule.source].type === DirectiveType.image && !('metadataField' in rule)) {
-                this.error(`Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
-                `If source directive is image kind then "metadataField" must be set.`);
+                this.error(
+                    `Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
+                        `Supported types of source directive are "${supportedSourceDirectives.join('", "')}" only.`,
+                );
+                // check if metadataField is set when source directive is image kind
+            } else if (
+                parsedComponent.directives[rule.source].type === DirectiveType.image &&
+                !('metadataField' in rule)
+            ) {
+                this.error(
+                    `Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
+                        `If source directive is image kind then "metadataField" must be set.`,
+                );
             }
             // check if dst !== src
             if (dstKey === rule.source) {
-                this.error(`Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
-                `There is no sense to fill directive content from itself.`);
+                this.error(
+                    `Component "${parsedComponent.name}" has incorrect autofill rule "${dstKey}". ` +
+                        `There is no sense to fill directive content from itself.`,
+                );
             }
         }
     }

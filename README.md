@@ -1,4 +1,5 @@
 # csde-components-validator
+
 Validation module for Content Station Digital Editor component sets.
 
 ## Usage
@@ -34,30 +35,57 @@ const validationResult: boolean = await validate(filePaths, getFileContent, erro
 ### parser
 
 If published version (from "dist" folder) of the package is used then:
-- if parser is going to be used in the browser remember that package's target is ES6 which may be unsupported or partly supported by the browsers
-- also polyfills may be needed for IE browsers
+
+-   if parser is going to be used in the browser remember that package's target is ES6 which may be unsupported or partly supported by the browsers
+-   also polyfills may be needed for IE browsers
 
 An example of possible usage:
+
 ```ts
 import { parseDefinition } from '@woodwing/csde-components-validator/dist/parser';
 
 const componentsDefinition = getComponentsDefinitionJson();
-parseDefinition(componentsDefinition).then(componentSet => {
+parseDefinition(componentsDefinition).then((componentSet) => {
     // componentSet is a parsed definition
 });
 ```
 
+## Develop
+
+### Format
+
+Formats all code according to [Prettier](https://prettier.io) configuration. Linting checks whether all code has been prettified. Formatting can also be applied automatically your favorite IDE or pre-commit hook. Check out the Prettier website for instructions.
+
+```bash
+npm run format:write
+```
+
+### Lint & test
+
+Runs TSLint and afterwards all unit tests.
+
+```bash
+npm run test
+```
+
 ## Publish
+
 In case you have never published a npm module before, make sure to read the official npm documentation about [publishing npm packages](https://docs.npmjs.com/getting-started/publishing-npm-packages).
 
 Before publishing update the [version number](https://docs.npmjs.com/getting-started/publishing-npm-packages#how-to-update-the-version-number) of this package. For example, to increase the patch version:
 
-    $ npm version patch -m "Bump validator version to %s"
+```bash
+npm version patch -m "Bump validator version to %s"
+```
 
 Next verify you are logged in as a user with access to the [Woodwing organization](https://www.npmjs.com/org/woodwing):
 
-    $ npm whoami
+```bash
+npm whoami
+```
 
 Finally publish the [scoped package](https://www.npmjs.com/docs/orgs/publishing-an-org-scoped-package.html#publishing-a-public-scoped-package) by running:
 
-    $ npm publish --access public
+```bash
+npm publish --access public
+```

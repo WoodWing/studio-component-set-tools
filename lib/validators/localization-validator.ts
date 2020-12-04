@@ -51,13 +51,15 @@ export class LocalizationValidator extends Validator {
         }
 
         if (!supportedLanguages.includes(localizationFileParsed.name)) {
-            this.error(`Localization file "${localizationFile}" is not a supported language. Supported languages: \n${supportedLanguages}`);
+            this.error(
+                `Localization file "${localizationFile}" is not a supported language. Supported languages: \n${supportedLanguages}`,
+            );
             return;
         }
 
         try {
             JSON.parse(await this.getFileContent(localizationFile));
-        } catch(e) {
+        } catch (e) {
             this.error(`Localization file "${localizationFile}" is not valid json: \n${e}`);
             return;
         }

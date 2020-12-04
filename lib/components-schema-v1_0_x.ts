@@ -6,12 +6,12 @@
 
 /* tslint:disable:max-line-length variable-name */
 
-const labelProperty = (description: string ) => {
+const labelProperty = (description: string) => {
     return {
         oneOf: [
             {
                 type: 'string',
-                description
+                description,
             },
             {
                 type: 'object',
@@ -27,9 +27,9 @@ const labelProperty = (description: string ) => {
                     },
                 },
                 additionalProperties: false,
-                required: ['key']
-            }
-        ]
+                required: ['key'],
+            },
+        ],
     };
 };
 
@@ -40,7 +40,7 @@ const componentPropertyDefinition = {
         minLength: 3,
     },
     label: labelProperty('Display label of Component property'),
-    directiveKey: {type: 'string', description: 'Directive key for properties that use a directive data type'},
+    directiveKey: { type: 'string', description: 'Directive key for properties that use a directive data type' },
     control: {
         type: 'object',
         description: 'Type of UI element and options.',
@@ -62,7 +62,8 @@ const componentPropertyDefinition = {
                                 caption: labelProperty('Label of the item'),
                                 value: {
                                     type: 'string',
-                                    description: 'Value of the item. Omit it if the option should simply clean the property up',
+                                    description:
+                                        'Value of the item. Omit it if the option should simply clean the property up',
                                 },
                             },
                             additionalProperties: false,
@@ -94,7 +95,8 @@ const componentPropertyDefinition = {
                                 },
                                 value: {
                                     type: 'string',
-                                    description: 'Value of the item. Omit it if the option should simply clean the property up',
+                                    description:
+                                        'Value of the item. Omit it if the option should simply clean the property up',
                                 },
                             },
                         },
@@ -109,7 +111,7 @@ const componentPropertyDefinition = {
                         enum: ['checkbox'],
                         description: 'Checkbox toggling between value and no value',
                     },
-                    value: {type: 'string'},
+                    value: { type: 'string' },
                 },
             },
             {
@@ -118,9 +120,10 @@ const componentPropertyDefinition = {
                 properties: {
                     type: {
                         enum: ['disable-fullscreen-checkbox'],
-                        description: 'Checkbox toggling between value and no value with additional checking of link directives. ' +
-                        'The property is set and disabled if the component has a non empty link directive',
-                    }
+                        description:
+                            'Checkbox toggling between value and no value with additional checking of link directives. ' +
+                            'The property is set and disabled if the component has a non empty link directive',
+                    },
                 },
             },
             {
@@ -334,13 +337,14 @@ const componentPropertyDefinition = {
             'doc-interactive',
             'doc-link',
         ],
-        description: 'Type of data being stored and how it is used. For directive data types it may also depend on the control type.',
+        description:
+            'Type of data being stored and how it is used. For directive data types it may also depend on the control type.',
     },
     defaultValue: {
         type: 'string',
         description: 'Default value of property upon component creation. By default the property value is not defined.',
     },
-    group: {type: 'string'},
+    group: { type: 'string' },
     selector: {
         type: 'string',
         description: 'Additional selector to define elements of the component which the property should be applied to.',
@@ -359,11 +363,11 @@ export const componentsDefinitionSchema_v1_0_x = {
             description: 'Name of the components package',
             minLength: 3,
         },
-        description: {type: 'string', description: 'Description of components package'},
+        description: { type: 'string', description: 'Description of components package' },
         version: {
             type: 'string',
             description: 'Version of matching components model',
-            pattern: '\\d+\.\\d+\.\\d+',
+            pattern: '\\d+.\\d+.\\d+',
         },
 
         defaultComponentOnEnter: {
@@ -383,7 +387,7 @@ export const componentsDefinitionSchema_v1_0_x = {
                         minLength: 3,
                     },
                     label: labelProperty('Component label shown in Digital Editor'),
-                    icon: {type: 'string', description: 'Icon shown for component in Digital Editor'},
+                    icon: { type: 'string', description: 'Icon shown for component in Digital Editor' },
                     properties: {
                         type: 'array',
                         items: {
@@ -403,7 +407,8 @@ export const componentsDefinitionSchema_v1_0_x = {
 
                     selectionMethod: {
                         enum: ['default', 'handle'],
-                        description: 'How this component is selectable, by default the user can select inside the component to select it',
+                        description:
+                            'How this component is selectable, by default the user can select inside the component to select it',
                     },
                     allowNesting: {
                         enum: ['no', 'yes', 'one-level'],
@@ -411,19 +416,20 @@ export const componentsDefinitionSchema_v1_0_x = {
                     },
                     restrictChildren: {
                         type: 'object',
-                        description: 'Restricts children of this component to the listed ones and can be further filtered down to also have content',
+                        description:
+                            'Restricts children of this component to the listed ones and can be further filtered down to also have content',
                         minProperties: 1,
                         additionalProperties: {
                             type: 'object',
                             properties: {
-                                withContent: {type: 'string'},
+                                withContent: { type: 'string' },
                             },
                             additionalProperties: false,
                         },
                     },
                     countStatistics: {
                         type: 'boolean',
-                        description: 'Count characters, words and paragraphs of this component'
+                        description: 'Count characters, words and paragraphs of this component',
                     },
                 },
                 required: ['name', 'label', 'icon'],
@@ -456,7 +462,7 @@ export const componentsDefinitionSchema_v1_0_x = {
                     label: labelProperty('Group label shown in Digital Editor'),
                     components: {
                         type: 'array',
-                        items: {type: 'string'},
+                        items: { type: 'string' },
                         description: 'names of components in this group',
                     },
                 },
@@ -479,10 +485,10 @@ export const componentsDefinitionSchema_v1_0_x = {
                             type: 'object',
                             description: 'Map one component into another component by field mapping',
                             properties: {
-                                type: {enum: ['simple']},
+                                type: { enum: ['simple'] },
                                 map: {
                                     type: 'object',
-                                    additionalProperties: {type: 'string'},
+                                    additionalProperties: { type: 'string' },
                                 },
                             },
                             required: ['type', 'map'],
@@ -490,16 +496,16 @@ export const componentsDefinitionSchema_v1_0_x = {
                         {
                             type: 'object',
                             properties: {
-                                type: {enum: ['from-container']},
-                                container: {type: 'string'},
+                                type: { enum: ['from-container'] },
+                                container: { type: 'string' },
                             },
                             required: ['type', 'container'],
                         },
                         {
                             type: 'object',
                             properties: {
-                                type: {enum: ['to-container']},
-                                container: {type: 'string'},
+                                type: { enum: ['to-container'] },
+                                container: { type: 'string' },
                             },
                             required: ['type', 'container'],
                         },

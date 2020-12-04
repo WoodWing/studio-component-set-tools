@@ -7,11 +7,7 @@ import { Validator } from './validator';
 import { ComponentSet } from '../models';
 
 export class ScriptsValidator extends Validator {
-    constructor(
-        error: (errorMessage: string) => false,
-        definition: ComponentSet,
-        protected filePaths: Set<string>,
-    ) {
+    constructor(error: (errorMessage: string) => false, definition: ComponentSet, protected filePaths: Set<string>) {
         super(error, definition);
     }
 
