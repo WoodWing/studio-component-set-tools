@@ -5,7 +5,7 @@
 import { Validator } from './validator';
 
 export class DefaultComponentOnEnterOverrideValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         for (const parsedComponent of Object.values(this.componentSet.components)) {
             if (
                 parsedComponent.defaultComponentOnEnter &&

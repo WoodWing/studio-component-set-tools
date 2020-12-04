@@ -21,7 +21,7 @@ export class DropCapitalValidator extends Validator {
         return amount;
     }
 
-    validate(): void {
+    async validate(): Promise<void> {
         Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 

@@ -9,7 +9,7 @@ const CONTROL = 'interactive';
 const ALLOWED_DATA_TYPE = 'doc-interactive';
 
 export class InteractiveValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 

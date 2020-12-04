@@ -5,7 +5,7 @@
 import { Validator } from './validator';
 
 export class FocuspointValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         for (const parsedComponent of Object.values(this.componentSet.components)) {
             parsedComponent.properties.forEach((parsedProperty) => {
                 if (

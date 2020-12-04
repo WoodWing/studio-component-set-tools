@@ -11,7 +11,7 @@ import { ParsedComponent } from '../models';
 import { GroupsValidator } from './groups-validator';
 
 export class DocContainerGroupsValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         // Find slides control properties and check for include and exclude
         for (const parsedComponent of Object.values(this.componentSet.components)) {
             this.validateComponent(parsedComponent);

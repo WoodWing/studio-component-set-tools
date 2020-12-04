@@ -8,5 +8,5 @@ export abstract class Validator {
      * The implementation should call the error method when validation fails.
      * May be called multiple times.
      */
-    abstract validate(): void;
+    abstract async validate(): Promise<void>;
 }

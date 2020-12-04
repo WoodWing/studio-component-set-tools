@@ -15,7 +15,7 @@ export class RestrictChildrenValidator extends Validator {
         );
     }
 
-    validate(): void {
+    async validate(): Promise<void> {
         Object.values(this.componentSet.components).forEach((parsedComponent: ParsedComponent) => {
             const isPresent = PROPERTY in parsedComponent && parsedComponent[PROPERTY];
             const hasSlideshow = this.hasSlideshowDirective(parsedComponent);

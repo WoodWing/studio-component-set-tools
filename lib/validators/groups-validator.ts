@@ -6,7 +6,7 @@ import { Validator } from './validator';
 import { ComponentGroup } from '../models';
 
 export class GroupsValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         this.validateGroupsList(this.componentSet.groups);
     }
 

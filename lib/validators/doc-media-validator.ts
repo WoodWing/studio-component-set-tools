@@ -12,7 +12,7 @@ import { Validator } from './validator';
 import { ComponentProperty, DirectiveType, ParsedComponent } from '../models';
 
 export class DocMediaValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         Object.values(this.componentSet.components).forEach((c: ParsedComponent) => this.validateComponent(c));
     }
 

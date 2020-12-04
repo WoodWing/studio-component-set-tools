@@ -6,7 +6,7 @@ import { Validator } from './validator';
 import { DirectiveType } from '../models';
 
 export class ConversionRulesValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         for (const srcComponentName of Object.keys(this.componentSet.conversionRules)) {
             if (!(srcComponentName in this.componentSet.components)) {
                 this.error(`Conversion rule references to non existing component "${srcComponentName}"`);

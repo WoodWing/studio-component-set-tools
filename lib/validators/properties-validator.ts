@@ -18,7 +18,7 @@ export class PropertiesValidator extends Validator {
         super(error, definition);
     }
 
-    validate(): void {
+    async validate(): Promise<void> {
         Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 

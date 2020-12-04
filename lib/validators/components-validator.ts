@@ -23,7 +23,7 @@ export class ComponentsValidator extends Validator {
         super(error, definition);
     }
 
-    validate(): void {
+    async validate(): Promise<void> {
         const componentNames = new Set<string>();
         for (const comp of Object.values(this.componentSet.components)) {
             // reserved words

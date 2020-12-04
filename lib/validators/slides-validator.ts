@@ -6,7 +6,7 @@ import { Validator } from './validator';
 import { ParsedComponent, ComponentProperty, Component } from '../models';
 
 export class SlidesValidator extends Validator {
-    validate(): void {
+    async validate(): Promise<void> {
         // Find slides control properties and check for include and exclude
         for (const parsedComponent of Object.values(this.componentSet.components)) {
             parsedComponent.properties.forEach((property) => {
