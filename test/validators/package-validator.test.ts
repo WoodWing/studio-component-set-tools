@@ -38,30 +38,30 @@ describe('PackageValidator', () => {
 
     describe('validate', () => {
         it('should pass when the amount of files is under the configured maximum', async () => {
-            const files = createFakeFiles(2000, 1);
+            const files = createFakeFiles(5000, 1);
             validator = new PackageValidator(error, definition, files.filePaths, files.getFileContent);
             await validator.validate();
             expect(error).not.toHaveBeenCalled();
         });
         it('should pass when the total size is under the configured maximum', async () => {
-            const files = createFakeFiles(200, 1 * MB);
+            const files = createFakeFiles(100, 1 * MB);
             validator = new PackageValidator(error, definition, files.filePaths, files.getFileContent);
             await validator.validate();
             expect(error).not.toHaveBeenCalled();
         });
         it('should fail when the amount of files exceeds the configured maximum', async () => {
-            const files = createFakeFiles(2001, 1);
+            const files = createFakeFiles(5001, 1);
             validator = new PackageValidator(error, definition, files.filePaths, files.getFileContent);
             await validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `At 2001 files, the component set exceeds the total maximum amount of 2000 files.`,
+                `At 5001 files, the component set exceeds the total maximum amount of 5000 files.`,
             );
         });
         it('should fail when the total size exceeds the configured maximum', async () => {
-            const files = createFakeFiles(201, 1 * MB);
+            const files = createFakeFiles(101, 1 * MB);
             validator = new PackageValidator(error, definition, files.filePaths, files.getFileContent);
             await validator.validate();
-            expect(error).toHaveBeenCalledWith(`At 201MB, the component set exceeds the total maximum size of 200MB.`);
+            expect(error).toHaveBeenCalledWith(`At 101MB, the component set exceeds the total maximum size of 100MB.`);
         });
 
         it('should pass when the amount of files in the custom data folder is under the configured maximum', async () => {

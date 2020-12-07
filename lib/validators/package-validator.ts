@@ -5,8 +5,8 @@
 import { ComponentSet, GetFileContentType } from '../models';
 import { Validator } from './validator';
 
-const MAX_COMPONENT_SET_FILE_COUNT = 2000;
-const MAX_COMPONENT_SET_SIZE_MB = 200;
+const MAX_COMPONENT_SET_FILE_COUNT = 5000;
+const MAX_COMPONENT_SET_SIZE_MB = 100;
 const MAX_CUSTOM_DATA_FILE_COUNT = 1000;
 const MAX_CUSTOM_DATA_SIZE_MB = 20;
 const MB_IN_BYTES = 1 * 1000 * 1000;
