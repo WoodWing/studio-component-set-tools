@@ -24,4 +24,5 @@ export * from './restrict-children-validator';
 export * from './unit-type-validator';
 export * from './scripts-validator';
 export * from './slides-validator';
+export * from './package-validator';
 export * from './validator';

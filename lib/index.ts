@@ -46,9 +46,9 @@ import {
     DocContainerGroupsValidator,
     ConversionShortcutsValidator,
     LocalizationValidator,
+    PackageValidator,
 } from './validators';
 import { listFilesRelativeToFolder } from './util/files';
-import { PackageValidator } from './validators/package-validator';
 
 const ajv = new Ajv({ allErrors: true, jsonPointers: true, verbose: true });
 
