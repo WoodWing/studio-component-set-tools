@@ -62,7 +62,7 @@ export class PackageValidator extends Validator {
     }
 
     private validateCustomData(files: FileInfo[]): void {
-        const customDataFiles = files.filter((file) => file.path.startsWith('custom/'));
+        const customDataFiles = files.filter((file) => file.path.toLowerCase().startsWith('custom/'));
         this.validateCustomDataFileCount(customDataFiles);
         this.validateCustomDataSize(customDataFiles);
     }

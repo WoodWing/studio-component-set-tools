@@ -88,5 +88,13 @@ describe('PackageValidator', () => {
             await validator.validate();
             expect(error).toHaveBeenCalledWith(`At 21MB, the 'custom' folder exceeds the maximum size of 20MB.`);
         });
+        it('should validate the custom data folder when the folder name contains capitals', async () => {
+            const files = createFakeFiles(1001, 1, 'cUsToM/');
+            validator = new PackageValidator(error, definition, files.filePaths, files.getFileSize);
+            await validator.validate();
+            expect(error).toHaveBeenCalledWith(
+                `At 1001 files, the 'custom' folder exceeds the maximum amount of 1000 files.`,
+            );
+        });
     });
 });
