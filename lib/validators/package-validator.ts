@@ -1,5 +1,9 @@
 /**
- * Validates if the component set package size
+ * Validates component package size:
+ * - Maximum number of files in the component set.
+ * - Maximum total file size of the component set.
+ * - Maximum number of files in the custom data folder.
+ * - Maximum total file size of the custom data folder.
  */
 
 import { ComponentSet, GetFileContentType } from '../models';
