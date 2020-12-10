@@ -44,7 +44,7 @@ export class PackageValidator extends Validator {
         this.validateCustomData(files);
     }
 
-    validateComponentSetFileCount(files: FileInfo[]): void {
+    private validateComponentSetFileCount(files: FileInfo[]): void {
         if (files.length > MAX_COMPONENT_SET_FILE_COUNT) {
             this.error(
                 `At ${files.length} files, the component set exceeds the total maximum amount of ${MAX_COMPONENT_SET_FILE_COUNT} files.`,
@@ -52,7 +52,7 @@ export class PackageValidator extends Validator {
         }
     }
 
-    validateComponentSetSize(files: FileInfo[]): void {
+    private validateComponentSetSize(files: FileInfo[]): void {
         const folderSize = this.calculateFolderSize(files);
         if (folderSize > MAX_COMPONENT_SET_SIZE_MB) {
             this.error(
@@ -61,13 +61,13 @@ export class PackageValidator extends Validator {
         }
     }
 
-    validateCustomData(files: FileInfo[]): void {
+    private validateCustomData(files: FileInfo[]): void {
         const customDataFiles = files.filter((file) => file.path.startsWith('custom/'));
         this.validateCustomDataFileCount(customDataFiles);
         this.validateCustomDataSize(customDataFiles);
     }
 
-    validateCustomDataFileCount(files: FileInfo[]): void {
+    private validateCustomDataFileCount(files: FileInfo[]): void {
         if (files.length > MAX_CUSTOM_DATA_FILE_COUNT) {
             this.error(
                 `At ${files.length} files, the 'custom' folder exceeds the maximum amount of ${MAX_CUSTOM_DATA_FILE_COUNT} files.`,
@@ -75,7 +75,7 @@ export class PackageValidator extends Validator {
         }
     }
 
-    validateCustomDataSize(files: FileInfo[]): void {
+    private validateCustomDataSize(files: FileInfo[]): void {
         const folderSize = this.calculateFolderSize(files);
         if (folderSize > MAX_CUSTOM_DATA_SIZE_MB) {
             this.error(
@@ -84,7 +84,7 @@ export class PackageValidator extends Validator {
         }
     }
 
-    calculateFolderSize(files: FileInfo[]): number {
+    private calculateFolderSize(files: FileInfo[]): number {
         const totalSize = files.reduce((acc, file) => {
             return acc + file.size;
         }, 0);
