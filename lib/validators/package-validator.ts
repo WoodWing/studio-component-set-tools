@@ -6,7 +6,7 @@
  * - Maximum total file size of the custom data folder.
  */
 
-import { ComponentSet, GetFileContentType } from '../models';
+import { ComponentSet, GetFileSize } from '../models';
 import { Validator } from './validator';
 
 const MAX_COMPONENT_SET_FILE_COUNT = 5000;
@@ -25,7 +25,7 @@ export class PackageValidator extends Validator {
         error: (errorMessage: string) => false,
         definition: ComponentSet,
         private filePaths: Set<string>,
-        private getFileContent: GetFileContentType,
+        private getFileSize: GetFileSize,
     ) {
         super(error, definition);
     }
@@ -33,10 +33,10 @@ export class PackageValidator extends Validator {
     async validate(): Promise<void> {
         const files: FileInfo[] = [];
         for (let filePath of Array.from(this.filePaths)) {
-            const file = (await this.getFileContent(filePath)) as Buffer | string;
+            const fileSize = await this.getFileSize(filePath);
             files.push({
                 path: filePath,
-                size: file.length,
+                size: fileSize,
             });
         }
         this.validateComponentSetFileCount(files);
