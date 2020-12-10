@@ -18,7 +18,7 @@ export async function listFilesRecursively(folderPath: string): Promise<string[]
     for (const file of files) {
         const folder = path.join(folderPath, file);
         if ((await fs.promises.stat(folder)).isDirectory()) {
-            fileList = [...fileList, ...(await listFilesRecursively(folder))];
+            fileList.push(...(await listFilesRecursively(folder)));
         } else {
             fileList.push(folder);
         }
