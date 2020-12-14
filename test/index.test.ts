@@ -30,18 +30,18 @@ describe('validateFolder', () => {
 
 describe('getValidators', () => {
     it('should return null for version < 1.0.0', () => {
-        expect(getValidators('0.9.9', <any>null, <any>null, <any>null, <any>null)).toBeNull();
+        expect(getValidators('0.9.9', <any>null, <any>null, <any>null, <any>null, <any>null)).toBeNull();
     });
     it('should return amount of validators for version >= 1.0.0 and < 1.1.0', () => {
-        const validators = getValidators('1.0.0', <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(22);
+        const validators = getValidators('1.0.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        expect(validators && validators.length).toEqual(23);
     });
     it('should return amount of validators for version >= 1.1.0', () => {
-        const validators = getValidators('1.1.0', <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(25);
+        const validators = getValidators('1.1.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        expect(validators && validators.length).toEqual(26);
     });
     it('should return amount of validators for version >= 1.3.0', () => {
-        const validators = getValidators('1.3.0', <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(26);
+        const validators = getValidators('1.3.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        expect(validators && validators.length).toEqual(27);
     });
 });

@@ -2,9 +2,7 @@ import * as colors from 'colors/safe';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as semver from 'semver';
-
 import * as Ajv from 'ajv';
-import * as recursiveReadDir from 'recursive-readdir';
 
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
@@ -13,7 +11,13 @@ import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
 import { componentsDefinitionSchema_v1_4_x } from './components-schema-v1_4_x';
 
 import { parseDefinition } from './parser';
-import { ComponentsDefinition, ComponentSet, GetFileContentType, GetFileContentOptionsType } from './models';
+import {
+    ComponentsDefinition,
+    ComponentSet,
+    GetFileContentType,
+    GetFileContentOptionsType,
+    GetFileSize,
+} from './models';
 import {
     Validator,
     RestrictChildrenValidator,
@@ -42,7 +46,9 @@ import {
     DocContainerGroupsValidator,
     ConversionShortcutsValidator,
     LocalizationValidator,
+    PackageValidator,
 } from './validators';
+import { listFilesRelativeToFolder } from './util/files';
 
 const ajv = new Ajv({ allErrors: true, jsonPointers: true, verbose: true });
 
@@ -59,29 +65,31 @@ export const readFile: GetFileContentType = (pathToFile: fs.PathLike, options?: 
         });
     });
 
+export const getSize: GetFileSize = (pathToFile: fs.PathLike) => {
+    return new Promise<any>((resolve, reject) => {
+        return fs.stat(pathToFile, (err, data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data.size);
+            }
+        });
+    });
+};
+
 /**
  * Validates a components package based on folder path.
  *
  * @param folderPath Path to folder containing the components.
  */
 export async function validateFolder(folderPath: string): Promise<boolean> {
-    folderPath = path.normalize(folderPath);
-
-    // List files, make relative to input folder and normalize.
-    const files = new Set(
-        (await recursiveReadDir(folderPath)).map((p) =>
-            path.normalize(p).replace(new RegExp(`^${folderPath.replace(/\\/g, '\\\\')}(/|\\\\)?`), ''),
-        ),
-    );
-
-    return validate(
-        files,
-        async (filePath: string, options?: GetFileContentOptionsType) =>
-            readFile(path.resolve(folderPath, filePath), options),
-        (errorMessage) => {
-            console.log(colors.red(errorMessage));
-        },
-    );
+    const files = await listFilesRelativeToFolder(folderPath);
+    const getFileContent = async (filePath: string, options?: GetFileContentOptionsType) =>
+        readFile(path.resolve(folderPath, filePath), options);
+    const getFileSize = async (filePath: string) => getSize(path.resolve(folderPath, filePath));
+    return validate(files, getFileContent, getFileSize, (errorMessage) => {
+        console.log(colors.red(errorMessage));
+    });
 }
 
 /**
@@ -95,6 +103,7 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
 export async function validate(
     filePaths: Set<string>,
     getFileContent: GetFileContentType,
+    getFileSize: GetFileSize,
     errorReporter: (errorMessage: string) => void,
 ) {
     if (!filePaths.has(componentsDefinitionPath)) {
@@ -148,6 +157,7 @@ export async function validate(
         componentSet,
         filePaths,
         getFileContent,
+        getFileSize,
     );
     if (!validators) {
         errorReporter(`Could not find validators for component model version "${componentsDefinition.version}"`);
@@ -204,6 +214,7 @@ function getValidationSchema(version: string): Ajv.ValidateFunction | null {
  * @param componentsDefinition
  * @param componentSet
  * @param getFileContent
+ * @param getFileSize
  */
 export function getValidators(
     version: string,
@@ -211,6 +222,7 @@ export function getValidators(
     componentSet: ComponentSet,
     filePaths: Set<string>,
     getFileContent: GetFileContentType,
+    getFileSize: GetFileSize,
 ): Validator[] | null {
     let validators: Validator[] = [];
     if (semver.satisfies(version, '>=1.0.0')) {
@@ -236,6 +248,7 @@ export function getValidators(
             new SlidesValidator(error, componentSet),
             new UnitTypeValidator(error, componentSet),
             new LocalizationValidator(error, componentSet, filePaths, getFileContent),
+            new PackageValidator(error, componentSet, filePaths, getFileSize),
         );
     }
     if (semver.satisfies(version, '>=1.1.0')) {
