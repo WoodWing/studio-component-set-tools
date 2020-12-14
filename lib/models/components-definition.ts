@@ -79,6 +79,13 @@ export interface Component {
      * How this component is selectable, by default the user can select inside the component to select it
      */
     selectionMethod?: 'default' | 'handle';
+
+    /**
+     * When to show the toolbar. By default only show on hovering the mouse on the component.
+     * Use the "always" option to show the toolbar in all cases.
+     */
+    showToolbar?: 'default' | 'always';
+
     /**
      * Allows nesting the component in containers, defaults to 'yes'
      */

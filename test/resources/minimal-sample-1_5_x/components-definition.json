@@ -1,0 +1,92 @@
+{
+    "name": "minimal-sample-1-5-x",
+    "description": "Minimal components package sample touching most of the available options.",
+    "version": "1.5.0",
+    "defaultComponentOnEnter": "body",
+
+    "components": [
+        {
+            "name": "body",
+            "label": "Body Label",
+            "icon": "icons/component.svg",
+            "properties": ["selectProperty"],
+            "countStatistics": true
+        },
+        {
+            "name": "intro",
+            "label": {
+                "key": "INTRO_KEY"
+            },
+            "icon": "icons/component.svg",
+            "properties": ["checkboxProperty"]
+        },
+        {
+            "name": "container",
+            "icon": "icons/component.svg",
+            "selectionMethod": "handle",
+            "showToolbar": "always",
+            "allowNesting": "one-level",
+            "label": { "key": "COMPONENT_CONTAINER_LABEL" },
+            "properties": []
+        }
+    ],
+
+    "groups": [
+        {
+            "label": "Minimal",
+            "name": "minimal",
+            "components": ["body"]
+        },
+        {
+            "label": { "key": "MINIMAL" },
+            "name": "minimal2",
+            "components": ["body"]
+        }
+    ],
+
+    "componentProperties": [
+        {
+            "name": "selectProperty",
+            "label": "Select property sample",
+            "control": {
+                "type": "select",
+                "options": [
+                    {
+                        "caption": "Default"
+                    },
+                    {
+                        "caption": "Option 1",
+                        "value": "_option1"
+                    },
+                    {
+                        "caption": {
+                            "key": "Option 2 {{0}}",
+                            "values": {
+                                "0": "Replacement"
+                            }
+                        },
+                        "value": "_option2"
+                    }
+                ]
+            },
+            "dataType": "styles"
+        },
+        {
+            "name": "checkboxProperty",
+            "label": "Checkbox property sample",
+            "control": {
+                "type": "checkbox",
+                "value": "_valueWhenOn"
+            },
+            "dataType": "styles"
+        }
+    ],
+
+    "conversionRules": {
+        "body": {
+            "intro": "auto"
+        }
+    },
+
+    "scripts": []
+}
