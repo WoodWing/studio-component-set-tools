@@ -9,6 +9,7 @@ import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
 import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
 import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
 import { componentsDefinitionSchema_v1_4_x } from './components-schema-v1_4_x';
+import { componentsDefinitionSchema_v1_5_x } from './components-schema-v1_5_x';
 
 import { parseDefinition } from './parser';
 import {
@@ -202,6 +203,8 @@ function getValidationSchema(version: string): Ajv.ValidateFunction | null {
         return ajv.compile(componentsDefinitionSchema_v1_3_x);
     } else if (semver.satisfies(version, '1.4.x')) {
         return ajv.compile(componentsDefinitionSchema_v1_4_x);
+    } else if (semver.satisfies(version, '1.5.x')) {
+        return ajv.compile(componentsDefinitionSchema_v1_5_x);
     }
     return null;
 }
