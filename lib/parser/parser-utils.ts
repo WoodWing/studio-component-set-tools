@@ -99,17 +99,9 @@ function parseDirectives(content: string): ComponentSet['components']['name']['d
 
 /**
  * Find directive type using passed string
- *
- * @param directiveName
- * @returns DirectiveType
  */
 function getDirectiveType(directiveName: string): DirectiveType {
-    for (let key in DirectiveType) {
-        if (DirectiveType[key] === directiveName) {
-            return DirectiveType[<DirectiveType>key];
-        }
-    }
-    return DirectiveType.unknown;
+    return Object.values(DirectiveType).find((directiveType) => directiveType === directiveName) || DirectiveType.unknown;
 }
 
 /**
