@@ -1,4 +1,4 @@
-import { validateFolder, getValidators } from '../lib/index';
+import { validateFolder, getValidators, validatePackageSize } from '../lib/index';
 import * as colors from 'colors/safe';
 
 describe('validateFolder', () => {
@@ -29,6 +29,20 @@ describe('validateFolder', () => {
         expect(global.console.log).toHaveBeenCalledWith(
             expect.stringMatching('Components definition file "components-definition.json" is not valid json:'),
         );
+    });
+});
+
+describe('validatePackageSize', () => {
+    it('should pass when the component set is within size limits', async () => {
+        const errorMessages: string[] = [];
+        validatePackageSize(99 * 1000 * 1000, (errorMessage) => errorMessages.push(errorMessage));
+        expect(errorMessages.length).toBe(0);
+    });
+    it('should fail when the component set is too large', async () => {
+        const errorMessages: string[] = [];
+        validatePackageSize(101 * 1000 * 1000, (errorMessage) => errorMessages.push(errorMessage));
+        expect(errorMessages.length).toBe(1);
+        expect(errorMessages[0]).toMatch('At 101MB, the component set exceeds the total maximum size of 100MB.');
     });
 });
 

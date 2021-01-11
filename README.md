@@ -32,6 +32,19 @@ const errorReporter = (errorMessage: string) => console.error(errorMessage);
 const validationResult: boolean = await validate(filePaths, getFileContent, errorReporter);
 ```
 
+### validatePackageSize
+
+Specific validation of the total maximum size of the component set (in bytes). This method can optionally be used as a quick fail-fast validation before running `validate` or `validateFolder`, which both run a full validation on the component set.
+
+```ts
+import { validatePackageSize } from './lib/index';
+
+const packageSize = (await fs.promises.stat('path/to/component-set.zip')).size;
+const errorReporter = (errorMessage: string) => console.error(errorMessage);
+
+const validationResult: boolean = await validatePackageSize(packageSize, errorReporter);
+```
+
 ### parser
 
 If published version (from "dist" folder) of the package is used then:

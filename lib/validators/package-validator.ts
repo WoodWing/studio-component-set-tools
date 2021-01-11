@@ -44,19 +44,18 @@ export class PackageValidator extends Validator {
         this.validateCustomData(files);
     }
 
+    private validateComponentSetSize(files: FileInfo[]): void {
+        const folderSize = this.calculateFolderSize(files);
+        const error = validateTotalSize(folderSize);
+        if (error) {
+            this.error(error);
+        }
+    }
+
     private validateComponentSetFileCount(files: FileInfo[]): void {
         if (files.length > MAX_COMPONENT_SET_FILE_COUNT) {
             this.error(
                 `At ${files.length} files, the component set exceeds the total maximum amount of ${MAX_COMPONENT_SET_FILE_COUNT} files.`,
-            );
-        }
-    }
-
-    private validateComponentSetSize(files: FileInfo[]): void {
-        const folderSize = this.calculateFolderSize(files);
-        if (folderSize > MAX_COMPONENT_SET_SIZE_MB) {
-            this.error(
-                `At ${folderSize}MB, the component set exceeds the total maximum size of ${MAX_COMPONENT_SET_SIZE_MB}MB.`,
             );
         }
     }
@@ -76,7 +75,7 @@ export class PackageValidator extends Validator {
     }
 
     private validateCustomDataSize(files: FileInfo[]): void {
-        const folderSize = this.calculateFolderSize(files);
+        const folderSize = Math.round(this.calculateFolderSize(files) / MB_IN_BYTES);
         if (folderSize > MAX_CUSTOM_DATA_SIZE_MB) {
             this.error(
                 `At ${folderSize}MB, the 'custom' folder exceeds the maximum size of ${MAX_CUSTOM_DATA_SIZE_MB}MB.`,
@@ -85,9 +84,15 @@ export class PackageValidator extends Validator {
     }
 
     private calculateFolderSize(files: FileInfo[]): number {
-        const totalSize = files.reduce((acc, file) => {
+        return files.reduce((acc, file) => {
             return acc + file.size;
         }, 0);
-        return Math.round(totalSize / MB_IN_BYTES);
+    }
+}
+
+export function validateTotalSize(size: number): string | undefined {
+    const sizeMB = Math.round(size / MB_IN_BYTES);
+    if (sizeMB > MAX_COMPONENT_SET_SIZE_MB) {
+        return `At ${sizeMB}MB, the component set exceeds the total maximum size of ${MAX_COMPONENT_SET_SIZE_MB}MB.`;
     }
 }
