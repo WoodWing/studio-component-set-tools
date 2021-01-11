@@ -44,19 +44,28 @@ export class PackageValidator extends Validator {
         this.validateCustomData(files);
     }
 
-    private validateComponentSetFileCount(files: FileInfo[]): void {
-        if (files.length > MAX_COMPONENT_SET_FILE_COUNT) {
-            this.error(
-                `At ${files.length} files, the component set exceeds the total maximum amount of ${MAX_COMPONENT_SET_FILE_COUNT} files.`,
+    static validateSize(size: number) {
+        const sizeMB = Math.round(size / MB_IN_BYTES);
+        if (sizeMB > MAX_COMPONENT_SET_SIZE_MB) {
+            throw new Error(
+                `At ${sizeMB}MB, the component set exceeds the total maximum size of ${MAX_COMPONENT_SET_SIZE_MB}MB.`,
             );
         }
     }
 
     private validateComponentSetSize(files: FileInfo[]): void {
         const folderSize = this.calculateFolderSize(files);
-        if (folderSize > MAX_COMPONENT_SET_SIZE_MB) {
+        try {
+            PackageValidator.validateSize(folderSize);
+        } catch (e) {
+            this.error(e.message);
+        }
+    }
+
+    private validateComponentSetFileCount(files: FileInfo[]): void {
+        if (files.length > MAX_COMPONENT_SET_FILE_COUNT) {
             this.error(
-                `At ${folderSize}MB, the component set exceeds the total maximum size of ${MAX_COMPONENT_SET_SIZE_MB}MB.`,
+                `At ${files.length} files, the component set exceeds the total maximum amount of ${MAX_COMPONENT_SET_FILE_COUNT} files.`,
             );
         }
     }
@@ -76,7 +85,7 @@ export class PackageValidator extends Validator {
     }
 
     private validateCustomDataSize(files: FileInfo[]): void {
-        const folderSize = this.calculateFolderSize(files);
+        const folderSize = Math.round(this.calculateFolderSize(files) / MB_IN_BYTES);
         if (folderSize > MAX_CUSTOM_DATA_SIZE_MB) {
             this.error(
                 `At ${folderSize}MB, the 'custom' folder exceeds the maximum size of ${MAX_CUSTOM_DATA_SIZE_MB}MB.`,
@@ -85,9 +94,8 @@ export class PackageValidator extends Validator {
     }
 
     private calculateFolderSize(files: FileInfo[]): number {
-        const totalSize = files.reduce((acc, file) => {
+        return files.reduce((acc, file) => {
             return acc + file.size;
         }, 0);
-        return Math.round(totalSize / MB_IN_BYTES);
     }
 }
