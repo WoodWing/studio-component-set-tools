@@ -44,21 +44,11 @@ export class PackageValidator extends Validator {
         this.validateCustomData(files);
     }
 
-    static validateSize(size: number) {
-        const sizeMB = Math.round(size / MB_IN_BYTES);
-        if (sizeMB > MAX_COMPONENT_SET_SIZE_MB) {
-            throw new Error(
-                `At ${sizeMB}MB, the component set exceeds the total maximum size of ${MAX_COMPONENT_SET_SIZE_MB}MB.`,
-            );
-        }
-    }
-
     private validateComponentSetSize(files: FileInfo[]): void {
         const folderSize = this.calculateFolderSize(files);
-        try {
-            PackageValidator.validateSize(folderSize);
-        } catch (e) {
-            this.error(e.message);
+        const error = validateTotalSize(folderSize);
+        if (error) {
+            this.error(error);
         }
     }
 
@@ -97,5 +87,12 @@ export class PackageValidator extends Validator {
         return files.reduce((acc, file) => {
             return acc + file.size;
         }, 0);
+    }
+}
+
+export function validateTotalSize(size: number): string | undefined {
+    const sizeMB = Math.round(size / MB_IN_BYTES);
+    if (sizeMB > MAX_COMPONENT_SET_SIZE_MB) {
+        return `At ${sizeMB}MB, the component set exceeds the total maximum size of ${MAX_COMPONENT_SET_SIZE_MB}MB.`;
     }
 }

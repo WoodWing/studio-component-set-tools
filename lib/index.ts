@@ -50,6 +50,7 @@ import {
     PackageValidator,
 } from './validators';
 import { listFilesRelativeToFolder } from './util/files';
+import { validateTotalSize } from './validators/package-validator';
 
 const ajv = new Ajv({ allErrors: true, jsonPointers: true, verbose: true });
 
@@ -170,6 +171,21 @@ export async function validate(
     }
 
     return valid;
+}
+
+/**
+ * Validates the total file size of the component set package.
+ *
+ * @param size component set package size in bytes
+ * @param errorReporter called when there is a validation error
+ */
+export function validatePackageSize(size: number, errorReporter: (errorMessage: string) => void) {
+    const error = validateTotalSize(size);
+    if (error) {
+        errorReporter(error);
+        return false;
+    }
+    return true;
 }
 
 async function getComponentsDefinition(
