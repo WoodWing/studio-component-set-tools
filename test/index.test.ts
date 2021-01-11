@@ -33,7 +33,7 @@ describe('validateFolder', () => {
 });
 
 describe('validatePackageSize', () => {
-    it('should pass when the component set is within size limts', async () => {
+    it('should pass when the component set is within size limits', async () => {
         const errorMessages: string[] = [];
         validatePackageSize(99 * 1000 * 1000, (errorMessage) => errorMessages.push(errorMessage));
         expect(errorMessages.length).toBe(0);
