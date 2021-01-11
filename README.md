@@ -83,9 +83,9 @@ npm run test
 
 ## Publish
 
-In case you have never published a npm module before, make sure to read the official npm documentation about [publishing npm packages](https://docs.npmjs.com/getting-started/publishing-npm-packages).
+In case you have never published a npm module before, make sure to read the official npm documentation about [publishing npm packages](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
 
-Before publishing update the [version number](https://docs.npmjs.com/getting-started/publishing-npm-packages#how-to-update-the-version-number) of this package. For example, to increase the patch version:
+Before publishing update the [version number](https://docs.npmjs.com/updating-your-published-package-version-number) of this package. For example, to increase the patch version:
 
 ```bash
 npm version patch -m "Bump validator version to %s"
@@ -97,7 +97,7 @@ Next verify you are logged in as a user with access to the [Woodwing organizatio
 npm whoami
 ```
 
-Finally publish the [scoped package](https://www.npmjs.com/docs/orgs/publishing-an-org-scoped-package.html#publishing-a-public-scoped-package) by running:
+Finally publish the [scoped package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages) by running:
 
 ```bash
 npm publish --access public
