@@ -46,7 +46,6 @@
   },
   "dependencies": {
     "ajv": "^7.0.4",
-    "ajv-errors": "^2.0.0",
     "ajv-formats": "^1.5.1",
     "colors": "^1.4.0",
     "htmlparser2": "^3.10.0",
