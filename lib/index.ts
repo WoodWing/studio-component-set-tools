@@ -2,7 +2,8 @@ import * as colors from 'colors/safe';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as semver from 'semver';
-import * as Ajv from 'ajv';
+import ajv, { ValidateFunction } from 'ajv';
+import addFormats from 'ajv-formats';
 
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
@@ -52,7 +53,8 @@ import {
 import { listFilesRelativeToFolder } from './util/files';
 import { validateTotalSize } from './validators/package-validator';
 
-const ajv = new Ajv({ allErrors: true, jsonPointers: true, verbose: true });
+const ajvInstance = new ajv({ allErrors: true, verbose: true });
+addFormats(ajvInstance);
 
 const componentsDefinitionPath = path.normalize('./components-definition.json');
 
@@ -206,21 +208,21 @@ async function getComponentsDefinition(
  * @param version
  * @returns schema validation function if found, otherwise null.
  */
-function getValidationSchema(version: string): Ajv.ValidateFunction | null {
+function getValidationSchema(version: string): ValidateFunction | null {
     // Only one version supported
     // When introducing a patch version, make sure to update the supported range, e.g. '1.0.0 - 1.0.1'
     if (semver.satisfies(version, '1.0.0')) {
-        return ajv.compile(componentsDefinitionSchema_v1_0_x);
+        return ajvInstance.compile(componentsDefinitionSchema_v1_0_x);
     } else if (semver.satisfies(version, '1.1.x')) {
-        return ajv.compile(componentsDefinitionSchema_v1_1_x);
+        return ajvInstance.compile(componentsDefinitionSchema_v1_1_x);
     } else if (semver.satisfies(version, '1.2.x')) {
-        return ajv.compile(componentsDefinitionSchema_v1_2_x);
+        return ajvInstance.compile(componentsDefinitionSchema_v1_2_x);
     } else if (semver.satisfies(version, '1.3.x')) {
-        return ajv.compile(componentsDefinitionSchema_v1_3_x);
+        return ajvInstance.compile(componentsDefinitionSchema_v1_3_x);
     } else if (semver.satisfies(version, '1.4.x')) {
-        return ajv.compile(componentsDefinitionSchema_v1_4_x);
+        return ajvInstance.compile(componentsDefinitionSchema_v1_4_x);
     } else if (semver.satisfies(version, '1.5.x')) {
-        return ajv.compile(componentsDefinitionSchema_v1_5_x);
+        return ajvInstance.compile(componentsDefinitionSchema_v1_5_x);
     }
     return null;
 }
