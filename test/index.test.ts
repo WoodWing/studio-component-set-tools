@@ -13,6 +13,26 @@ describe('validateFolder', () => {
         expect(await validateFolder('./test/resources/minimal-sample-1_5_x')).toBe(true);
     });
 
+    it('should fail on sample with incorrect schema property', async () => {
+        spyOn(global.console, 'log');
+
+        expect(await validateFolder('./test/resources/minimal-sample-invalid-comp-property')).toBe(false);
+        expect(global.console.log).toHaveBeenCalledWith(
+            colors.red(`/components/0 should NOT have additional properties
+{
+    \"additionalProperty\": \"invalid-component-property\"
+}
+At line number 7:
+>         {
+>             \"name\": \"body\",
+>             \"label\": \"Body Label\",
+>             \"icon\": \"icons/component.svg\",
+>             \"properties\": [],
+>             \"invalid-component-property\": \"Invalid component property\"
+`),
+        );
+    });
+
     it('should fail on sample with components definition missing', async () => {
         spyOn(global.console, 'log');
 

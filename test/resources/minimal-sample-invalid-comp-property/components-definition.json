@@ -1,0 +1,24 @@
+{
+    "name": "minimal-sample-1-5-0",
+    "description": "Minimal components package sample with invalid property in schema",
+    "version": "1.5.0",
+    "defaultComponentOnEnter": "body",
+
+    "components": [
+        {
+            "name": "body",
+            "label": "Body Label",
+            "icon": "icons/component.svg",
+            "properties": [],
+            "invalid-component-property": "Invalid component property"
+        }
+    ],
+
+    "groups": [],
+
+    "componentProperties": [],
+
+    "conversionRules": {},
+
+    "scripts": []
+}
