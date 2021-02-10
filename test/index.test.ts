@@ -22,7 +22,7 @@ describe('validateFolder', () => {
 {
     \"additionalProperty\": \"invalid-component-property\"
 }
-At line number 7:
+components-definition.json - line 7, column 8:
 >         {
 >             \"name\": \"body\",
 >             \"label\": \"Body Label\",
