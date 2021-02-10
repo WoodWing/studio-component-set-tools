@@ -4,6 +4,8 @@ import * as path from 'path';
 import * as semver from 'semver';
 import ajv, { ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
+// @ts-ignore no typings for json-source-map
+import * as jsonMap from 'json-source-map';
 
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
 import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
@@ -115,7 +117,8 @@ export async function validate(
         return false;
     }
 
-    const componentsDefinition = await getComponentsDefinition(getFileContent, errorReporter);
+    const componentsDefinitionContent = await getFileContent(componentsDefinitionPath, { encoding: 'utf8' });
+    const { data: componentsDefinition, pointers: componentsDefinitionSourcePointers } = await getComponentsDefinition(componentsDefinitionContent, errorReporter);
     if (!componentsDefinition) {
         return false;
     }
@@ -128,8 +131,15 @@ export async function validate(
 
     if (!validateSchema(componentsDefinition)) {
         if (validateSchema.errors) {
+            const jsonLines = componentsDefinitionContent.split('\n');
+
             validateSchema.errors.forEach((error) => {
-                errorReporter(`${error.dataPath} ${error.message}\n${JSON.stringify(error.params, undefined, 4)}`);
+                const errorPointer = componentsDefinitionSourcePointers[error.dataPath];
+
+                let errorMessage = `${error.dataPath} ${error.message}\n${JSON.stringify(error.params, undefined, 4)}`;
+                errorMessage += `\n${componentsDefinitionPath} - line ${errorPointer.value.line}, column ${errorPointer.value.column}:`;
+                errorMessage += `\n> ${jsonLines.slice(errorPointer.value.line, Math.max(errorPointer.valueEnd.line, errorPointer.value.line + 1)).join('\n> ')}\n`;
+                errorReporter(errorMessage);
             });
         }
         return false;
@@ -191,15 +201,15 @@ export function validatePackageSize(size: number, errorReporter: (errorMessage: 
 }
 
 async function getComponentsDefinition(
-    getFileContent: GetFileContentType,
+    componentsDefinitionContent: string,
     errorReporter: (errorMessage: string) => void,
-): Promise<ComponentsDefinition | null> {
+): Promise<{ data: ComponentsDefinition | null, pointers: any }> {
     try {
-        return JSON.parse(await getFileContent(componentsDefinitionPath, { encoding: 'utf8' }));
+        return jsonMap.parse(componentsDefinitionContent);
     } catch (e) {
         errorReporter(colors.red(`Components definition file "${componentsDefinitionPath}" is not valid json: \n${e}`));
     }
-    return null;
+    return { data: null, pointers: null };
 }
 
 /**
