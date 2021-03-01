@@ -83,5 +83,12 @@ describe('PropertiesValidator', () => {
             validator.validate();
             expect(error).not.toHaveBeenCalled();
         });
+        it('should pass if several properties have no name', () => {
+            definition.version = '1.5.0';
+            definition.components.c1.properties[0].name = undefined;
+            definition.components.c1.properties[1].name = undefined;
+            validator.validate();
+            expect(error).not.toHaveBeenCalled();
+        });
     });
 });
