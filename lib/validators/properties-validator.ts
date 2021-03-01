@@ -40,12 +40,7 @@ export class PropertiesValidator extends Validator {
      */
     private validateProperty(property: ComponentProperty, componentPropertyNames: Set<string>) {
         this.validateReservedPropertyName(property);
-
-        // Validate we have not seen the name yet
-        if (componentPropertyNames.has(property.name)) {
-            this.error(`Component property "${property.name}" is not unique`);
-        }
-        componentPropertyNames.add(property.name);
+        this.validatePropertyName(property, componentPropertyNames);
 
         // Validate the property has icons (for radio control type)
         if (property.control.type === 'radio') {
@@ -55,6 +50,18 @@ export class PropertiesValidator extends Validator {
                 }
             }
         }
+    }
+
+    private validatePropertyName(property: ComponentProperty, componentPropertyNames: Set<string>) {
+        if (!property.name) {
+            return;
+        }
+
+        if (componentPropertyNames.has(property.name)) {
+            this.error(`Component property "${property.name}" is not unique`);
+        }
+
+        componentPropertyNames.add(property.name);
     }
 
     private validateReservedPropertyName(property: ComponentProperty) {
