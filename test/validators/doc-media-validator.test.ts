@@ -54,7 +54,7 @@ describe('DocMediaValidator', () => {
 
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component \"socialmedia\" with \"doc-media\" directive must have exactly one \"media-properties\" property (found 0)`,
+                `Component "socialmedia" with "doc-media" directive must have exactly one "media-properties" property (found 0)`,
             );
         });
         it('should pass with one media directives and other directive types', () => {
@@ -76,7 +76,7 @@ describe('DocMediaValidator', () => {
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component \"socialmedia\" can only have one \"doc-media\" directive in the HTML definition`,
+                `Component "socialmedia" can only have one "doc-media" directive in the HTML definition`,
             );
         });
         it('should fail if a component property with a media-properties control type is not applied to a media directive', () => {
@@ -105,7 +105,7 @@ describe('DocMediaValidator', () => {
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component \"wrongdirectivekey\" has a control type \"media-properties\" applied to the wrong directive, which can only be used with \"doc-media\" directives`,
+                `Component "wrongdirectivekey" has a control type "media-properties" applied to the wrong directive, which can only be used with "doc-media" directives`,
             );
         });
         it('should fail in case a "media-properties" property does not have a directive key', () => {
@@ -129,7 +129,7 @@ describe('DocMediaValidator', () => {
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component \"nodirectivekey\" must configure \"directiveKey\" for the property with control type \"media-properties\"`,
+                `Component "nodirectivekey" must configure "directiveKey" for the property with control type "media-properties"`,
             );
         });
 
@@ -147,7 +147,7 @@ describe('DocMediaValidator', () => {
 
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component \"body\" has a \"media-properties\" control type, but only components with a \"doc-media\" directive can have a property with this control type`,
+                `Component "body" has a "media-properties" control type, but only components with a "doc-media" directive can have a property with this control type`,
             );
         });
     });
