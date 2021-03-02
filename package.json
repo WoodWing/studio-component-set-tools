@@ -1,6 +1,6 @@
 {
-  "name": "@woodwing/csde-components-validator",
-  "version": "1.10.1",
+  "name": "@woodwing/studio-component-set-tools",
+  "version": "1.0.0",
   "description": "Validation module for Content Station Digital Editor components packages.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WoodWing/csde-components-validator.git"
+    "url": "git+https://github.com/WoodWing/studio-component-set-tools.git"
   },
   "author": "",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/WoodWing/csde-components-validator/issues"
+    "url": "https://github.com/WoodWing/studio-component-set-tools/issues"
   },
-  "homepage": "https://github.com/WoodWing/csde-components-validator#readme",
+  "homepage": "https://github.com/WoodWing/studio-component-set-tools#readme",
   "devDependencies": {
     "@types/htmlparser2": "3.7.31",
     "@types/jest": "^26.0.0",
