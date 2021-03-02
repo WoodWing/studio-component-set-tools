@@ -100,7 +100,7 @@ export interface ComponentPropertyControlText {
  */
 export interface ComponentPropertyControlTime {
     type: 'time';
-    [k: string]: any;
+    [k: string]: unknown;
 }
 
 /**
@@ -189,11 +189,11 @@ export interface ComponentPropertyControlSlides {
     /**
      * List of properties to include from active slide component properties
      */
-    include?: any[];
+    include?: string[];
     /**
      * List of properties to exclude from active slide component properties
      */
-    exclude?: any[];
+    exclude?: string[];
 }
 
 /**
@@ -205,7 +205,7 @@ export interface ComponentPropertyControlInteractive {
      * Default configuration of interactive directive
      */
     defaultConfig: {
-        [k: string]: any;
+        [k: string]: unknown;
     };
     /**
      * A link which is used to edit the configuration

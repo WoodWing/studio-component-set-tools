@@ -130,14 +130,14 @@ export interface Component {
                            * String replacement variables
                            */
                           values?: {
-                              [k: string]: any;
+                              [k: string]: unknown;
                           };
                       };
                 /**
                  * names of components in this group
                  */
                 components: string[];
-                [k: string]: any;
+                [k: string]: unknown;
             }[];
             autofill?: {
                 /**
@@ -198,7 +198,7 @@ export interface ComponentProperty {
     /**
      * Default value of property upon component creation. By default the property value is not defined.
      */
-    defaultValue?: string | { [key: string]: any };
+    defaultValue?: string | { [key: string]: unknown };
     group?: string;
     /**
      * Additional selector to define elements of the component which the property should be applied to.
@@ -242,17 +242,17 @@ export interface ComponentConversionRule {
               map: {
                   [k: string]: string;
               };
-              [k: string]: any;
+              [k: string]: unknown;
           }
         | {
               type: 'from-container';
               container: string;
-              [k: string]: any;
+              [k: string]: unknown;
           }
         | {
               type: 'to-container';
               container: string;
-              [k: string]: any;
+              [k: string]: unknown;
           };
 }
 

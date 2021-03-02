@@ -1,9 +1,10 @@
-import * as colors from 'colors/safe';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as semver from 'semver';
 import ajv, { ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
+import colors from 'colors/safe';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore no typings for json-source-map
 import * as jsonMap from 'json-source-map';
 
@@ -61,7 +62,7 @@ addFormats(ajvInstance);
 const componentsDefinitionPath = path.normalize('./components-definition.json');
 
 export const readFile: GetFileContentType = (pathToFile: fs.PathLike, options?: GetFileContentOptionsType) =>
-    new Promise<any>((resolve, reject) => {
+    new Promise<string | Buffer>((resolve, reject) => {
         return fs.readFile(pathToFile, options, (err, data) => {
             if (err) {
                 reject(err);
@@ -72,7 +73,7 @@ export const readFile: GetFileContentType = (pathToFile: fs.PathLike, options?: 
     });
 
 export const getSize: GetFileSize = (pathToFile: fs.PathLike) => {
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<number>((resolve, reject) => {
         return fs.stat(pathToFile, (err, data) => {
             if (err) {
                 reject(err);
@@ -111,14 +112,19 @@ export async function validate(
     getFileContent: GetFileContentType,
     getFileSize: GetFileSize,
     errorReporter: (errorMessage: string) => void,
-) {
+): Promise<boolean> {
     if (!filePaths.has(componentsDefinitionPath)) {
         errorReporter(`Components definition file "${componentsDefinitionPath}" is missing`);
         return false;
     }
 
-    const componentsDefinitionContent = await getFileContent(componentsDefinitionPath, { encoding: 'utf8' });
-    const { data: componentsDefinition, pointers: componentsDefinitionSourcePointers } = await getComponentsDefinition(componentsDefinitionContent, errorReporter);
+    const componentsDefinitionContent = (await getFileContent(componentsDefinitionPath, {
+        encoding: 'utf8',
+    })) as string;
+    const { data: componentsDefinition, pointers: componentsDefinitionSourcePointers } = await getComponentsDefinition(
+        componentsDefinitionContent,
+        errorReporter,
+    );
     if (!componentsDefinition) {
         return false;
     }
@@ -134,11 +140,17 @@ export async function validate(
             const jsonLines = componentsDefinitionContent.split('\n');
 
             validateSchema.errors.forEach((error) => {
+                if (!componentsDefinitionSourcePointers) {
+                    return;
+                }
+
                 const errorPointer = componentsDefinitionSourcePointers[error.dataPath];
 
                 let errorMessage = `${error.dataPath} ${error.message}\n${JSON.stringify(error.params, undefined, 4)}`;
                 errorMessage += `\n${componentsDefinitionPath} - line ${errorPointer.value.line}, column ${errorPointer.value.column}:`;
-                errorMessage += `\n> ${jsonLines.slice(errorPointer.value.line, Math.max(errorPointer.valueEnd.line, errorPointer.value.line + 1)).join('\n> ')}\n`;
+                errorMessage += `\n> ${jsonLines
+                    .slice(errorPointer.value.line, Math.max(errorPointer.valueEnd.line, errorPointer.value.line + 1))
+                    .join('\n> ')}\n`;
                 errorReporter(errorMessage);
             });
         }
@@ -191,7 +203,7 @@ export async function validate(
  * @param size component set package size in bytes
  * @param errorReporter called when there is a validation error
  */
-export function validatePackageSize(size: number, errorReporter: (errorMessage: string) => void) {
+export function validatePackageSize(size: number, errorReporter: (errorMessage: string) => void): boolean {
     const error = validateTotalSize(size);
     if (error) {
         errorReporter(error);
@@ -203,7 +215,10 @@ export function validatePackageSize(size: number, errorReporter: (errorMessage: 
 async function getComponentsDefinition(
     componentsDefinitionContent: string,
     errorReporter: (errorMessage: string) => void,
-): Promise<{ data: ComponentsDefinition | null, pointers: any }> {
+): Promise<{
+    data: ComponentsDefinition | null;
+    pointers: { [key: string]: { [key: string]: { line: number; column: number; pos: number } } } | null;
+}> {
     try {
         return jsonMap.parse(componentsDefinitionContent);
     } catch (e) {

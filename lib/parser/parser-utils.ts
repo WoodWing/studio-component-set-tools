@@ -4,7 +4,7 @@
 
 import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
-const merge = require('lodash.merge');
+import merge from 'lodash.merge';
 import {
     DirectiveType,
     ComponentSet,
@@ -49,7 +49,7 @@ export async function parseDefinition(
     const rendition = ComponentRendition.HTML;
     // copy source because renditions may be added to the components
     const sourceDefinition = merge({}, componentsDefinition);
-    for (let compDef of sourceDefinition.components) {
+    for (const compDef of sourceDefinition.components) {
         if (getFileContent && !hasRendition(compDef, rendition)) {
             await loadRendition(compDef, rendition, getFileContent);
         }
@@ -101,7 +101,9 @@ function parseDirectives(content: string): ComponentSet['components']['name']['d
  * Find directive type using passed string
  */
 function getDirectiveType(directiveName: string): DirectiveType {
-    return Object.values(DirectiveType).find((directiveType) => directiveType === directiveName) || DirectiveType.unknown;
+    return (
+        Object.values(DirectiveType).find((directiveType) => directiveType === directiveName) || DirectiveType.unknown
+    );
 }
 
 /**
@@ -129,10 +131,10 @@ async function loadRendition(
     if (!component.renditions) {
         component.renditions = {};
     }
-    component.renditions[rendition] = await getFileContent(
+    component.renditions[rendition] = (await getFileContent(
         path.normalize(`./templates/${rendition}/${component.name}.html`),
         { encoding: 'utf8' },
-    );
+    )) as string;
     return component;
 }
 
@@ -202,7 +204,7 @@ function findComponentPropertyTemplate(propertyName: string, componentProperties
     return propertyTemplate;
 }
 
-function isPropertyObject(property: any): property is ComponentProperty {
+function isPropertyObject(property: unknown): property is ComponentProperty {
     return property instanceof Object;
 }
 
@@ -222,7 +224,7 @@ function isPropertyObject(property: any): property is ComponentProperty {
  * @param componentSet
  */
 function buildComponentSetDefaultContent(componentSet: ComponentSet): void {
-    for (let component of Object.values(componentSet.components)) {
+    for (const component of Object.values(componentSet.components)) {
         buildComponentDefaultContent(componentSet.defaultComponentContent, component);
     }
 }
@@ -237,7 +239,7 @@ function buildComponentDefaultContent(
     defaultComponentContent: ComponentSet['defaultComponentContent'],
     component: ParsedComponent,
 ): void {
-    for (let property of component.properties) {
+    for (const property of component.properties) {
         buildComponentPropertyDefaultContent(defaultComponentContent, component.name, property);
     }
 }
@@ -307,7 +309,7 @@ function addDefaultPropertyContent(
     dataTypeKey: ComponentProperty['dataType'],
     componentName: string,
     propertyName: string,
-    value: string | object,
+    value: string | { [key: string]: unknown },
 ): void {
     if (!defaultComponentContent[componentName]) {
         defaultComponentContent[componentName] = {};
