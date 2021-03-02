@@ -1,7 +1,7 @@
 {
   "name": "@woodwing/studio-component-set-tools",
   "version": "1.0.0",
-  "description": "Validation module for Content Station Digital Editor components packages.",
+  "description": "Tools module for Studio Digital Editor component sets packages.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
