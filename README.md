@@ -4,7 +4,7 @@ Tools module for Studio Digital Editor component sets.
 
 ## Usage
 
-The module provides tooling to develop component sets. It contains for example public API methods for validating a component set.
+The module provides tooling to develop component sets. For example, it contains public API methods to validate a component set.
 
 ### validateFolder
 
