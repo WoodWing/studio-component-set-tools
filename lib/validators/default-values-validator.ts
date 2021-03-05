@@ -4,7 +4,12 @@
 
 import { Validator } from './validator';
 import { ParsedComponent, ComponentProperty } from '../models';
-import { COMPONENT_PROPERTY_CONTROL_FITTING_VALUES } from '../models/component-property-controls';
+import {
+    ComponentPropertyControlCheckbox,
+    ComponentPropertyControlRadio,
+    ComponentPropertyControlSelect,
+    COMPONENT_PROPERTY_CONTROL_FITTING_VALUES,
+} from '../models/component-property-controls';
 
 const validDataTypes = new Set(['styles', 'inlineStyles', 'data']);
 
@@ -104,7 +109,11 @@ export class DefaultValuesValidator extends Validator {
         if (!this.validateStringValue(property)) {
             return;
         }
-        if (!(<any>property.control).options.find((option: any) => option.value === property.defaultValue)) {
+        if (
+            !(<ComponentPropertyControlRadio | ComponentPropertyControlSelect>property.control).options.find(
+                (option) => option.value === property.defaultValue,
+            )
+        ) {
             this.error(
                 `Property ${property.name} defaultValue has no matching entry in ${property.control.type} options`,
             );
@@ -120,7 +129,7 @@ export class DefaultValuesValidator extends Validator {
         if (!this.validateStringValue(property)) {
             return;
         }
-        if (property.defaultValue !== (<any>property.control).value) {
+        if (property.defaultValue !== (<ComponentPropertyControlCheckbox>property.control).value) {
             this.error(`Property ${property.name} defaultValue does not match ${property.control.type} value`);
         }
     }
@@ -135,14 +144,14 @@ export class DefaultValuesValidator extends Validator {
             return;
         }
         const expectedKeys = ['numberOfCharacters', 'numberOfLines', 'padding'];
-        const presentKeys = Object.keys(<any>property.defaultValue);
+        const presentKeys = Object.keys(<{ [key: string]: unknown }>property.defaultValue);
         if (expectedKeys.length !== presentKeys.length || !expectedKeys.every((key) => presentKeys.indexOf(key) >= 0)) {
             this.error(
                 `Property ${property.name} defaultValue must be an object with keys "${expectedKeys.join(', ')}"`,
             );
         }
         presentKeys.forEach((key) => {
-            if (typeof (<any>property.defaultValue)[key] !== 'number') {
+            if (typeof (<{ [key: string]: unknown }>property.defaultValue)[key] !== 'number') {
                 this.error(`Property ${property.name} defaultValue must be an object of number type values`);
             }
         });
