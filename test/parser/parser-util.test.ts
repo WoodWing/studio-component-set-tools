@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { parseDefinition } from '../../lib/parser/parser-utils';
 import { DirectiveType, ComponentRendition } from '../../lib/models';
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep = require('lodash.clonedeep');
 
 describe('Parser utils', () => {
     describe('parseDefinition', () => {

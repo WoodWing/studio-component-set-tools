@@ -1,5 +1,5 @@
 import { validateFolder, getValidators, validatePackageSize } from '../lib/index';
-import colors from 'colors/safe';
+import * as colors from 'colors/safe';
 
 describe('validateFolder', () => {
     it('should pass on minimal sample', async () => {
