@@ -215,10 +215,7 @@ export function validatePackageSize(size: number, errorReporter: (errorMessage: 
 async function getComponentsDefinition(
     componentsDefinitionContent: string,
     errorReporter: (errorMessage: string) => void,
-): Promise<{
-    data: ComponentsDefinition | null;
-    pointers: { [key: string]: { [key: string]: { line: number; column: number; pos: number } } } | null;
-}> {
+): Promise<jsonMap.ParsedJsonSourceMap<ComponentSet>> {
     try {
         return jsonMap.parse(componentsDefinitionContent);
     } catch (e) {
