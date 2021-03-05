@@ -3,9 +3,7 @@ import * as path from 'path';
 import * as semver from 'semver';
 import ajv, { ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
-import colors from 'colors/safe';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore no typings for json-source-map
+import * as colors from 'colors/safe';
 import * as jsonMap from 'json-source-map';
 
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
@@ -17,11 +15,11 @@ import { componentsDefinitionSchema_v1_5_x } from './components-schema-v1_5_x';
 
 import { parseDefinition } from './parser';
 import {
-    ComponentsDefinition,
     ComponentSet,
     GetFileContentType,
     GetFileContentOptionsType,
     GetFileSize,
+    ComponentsDefinition,
 } from './models';
 import {
     Validator,
@@ -215,10 +213,7 @@ export function validatePackageSize(size: number, errorReporter: (errorMessage: 
 async function getComponentsDefinition(
     componentsDefinitionContent: string,
     errorReporter: (errorMessage: string) => void,
-): Promise<{
-    data: ComponentsDefinition | null;
-    pointers: { [key: string]: { [key: string]: { line: number; column: number; pos: number } } } | null;
-}> {
+): Promise<jsonMap.ParsedJsonSourceMap<ComponentsDefinition>> {
     try {
         return jsonMap.parse(componentsDefinitionContent);
     } catch (e) {

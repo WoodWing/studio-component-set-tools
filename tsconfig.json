@@ -5,10 +5,10 @@
         "moduleResolution": "node",
         "sourceMap": true,
         "declaration": true,
-        "esModuleInterop": true,
         "outDir": "./dist",
         "strict": true,
-        "lib": ["es2015", "es2017.object", "es2016.array.include"]
+        "lib": ["es2015", "es2017.object", "es2016.array.include"],
+        "typeRoots": ["./node_modules/@types", "./types"]
     },
     "include": ["./lib/**/*"]
 }
