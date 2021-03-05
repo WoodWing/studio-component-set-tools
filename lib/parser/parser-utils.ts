@@ -4,7 +4,7 @@
 
 import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
-import merge from 'lodash.merge';
+import merge = require('lodash.merge');
 import {
     DirectiveType,
     ComponentSet,

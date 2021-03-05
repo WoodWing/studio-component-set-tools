@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as semver from 'semver';
 import ajv, { ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
-import colors from 'colors/safe';
+import * as colors from 'colors/safe';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore no typings for json-source-map
 import * as jsonMap from 'json-source-map';
