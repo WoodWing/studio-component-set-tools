@@ -11,11 +11,11 @@ const labelProperty = (description: string) => {
         oneOf: [
             {
                 type: 'string',
-                description,
+                description: description,
             },
             {
                 type: 'object',
-                description,
+                description: description,
                 properties: {
                     key: {
                         type: 'string',

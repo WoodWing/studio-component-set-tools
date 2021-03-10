@@ -52,7 +52,7 @@ describe('DocContainerGroupsValidator', () => {
 
             validator.validate();
 
-            expect(error).toHaveBeenCalledWith(`Component \"c1\" has a group for invalid directive \"main\"`);
+            expect(error).toHaveBeenCalledWith(`Component "c1" has a group for invalid directive "main"`);
         });
 
         it('should fail validation for invalid directive type', () => {
@@ -63,7 +63,7 @@ describe('DocContainerGroupsValidator', () => {
             validator.validate();
 
             expect(error).toHaveBeenCalledWith(
-                `Component \"c1\" has a group for directive \"main\" with incompatible type \"editable\". Only type \"container\" is allowed.`,
+                `Component "c1" has a group for directive "main" with incompatible type "editable". Only type "container" is allowed.`,
             );
         });
 
@@ -75,7 +75,7 @@ describe('DocContainerGroupsValidator', () => {
 
             validator.validate();
 
-            expect(error).toHaveBeenCalledWith(`Component \"picture\" of group \"g1\" does not exist`);
+            expect(error).toHaveBeenCalledWith(`Component "picture" of group "g1" does not exist`);
         });
     });
 });

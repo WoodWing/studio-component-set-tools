@@ -7,7 +7,8 @@ import * as path from 'path';
 import { Validator } from './validator';
 import { ComponentSet, GetFileContentType } from '../models';
 
-var PNG = require('pngjs').PNG;
+import * as pngjs from 'pngjs';
+const PNG = pngjs.PNG;
 
 export class IconsValidator extends Validator {
     private supportedFormats = ['.svg', '.png'];
@@ -27,7 +28,7 @@ export class IconsValidator extends Validator {
                 this.error(`Icons are only supported in SVG or transparent PNG format`);
             } else if (ext === '.png') {
                 const data = await this.getFileContent(path.normalize(component.icon));
-                const png = PNG.sync.read(data);
+                const png = PNG.sync.read(data as Buffer);
 
                 if (png.alpha === false) {
                     this.error(`PNG icons are only supported when they are transparent`);

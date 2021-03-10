@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent, ComponentProperty, Component } from '../models';
+import { ParsedComponent, ComponentProperty } from '../models';
 
 export class SlidesValidator extends Validator {
     async validate(): Promise<void> {

@@ -20,15 +20,15 @@ describe('validateFolder', () => {
         expect(global.console.log).toHaveBeenCalledWith(
             colors.red(`/components/0 should NOT have additional properties
 {
-    \"additionalProperty\": \"invalid-component-property\"
+    "additionalProperty": "invalid-component-property"
 }
 components-definition.json - line 7, column 8:
 >         {
->             \"name\": \"body\",
->             \"label\": \"Body Label\",
->             \"icon\": \"icons/component.svg\",
->             \"properties\": [],
->             \"invalid-component-property\": \"Invalid component property\"
+>             "name": "body",
+>             "label": "Body Label",
+>             "icon": "icons/component.svg",
+>             "properties": [],
+>             "invalid-component-property": "Invalid component property"
 `),
         );
     });
