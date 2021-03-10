@@ -75,7 +75,7 @@ npm run format:write
 
 ### Lint & test
 
-Runs TSLint and afterwards all unit tests.
+Runs ESLint and afterwards all unit tests.
 
 ```bash
 npm run test

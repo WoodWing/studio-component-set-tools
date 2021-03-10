@@ -32,7 +32,7 @@ export class PackageValidator extends Validator {
 
     async validate(): Promise<void> {
         const files: FileInfo[] = [];
-        for (let filePath of Array.from(this.filePaths)) {
+        for (const filePath of Array.from(this.filePaths)) {
             const fileSize = await this.getFileSize(filePath);
             files.push({
                 path: filePath,

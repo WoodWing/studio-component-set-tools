@@ -15,6 +15,6 @@ export type Label =
            * String replacement variables
            */
           values?: {
-              [k: string]: any;
+              [k: string]: unknown;
           };
       };

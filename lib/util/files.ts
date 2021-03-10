@@ -13,7 +13,7 @@ export async function listFilesRelativeToFolder(folderPath: string): Promise<Set
 }
 
 async function listFilesRecursively(folderPath: string): Promise<string[]> {
-    let fileList: string[] = [];
+    const fileList: string[] = [];
     const files = await fs.promises.readdir(folderPath);
     for (const file of files) {
         const folder = path.join(folderPath, file);

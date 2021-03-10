@@ -37,12 +37,12 @@ export class LocalizationValidator extends Validator {
     }
 
     async validate(): Promise<void> {
-        for (let localizationFile of this.getLocalizationFiles()) {
+        for (const localizationFile of this.getLocalizationFiles()) {
             await this.validateLocalizationFile(localizationFile);
         }
     }
 
-    async validateLocalizationFile(localizationFile: string) {
+    async validateLocalizationFile(localizationFile: string): Promise<void> {
         const localizationFileParsed = path.parse(localizationFile);
 
         // Ignore non json files
@@ -58,7 +58,7 @@ export class LocalizationValidator extends Validator {
         }
 
         try {
-            JSON.parse(await this.getFileContent(localizationFile));
+            JSON.parse((await this.getFileContent(localizationFile)) as string);
         } catch (e) {
             this.error(`Localization file "${localizationFile}" is not valid json: \n${e}`);
             return;
