@@ -11,4 +11,12 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
         'object-shorthand': ['error', 'never'],
     },
+    overrides: [
+        {
+            files: ['./test/**/*'],
+            rules: {
+                '@typescript-eslint/no-explicit-any': 'off',
+            },
+        },
+    ],
 };

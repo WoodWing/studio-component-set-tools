@@ -73,7 +73,7 @@ describe('AutofillValidator', () => {
             definition.components.c2.directiveOptions.title.autofill.source = 'editable';
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component \"c2\" has incorrect autofill rule \"title\". This component doesn't have directive \"editable\".`,
+                `Component "c2" has incorrect autofill rule "title". This component doesn't have directive "editable".`,
             );
         });
         it('should not pass if source directive is image and metadataField is not set', () => {
