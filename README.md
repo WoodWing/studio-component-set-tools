@@ -1,10 +1,10 @@
-# csde-components-validator
+# studio-component-set-tools
 
-Validation module for Content Station Digital Editor component sets.
+Tools module for Studio Digital Editor component sets.
 
 ## Usage
 
-The module provides two public api methods for validating a component set.
+The module provides tooling to develop component sets. For example, it contains public API methods to validate a component set.
 
 ### validateFolder
 
