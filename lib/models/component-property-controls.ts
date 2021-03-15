@@ -16,7 +16,8 @@ export type ComponentPropertyControl =
     | ComponentPropertyControlInteractive
     | ComponentPropertyControlHeader
     | ComponentPropertyControlTextArea
-    | ComponentPropertyControlUrl;
+    | ComponentPropertyControlUrl
+    | ComponentPropertyControlSlider;
 
 /**
  * Dropdown with fixed number of options
@@ -215,6 +216,27 @@ export interface ComponentPropertyControlInteractive {
      * A link which is used to show the directive
      */
     viewLink: string;
+}
+
+export interface ComponentPropertyControlSlider {
+    type: 'slider';
+
+    /**
+     * Minimum value
+     */
+    minValue: number;
+    /**
+     * Maximum value
+     */
+    maxValue: number;
+    /**
+     * Default value
+     */
+    defaultValue?: number;
+    /**
+     * Step
+     */
+    step?: number;
 }
 
 /**
