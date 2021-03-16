@@ -220,22 +220,10 @@ export interface ComponentPropertyControlInteractive {
 
 export interface ComponentPropertyControlSlider {
     type: 'slider';
-
-    /**
-     * Minimum value
-     */
-    minValue: number;
-    /**
-     * Maximum value
-     */
-    maxValue: number;
-    /**
-     * Default value
-     */
+    value?: number;
+    minValue?: number;
+    maxValue?: number;
     defaultValue?: number;
-    /**
-     * Step
-     */
     step?: number;
 }
 
