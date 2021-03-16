@@ -2,6 +2,10 @@
 
 Tools module for Studio Digital Editor component sets.
 
+## Upgrade notice
+
+This module is a continuation of the `csde-components-validator` module. When upgrading to this module there is a slight change. Imports from `./lib/index` or `@woodwing/csde-components-validator/dist/lib/index` have to changed to `./lib/validate` or `@woodwing/studio-component-set-tools/dist/lib/validate`.
+
 ## Usage
 
 The module provides tooling to develop component sets. For example, it contains public API methods to validate a component set.
@@ -11,7 +15,7 @@ The module provides tooling to develop component sets. For example, it contains 
 Validates a component set given an input folder.
 
 ```ts
-import { validateFolder } from './lib/index';
+import { validateFolder } from './lib/validate';
 
 const validationResult: boolean = await validateFolder('path/to/component-set');
 ```
@@ -23,7 +27,7 @@ The validation result is returned as a boolean value and any error is logged to 
 Lower level method that validates the component set given a set of paths, a function to get the file content given the path and a function that logs errors. This api is useful when the component set is validated in memory.
 
 ```ts
-import { validate } from './lib/index';
+import { validate } from './lib/validate';
 
 const filePaths = new Set(['path1', 'path2']);
 const getFileContent = async (filePath: string) => 'fileContent';
@@ -37,7 +41,7 @@ const validationResult: boolean = await validate(filePaths, getFileContent, erro
 Specific validation of the total maximum size of the component set (in bytes). This method can optionally be used as a quick fail-fast validation before running `validate` or `validateFolder`, which both run a full validation on the component set.
 
 ```ts
-import { validatePackageSize } from './lib/index';
+import { validatePackageSize } from './lib/validate';
 
 const packageSize = (await fs.promises.stat('path/to/component-set.zip')).size;
 const errorReporter = (errorMessage: string) => console.error(errorMessage);
@@ -55,12 +59,11 @@ If published version (from "dist" folder) of the package is used then:
 An example of possible usage:
 
 ```ts
-import { parseDefinition } from '@woodwing/csde-components-validator/dist/parser';
+import { parseDefinition } from '@woodwing/studio-component-set-tools/dist/parser';
 
 const componentsDefinition = getComponentsDefinitionJson();
-parseDefinition(componentsDefinition).then((componentSet) => {
-    // componentSet is a parsed definition
-});
+// componentSet is a parsed definition
+const componentSet = await parseDefinition(componentsDefinition);
 ```
 
 ## Develop

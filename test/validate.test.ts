@@ -1,4 +1,4 @@
-import { validateFolder, getValidators, validatePackageSize } from '../lib/index';
+import { validateFolder, getValidators, validatePackageSize } from '../lib/validate';
 import * as colors from 'colors/safe';
 
 describe('validateFolder', () => {
