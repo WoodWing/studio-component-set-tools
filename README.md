@@ -63,6 +63,25 @@ parseDefinition(componentsDefinition).then((componentSet) => {
 });
 ```
 
+### processInfo
+
+To retrieve the component set information as provided when publishing an article from Studio, the `processInfo` function can be used. As this function needs access to the renditions in the component set definition you have to call the `processTemplates` function before calling `processInfo`.
+
+The `processTemplates` expects a resolver function as parameter that returns a promise of the contents of the file as string.
+
+An example of possible usage:
+
+```ts
+import { processTemplates, processInfo } from '@woodwing/studio-component-set-tools/dist/parser';
+
+const componentsDefinition = getComponentsDefinitionJson();
+// Add the rendition information
+await processTemplates(async (relativePath: string) => {
+    return await fs.promises.readFile(relativePath).toString(),
+}, componentsDefinition);
+const info = processInfo(componentsDefinition);
+```
+
 ## Develop
 
 ### Format
