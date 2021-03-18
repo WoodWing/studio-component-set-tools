@@ -80,13 +80,11 @@ describe('Component Info', () => {
             await processEmptyTemplates();
 
             expect(processFields(definition)).toEqual({
-                components: {
-                    body: {
-                        fields: [],
-                        iconUrl: 'icons/components/body.svg',
-                        label: {
-                            key: 'COMPONENT_BODY_LABEL',
-                        },
+                body: {
+                    fields: [],
+                    iconUrl: 'icons/components/body.svg',
+                    label: {
+                        key: 'COMPONENT_BODY_LABEL',
                     },
                 },
             });
