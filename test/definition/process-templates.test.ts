@@ -34,5 +34,27 @@ describe('Process Templates', () => {
                 },
             ]);
         });
+
+        it(`should add undefined when the html rendition couldn't be found`, async () => {
+            await processTemplates(async (_relativePath: string) => {
+                return undefined;
+            }, definition);
+
+            expect(definition.components).toEqual([
+                {
+                    countStatistics: true,
+                    icon: 'icons/components/body.svg',
+                    label: {
+                        key: 'COMPONENT_BODY_LABEL',
+                    },
+                    name: 'body',
+                    properties: [],
+                    renditions: {
+                        html: undefined,
+                        psv: undefined,
+                    },
+                },
+            ]);
+        });
     });
 });
