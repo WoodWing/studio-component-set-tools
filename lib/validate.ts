@@ -30,6 +30,7 @@ import {
     UnitTypeValidator,
     ImageEditorValidator,
     FocuspointValidator,
+    DirectiveOptionsValidator,
     DirectivePropertiesValidator,
     GroupsValidator,
     ConversionRulesValidator,
@@ -272,6 +273,7 @@ export function getValidators(
     if (semver.satisfies(version, '>=1.0.0')) {
         validators = validators.concat(
             new ComponentsValidator(error, componentSet, filePaths),
+            new DirectiveOptionsValidator(error, componentSet),
             new ConversionRulesValidator(error, componentSet),
             new DefaultComponentOnEnterValidator(error, componentSet),
             new DefaultValuesValidator(error, componentSet),
