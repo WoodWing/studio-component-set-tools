@@ -65,7 +65,7 @@ const componentPropertyDefinition = {
     directiveKey: { type: 'string', description: 'Directive key for properties that use a directive data type' },
     control: {
         type: 'object',
-        description: 'Type of UI element and options.',
+        description: 'Type of UI element and options',
         oneOf: [
             {
                 additionalProperties: false,
@@ -364,7 +364,7 @@ const componentPropertyDefinition = {
     group: { type: 'string' },
     selector: {
         type: 'string',
-        description: 'Additional selector to define elements of the component which the property should be applied to.',
+        description: 'Additional selector to define elements of the component which the property should be applied to',
     },
     featureFlag: {
         type: 'string',
@@ -487,7 +487,7 @@ export const componentsDefinitionSchema_v1_6_x = {
                                 },
                                 stripStylingOnPaste: {
                                     type: 'boolean',
-                                    description: 'Strip all styling when pasting into the directive.',
+                                    description: 'Strip all styling when pasting into the directive',
                                 },
                             },
                         },
