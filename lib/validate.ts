@@ -12,6 +12,7 @@ import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
 import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
 import { componentsDefinitionSchema_v1_4_x } from './components-schema-v1_4_x';
 import { componentsDefinitionSchema_v1_5_x } from './components-schema-v1_5_x';
+import { componentsDefinitionSchema_v1_6_x } from './components-schema-v1_6_x';
 
 import { parseDefinition } from './parser';
 import {
@@ -243,6 +244,8 @@ function getValidationSchema(version: string): ValidateFunction | null {
         return ajvInstance.compile(componentsDefinitionSchema_v1_4_x);
     } else if (semver.satisfies(version, '1.5.x')) {
         return ajvInstance.compile(componentsDefinitionSchema_v1_5_x);
+    } else if (semver.satisfies(version, '1.6.x')) {
+        return ajvInstance.compile(componentsDefinitionSchema_v1_6_x);
     }
     return null;
 }

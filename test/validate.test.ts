@@ -13,6 +13,10 @@ describe('validateFolder', () => {
         expect(await validateFolder('./test/resources/minimal-sample-1_5_x')).toBe(true);
     });
 
+    it('should pass on minimal sample for version 1.6', async () => {
+        expect(await validateFolder('./test/resources/minimal-sample-1_6_x')).toBe(true);
+    });
+
     it('should fail on sample with incorrect schema property', async () => {
         spyOn(global.console, 'log');
 
@@ -90,6 +94,11 @@ describe('getValidators', () => {
 
     it('should return amount of validators for version >= 1.5.0', () => {
         const validators = getValidators('1.5.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        expect(validators && validators.length).toEqual(26);
+    });
+
+    it('should return amount of validators for version >= 1.6.0', () => {
+        const validators = getValidators('1.6.0', <any>null, <any>null, <any>null, <any>null, <any>null);
         expect(validators && validators.length).toEqual(26);
     });
 });
