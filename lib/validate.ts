@@ -16,45 +16,46 @@ import { componentsDefinitionSchema_v1_6_x } from './components-schema-v1_6_x';
 
 import { parseDefinition } from './parser';
 import {
-    ComponentSet,
-    GetFileContentType,
-    GetFileContentOptionsType,
-    GetFileSize,
     ComponentsDefinition,
+    ComponentSet,
+    GetFileContentOptionsType,
+    GetFileContentType,
+    GetFileSize,
 } from './models';
 import {
-    Validator,
-    RestrictChildrenValidator,
-    DocContainerValidator,
+    AutofillValidator,
+    ComponentsValidator,
+    ConversionRulesValidator,
+    ConversionShortcutsValidator,
+    DefaultComponentOnEnterOverrideValidator,
     DefaultComponentOnEnterValidator,
-    UnitTypeValidator,
-    ImageEditorValidator,
-    FocuspointValidator,
+    DefaultValuesValidator,
     DirectiveOptionsValidator,
     DirectivePropertiesValidator,
-    GroupsValidator,
-    ConversionRulesValidator,
+    DisableFullscreenCheckboxValidator,
+    DocContainerGroupsValidator,
+    DocContainerValidator,
+    DocMediaValidator,
     DocSlideshowValidator,
     DropCapitalValidator,
-    PropertiesValidator,
     FittingValidator,
-    InteractiveValidator,
-    ComponentsValidator,
-    DisableFullscreenCheckboxValidator,
-    SlidesValidator,
-    ScriptsValidator,
-    DocMediaValidator,
+    FocuspointValidator,
+    GroupsValidator,
     IconsValidator,
-    DefaultValuesValidator,
-    AutofillValidator,
-    DefaultComponentOnEnterOverrideValidator,
-    DocContainerGroupsValidator,
-    ConversionShortcutsValidator,
+    ImageEditorValidator,
+    InteractiveValidator,
     LocalizationValidator,
     PackageValidator,
+    PropertiesValidator,
+    RestrictChildrenValidator,
+    ScriptsValidator,
+    SlidesValidator,
+    StripStylingOnPasteValidator,
+    UnitTypeValidator,
+    validateTotalSize,
+    Validator,
 } from './validators';
 import { listFilesRelativeToFolder } from './util/files';
-import { validateTotalSize } from './validators/package-validator';
 
 const ajvInstance = new ajv({ allErrors: true, verbose: true });
 addFormats(ajvInstance);
@@ -309,6 +310,9 @@ export function getValidators(
     }
     if (semver.satisfies(version, '>=1.0.0') && semver.satisfies(version, '<1.4.0')) {
         validators = validators.concat(new DisableFullscreenCheckboxValidator(error, componentSet));
+    }
+    if (semver.satisfies(version, '>=1.6.0')) {
+        validators = validators.concat(new StripStylingOnPasteValidator(error, componentSet));
     }
     return validators.length > 0 ? validators : null;
 }

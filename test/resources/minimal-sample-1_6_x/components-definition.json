@@ -18,7 +18,12 @@
                 "key": "INTRO_KEY"
             },
             "icon": "icons/component.svg",
-            "properties": ["checkboxProperty"]
+            "properties": ["checkboxProperty"],
+            "directiveOptions": {
+                "text": {
+                    "stripStylingOnPaste": false
+                }
+            }
         },
         {
             "name": "container",

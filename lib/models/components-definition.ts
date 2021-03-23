@@ -153,6 +153,7 @@ export interface Component {
                  */
                 trigger?: 'once' | 'always';
             };
+            stripStylingOnPaste?: boolean;
         };
     };
 

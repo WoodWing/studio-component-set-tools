@@ -485,6 +485,10 @@ export const componentsDefinitionSchema_v1_6_x = {
                                         },
                                     },
                                 },
+                                stripStylingOnPaste: {
+                                    type: 'boolean',
+                                    description: 'Strip all styling when pasting into the directive.',
+                                },
                             },
                         },
                     },
