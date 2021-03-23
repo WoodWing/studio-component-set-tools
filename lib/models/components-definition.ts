@@ -151,7 +151,7 @@ export interface ComponentProperty {
         | 'doc-link';
 
     /** Default value of property upon component creation. By default the property value is not defined. */
-    defaultValue?: string | { [key: string]: unknown };
+    defaultValue?: string | { [key: string]: unknown } | number;
     group?: string;
 
     /** Additional selector to define elements of the component which the property should be applied to. */

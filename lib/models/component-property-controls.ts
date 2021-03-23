@@ -16,7 +16,8 @@ export type ComponentPropertyControl =
     | ComponentPropertyControlInteractive
     | ComponentPropertyControlHeader
     | ComponentPropertyControlTextArea
-    | ComponentPropertyControlUrl;
+    | ComponentPropertyControlUrl
+    | ComponentPropertyControlSlider;
 
 /**
  * Dropdown with fixed number of options
@@ -238,6 +239,16 @@ export interface ComponentPropertyControlTextArea {
 export interface ComponentPropertyControlUrl {
     type: 'url';
     inputPlaceholder?: Label;
+}
+
+/**
+ * Slider field property
+ */
+export interface ComponentPropertyControlSlider {
+    type: 'slider';
+    minValue: number;
+    maxValue: number;
+    stepSize: number;
 }
 
 /**

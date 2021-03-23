@@ -332,6 +332,28 @@ const componentPropertyDefinition = {
                     inputPlaceholder: labelProperty('Url input placeholder'),
                 },
             },
+            {
+                additionalProperties: false,
+                required: ['type', 'minValue', 'maxValue', 'stepSize'],
+                properties: {
+                    type: {
+                        enum: ['slider'],
+                        description: 'Slider field property',
+                    },
+                    minValue: {
+                        type: 'number',
+                        description: 'Minimum value of the slider',
+                    },
+                    maxValue: {
+                        type: 'number',
+                        description: 'Maximum value of the slider',
+                    },
+                    stepSize: {
+                        type: 'number',
+                        description: 'Step size of the slider',
+                    },
+                },
+            },
         ],
     },
     dataType: {
@@ -358,6 +380,9 @@ const componentPropertyDefinition = {
             },
             {
                 type: 'object',
+            },
+            {
+                type: 'number',
             },
         ],
     },
