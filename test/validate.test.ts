@@ -13,6 +13,10 @@ describe('validateFolder', () => {
         expect(await validateFolder('./test/resources/minimal-sample-1_5_x')).toBe(true);
     });
 
+    it('should pass on minimal sample for version 1.6', async () => {
+        expect(await validateFolder('./test/resources/minimal-sample-1_6_x')).toBe(true);
+    });
+
     it('should fail on sample with incorrect schema property', async () => {
         spyOn(global.console, 'log');
 
@@ -72,24 +76,29 @@ describe('getValidators', () => {
     });
     it('should return amount of validators for version >= 1.0.0 and < 1.1.0', () => {
         const validators = getValidators('1.0.0', <any>null, <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(23);
+        expect(validators && validators.length).toEqual(24);
     });
     it('should return amount of validators for version >= 1.1.0', () => {
         const validators = getValidators('1.1.0', <any>null, <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(26);
+        expect(validators && validators.length).toEqual(27);
     });
     it('should return amount of validators for version >= 1.3.0', () => {
         const validators = getValidators('1.3.0', <any>null, <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(27);
+        expect(validators && validators.length).toEqual(28);
     });
 
     it('should return amount of validators for version >= 1.4.0', () => {
         const validators = getValidators('1.4.0', <any>null, <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(26);
+        expect(validators && validators.length).toEqual(27);
     });
 
     it('should return amount of validators for version >= 1.5.0', () => {
         const validators = getValidators('1.5.0', <any>null, <any>null, <any>null, <any>null, <any>null);
-        expect(validators && validators.length).toEqual(26);
+        expect(validators && validators.length).toEqual(27);
+    });
+
+    it('should return amount of validators for version >= 1.6.0', () => {
+        const validators = getValidators('1.6.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        expect(validators && validators.length).toEqual(28);
     });
 });
