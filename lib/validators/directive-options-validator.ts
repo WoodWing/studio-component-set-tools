@@ -21,11 +21,15 @@ export class DirectiveOptionsValidator extends Validator {
         }
 
         for (const key of Object.keys(parsedComponent.directiveOptions)) {
-            if (!parsedComponent.directives[key]) {
-                this.error(
-                    `Component "${parsedComponent.name}" has directive options for an unknown directive "${key}".`,
-                );
-            }
+            this.validateDirectiveOption(key, parsedComponent);
+        }
+    }
+
+    validateDirectiveOption(directiveKey: string, parsedComponent: ParsedComponent): void {
+        if (!parsedComponent.directives[directiveKey]) {
+            this.error(
+                `Component "${parsedComponent.name}" has directive options for an unknown directive "${directiveKey}".`,
+            );
         }
     }
 }

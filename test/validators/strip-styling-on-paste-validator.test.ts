@@ -44,7 +44,7 @@ describe('StripStylingOnPasteValidator', () => {
             definition.components.c1.directives.title.type = 'image';
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "c1" has stripStylingOnPaste for a directive that is not editable "title". The type for that directive is set to "image".`,
+                `Component "c1" has stripStylingOnPaste set for a directive with key "title" but that directive is not of type "editable". Instead it is of type "image".`,
             );
         });
     });

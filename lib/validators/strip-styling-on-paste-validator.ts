@@ -22,23 +22,30 @@ export class StripStylingOnPasteValidator extends Validator {
 
         for (const [key, directiveOptions] of Object.entries(parsedComponent.directiveOptions)) {
             // Only for directives with stripStylingOnPaste option
-            if (directiveOptions.stripStylingOnPaste === undefined) {
-                continue;
-            }
+            if (directiveOptions.stripStylingOnPaste === undefined) continue;
 
-            const directive = parsedComponent.directives[key];
-            if (!directive) {
-                this.error(
-                    `Component "${parsedComponent.name}" has stripStylingOnPaste set for an unknown directive "${key}".`,
-                );
-                continue;
-            }
+            if (!this.validateDirectiveExists(key, parsedComponent)) continue;
 
-            if (directive.type !== 'editable') {
-                this.error(
-                    `Component "${parsedComponent.name}" has stripStylingOnPaste for a directive that is not editable "${key}". The type for that directive is set to "${directive.type}".`,
-                );
-            }
+            this.validateDirectiveType(key, parsedComponent);
         }
+    }
+
+    validateDirectiveExists(directiveKey: string, parsedComponent: ParsedComponent): boolean {
+        const directive = parsedComponent.directives[directiveKey];
+        if (directive) return true;
+
+        this.error(
+            `Component "${parsedComponent.name}" has stripStylingOnPaste set for an unknown directive "${directiveKey}".`,
+        );
+        return false;
+    }
+
+    validateDirectiveType(directiveKey: string, parsedComponent: ParsedComponent): void {
+        const directive = parsedComponent.directives[directiveKey];
+        if (directive.type === 'editable') return;
+
+        this.error(
+            `Component "${parsedComponent.name}" has stripStylingOnPaste set for a directive with key "${directiveKey}" but that directive is not of type "editable". Instead it is of type "${directive.type}".`,
+        );
     }
 }
