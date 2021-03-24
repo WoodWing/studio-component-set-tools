@@ -72,3 +72,4 @@ tmp
 *.launch
 .settings/
 *.sublime-workspace
+.vscode
