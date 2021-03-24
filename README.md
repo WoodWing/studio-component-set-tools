@@ -106,9 +106,30 @@ npm run format:check
 npm run test
 ```
 
-## Publish manually
+## Publish a new version
 
 In case you have never published a npm module before, make sure to read the official npm documentation about [publishing npm packages](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+
+### Through the Github actions pipeline
+
+1. Create a branch
+1. Update the [version number](https://docs.npmjs.com/updating-your-published-package-version-number) of this package. For example, to increase the patch version:
+
+    ```bash
+    npm version patch -m "Bump validator version to %s"
+    ```
+
+    This will create a commit and tag for the version as well.
+
+1. Push and create a PR from the branch.
+1. After review, merge and delete the branch
+1. Create a release in the [Release tab](https://github.com/WoodWing/studio-component-set-tools/releases) of the project. Use the same version as used in the first step for both _Tag version_ and _Release title_.
+1. Describe the changes in the release
+1. Publish the release
+
+When the release workflow action succeeds, the new version will be available on [npm](https://www.npmjs.com/package/@woodwing/studio-component-set-tools)
+
+### Manually
 
 Before publishing update the [version number](https://docs.npmjs.com/updating-your-published-package-version-number) of this package. For example, to increase the patch version:
 
