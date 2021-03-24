@@ -338,7 +338,7 @@ describe('DefaultValuesValidator', () => {
         validator.validate();
 
         expect(error).toHaveBeenCalledWith(
-            'Property propertyName defaultValue must be within the minimum and maximum values',
+            'Property propertyName defaultValue must be between the minimum and maximum values',
         );
     });
 
@@ -359,7 +359,7 @@ describe('DefaultValuesValidator', () => {
         validator.validate();
 
         expect(error).toHaveBeenCalledWith(
-            'Property propertyName defaultValue must be within the minimum and maximum values',
+            'Property propertyName defaultValue must be between the minimum and maximum values',
         );
     });
 

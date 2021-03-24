@@ -181,7 +181,7 @@ export class DefaultValuesValidator extends Validator {
         const defaultValue = property.defaultValue as number;
 
         if (defaultValue < sliderControl.minValue || defaultValue > sliderControl.maxValue) {
-            this.error(`Property ${property.name} defaultValue must be within the minimum and maximum values`);
+            this.error(`Property ${property.name} defaultValue must be between the minimum and maximum values`);
         }
     }
 }
