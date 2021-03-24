@@ -2,6 +2,7 @@
   "name": "@woodwing/studio-component-set-tools",
   "version": "1.0.0",
   "description": "Tools module for Studio Digital Editor component sets packages.",
+  "sideEffects": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
