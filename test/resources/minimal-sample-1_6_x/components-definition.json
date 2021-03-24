@@ -84,6 +84,18 @@
                 "value": "_valueWhenOn"
             },
             "dataType": "styles"
+        },
+        {
+            "name": "sliderProperty",
+            "label": "Slider property sample",
+            "control": {
+                "type": "slider",
+                "minValue": -4,
+                "maxValue": 5,
+                "stepSize": 0.5
+            },
+            "defaultValue": -2,
+            "dataType": "data"
         }
     ],
 
