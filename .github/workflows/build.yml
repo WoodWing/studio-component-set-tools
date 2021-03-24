@@ -16,6 +16,7 @@ jobs:
 
             # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/caching-dependencies-to-speed-up-workflows
             - uses: actions/cache@v2
+              id: cache
               with:
                   path: ~/.npm
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
