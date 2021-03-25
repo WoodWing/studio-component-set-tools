@@ -1,30 +1,8 @@
 import { ComponentsDefinition, Component, ComponentRendition } from '../models/components-definition';
-import {
-    ComponentSetFields,
-    ComponentField,
-    ComponentSetInfo,
-    ComponentInfoFields,
-} from '../models/component-set-fields';
+import { ComponentField, ComponentSetInfo, ComponentInfoFields } from '../models/component-set-fields';
 import parse5 = require('parse5');
 
 const directivePrefix = 'doc-';
-
-/**
- * Creates partial info definitions of the component set.
- *
- * This information is used by the digital to print conversion.
- */
-export function processFields(componentsDefinition: ComponentsDefinition): ComponentSetFields {
-    return componentsDefinition.components.reduce((result, component) => {
-        result[component.name] = {
-            label: component.label as string,
-            iconUrl: component.icon,
-            fields: parseFields((<{ html: string }>component.renditions)[ComponentRendition.HTML]),
-        };
-        result[component.name].fields.forEach((f) => addRestrictChildrenInfo(componentsDefinition, component, f));
-        return result;
-    }, {} as ComponentSetFields);
-}
 
 /**
  * Creates partial info definitions of the component set.
