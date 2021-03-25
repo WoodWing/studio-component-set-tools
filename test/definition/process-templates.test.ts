@@ -1,41 +1,56 @@
-import * as AdmZip from 'adm-zip';
+import * as fs from 'fs';
 import * as path from 'path';
 import { processTemplates } from '../../lib/definition/process-templates';
 import { ComponentsDefinition } from '../../lib/models';
 
 describe('Process Templates', () => {
-    let zip: AdmZip;
+    const componentPath = path.resolve('./test/resources/minimal-sample');
     let definition: ComponentsDefinition;
-    beforeAll(async () => {
-        zip = new AdmZip(path.resolve(__dirname, '../resources/minimal-component-set.zip'));
-        definition = JSON.parse(zip.getEntry('components-definition.json').getData().toString());
+    beforeEach(async () => {
+        definition = JSON.parse(
+            (await fs.promises.readFile(path.join(componentPath, 'components-definition.json'))).toString(),
+        );
     });
 
     describe('processTemplates', () => {
         it('should add the renditions to the definition', async () => {
             await processTemplates(async (relativePath: string) => {
-                const entry = zip.getEntry(relativePath);
-                return entry ? entry.getData().toString() : undefined;
+                const file = path.join(componentPath, relativePath);
+                try {
+                    return (await fs.promises.readFile(file)).toString();
+                } catch (e) {
+                    return;
+                }
             }, definition);
 
             expect(definition.components).toEqual([
                 {
                     countStatistics: true,
-                    icon: 'icons/components/body.svg',
-                    label: {
-                        key: 'COMPONENT_BODY_LABEL',
-                    },
+                    icon: 'icons/component.svg',
+                    label: 'Body Label',
                     name: 'body',
-                    properties: [],
+                    properties: ['selectProperty'],
                     renditions: {
-                        html: `<p class="text body" doc-editable="text">\r\n  {{ COMPONENT_BODY_LABEL }}\r\n</p>`,
-                        psv: undefined,
+                        html: `<p class="body" doc-editable="text">Placeholder text</p>\n`,
+                        psv: '',
+                    },
+                },
+                {
+                    icon: 'icons/component.svg',
+                    label: {
+                        key: 'INTRO_KEY',
+                    },
+                    name: 'intro',
+                    properties: ['checkboxProperty'],
+                    renditions: {
+                        html: `<p class="intro" doc-editable="text">Placeholder text</p>\n`,
+                        psv: '',
                     },
                 },
             ]);
         });
 
-        it(`should add undefined when the html rendition couldn't be found`, async () => {
+        it(`should add an empty string when the html rendition couldn't be found`, async () => {
             await processTemplates(async (_relativePath: string) => {
                 return undefined;
             }, definition);
@@ -43,15 +58,25 @@ describe('Process Templates', () => {
             expect(definition.components).toEqual([
                 {
                     countStatistics: true,
-                    icon: 'icons/components/body.svg',
-                    label: {
-                        key: 'COMPONENT_BODY_LABEL',
-                    },
+                    icon: 'icons/component.svg',
+                    label: 'Body Label',
                     name: 'body',
-                    properties: [],
+                    properties: ['selectProperty'],
                     renditions: {
-                        html: undefined,
-                        psv: undefined,
+                        html: '',
+                        psv: '',
+                    },
+                },
+                {
+                    icon: 'icons/component.svg',
+                    label: {
+                        key: 'INTRO_KEY',
+                    },
+                    name: 'intro',
+                    properties: ['checkboxProperty'],
+                    renditions: {
+                        html: '',
+                        psv: '',
                     },
                 },
             ]);

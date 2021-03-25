@@ -25,9 +25,7 @@ export async function processTemplates(
     for (const component of componentsDefinition.components) {
         component.renditions = {};
         for (const rendition of renditionTypes) {
-            component.renditions[rendition] = templates[rendition][component.name]
-                ? await templates[rendition][component.name]
-                : '';
+            component.renditions[rendition] = (await templates[rendition][component.name]) ?? '';
         }
     }
 }
