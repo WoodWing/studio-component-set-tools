@@ -309,7 +309,7 @@ function addDefaultPropertyContent(
     dataTypeKey: ComponentProperty['dataType'],
     componentName: string,
     propertyName: string,
-    value: string | { [key: string]: unknown },
+    value: ComponentProperty['defaultValue'],
 ): void {
     if (!defaultComponentContent[componentName]) {
         defaultComponentContent[componentName] = {};

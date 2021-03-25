@@ -12,47 +12,50 @@ import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
 import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
 import { componentsDefinitionSchema_v1_4_x } from './components-schema-v1_4_x';
 import { componentsDefinitionSchema_v1_5_x } from './components-schema-v1_5_x';
+import { componentsDefinitionSchema_v1_6_x } from './components-schema-v1_6_x';
 
 import { parseDefinition } from './parser';
 import {
-    ComponentSet,
-    GetFileContentType,
-    GetFileContentOptionsType,
-    GetFileSize,
     ComponentsDefinition,
+    ComponentSet,
+    GetFileContentOptionsType,
+    GetFileContentType,
+    GetFileSize,
 } from './models';
 import {
-    Validator,
-    RestrictChildrenValidator,
-    DocContainerValidator,
-    DefaultComponentOnEnterValidator,
-    UnitTypeValidator,
-    ImageEditorValidator,
-    FocuspointValidator,
-    DirectivePropertiesValidator,
-    GroupsValidator,
+    AutofillValidator,
+    ComponentsValidator,
     ConversionRulesValidator,
+    ConversionShortcutsValidator,
+    DefaultComponentOnEnterOverrideValidator,
+    DefaultComponentOnEnterValidator,
+    DefaultValuesValidator,
+    DirectiveOptionsValidator,
+    DirectivePropertiesValidator,
+    DisableFullscreenCheckboxValidator,
+    DocContainerGroupsValidator,
+    DocContainerValidator,
+    DocMediaValidator,
     DocSlideshowValidator,
     DropCapitalValidator,
-    PropertiesValidator,
     FittingValidator,
-    InteractiveValidator,
-    ComponentsValidator,
-    DisableFullscreenCheckboxValidator,
-    SlidesValidator,
-    ScriptsValidator,
-    DocMediaValidator,
+    FocuspointValidator,
+    GroupsValidator,
     IconsValidator,
-    DefaultValuesValidator,
-    AutofillValidator,
-    DefaultComponentOnEnterOverrideValidator,
-    DocContainerGroupsValidator,
-    ConversionShortcutsValidator,
+    ImageEditorValidator,
+    InteractiveValidator,
     LocalizationValidator,
     PackageValidator,
+    PropertiesValidator,
+    RestrictChildrenValidator,
+    ScriptsValidator,
+    SlidesValidator,
+    StripStylingOnPasteValidator,
+    UnitTypeValidator,
+    validateTotalSize,
+    Validator,
 } from './validators';
 import { listFilesRelativeToFolder } from './util/files';
-import { validateTotalSize } from './validators/package-validator';
 
 const ajvInstance = new ajv({ allErrors: true, verbose: true });
 addFormats(ajvInstance);
@@ -243,6 +246,8 @@ function getValidationSchema(version: string): ValidateFunction | null {
         return ajvInstance.compile(componentsDefinitionSchema_v1_4_x);
     } else if (semver.satisfies(version, '1.5.x')) {
         return ajvInstance.compile(componentsDefinitionSchema_v1_5_x);
+    } else if (semver.satisfies(version, '1.6.x')) {
+        return ajvInstance.compile(componentsDefinitionSchema_v1_6_x);
     }
     return null;
 }
@@ -269,6 +274,7 @@ export function getValidators(
     if (semver.satisfies(version, '>=1.0.0')) {
         validators = validators.concat(
             new ComponentsValidator(error, componentSet, filePaths),
+            new DirectiveOptionsValidator(error, componentSet),
             new ConversionRulesValidator(error, componentSet),
             new DefaultComponentOnEnterValidator(error, componentSet),
             new DefaultValuesValidator(error, componentSet),
@@ -304,6 +310,9 @@ export function getValidators(
     }
     if (semver.satisfies(version, '>=1.0.0') && semver.satisfies(version, '<1.4.0')) {
         validators = validators.concat(new DisableFullscreenCheckboxValidator(error, componentSet));
+    }
+    if (semver.satisfies(version, '>=1.6.0')) {
+        validators = validators.concat(new StripStylingOnPasteValidator(error, componentSet));
     }
     return validators.length > 0 ? validators : null;
 }

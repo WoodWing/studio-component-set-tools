@@ -9,75 +9,49 @@ import { ComponentPropertyControl } from './component-property-controls';
  * although they may be required in the schema.
  */
 export interface ComponentsDefinition {
-    /**
-     * Name of the components package
-     */
+    /** Name of the components package */
     name: string;
 
-    /**
-     * Description of components package
-     */
+    /** Description of components package */
     description?: string;
 
-    /**
-     * Version of matching components model
-     */
+    /** Version of matching components model */
     version: string;
 
-    /**
-     * Default component inserted on pressing enter in a text field
-     */
+    /** Default component inserted on pressing enter in a text field */
     defaultComponentOnEnter: string;
 
-    /**
-     * List of available components
-     */
+    /** List of available components */
     components: Component[];
 
-    /**
-     * List of available component properties
-     */
+    /** List of available component properties */
     componentProperties: ComponentProperty[];
 
-    /**
-     * List of groups shown in component chooser dialog
-     */
+    /** List of groups shown in component chooser dialog */
     groups: ComponentGroup[];
 
-    /**
-     * Conversion rules for transforming one component into another component
-     */
+    /** Conversion rules for transforming one component into another component*/
     conversionRules: ComponentConversionRules;
 
-    /**
-     * Shortcuts configurations
-     */
+    /** Shortcuts configurations */
     shortcuts?: ComponentsDefinitionShortcuts;
 
-    /**
-     * List of scripts to be included for html rendition of article
-     */
+    /** List of scripts to be included for html rendition of article */
     scripts?: string[];
 }
 
 export interface Component {
-    /**
-     * Unique component identifier
-     */
+    /** Unique component identifier */
     name: string;
 
     label: Label;
 
-    /**
-     * Icon shown for component in Digital Editor
-     */
+    /** Icon shown for component in Digital Editor */
     icon: string;
 
     properties?: (string | ComponentProperty)[];
 
-    /**
-     * How this component is selectable, by default the user can select inside the component to select it
-     */
+    /** How this component is selectable, by default the user can select inside the component to select it */
     selectionMethod?: 'default' | 'handle';
 
     /**
@@ -86,73 +60,58 @@ export interface Component {
      */
     showToolbar?: 'default' | 'always';
 
-    /**
-     * Allows nesting the component in containers, defaults to 'yes'
-     */
+    /** Allows nesting the component in containers, defaults to 'yes' */
     allowNesting?: 'no' | 'yes' | 'one-level';
-    /**
-     * Restricts children of this component to the listed ones and can be further filtered down to also have content
-     */
+
+    /** Restricts children of this component to the listed ones and can be further filtered down to also have content */
     restrictChildren?: {
         [k: string]: {
             withContent?: string;
         };
     };
-    /**
-     * Count characters, words and paragraphs of this component
-     */
+
+    /** Count characters, words and paragraphs of this component */
     countStatistics?: boolean;
-    /**
-     * Default component inserted on pressing enter in a text field (optional, overrides global value)
-     */
+
+    /** Default component inserted on pressing enter in a text field (optional, overrides global value) */
     defaultComponentOnEnter?: string;
-    /**
-     * Configuration for directives in this component
-     */
+
+    /** Configuration for directives in this component */
     directiveOptions?: {
         [k: string]: {
-            /**
-             * List of groups shown in component chooser dialog
-             */
+            /** List of groups shown in component chooser dialog */
             groups?: {
-                /**
-                 * Unique group identifier
-                 */
+                /** Unique group identifier */
                 name: string;
                 label:
                     | string
                     | {
-                          /**
-                           * String key
-                           */
+                          /** String key */
                           key: string;
-                          /**
-                           * String replacement variables
-                           */
+
+                          /** String replacement variables */
                           values?: {
                               [k: string]: unknown;
                           };
                       };
-                /**
-                 * names of components in this group
-                 */
+
+                /** names of components in this group */
                 components: string[];
                 [k: string]: unknown;
             }[];
             autofill?: {
-                /**
-                 * A key of source directive
-                 */
+                /** A key of source directive */
                 source: string;
-                /**
-                 * Metadata property name. The field is case sensitive. Slashes should be used to separate levels
-                 */
+
+                /** Metadata property name. The field is case sensitive. Slashes should be used to separate levels */
                 metadataField?: string;
-                /**
-                 * Defines when autofilling should be applied. If omitted then 'once' is applied
-                 */
+
+                /** Defines when autofilling should be applied. If omitted then 'once' is applied */
                 trigger?: 'once' | 'always';
             };
+
+            /** Strip all styling from pasted text */
+            stripStylingOnPaste?: boolean;
         };
     };
 
@@ -167,23 +126,18 @@ export enum ComponentRendition {
 }
 
 export interface ComponentProperty {
-    /**
-     * Unique identifier of component property
-     */
+    /** Unique identifier of component property */
     name: string;
 
     label: Label;
-    /**
-     * Directive key for properties that use a directive data type
-     */
+
+    /** Directive key for properties that use a directive data type */
     directiveKey?: string;
-    /**
-     * Type of UI element and options.
-     */
+
+    /** Type of UI element and options. */
     control: ComponentPropertyControl;
-    /**
-     * Type of data being stored and how it is used. For directive data types it may also depend on the control type.
-     */
+
+    /** Type of data being stored and how it is used. For directive data types it may also depend on the control type. */
     dataType:
         | 'styles'
         | 'inlineStyles'
@@ -195,38 +149,27 @@ export interface ComponentProperty {
         | 'doc-media'
         | 'doc-interactive'
         | 'doc-link';
-    /**
-     * Default value of property upon component creation. By default the property value is not defined.
-     */
-    defaultValue?: string | { [key: string]: unknown };
+
+    /** Default value of property upon component creation. By default the property value is not defined. */
+    defaultValue?: string | { [key: string]: unknown } | number;
     group?: string;
-    /**
-     * Additional selector to define elements of the component which the property should be applied to.
-     */
+
+    /** Additional selector to define elements of the component which the property should be applied to. */
     selector?: string;
-    /**
-     * Feature flag that should be present for the property to show up. Always show if not specified.
-     */
+
+    /** Feature flag that should be present for the property to show up. Always show if not specified. */
     featureFlag?: string;
 }
 
-/**
- * Component group definition.
- */
+/** Component group definition. */
 export interface ComponentGroup {
-    /**
-     * Unique group identifier
-     */
+    /** Unique group identifier */
     name: string;
 
-    /**
-     * Display name of group.
-     */
+    /** Display name of group. */
     label: Label;
 
-    /**
-     * Names of components in this group
-     */
+    /** Names of components in this group */
     components: string[];
 }
 
@@ -256,12 +199,8 @@ export interface ComponentConversionRule {
           };
 }
 
-/**
- * Shortcuts configurations for the ComponentsDefinition
- */
+/** Shortcuts configurations for the ComponentsDefinition */
 export interface ComponentsDefinitionShortcuts {
-    /**
-     * List of components for conversion using the shortcuts
-     */
+    /** List of components for conversion using the shortcuts */
     conversionComponents: string[];
 }
