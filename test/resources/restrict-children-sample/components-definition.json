@@ -1,0 +1,190 @@
+{
+    "name": "restrict-children-sample",
+    "description": "Minimal components package sample touching most of the available options.",
+    "version": "1.0.0",
+    "defaultComponentOnEnter": "slideshow",
+    "components": [
+        {
+            "name": "slideshow",
+            "icon": "icons/component.svg",
+            "label": {
+                "key": "COMPONENT_SLIDESHOW_LABEL"
+            },
+            "properties": [
+                {
+                    "name": "slides",
+                    "directiveKey": "slideshow"
+                },
+                {
+                    "control": {
+                        "type": "header"
+                    },
+                    "label": {
+                        "key": "COMPONENT_SLIDESHOW_PROPERTIES_HEADER_LABEL"
+                    }
+                },
+                "fitting",
+                "slideshow-inside-caption",
+                "slideshow-play-orientation",
+                "slideshow-autoplay",
+                "slideshow-filmstrip",
+                "style",
+                "text-align",
+                "letter-spacing",
+                "line-height"
+            ],
+            "restrictChildren": {
+                "image": {
+                    "withContent": "image"
+                }
+            }
+        },
+        {
+            "name": "image",
+            "icon": "icons/component.svg",
+            "label": {
+                "key": "COMPONENT_IMAGE_LABEL"
+            },
+            "properties": [
+                {
+                    "name": "fitting",
+                    "defaultValue": "_fit-frame-height-to-content"
+                },
+                "position",
+                "style",
+                "inside-caption",
+                "text-align",
+                "letter-spacing",
+                "line-height",
+                {
+                    "name": "edit-image",
+                    "directiveKey": "image"
+                },
+                {
+                    "name": "hyperlink",
+                    "directiveKey": "hyperlink"
+                }
+            ],
+            "directiveOptions": {
+                "caption": {
+                    "autofill": {
+                        "source": "image",
+                        "metadataField": "ContentMetaData/Description"
+                    }
+                }
+            }
+        },
+        {
+            "name": "body",
+            "label": "Body Label",
+            "icon": "icons/component.svg",
+            "properties": [
+                "selectProperty"
+            ],
+            "countStatistics": true
+        },
+        {
+            "name": "intro",
+            "label": {
+                "key": "INTRO_KEY"
+            },
+            "icon": "icons/component.svg",
+            "properties": [
+                "checkboxProperty"
+            ]
+        },
+        {
+            "name": "container",
+            "icon": "icons/component.svg",
+            "selectionMethod": "handle",
+            "allowNesting": "one-level",
+            "label": {
+                "key": "COMPONENT_CONTAINER_LABEL"
+            },
+            "properties": [
+                "style",
+                "position",
+                "background-color"
+            ],
+            "restrictChildren": {
+                "body": {},
+                "intro": {}
+            }
+        },
+        {
+            "name": "container2",
+            "icon": "icons/component.svg",
+            "selectionMethod": "handle",
+            "allowNesting": "one-level",
+            "label": {
+                "key": "COMPONENT_CONTAINER_LABEL"
+            },
+            "properties": [
+                "style",
+                "position",
+                "background-color"
+            ]
+        }
+    ],
+    "groups": [
+        {
+            "label": "Minimal",
+            "name": "minimal",
+            "components": [
+                "body"
+            ]
+        },
+        {
+            "label": {
+                "key": "MINIMAL"
+            },
+            "name": "minimal2",
+            "components": [
+                "body"
+            ]
+        }
+    ],
+    "componentProperties": [
+        {
+            "name": "selectProperty",
+            "label": "Select property sample",
+            "control": {
+                "type": "select",
+                "options": [
+                    {
+                        "caption": "Default"
+                    },
+                    {
+                        "caption": "Option 1",
+                        "value": "_option1"
+                    },
+                    {
+                        "caption": {
+                            "key": "Option 2 {{0}}",
+                            "values": {
+                                "0": "Replacement"
+                            }
+                        },
+                        "value": "_option2"
+                    }
+                ]
+            },
+            "dataType": "styles"
+        },
+        {
+            "name": "checkboxProperty",
+            "label": "Checkbox property sample",
+            "control": {
+                "type": "checkbox",
+                "value": "_valueWhenOn"
+            },
+            "dataType": "styles"
+        }
+    ],
+    "conversionRules": {
+        "body": {
+            "intro": "auto"
+        }
+    },
+    "scripts": []
+}
