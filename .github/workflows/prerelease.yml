@@ -19,9 +19,6 @@ jobs:
 
             - uses: bahmutov/npm-install@v1
 
-            - name: install
-              run: npm t
-
             - name: build
               run: npm run build
 
