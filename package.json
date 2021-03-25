@@ -1,7 +1,7 @@
 {
   "name": "@woodwing/studio-component-set-tools",
   "version": "1.10.1",
-  "description": "Tools module for Studio Digital Editor component sets packages.",
+  "description": "Validation module for Studio Digital Editor component sets.",
   "author": "",
   "license": "Apache-2.0",
   "repository": "github:woodwing/studio-component-set-tools",
