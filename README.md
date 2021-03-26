@@ -183,6 +183,8 @@ Before publishing update the [version number](https://docs.npmjs.com/updating-yo
 npm version patch -m "Bump validator version to %s"
 ```
 
+This will create a commit and tag for the version as well.
+
 Next verify you are logged in as a user with access to the [Woodwing organization](https://www.npmjs.com/org/woodwing):
 
 ```bash
@@ -192,5 +194,7 @@ npm whoami
 Finally publish the [scoped package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages) by running:
 
 ```bash
+npm run check
+npm run build
 npm publish --access public
 ```
