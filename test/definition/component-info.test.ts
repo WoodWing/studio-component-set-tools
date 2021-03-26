@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { processInfo } from '../../lib/definition/component-info';
+import { generateComponentSetInfo, processInfo } from '../../lib/definition/component-info';
 import { processTemplates } from '../../lib/definition/process-templates';
 import { ComponentsDefinition } from '../../lib/models';
 
@@ -13,15 +13,17 @@ describe('Component Info', () => {
         );
     });
 
+    const renditionResolver = async (relativePath: string) => {
+        const file = path.join(componentPath, relativePath);
+        try {
+            return (await fs.promises.readFile(file)).toString();
+        } catch (e) {
+            return;
+        }
+    };
+
     async function processTemplatesFromZip() {
-        await processTemplates(async (relativePath: string) => {
-            const file = path.join(componentPath, relativePath);
-            try {
-                return (await fs.promises.readFile(file)).toString();
-            } catch (e) {
-                return;
-            }
-        }, definition);
+        await processTemplates(renditionResolver, definition);
     }
 
     async function processEmptyTemplates() {
@@ -29,6 +31,31 @@ describe('Component Info', () => {
             return '<div></div>';
         }, definition);
     }
+
+    describe('generateComponentSetInfo', () => {
+        it('should return the component set information data', async () => {
+            expect(await generateComponentSetInfo(definition, renditionResolver)).toEqual({
+                components: {
+                    body: {
+                        fields: [
+                            {
+                                contentKey: 'text',
+                                type: 'editable',
+                            },
+                        ],
+                    },
+                    intro: {
+                        fields: [
+                            {
+                                contentKey: 'text',
+                                type: 'editable',
+                            },
+                        ],
+                    },
+                },
+            });
+        });
+    });
 
     describe('processInfo', () => {
         it('should return the component set information data', async () => {

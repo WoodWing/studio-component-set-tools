@@ -1,5 +1,6 @@
 import { ComponentsDefinition, Component, ComponentRendition } from '../models/components-definition';
 import { ComponentField, ComponentSetInfo, ComponentInfoFields } from '../models/component-set-fields';
+import { RenditionResolver, processTemplates } from './process-templates';
 import parse5 = require('parse5');
 
 const directivePrefix = 'doc-';
@@ -9,6 +10,19 @@ const directivePrefix = 'doc-';
  *
  * This information is provided with custom channel publish messages. Integrators can use
  * the info to interpret the given digital article without additional API requests.
+ */
+export async function generateComponentSetInfo(
+    componentsDefinition: ComponentsDefinition,
+    renditionResolver: RenditionResolver,
+): Promise<ComponentSetInfo> {
+    await processTemplates(renditionResolver, componentsDefinition);
+    return processInfo(componentsDefinition);
+}
+
+/**
+ * @see generateComponentSetInfo
+ *
+ * This implementation can be used when the components definition already contains the rendition information.
  */
 export function processInfo(componentsDefinition: ComponentsDefinition): ComponentSetInfo {
     return {

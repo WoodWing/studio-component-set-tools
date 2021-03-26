@@ -12,15 +12,15 @@ export interface RenditionComponentTemplates {
     };
 }
 
-export type ExportResolver = (relativePath: string) => Promise<string | undefined>;
+export type RenditionResolver = (relativePath: string) => Promise<string | undefined>;
 
 const renditionTypes = Object.values(ComponentRendition);
 
 export async function processTemplates(
-    assetResolver: ExportResolver,
+    renditionResolver: RenditionResolver,
     componentsDefinition: ComponentsDefinition,
 ): Promise<void> {
-    const templates = loadTemplates(assetResolver, componentsDefinition);
+    const templates = loadTemplates(renditionResolver, componentsDefinition);
 
     for (const component of componentsDefinition.components) {
         component.renditions = {};
@@ -31,12 +31,12 @@ export async function processTemplates(
 }
 
 function loadTemplates(
-    assetResolver: ExportResolver,
+    renditionResolver: RenditionResolver,
     componentsDefinition: ComponentsDefinition,
 ): RenditionComponentTemplates {
     return componentsDefinition.components.reduce((acc, component) => {
         for (const renditionType of renditionTypes) {
-            acc[renditionType][component.name] = assetResolver(`templates/${renditionType}/${component.name}.html`);
+            acc[renditionType][component.name] = renditionResolver(`templates/${renditionType}/${component.name}.html`);
         }
         return acc;
     }, initRenditionsComponentTemplates());
