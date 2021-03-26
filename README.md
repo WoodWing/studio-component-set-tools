@@ -66,23 +66,50 @@ const componentsDefinition = getComponentsDefinitionJson();
 const componentSet = await parseDefinition(componentsDefinition);
 ```
 
-### processInfo
+### generateComponentSetInfo
 
-To retrieve the component set information as provided when publishing an article from Studio, the `processInfo` function can be used. As this function needs access to the renditions in the component set definition you have to call the `processTemplates` function before calling `processInfo`.
+To retrieve the component set information as provided when publishing an article from Studio, the `generateComponentSetInfo` function can be used.
 
-The `processTemplates` expects a resolver function as parameter that returns a promise of the contents of the file as string.
+The `generateComponentSetInfo` function needs the rendition templates to be available in the componentsDefinition. To add this information an
+rendition resolver is expected as parameter. This function should return a Promise of a string with the contents of the rendition file. The
+relative filepath is given as parameter.
 
 An example of possible usage:
 
 ```ts
-import { processTemplates, processInfo } from '@woodwing/studio-component-set-tools/dist/parser';
+import { generateComponentSetInfo } from '@woodwing/studio-component-set-tools/dist/utils';
 
+// The contents of components-definition.json as Javascript object
 const componentsDefinition = getComponentsDefinitionJson();
-// Add the rendition information
-await processTemplates(async (relativePath: string) => {
-    return await fs.promises.readFile(relativePath).toString(),
-}, componentsDefinition);
-const info = processInfo(componentsDefinition);
+
+const info = await generateComponentSetInfo(componentsDefinition, async (relativePath: string) => {
+    return (await fs.promises.readFile(relativePath)).toString();
+});
+```
+
+The returned data contains the field information per component. An example of the returned data:
+
+```ts
+{
+    components: {
+        body: {
+            fields: [
+                {
+                    contentKey: 'text',
+                    type: 'editable',
+                },
+            ],
+        },
+        intro: {
+            fields: [
+                {
+                    contentKey: 'text',
+                    type: 'editable',
+                },
+            ],
+        },
+    },
+}
 ```
 
 ## Development
