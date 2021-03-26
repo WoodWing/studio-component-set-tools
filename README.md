@@ -68,11 +68,12 @@ const componentSet = await parseDefinition(componentsDefinition);
 
 ### generateComponentSetInfo
 
-To retrieve the component set information as provided when publishing an article from Studio, the `generateComponentSetInfo` function can be used.
+The `generateComponentSetInfo` function can be used to generate a plain overview of components and component fields. This information is useful to
+interpret digital articles created for the given component set. The input for the function is information from the component set: component set
+definition and rendition files (html, psv, etc).
 
-The `generateComponentSetInfo` function needs the rendition templates to be available in the componentsDefinition. To add this information an
-rendition resolver is expected as parameter. This function should return a Promise of a string with the contents of the rendition file. The
-relative filepath is given as parameter.
+The first parameter allows for specifying the components definition. As second parameter, a function is expected that returns the contents of a
+given component set rendition file as string.
 
 An example of possible usage:
 
@@ -100,11 +101,12 @@ The returned data contains the field information per component. An example of th
                 },
             ],
         },
-        intro: {
+        container: {
             fields: [
                 {
-                    contentKey: 'text',
-                    type: 'editable',
+                    contentKey: 'main',
+                    restrictChildren: ['body'],
+                    type: 'container',
                 },
             ],
         },
