@@ -5,6 +5,11 @@ describe('validateFolder', () => {
     it('should pass on minimal sample', async () => {
         expect(await validateFolder('./test/resources/minimal-sample')).toBe(true);
     });
+
+    it('should pass on restrict children sample', async () => {
+        expect(await validateFolder('./test/resources/restrict-children-sample')).toBe(true);
+    });
+
     it('should pass on minimal sample for version 1.4', async () => {
         expect(await validateFolder('./test/resources/minimal-sample-1_4_x')).toBe(true);
     });
