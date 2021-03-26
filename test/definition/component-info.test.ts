@@ -4,7 +4,7 @@ import { generateComponentSetInfo, processInfo } from '../../lib/definition/comp
 import { processTemplates } from '../../lib/definition/process-templates';
 import { ComponentsDefinition } from '../../lib/models';
 
-describe('processInfo', () => {
+describe('ComponentInfo', () => {
     describe('minimal component set', () => {
         const componentPath = path.resolve('./test/resources/minimal-sample');
         let definition: ComponentsDefinition;
@@ -33,70 +33,66 @@ describe('processInfo', () => {
             }, definition);
         }
 
-        describe('generateComponentSetInfo', () => {
-            it('should return the component set information data', async () => {
-                expect(await generateComponentSetInfo(definition, renditionResolver)).toEqual({
-                    components: {
-                        body: {
-                            fields: [
-                                {
-                                    contentKey: 'text',
-                                    type: 'editable',
-                                },
-                            ],
-                        },
-                        intro: {
-                            fields: [
-                                {
-                                    contentKey: 'text',
-                                    type: 'editable',
-                                },
-                            ],
-                        },
+        it('should return the component set information data when using generateComponentSetInfo', async () => {
+            expect(await generateComponentSetInfo(definition, renditionResolver)).toEqual({
+                components: {
+                    body: {
+                        fields: [
+                            {
+                                contentKey: 'text',
+                                type: 'editable',
+                            },
+                        ],
                     },
-                });
+                    intro: {
+                        fields: [
+                            {
+                                contentKey: 'text',
+                                type: 'editable',
+                            },
+                        ],
+                    },
+                },
             });
         });
 
-        describe('processInfo', () => {
-            it('should return the component set information data', async () => {
-                await processTemplatesFromZip();
+        it('should return the component set information data when using processInfo', async () => {
+            await processTemplatesFromZip();
 
-                expect(processInfo(definition)).toEqual({
-                    components: {
-                        body: {
-                            fields: [
-                                {
-                                    contentKey: 'text',
-                                    type: 'editable',
-                                },
-                            ],
-                        },
-                        intro: {
-                            fields: [
-                                {
-                                    contentKey: 'text',
-                                    type: 'editable',
-                                },
-                            ],
-                        },
+            expect(processInfo(definition)).toEqual({
+                components: {
+                    body: {
+                        fields: [
+                            {
+                                contentKey: 'text',
+                                type: 'editable',
+                            },
+                        ],
                     },
-                });
+                    intro: {
+                        fields: [
+                            {
+                                contentKey: 'text',
+                                type: 'editable',
+                            },
+                        ],
+                    },
+                },
             });
+        });
 
-            it('should return the component set info for empty templates', async () => {
-                await processEmptyTemplates();
+        it('should return the component set info for empty templates', async () => {
+            await processEmptyTemplates();
 
-                expect(processInfo(definition)).toEqual({
-                    components: {
-                        body: {
-                            fields: [],
-                        },
-                        intro: {
-                            fields: [],
-                        },
+            expect(processInfo(definition)).toEqual({
+                components: {
+                    body: {
+                        fields: [],
                     },
-                });
+                    intro: {
+                        fields: [],
+                    },
+                },
             });
         });
     });
