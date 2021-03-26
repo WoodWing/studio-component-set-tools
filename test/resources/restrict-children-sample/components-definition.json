@@ -55,9 +55,7 @@
             "name": "body",
             "label": "Body Label",
             "icon": "icons/component.svg",
-            "properties": [
-                "selectProperty"
-            ],
+            "properties": ["selectProperty"],
             "countStatistics": true
         },
         {
@@ -66,9 +64,7 @@
                 "key": "INTRO_KEY"
             },
             "icon": "icons/component.svg",
-            "properties": [
-                "checkboxProperty"
-            ]
+            "properties": ["checkboxProperty"]
         },
         {
             "name": "container",
@@ -78,8 +74,7 @@
             "label": {
                 "key": "COMPONENT_CONTAINER_LABEL"
             },
-            "properties": [
-            ],
+            "properties": [],
             "restrictChildren": {
                 "body": {},
                 "intro": {}
@@ -93,26 +88,21 @@
             "label": {
                 "key": "COMPONENT_CONTAINER_LABEL"
             },
-            "properties": [
-            ]
+            "properties": []
         }
     ],
     "groups": [
         {
             "label": "Minimal",
             "name": "minimal",
-            "components": [
-                "body"
-            ]
+            "components": ["body"]
         },
         {
             "label": {
                 "key": "MINIMAL"
             },
             "name": "minimal2",
-            "components": [
-                "body"
-            ]
+            "components": ["body"]
         }
     ],
     "componentProperties": [
@@ -153,7 +143,9 @@
         },
         {
             "name": "edit-image",
-            "label": { "key": "PROPERTY_EDIT_IMAGE_LABEL" },
+            "label": {
+                "key": "PROPERTY_EDIT_IMAGE_LABEL"
+            },
             "control": {
                 "type": "image-editor",
                 "focuspoint": true
@@ -162,12 +154,12 @@
         },
         {
             "name": "slides",
-            "label": { "key": "PROPERTY_SLIDES_LABEL" },
+            "label": {
+                "key": "PROPERTY_SLIDES_LABEL"
+            },
             "control": {
                 "type": "slides",
-                "include": [
-                    "edit-image"
-                ]
+                "include": ["edit-image"]
             },
             "dataType": "doc-slideshow"
         }
