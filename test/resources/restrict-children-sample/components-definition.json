@@ -1,7 +1,7 @@
 {
     "name": "restrict-children-sample",
     "description": "Minimal components package sample touching most of the available options.",
-    "version": "1.0.0",
+    "version": "1.6.0",
     "defaultComponentOnEnter": "slideshow",
     "components": [
         {
@@ -22,16 +22,7 @@
                     "label": {
                         "key": "COMPONENT_SLIDESHOW_PROPERTIES_HEADER_LABEL"
                     }
-                },
-                "fitting",
-                "slideshow-inside-caption",
-                "slideshow-play-orientation",
-                "slideshow-autoplay",
-                "slideshow-filmstrip",
-                "style",
-                "text-align",
-                "letter-spacing",
-                "line-height"
+                }
             ],
             "restrictChildren": {
                 "image": {
@@ -47,22 +38,8 @@
             },
             "properties": [
                 {
-                    "name": "fitting",
-                    "defaultValue": "_fit-frame-height-to-content"
-                },
-                "position",
-                "style",
-                "inside-caption",
-                "text-align",
-                "letter-spacing",
-                "line-height",
-                {
                     "name": "edit-image",
                     "directiveKey": "image"
-                },
-                {
-                    "name": "hyperlink",
-                    "directiveKey": "hyperlink"
                 }
             ],
             "directiveOptions": {
@@ -102,9 +79,6 @@
                 "key": "COMPONENT_CONTAINER_LABEL"
             },
             "properties": [
-                "style",
-                "position",
-                "background-color"
             ],
             "restrictChildren": {
                 "body": {},
@@ -120,9 +94,6 @@
                 "key": "COMPONENT_CONTAINER_LABEL"
             },
             "properties": [
-                "style",
-                "position",
-                "background-color"
             ]
         }
     ],
@@ -179,6 +150,26 @@
                 "value": "_valueWhenOn"
             },
             "dataType": "styles"
+        },
+        {
+            "name": "edit-image",
+            "label": { "key": "PROPERTY_EDIT_IMAGE_LABEL" },
+            "control": {
+                "type": "image-editor",
+                "focuspoint": true
+            },
+            "dataType": "doc-image"
+        },
+        {
+            "name": "slides",
+            "label": { "key": "PROPERTY_SLIDES_LABEL" },
+            "control": {
+                "type": "slides",
+                "include": [
+                    "edit-image"
+                ]
+            },
+            "dataType": "doc-slideshow"
         }
     ],
     "conversionRules": {
