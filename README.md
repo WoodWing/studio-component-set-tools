@@ -66,6 +66,54 @@ const componentsDefinition = getComponentsDefinitionJson();
 const componentSet = await parseDefinition(componentsDefinition);
 ```
 
+### generateComponentSetInfo
+
+The `generateComponentSetInfo` function can be used to generate a plain overview of components and component fields. This information is useful to
+interpret digital articles created for the given component set. The input for the function is information from the component set: component set
+definition and rendition files (html, psv, etc).
+
+The first parameter allows for specifying the components definition. As second parameter, a function is expected that returns the contents of a
+given component set rendition file as string.
+
+An example of possible usage:
+
+```ts
+import { generateComponentSetInfo } from '@woodwing/studio-component-set-tools/dist/utils';
+
+// The contents of components-definition.json as Javascript object
+const componentsDefinition = getComponentsDefinitionJson();
+
+const info = await generateComponentSetInfo(componentsDefinition, async (relativePath: string) => {
+    return (await fs.promises.readFile(relativePath)).toString();
+});
+```
+
+The returned data contains the field information per component. An example of the returned data:
+
+```ts
+{
+    components: {
+        body: {
+            fields: [
+                {
+                    contentKey: 'text',
+                    type: 'editable',
+                },
+            ],
+        },
+        container: {
+            fields: [
+                {
+                    contentKey: 'main',
+                    restrictChildren: ['body'],
+                    type: 'container',
+                },
+            ],
+        },
+    },
+}
+```
+
 ## Development
 
 ### Watched build/test
