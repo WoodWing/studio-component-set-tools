@@ -8,20 +8,24 @@ import {
     ComponentPropertyControlCheckbox,
     ComponentPropertyControlRadio,
     ComponentPropertyControlSelect,
+    ComponentPropertyControlSlider,
     COMPONENT_PROPERTY_CONTROL_FITTING_VALUES,
 } from '../models/component-property-controls';
 
 const validDataTypes = new Set(['styles', 'inlineStyles', 'data']);
 
 export class DefaultValuesValidator extends Validator {
-    private controlTypeToValidateMethod = new Map([
+    private readonly controlTypeToValidateMethod = new Map([
         ['text', this.validateTextControlValue],
         ['select', this.validateSelectOrRadioControlValue],
         ['radio', this.validateSelectOrRadioControlValue],
         ['checkbox', this.validateCheckboxControlValue],
         ['drop-capital', this.validateDropCapitalControlValue],
         ['fitting', this.validateFittingControlValue],
+        ['slider', this.validateSliderControlType],
     ]);
+
+    private readonly controlTypesRequiringDefaultValue = new Set(['slider']);
 
     async validate(): Promise<void> {
         Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
@@ -29,8 +33,6 @@ export class DefaultValuesValidator extends Validator {
 
     /**
      * Iterate through all properties of given component.
-     *
-     * @param component
      */
     private validateComponent(component: ParsedComponent): void {
         component.properties.forEach((property) => this.validateProperty(property));
@@ -38,11 +40,10 @@ export class DefaultValuesValidator extends Validator {
 
     /**
      * Validate property has a valid dataType for the given default value if any.
-     *
-     * @param property
      */
     private validateProperty(property: ComponentProperty) {
-        if (!property.defaultValue) {
+        if (property.defaultValue === undefined) {
+            this.validateDefaultValueRequiredFor(property);
             return;
         }
 
@@ -64,11 +65,15 @@ export class DefaultValuesValidator extends Validator {
         return validateControl.bind(this)(property);
     }
 
-    /**
-     * String validation
-     *
-     * @param property
-     */
+    private validateDefaultValueRequiredFor(property: ComponentProperty) {
+        if (this.controlTypesRequiringDefaultValue.has(property.control.type)) {
+            this.error(
+                `Property ${property.name} defaultValue is required for control type "${property.control.type}"`,
+            );
+            return;
+        }
+    }
+
     private validateStringValue(property: ComponentProperty): boolean {
         if (typeof property.defaultValue !== 'string') {
             this.error(`Property ${property.name} defaultValue must be a string`);
@@ -77,11 +82,6 @@ export class DefaultValuesValidator extends Validator {
         return true;
     }
 
-    /**
-     * Object validation
-     *
-     * @param property
-     */
     private validateObjectValue(property: ComponentProperty): boolean {
         if (typeof property.defaultValue !== 'object') {
             this.error(`Property ${property.name} defaultValue must be an object`);
@@ -90,10 +90,16 @@ export class DefaultValuesValidator extends Validator {
         return true;
     }
 
+    private validateNumberValue(property: ComponentProperty): boolean {
+        if (typeof property.defaultValue !== 'number') {
+            this.error(`Property ${property.name} defaultValue must be a number`);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Validate defaultValue against text control type.
-     *
-     * @param property
      */
     private validateTextControlValue(property: ComponentProperty) {
         // Allow any default string value for text
@@ -102,8 +108,6 @@ export class DefaultValuesValidator extends Validator {
 
     /**
      * Validate defaultValue against select or radio control type.
-     *
-     * @param property
      */
     private validateSelectOrRadioControlValue(property: ComponentProperty) {
         if (!this.validateStringValue(property)) {
@@ -122,8 +126,6 @@ export class DefaultValuesValidator extends Validator {
 
     /**
      * Validate defaultValue for checkbox control type.
-     *
-     * @param property
      */
     private validateCheckboxControlValue(property: ComponentProperty) {
         if (!this.validateStringValue(property)) {
@@ -136,8 +138,6 @@ export class DefaultValuesValidator extends Validator {
 
     /**
      * Validates defaultValue for drop-capital control type.
-     *
-     * @param property
      */
     private validateDropCapitalControlValue(property: ComponentProperty) {
         if (!this.validateObjectValue(property)) {
@@ -167,6 +167,21 @@ export class DefaultValuesValidator extends Validator {
         const values = Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES);
         if (!values.find((value) => value === property.defaultValue)) {
             this.error(`Property ${property.name} defaultValue has to be one of '${values.join("', '")}'`);
+        }
+    }
+
+    /**
+     * Validates defaultValue for slider control type.
+     */
+    private validateSliderControlType(property: ComponentProperty) {
+        if (!this.validateNumberValue(property)) {
+            return;
+        }
+        const sliderControl = property.control as ComponentPropertyControlSlider;
+        const defaultValue = property.defaultValue as number;
+
+        if (defaultValue < sliderControl.minValue || defaultValue > sliderControl.maxValue) {
+            this.error(`Property ${property.name} defaultValue must be between the minimum and maximum values`);
         }
     }
 }

@@ -5,8 +5,8 @@
  * Example:
  * {
  *   body: {
- *      label: "{{ 'BODY_EDITOR_LABEL' | translate }}",
- *      iconUrl: "https://bucketName.s3.amazonaws.com/tenant/1234-1234-1234-1234/content/icons/body.svg?v=1",
+ *      label: { "key": "BODY_EDITOR_LABEL" },
+ *      iconUrl: "icons/components/body.svg",
  *      fields: [
  *          {
  *              type: "editable",
@@ -15,8 +15,8 @@
  *     ]
  *   },
  *   title: {
- *      label: "{{ 'STORIES_TITLE_LABEL' | translate }}",
- *      iconUrl: "https://bucketName.s3.amazonaws.com/tenant/1234-1234-1234-1234/content/icons/title.svg?v=1",
+ *      label: { "key": "STORIES_TITLE_LABEL" },
+ *      iconUrl: "icons/components/title.svg",
  *      fields:    [
  *          {
  *              type: "editable",

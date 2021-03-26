@@ -3,32 +3,20 @@ on: push
 
 jobs:
     build:
-        name: Build
         runs-on: ubuntu-latest
         env:
             CI: true
 
         steps:
-            - uses: actions/checkout@v1
-              with:
-                  fetch-depth: 1
+            - uses: actions/checkout@v2
 
-            - uses: actions/setup-node@v1
-              id: setup-node
+            - uses: actions/setup-node@v2
               with:
-                  node-version: 12.x
+                  node-version: 14
 
-            # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/caching-dependencies-to-speed-up-workflows
-            - uses: actions/cache@v2
-              with:
-                  path: ~/.npm
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node-
-            - name: install, lint and build
-              if: steps.cache.outputs.cache-hit != 'true'
-              run: npm ci
+            - uses: bahmutov/npm-install@v1
 
-            - name: test
+            - name: check and build
               run: |
-                  npm test
+                  npm run check
+                  npm run build

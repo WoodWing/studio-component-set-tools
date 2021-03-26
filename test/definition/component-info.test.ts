@@ -1,21 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { processInfo } from '../../lib/definition/component-info';
+import { generateComponentSetInfo, processInfo } from '../../lib/definition/component-info';
 import { processTemplates } from '../../lib/definition/process-templates';
 import { ComponentsDefinition } from '../../lib/models';
 
 describe('processInfo', () => {
-    async function processTemplatesFromZip(componentPath: string, definition: ComponentsDefinition) {
-        await processTemplates(async (relativePath: string) => {
-            const file = path.join(componentPath, relativePath);
-            try {
-                return (await fs.promises.readFile(file)).toString();
-            } catch (e) {
-                return;
-            }
-        }, definition);
-    }
-
     describe('minimal component set', () => {
         const componentPath = path.resolve('./test/resources/minimal-sample');
         let definition: ComponentsDefinition;
@@ -25,49 +14,89 @@ describe('processInfo', () => {
             );
         });
 
+        const renditionResolver = async (relativePath: string) => {
+            const file = path.join(componentPath, relativePath);
+            try {
+                return (await fs.promises.readFile(file)).toString();
+            } catch (e) {
+                return;
+            }
+        };
+
+        async function processTemplatesFromZip() {
+            await processTemplates(renditionResolver, definition);
+        }
+
         async function processEmptyTemplates() {
             await processTemplates(async (_relativePath: string) => {
                 return '<div></div>';
             }, definition);
         }
 
-        it('should return the component set information data', async () => {
-            await processTemplatesFromZip(componentPath, definition);
-
-            expect(processInfo(definition)).toEqual({
-                components: {
-                    body: {
-                        fields: [
-                            {
-                                contentKey: 'text',
-                                type: 'editable',
-                            },
-                        ],
+        describe('generateComponentSetInfo', () => {
+            it('should return the component set information data', async () => {
+                expect(await generateComponentSetInfo(definition, renditionResolver)).toEqual({
+                    components: {
+                        body: {
+                            fields: [
+                                {
+                                    contentKey: 'text',
+                                    type: 'editable',
+                                },
+                            ],
+                        },
+                        intro: {
+                            fields: [
+                                {
+                                    contentKey: 'text',
+                                    type: 'editable',
+                                },
+                            ],
+                        },
                     },
-                    intro: {
-                        fields: [
-                            {
-                                contentKey: 'text',
-                                type: 'editable',
-                            },
-                        ],
-                    },
-                },
+                });
             });
         });
 
-        it('should return the component set info for empty templates', async () => {
-            await processEmptyTemplates();
+        describe('processInfo', () => {
+            it('should return the component set information data', async () => {
+                await processTemplatesFromZip();
 
-            expect(processInfo(definition)).toEqual({
-                components: {
-                    body: {
-                        fields: [],
+                expect(processInfo(definition)).toEqual({
+                    components: {
+                        body: {
+                            fields: [
+                                {
+                                    contentKey: 'text',
+                                    type: 'editable',
+                                },
+                            ],
+                        },
+                        intro: {
+                            fields: [
+                                {
+                                    contentKey: 'text',
+                                    type: 'editable',
+                                },
+                            ],
+                        },
                     },
-                    intro: {
-                        fields: [],
+                });
+            });
+
+            it('should return the component set info for empty templates', async () => {
+                await processEmptyTemplates();
+
+                expect(processInfo(definition)).toEqual({
+                    components: {
+                        body: {
+                            fields: [],
+                        },
+                        intro: {
+                            fields: [],
+                        },
                     },
-                },
+                });
             });
         });
     });
@@ -81,10 +110,17 @@ describe('processInfo', () => {
             );
         });
 
-        it('should return the component set information data', async () => {
-            await processTemplatesFromZip(componentPath, definition);
+        const renditionResolver = async (relativePath: string) => {
+            const file = path.join(componentPath, relativePath);
+            try {
+                return (await fs.promises.readFile(file)).toString();
+            } catch (e) {
+                return;
+            }
+        };
 
-            expect(processInfo(definition)).toEqual({
+        it('should return the component set information data', async () => {
+            expect(await generateComponentSetInfo(definition, renditionResolver)).toEqual({
                 components: {
                     image: {
                         fields: [
