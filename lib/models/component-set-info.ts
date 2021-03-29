@@ -1,12 +1,9 @@
 /**
- * Combines information about components, includes label, iconUrl
- * and component related fields
- * label and iconUrl are extracted from component-definition.json file, while fields are loaded from html templates
+ * Combines information about component related fields.
  * Example:
  * {
  *   body: {
- *      label: { "key": "BODY_EDITOR_LABEL" },
- *      iconUrl: "icons/components/body.svg",
+
  *      fields: [
  *          {
  *              type: "editable",
@@ -15,8 +12,6 @@
  *     ]
  *   },
  *   title: {
- *      label: { "key": "STORIES_TITLE_LABEL" },
- *      iconUrl: "icons/components/title.svg",
  *      fields:    [
  *          {
  *              type: "editable",
@@ -27,19 +22,6 @@
  *   ... etc ...
  * }
  */
-export interface ComponentSetFields {
-    [component: string]: InnerComponentFields;
-}
-
-export interface PartialComponentSetFields {
-    [component: string]: Partial<InnerComponentFields>;
-}
-
-export interface InnerComponentFields {
-    label: string;
-    iconUrl: string;
-    fields: ComponentField[];
-}
 
 export interface ComponentField {
     contentKey: string;

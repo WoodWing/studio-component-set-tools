@@ -1,5 +1,5 @@
 import { ComponentsDefinition, Component, ComponentRendition } from '../models/components-definition';
-import { ComponentField, ComponentSetInfo, ComponentInfoFields } from '../models/component-set-fields';
+import { ComponentField, ComponentSetInfo, ComponentInfoFields } from '../models/component-set-info';
 import { RenditionResolver, processTemplates } from './process-templates';
 import parse5 = require('parse5');
 
