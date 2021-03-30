@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as semver from 'semver';
-import ajv, { ValidateFunction } from 'ajv';
+import ajv, { Schema, ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
 import * as colors from 'colors/safe';
 import * as jsonMap from 'json-source-map';
@@ -13,6 +13,7 @@ import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
 import { componentsDefinitionSchema_v1_4_x } from './components-schema-v1_4_x';
 import { componentsDefinitionSchema_v1_5_x } from './components-schema-v1_5_x';
 import { componentsDefinitionSchema_v1_6_x } from './components-schema-v1_6_x';
+import { componentsDefinitionSchema_v1_7_x } from './components-schema-v1_7_x';
 
 import { parseDefinition } from './parser';
 import {
@@ -225,6 +226,8 @@ async function getComponentsDefinition(
     return { data: null, pointers: null };
 }
 
+const semVerOptions = { includePrerelease: true };
+
 /**
  * Returns the validation function for given version.
  *
@@ -232,35 +235,42 @@ async function getComponentsDefinition(
  * @returns schema validation function if found, otherwise null.
  */
 function getValidationSchema(version: string): ValidateFunction | null {
+    const schemaSource = getValidationSchemaSource(version);
+    return schemaSource !== null ? ajvInstance.compile(schemaSource) : null;
+}
+
+/**
+ * Returns the validation schema source for given version.
+ *
+ * @param version
+ * @returns schema validation schema source if found, otherwise null.
+ */
+function getValidationSchemaSource(version: string): Schema | null {
     // Only one version supported
     // When introducing a patch version, make sure to update the supported range, e.g. '1.0.0 - 1.0.1'
-    if (semver.satisfies(version, '1.0.0')) {
-        return ajvInstance.compile(componentsDefinitionSchema_v1_0_x);
-    } else if (semver.satisfies(version, '1.1.x')) {
-        return ajvInstance.compile(componentsDefinitionSchema_v1_1_x);
-    } else if (semver.satisfies(version, '1.2.x')) {
-        return ajvInstance.compile(componentsDefinitionSchema_v1_2_x);
-    } else if (semver.satisfies(version, '1.3.x')) {
-        return ajvInstance.compile(componentsDefinitionSchema_v1_3_x);
-    } else if (semver.satisfies(version, '1.4.x')) {
-        return ajvInstance.compile(componentsDefinitionSchema_v1_4_x);
-    } else if (semver.satisfies(version, '1.5.x')) {
-        return ajvInstance.compile(componentsDefinitionSchema_v1_5_x);
-    } else if (semver.satisfies(version, '1.6.x')) {
-        return ajvInstance.compile(componentsDefinitionSchema_v1_6_x);
+    if (semver.satisfies(version, '1.0.0', semVerOptions)) {
+        return componentsDefinitionSchema_v1_0_x;
+    } else if (semver.satisfies(version, '1.1.x', semVerOptions)) {
+        return componentsDefinitionSchema_v1_1_x;
+    } else if (semver.satisfies(version, '1.2.x', semVerOptions)) {
+        return componentsDefinitionSchema_v1_2_x;
+    } else if (semver.satisfies(version, '1.3.x', semVerOptions)) {
+        return componentsDefinitionSchema_v1_3_x;
+    } else if (semver.satisfies(version, '1.4.x', semVerOptions)) {
+        return componentsDefinitionSchema_v1_4_x;
+    } else if (semver.satisfies(version, '1.5.x', semVerOptions)) {
+        return componentsDefinitionSchema_v1_5_x;
+    } else if (semver.satisfies(version, '1.6.x', semVerOptions)) {
+        return componentsDefinitionSchema_v1_6_x;
+    } else if (semver.satisfies(version, '1.7.0-next', semVerOptions)) {
+        return componentsDefinitionSchema_v1_7_x;
     }
+
     return null;
 }
 
 /**
  * Returns set of validators according to component definition version
- *
- * @param version
- * @param filePaths
- * @param componentsDefinition
- * @param componentSet
- * @param getFileContent
- * @param getFileSize
  */
 export function getValidators(
     version: string,
@@ -271,7 +281,7 @@ export function getValidators(
     getFileSize: GetFileSize,
 ): Validator[] | null {
     let validators: Validator[] = [];
-    if (semver.satisfies(version, '>=1.0.0')) {
+    if (semver.satisfies(version, '>=1.0.0', semVerOptions)) {
         validators = validators.concat(
             new ComponentsValidator(error, componentSet, filePaths),
             new DirectiveOptionsValidator(error, componentSet),
@@ -298,20 +308,20 @@ export function getValidators(
             new PackageValidator(error, componentSet, filePaths, getFileSize),
         );
     }
-    if (semver.satisfies(version, '>=1.1.0')) {
+    if (semver.satisfies(version, '>=1.1.0', semVerOptions)) {
         validators = validators.concat(
             new AutofillValidator(error, componentSet),
             new DefaultComponentOnEnterOverrideValidator(error, componentSet),
             new DocContainerGroupsValidator(error, componentSet),
         );
     }
-    if (semver.satisfies(version, '>=1.3.0')) {
+    if (semver.satisfies(version, '>=1.3.0', semVerOptions)) {
         validators = validators.concat(new ConversionShortcutsValidator(error, componentSet));
     }
-    if (semver.satisfies(version, '>=1.0.0') && semver.satisfies(version, '<1.4.0')) {
+    if (semver.satisfies(version, '>=1.0.0 <1.4.0', semVerOptions)) {
         validators = validators.concat(new DisableFullscreenCheckboxValidator(error, componentSet));
     }
-    if (semver.satisfies(version, '>=1.6.0')) {
+    if (semver.satisfies(version, '>=1.6.0', semVerOptions)) {
         validators = validators.concat(new StripStylingOnPasteValidator(error, componentSet));
     }
     return validators.length > 0 ? validators : null;
