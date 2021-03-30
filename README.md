@@ -154,6 +154,17 @@ npm run format:check
 npm run test
 ```
 
+## Releasing a new schema version
+
+By default the next schema version is being developed under the `-next` tag. For example, if the latest release version is `1.6.0` you will see there is already a `1.7.0` version in this repository. It can be used by setting the version to `1.7.0-next`. This allows developers to already publish new versions of the studio component set tools without having to release a new schema version.
+
+Using these versions as an example, when the new schema is ready follow these steps:
+
+1. Duplicate `lib/components-schema-v1_7_x.ts` as `lib/components-schema-v1_8_x.ts`.
+2. In `lib/validate.ts/getValidationSchemaSource` introduce a new matcher on `1.8.0-next` for the next in development schema.
+3. Remove the prerelease tag `-next` from `1.7.0-next`
+4. Update tests in `test/validate.test.ts` (include some simple smoke tests to ensure there are no typos in the version matching logic).
+
 ## Publish a new version
 
 In case you have never published a npm module before, make sure to read the official npm documentation about [publishing npm packages](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
