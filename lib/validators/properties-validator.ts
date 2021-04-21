@@ -22,38 +22,29 @@ export class PropertiesValidator extends Validator {
         Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 
-    /**
-     * Iterate through all properties of given component.
-     *
-     * @param component
-     */
     private validateComponent(component: ParsedComponent): void {
         const componentPropertyNames = new Set<string>();
 
-        component.properties.forEach((property) => this.validateProperty(property, componentPropertyNames));
+        component.properties.forEach((property) => this.validateProperty(property, componentPropertyNames, component));
     }
 
-    /**
-     * Validate property with control type interactive uses the correct dataType.
-     *
-     * @param property
-     */
-    private validateProperty(property: ComponentProperty, componentPropertyNames: Set<string>) {
+    private validateProperty(
+        property: ComponentProperty,
+        componentPropertyNames: Set<string>,
+        component: ParsedComponent,
+    ) {
         this.validateReservedPropertyName(property);
-        this.validatePropertyName(property, componentPropertyNames);
-
-        // Validate the property has icons (for radio control type)
-        if (property.control.type === 'radio') {
-            for (const controlOption of property.control.options) {
-                if (!this.filePaths.has(path.normalize(controlOption.icon))) {
-                    this.error(`Component properties "${property.name}" icon missing "${controlOption.icon}"`);
-                }
-            }
-        }
+        this.validatePropertyName(property, componentPropertyNames, component);
+        this.validateRadioPropertyIcons(property);
     }
 
-    private validatePropertyName(property: ComponentProperty, componentPropertyNames: Set<string>) {
+    private validatePropertyName(
+        property: ComponentProperty,
+        componentPropertyNames: Set<string>,
+        component: ParsedComponent,
+    ) {
         if (!property.name) {
+            this.validateNamelessProperty(property, component);
             return;
         }
 
@@ -71,6 +62,25 @@ export class PropertiesValidator extends Validator {
 
         if (RESERVED.some((regexp) => regexp.test(property.name))) {
             this.error(`Component property name "${property.name}" is a reserved word`);
+        }
+    }
+
+    private validateNamelessProperty(property: ComponentProperty, component: ParsedComponent) {
+        if (property.control.type !== 'header') {
+            this.error(
+                `Property in component "${component.name}" must have a name when using control type "${property.control.type}"`,
+            );
+        }
+    }
+
+    private validateRadioPropertyIcons(property: ComponentProperty) {
+        if (property.control.type !== 'radio') {
+            return;
+        }
+        for (const controlOption of property.control.options) {
+            if (!this.filePaths.has(path.normalize(controlOption.icon))) {
+                this.error(`Component properties "${property.name}" icon missing "${controlOption.icon}"`);
+            }
         }
     }
 }
