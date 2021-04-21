@@ -11,6 +11,7 @@ describe('PropertiesValidator', () => {
             version: '1.0.0',
             components: {
                 c1: {
+                    name: 'c1',
                     properties: [
                         {
                             name: 'p1',
@@ -36,6 +37,7 @@ describe('PropertiesValidator', () => {
                 },
                 // Add another component with same property to test uniqueness validation passes correctly
                 c2: {
+                    name: 'c2',
                     properties: [
                         {
                             name: 'p1',
@@ -83,12 +85,26 @@ describe('PropertiesValidator', () => {
             validator.validate();
             expect(error).not.toHaveBeenCalled();
         });
-        it('should pass if several properties have no name', () => {
+
+        it('should pass if there are multiple nameless properties of control type "header" in same component', () => {
             definition.version = '1.5.0';
-            definition.components.c1.properties[0].name = undefined;
-            definition.components.c1.properties[1].name = undefined;
+            definition.components.c1.properties.push({ label: 'Header', control: { type: 'header' } });
+            definition.components.c1.properties.push({ label: 'Another Header', control: { type: 'header' } });
             validator.validate();
             expect(error).not.toHaveBeenCalled();
+        });
+
+        it('should not pass if properties that save data have no name', () => {
+            definition.version = '1.5.0';
+            delete definition.components.c1.properties[0].name;
+            delete definition.components.c1.properties[2].name;
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(
+                `Property in component "c1" must have a name when using control type "text"`,
+            );
+            expect(error).toHaveBeenCalledWith(
+                `Property in component "c1" must have a name when using control type "media-properties"`,
+            );
         });
     });
 });
