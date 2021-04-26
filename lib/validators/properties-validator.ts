@@ -71,6 +71,11 @@ export class PropertiesValidator extends Validator {
                 `Property in component "${component.name}" must have a name when using control type "${property.control.type}"`,
             );
         }
+        if (property.dataType) {
+            this.error(
+                `Nameless property with control type "${property.control.type}" and label "${property.label}" in component "${component.name}" cannot have a dataType`,
+            );
+        }
     }
 
     private validateRadioPropertyIcons(property: ComponentProperty) {
