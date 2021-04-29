@@ -6,7 +6,9 @@
 
 /* tslint:disable:max-line-length variable-name */
 
-const labelProperty = (description: string) => {
+import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
+
+function labelProperty(description: string): { oneOf: JSONSchema7Definition[] } {
     return {
         oneOf: [
             {
@@ -31,9 +33,9 @@ const labelProperty = (description: string) => {
             },
         ],
     };
-};
+}
 
-const componentGroupDefinition = {
+const componentGroupDefinition: JSONSchema7Definition = {
     type: 'array',
     description: 'List of groups shown in component chooser dialog',
     items: {
@@ -55,7 +57,9 @@ const componentGroupDefinition = {
     },
 };
 
-const componentPropertyDefinition = {
+const componentPropertyDefinition: {
+    [key: string]: JSONSchema7Definition;
+} = {
     name: {
         type: 'string',
         description: 'Unique identifier of component property',
@@ -396,8 +400,51 @@ const componentPropertyDefinition = {
         description: 'Feature flag that should be present for the property to show up. Always show if not specified.',
     },
 };
+// Define childProperties after the definition of componentPropertyDefinition to avoid
+// a circular reference when creating a copy of componentPropertyDefinition
+// Currently childProperties is only supported one level deep.
+componentPropertyDefinition.childProperties = {
+    type: 'array',
+    description: 'List of conditional child properties',
+    items: {
+        type: 'object',
+        properties: {
+            matchType: {
+                type: 'string',
+                description: `Defines how to match the parent property's value`,
+                enum: ['exact-value'],
+            },
+            matchExpression: {
+                type: ['boolean', 'integer', 'string', 'number'],
+                description: `The expression to use to match the parent property's value`,
+            },
+            properties: {
+                type: 'array',
+                items: {
+                    oneOf: [
+                        {
+                            type: 'string',
+                        },
+                        {
+                            type: 'object',
+                            additionalProperties: false,
+                            // Use a copy to avoid a circular reference and a stack overflow on childProperties at run-time
+                            properties: { ...componentPropertyDefinition },
+                        },
+                    ],
+                },
+                description: 'names of properties this component can use',
+            },
+        },
+        additionalProperties: false,
+        required: ['matchType'],
+    },
+};
 
-export const componentsDefinitionSchema_v1_7_x = {
+export const componentsDefinitionSchema_v1_7_x: JSONSchema7 = {
+    $schema: 'http://json-schema.org/draft-07/schema#',
+    title: 'Studio components definition schema',
+    description: 'Schema describing the format of the components-definition.json file in a Studio component set.',
     type: 'object',
     properties: {
         name: {

@@ -58,7 +58,7 @@ import {
 } from './validators';
 import { listFilesRelativeToFolder } from './util/files';
 
-const ajvInstance = new ajv({ allErrors: true, verbose: true });
+const ajvInstance = new ajv({ allErrors: true, verbose: true, allowUnionTypes: true });
 addFormats(ajvInstance);
 
 const componentsDefinitionPath = path.normalize('./components-definition.json');

@@ -9,7 +9,7 @@
             "name": "body",
             "label": "Body Label",
             "icon": "icons/component.svg",
-            "properties": ["selectProperty"],
+            "properties": ["selectProperty", "conditionalProperty"],
             "countStatistics": true
         },
         {
@@ -96,6 +96,47 @@
             },
             "defaultValue": -2,
             "dataType": "data"
+        },
+        {
+            "name": "conditionalProperty",
+            "label": "Conditional property sample",
+            "control": {
+                "type": "select",
+                "options": [
+                    {
+                        "caption": "No value"
+                    },
+                    {
+                        "caption": "Value 1",
+                        "value": "value1"
+                    },
+                    {
+                        "caption": "Value 2",
+                        "value": "value2"
+                    },
+                    {
+                        "caption": "Value 3",
+                        "value": "value3"
+                    }
+                ]
+            },
+            "dataType": "data",
+            "childProperties": [
+                {
+                    "matchType": "exact-value",
+                    "properties": ["selectProperty"]
+                },
+                {
+                    "matchType": "exact-value",
+                    "matchExpression": "value1",
+                    "properties": ["checkboxProperty"]
+                },
+                {
+                    "matchType": "exact-value",
+                    "matchExpression": "value2",
+                    "properties": [{ "name": "header", "label": "Label" }, "selectProperty", "sliderProperty"]
+                }
+            ]
         }
     ],
 
