@@ -4,17 +4,17 @@
 
 import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
-import merge = require('lodash.merge');
 import {
-    DirectiveType,
-    ComponentSet,
-    ComponentsDefinition,
     Component,
-    ParsedComponent,
     ComponentProperty,
     ComponentRendition,
+    ComponentsDefinition,
+    ComponentSet,
+    DirectiveType,
     GetFileContentType,
+    ParsedComponent,
 } from '../models';
+import merge = require('lodash.merge');
 
 /**
  * Parses the components definition into the object which contains all needed data to make needed validations
@@ -159,14 +159,8 @@ function parseComponent(
         directives: directives,
         properties: (component.properties || []).map((componentProperty) => {
             const property = parseProperty(componentProperty, componentProperties);
-
-            if (property.directiveKey && !(property.directiveKey in directives)) {
-                throw new Error(
-                    `Directive with key "${property.directiveKey}" is not found in component "${
-                        component.name
-                    }". Property name is "${property.name || '<anonymous property>'}".`,
-                );
-            }
+            validateDirective(property.directiveKey, directives, component.name, property.name);
+            parseConditionalChildProperties(property, componentProperties, directives, component.name);
             return property;
         }),
         noCreatePermission: false,
@@ -208,6 +202,39 @@ function isPropertyObject(property: unknown): property is ComponentProperty {
     return property instanceof Object;
 }
 
+function parseConditionalChildProperties(
+    property: ComponentProperty,
+    componentProperties: ComponentProperty[],
+    directives: ComponentSet['components']['name']['directives'],
+    componentName: string,
+) {
+    if (!property.childProperties || property.childProperties.length === 0) return;
+
+    property.childProperties = property.childProperties.map((conditionalChildProperties) => ({
+        ...conditionalChildProperties,
+        properties: conditionalChildProperties.properties.map((componentProperty) => {
+            const childProperty = parseProperty(componentProperty, componentProperties);
+            validateDirective(childProperty.directiveKey, directives, componentName, childProperty.name);
+            return childProperty;
+        }),
+    }));
+}
+
+function validateDirective(
+    directiveKey: string | undefined,
+    directives: ComponentSet['components']['name']['directives'],
+    componentName: string,
+    propertyName: string,
+) {
+    if (directiveKey && !(directiveKey in directives)) {
+        throw new Error(
+            `Directive with key "${directiveKey}" is not found in component "${componentName}". Property name is "${
+                propertyName || '<anonymous property>'
+            }".`,
+        );
+    }
+}
+
 /**
  * Builds default content for when a component is created.
  * This goes through the component properties and looks for default values.
@@ -241,6 +268,29 @@ function buildComponentDefaultContent(
 ): void {
     for (const property of component.properties) {
         buildComponentPropertyDefaultContent(defaultComponentContent, component.name, property);
+        buildConditionalChildPropertiesDefaultContent(defaultComponentContent, component.name, property);
+    }
+}
+
+function buildConditionalChildPropertiesDefaultContent(
+    defaultComponentContent: ComponentSet['defaultComponentContent'],
+    componentName: string,
+    property: ComponentProperty,
+) {
+    if (!property.childProperties || property.childProperties.length === 0) return;
+
+    const childProperties = property.childProperties.find(
+        (candidate) => candidate.matchExpression === property.defaultValue,
+    );
+
+    if (!childProperties) return;
+
+    for (const childProperty of childProperties.properties) {
+        buildComponentPropertyDefaultContent(
+            defaultComponentContent,
+            componentName,
+            childProperty as ComponentProperty,
+        );
     }
 }
 

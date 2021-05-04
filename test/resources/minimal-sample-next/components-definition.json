@@ -9,7 +9,7 @@
             "name": "body",
             "label": "Body Label",
             "icon": "icons/component.svg",
-            "properties": ["selectProperty"],
+            "properties": ["selectProperty", "conditionalProperty"],
             "countStatistics": true
         },
         {
@@ -77,6 +77,27 @@
             "dataType": "styles"
         },
         {
+            "name": "childSelectProperty",
+            "label": "Select property sample",
+            "control": {
+                "type": "select",
+                "options": [
+                    {
+                        "caption": "Default"
+                    },
+                    {
+                        "caption": "Option 1",
+                        "value": "_option1"
+                    },
+                    {
+                        "caption": "Option 2",
+                        "value": "_option2"
+                    }
+                ]
+            },
+            "dataType": "styles"
+        },
+        {
             "name": "checkboxProperty",
             "label": "Checkbox property sample",
             "control": {
@@ -96,6 +117,51 @@
             },
             "defaultValue": -2,
             "dataType": "data"
+        },
+        {
+            "name": "conditionalProperty",
+            "label": "Conditional property sample",
+            "control": {
+                "type": "select",
+                "options": [
+                    {
+                        "caption": "No value"
+                    },
+                    {
+                        "caption": "Value 1",
+                        "value": "value1"
+                    },
+                    {
+                        "caption": "Value 2",
+                        "value": "value2"
+                    },
+                    {
+                        "caption": "Value 3",
+                        "value": "value3"
+                    }
+                ]
+            },
+            "dataType": "data",
+            "childProperties": [
+                {
+                    "matchType": "exact-value",
+                    "properties": ["childSelectProperty"]
+                },
+                {
+                    "matchType": "exact-value",
+                    "matchExpression": "value1",
+                    "properties": ["checkboxProperty"]
+                },
+                {
+                    "matchType": "exact-value",
+                    "matchExpression": "value2",
+                    "properties": [
+                        { "control": { "type": "header" }, "label": "Label" },
+                        "childSelectProperty",
+                        "sliderProperty"
+                    ]
+                }
+            ]
         }
     ],
 
