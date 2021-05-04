@@ -35,6 +35,48 @@ function labelProperty(description: string): { oneOf: JSONSchema7Definition[] } 
     };
 }
 
+const inlineComponentPropertyDefinitionOrReferenceList: { oneOf: JSONSchema7Definition[] } = {
+    oneOf: [
+        {
+            type: 'string',
+        },
+        {
+            type: 'object',
+            additionalProperties: false,
+            required: ['name', 'directiveKey'],
+            properties: {
+                name: {
+                    type: 'string',
+                    description: 'component property identifier',
+                    minLength: 3,
+                },
+                directiveKey: {
+                    type: 'string',
+                    description: 'Directive key for properties that use a directive data type',
+                },
+            },
+        },
+        {
+            type: 'object',
+            additionalProperties: false,
+            required: ['control', 'label'],
+            properties: {
+                control: {
+                    type: 'object',
+                    additionalProperties: false,
+                    required: ['type'],
+                    properties: {
+                        type: {
+                            enum: ['header'],
+                        },
+                    },
+                },
+                label: labelProperty('Header label'),
+            },
+        },
+    ],
+};
+
 const componentGroupDefinition: JSONSchema7Definition = {
     type: 'array',
     description: 'List of groups shown in component chooser dialog',
@@ -399,45 +441,30 @@ const componentPropertyDefinition: {
         type: 'string',
         description: 'Feature flag that should be present for the property to show up. Always show if not specified.',
     },
-};
-// Define childProperties after the definition of componentPropertyDefinition to avoid
-// a circular reference when creating a copy of componentPropertyDefinition
-// Currently childProperties is only supported one level deep.
-componentPropertyDefinition.childProperties = {
-    type: 'array',
-    description: 'List of conditional child properties',
-    items: {
-        type: 'object',
-        properties: {
-            matchType: {
-                type: 'string',
-                description: `Defines how to match the parent property's value`,
-                enum: ['exact-value'],
-            },
-            matchExpression: {
-                type: ['boolean', 'integer', 'string', 'number'],
-                description: `The expression to use to match the parent property's value`,
-            },
+    childProperties: {
+        type: 'array',
+        description: 'List of conditional child properties',
+        items: {
+            type: 'object',
             properties: {
-                type: 'array',
-                items: {
-                    oneOf: [
-                        {
-                            type: 'string',
-                        },
-                        {
-                            type: 'object',
-                            additionalProperties: false,
-                            // Use a copy to avoid a circular reference and a stack overflow on childProperties at run-time
-                            properties: { ...componentPropertyDefinition },
-                        },
-                    ],
+                matchType: {
+                    type: 'string',
+                    description: `Defines how to match the parent property's value`,
+                    enum: ['exact-value'],
                 },
-                description: 'names of properties this component can use',
+                matchExpression: {
+                    type: ['boolean', 'integer', 'string', 'number'],
+                    description: `The expression to use to match the parent property's value`,
+                },
+                properties: {
+                    type: 'array',
+                    items: inlineComponentPropertyDefinitionOrReferenceList,
+                    description: 'names of properties this component can use',
+                },
             },
+            additionalProperties: false,
+            required: ['matchType'],
         },
-        additionalProperties: false,
-        required: ['matchType'],
     },
 };
 
@@ -479,18 +506,7 @@ export const componentsDefinitionSchema_v1_7_x: JSONSchema7 = {
                     icon: { type: 'string', description: 'Icon shown for component in Digital Editor' },
                     properties: {
                         type: 'array',
-                        items: {
-                            oneOf: [
-                                {
-                                    type: 'string',
-                                },
-                                {
-                                    type: 'object',
-                                    additionalProperties: false,
-                                    properties: componentPropertyDefinition,
-                                },
-                            ],
-                        },
+                        items: inlineComponentPropertyDefinitionOrReferenceList,
                         description: 'names of properties this component can use',
                     },
 
