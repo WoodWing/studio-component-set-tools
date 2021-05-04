@@ -257,4 +257,28 @@ describe('Parser utils child properties', () => {
         // console.warn(JSON.stringify(componentSet, null, 4));
         expect(componentSet).toEqual(expectedComponentSet);
     });
+
+    it('should add default content of default child property when parent default is set', async () => {
+        const definition = cloneDeep(componentsDefinition);
+        definition.componentProperties[0].defaultValue = '_option1';
+        definition.componentProperties[1].defaultValue = '_valueWhenOn';
+        const componentSet = await parseDefinition(definition, getFileContent);
+
+        expect(componentSet.defaultComponentContent).toEqual({
+            body: { data: { conditionalProperty: 'value1' }, styles: { checkboxProperty: '_valueWhenOn' } },
+        });
+    });
+
+    it('should add default content of default child property when parent has no default', async () => {
+        const definition = cloneDeep(componentsDefinition);
+        definition.componentProperties[0].defaultValue = '_option1';
+        definition.componentProperties[1].defaultValue = '_valueWhenOn';
+        // Removing the defaultValue will match with the first option in the select which has no value
+        delete definition.componentProperties[2].defaultValue;
+        const componentSet = await parseDefinition(definition, getFileContent);
+
+        expect(componentSet.defaultComponentContent).toEqual({
+            body: { data: { selectProperty: '_option1' } },
+        });
+    });
 });

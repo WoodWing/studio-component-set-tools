@@ -268,6 +268,29 @@ function buildComponentDefaultContent(
 ): void {
     for (const property of component.properties) {
         buildComponentPropertyDefaultContent(defaultComponentContent, component.name, property);
+        buildConditionalChildPropertiesDefaultContent(defaultComponentContent, component.name, property);
+    }
+}
+
+function buildConditionalChildPropertiesDefaultContent(
+    defaultComponentContent: ComponentSet['defaultComponentContent'],
+    componentName: string,
+    property: ComponentProperty,
+) {
+    if (!property.childProperties || property.childProperties.length === 0) return;
+
+    const childProperties = property.childProperties.find(
+        (candidate) => candidate.matchExpression === property.defaultValue,
+    );
+
+    if (!childProperties) return;
+
+    for (const childProperty of childProperties.properties) {
+        buildComponentPropertyDefaultContent(
+            defaultComponentContent,
+            componentName,
+            childProperty as ComponentProperty,
+        );
     }
 }
 
