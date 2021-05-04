@@ -159,6 +159,12 @@ export interface ComponentProperty {
 
     /** Feature flag that should be present for the property to show up. Always show if not specified. */
     featureFlag?: string;
+
+    childProperties?: {
+        matchType: string;
+        matchExpression?: string | number | boolean;
+        properties: (string | ComponentProperty)[];
+    }[];
 }
 
 /** Component group definition. */

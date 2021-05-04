@@ -77,6 +77,27 @@
             "dataType": "styles"
         },
         {
+            "name": "childSelectProperty",
+            "label": "Select property sample",
+            "control": {
+                "type": "select",
+                "options": [
+                    {
+                        "caption": "Default"
+                    },
+                    {
+                        "caption": "Option 1",
+                        "value": "_option1"
+                    },
+                    {
+                        "caption": "Option 2",
+                        "value": "_option2"
+                    }
+                ]
+            },
+            "dataType": "styles"
+        },
+        {
             "name": "checkboxProperty",
             "label": "Checkbox property sample",
             "control": {
@@ -124,7 +145,7 @@
             "childProperties": [
                 {
                     "matchType": "exact-value",
-                    "properties": ["selectProperty"]
+                    "properties": ["childSelectProperty"]
                 },
                 {
                     "matchType": "exact-value",
@@ -134,7 +155,11 @@
                 {
                     "matchType": "exact-value",
                     "matchExpression": "value2",
-                    "properties": [{ "name": "header", "label": "Label" }, "selectProperty", "sliderProperty"]
+                    "properties": [
+                        { "control": { "type": "header" }, "label": "Label" },
+                        "childSelectProperty",
+                        "sliderProperty"
+                    ]
                 }
             ]
         }
