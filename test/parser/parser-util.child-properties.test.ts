@@ -254,7 +254,6 @@ describe('Parser utils child properties', () => {
 
     it('should parse the components definition', async () => {
         const componentSet = await parseDefinition(componentsDefinition, getFileContent);
-        // console.warn(JSON.stringify(componentSet, null, 4));
         expect(componentSet).toEqual(expectedComponentSet);
     });
 
