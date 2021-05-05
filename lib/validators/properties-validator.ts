@@ -26,6 +26,9 @@ export class PropertiesValidator extends Validator {
         const componentPropertyNames = new Set<string>();
 
         component.properties.forEach((property) => this.validateProperty(property, componentPropertyNames, component));
+        component.properties.forEach((property) =>
+            this.validateChildProperties(property, componentPropertyNames, component),
+        );
     }
 
     private validateProperty(
@@ -49,7 +52,7 @@ export class PropertiesValidator extends Validator {
         }
 
         if (componentPropertyNames.has(property.name)) {
-            this.error(`Component property "${property.name}" is not unique`);
+            this.error(`Component property "${property.name}" used in component "${component.name}" is not unique`);
         }
 
         componentPropertyNames.add(property.name);
@@ -87,5 +90,18 @@ export class PropertiesValidator extends Validator {
                 this.error(`Component properties "${property.name}" icon missing "${controlOption.icon}"`);
             }
         }
+    }
+
+    private validateChildProperties(
+        property: ComponentProperty,
+        componentPropertyNames: Set<string>,
+        component: ParsedComponent,
+    ) {
+        (property.childProperties || []).forEach((conditionalChildProperties) => {
+            const conditionalUsedPropertyNames = new Set(componentPropertyNames);
+            (conditionalChildProperties.properties as ComponentProperty[]).forEach((childProperty) => {
+                this.validateProperty(childProperty, conditionalUsedPropertyNames, component);
+            });
+        });
     }
 }
