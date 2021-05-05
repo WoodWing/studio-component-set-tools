@@ -98,9 +98,9 @@ export class PropertiesValidator extends Validator {
         component: ParsedComponent,
     ) {
         (property.childProperties || []).forEach((conditionalChildProperties) => {
-            const conditionalUsedProperyNames = new Set(componentPropertyNames);
+            const conditionalUsedPropertyNames = new Set(componentPropertyNames);
             (conditionalChildProperties.properties as ComponentProperty[]).forEach((childProperty) => {
-                this.validateProperty(childProperty, conditionalUsedProperyNames, component);
+                this.validateProperty(childProperty, conditionalUsedPropertyNames, component);
             });
         });
     }
