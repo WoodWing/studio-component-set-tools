@@ -8,12 +8,13 @@
 
 import * as path from 'path';
 import { Validator } from './validator';
-import { ComponentSet, ParsedComponent, ComponentProperty } from '../models';
+import { ComponentProperty, ComponentSet, ParsedComponent } from '../models';
+import type { ComponentPropertyControl } from '../models/component-property-controls';
 import * as semver from 'semver';
 
 const RESERVED = [/^parallax$/];
 
-const TYPES_ALLOWING_CHILD_PROPERTIES = [
+const TYPES_ALLOWING_CHILD_PROPERTIES: ComponentPropertyControl['type'][] = [
     'select',
     'checkbox',
     'radio',
