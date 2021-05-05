@@ -8,6 +8,11 @@
 
 import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
 
+const defaultValue: JSONSchema7Definition = {
+    type: ['integer', 'string', 'number', 'object'],
+    description: 'Default value of property upon component creation. By default the property value is not defined.',
+};
+
 function labelProperty(description: string): { oneOf: JSONSchema7Definition[] } {
     return {
         oneOf: [
@@ -43,7 +48,7 @@ const inlineComponentPropertyDefinitionOrReferenceList: { oneOf: JSONSchema7Defi
         {
             type: 'object',
             additionalProperties: false,
-            required: ['name', 'directiveKey'],
+            anyOf: [{ required: ['name', 'directiveKey'] }, { required: ['name', 'defaultValue'] }],
             properties: {
                 name: {
                     type: 'string',
@@ -54,6 +59,7 @@ const inlineComponentPropertyDefinitionOrReferenceList: { oneOf: JSONSchema7Defi
                     type: 'string',
                     description: 'Directive key for properties that use a directive data type',
                 },
+                defaultValue: defaultValue,
             },
         },
         {
@@ -418,20 +424,7 @@ const componentPropertyDefinition: {
         description:
             'Type of data being stored and how it is used. For directive data types it may also depend on the control type.',
     },
-    defaultValue: {
-        description: 'Default value of property upon component creation. By default the property value is not defined.',
-        oneOf: [
-            {
-                type: 'string',
-            },
-            {
-                type: 'object',
-            },
-            {
-                type: 'number',
-            },
-        ],
-    },
+    defaultValue: defaultValue,
     group: { type: 'string' },
     selector: {
         type: 'string',

@@ -157,6 +157,9 @@
                     "matchExpression": "value2",
                     "properties": [
                         { "control": { "type": "header" }, "label": "Label" },
+                        { "name": "sliderProperty", "defaultValue": 2 },
+                        { "name": "sliderProperty", "directiveKey": "text" },
+                        { "name": "sliderProperty", "defaultValue": 2, "directiveKey": "text" },
                         "childSelectProperty",
                         "sliderProperty"
                     ]
