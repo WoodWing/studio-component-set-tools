@@ -33,6 +33,12 @@ describe('PropertiesValidator', () => {
                             },
                             dataType: 'doc-media',
                         },
+                        {
+                            control: {
+                                type: 'header',
+                            },
+                            label: 'header-label',
+                        },
                     ],
                 },
                 // Add another component with same property to test uniqueness validation passes correctly
@@ -104,6 +110,13 @@ describe('PropertiesValidator', () => {
             );
             expect(error).toHaveBeenCalledWith(
                 `Property in component "c1" must have a name when using control type "media-properties"`,
+            );
+        });
+        it('should not pass if a header has a dataType', () => {
+            definition.components.c1.properties[3].dataType = 'data';
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(
+                `Nameless property with control type "header" and label "header-label" in component "c1" cannot have a dataType`,
             );
         });
     });
