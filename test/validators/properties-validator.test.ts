@@ -126,7 +126,7 @@ describe('PropertiesValidator', () => {
 
         it('should pass if there are multiple nameless properties of control type "header" in same component', () => {
             const { validator, errorSpy } = createPropertiesValidator({
-                version: '1.4.0',
+                version: '1.5.0',
                 properties: [
                     textProperty,
                     { label: 'Header', control: { type: 'header' } },
