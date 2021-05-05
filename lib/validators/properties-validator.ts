@@ -13,6 +13,18 @@ import * as semver from 'semver';
 
 const RESERVED = [/^parallax$/];
 
+const TYPES_ALLOWING_CHILD_PROPERTIES = [
+    'select',
+    'checkbox',
+    'radio',
+    'text',
+    'textarea',
+    'url',
+    'time',
+    'colorPicker',
+    'slider',
+];
+
 export class PropertiesValidator extends Validator {
     constructor(error: (errorMessage: string) => false, definition: ComponentSet, protected filePaths: Set<string>) {
         super(error, definition);
@@ -97,7 +109,15 @@ export class PropertiesValidator extends Validator {
         componentPropertyNames: Set<string>,
         component: ParsedComponent,
     ) {
-        (property.childProperties || []).forEach((conditionalChildProperties) => {
+        if (!property.childProperties) return;
+
+        if (!TYPES_ALLOWING_CHILD_PROPERTIES.includes(property.control.type)) {
+            this.error(
+                `Property in component "${component.name}" with control type "${property.control.type}" cannot contain child properties`,
+            );
+        }
+
+        property.childProperties.forEach((conditionalChildProperties) => {
             const conditionalUsedPropertyNames = new Set(componentPropertyNames);
             (conditionalChildProperties.properties as ComponentProperty[]).forEach((childProperty) => {
                 this.validateProperty(childProperty, conditionalUsedPropertyNames, component);

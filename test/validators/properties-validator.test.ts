@@ -267,5 +267,23 @@ describe('PropertiesValidator', () => {
                 `Nameless property with control type "header" and label "header-label" in component "c1" cannot have a dataType`,
             );
         });
+
+        it('should not pass if conditional properties are in an unsupported type of property', () => {
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [
+                    {
+                        ...createConditionalProperty([textProperty]),
+                        control: {
+                            type: 'fitting',
+                        },
+                    },
+                ],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(
+                `Property in component "c1" with control type "fitting" cannot contain child properties`,
+            );
+        });
     });
 });
