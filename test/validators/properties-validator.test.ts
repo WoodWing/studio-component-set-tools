@@ -30,6 +30,20 @@ describe('PropertiesValidator', () => {
         label: 'header-label',
     } as any;
 
+    function createConditionalProperty(children: any[]) {
+        return {
+            name: 'conditionalProperty',
+            control: {
+                type: 'text',
+            },
+            childProperties: [
+                {
+                    properties: children,
+                },
+            ],
+        };
+    }
+
     function createPropertiesValidator(params?: { version?: string; properties: any[] }) {
         const definition = {
             version: params?.version ?? '1.0.0',
@@ -67,7 +81,9 @@ describe('PropertiesValidator', () => {
                 properties: [{ ...cloneDeep(textProperty), name: 'radioProperty' }, radioProperty],
             });
             validator.validate();
-            expect(errorSpy).toHaveBeenCalledWith(`Component property "radioProperty" is not unique`);
+            expect(errorSpy).toHaveBeenCalledWith(
+                `Component property "radioProperty" used in component "c1" is not unique`,
+            );
         });
 
         it('should not pass if reserved word is used as a name', () => {
@@ -139,6 +155,106 @@ describe('PropertiesValidator', () => {
         it('should not pass if a header has a dataType', () => {
             const { validator, errorSpy } = createPropertiesValidator({
                 properties: [{ ...cloneDeep(headerProperty), dataType: 'data' }],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(
+                `Nameless property with control type "header" and label "header-label" in component "c1" cannot have a dataType`,
+            );
+        });
+
+        it('should pass on valid conditional property definition (uses same property definition in other component)', () => {
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [createConditionalProperty([textProperty])],
+            });
+            validator.validate();
+            expect(errorSpy).not.toHaveBeenCalled();
+        });
+
+        it('should pass when using the same conditional property definition in other conditions', () => {
+            const conditionalProperty = createConditionalProperty([textProperty]);
+            conditionalProperty.childProperties.push({ properties: [textProperty] });
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [conditionalProperty],
+            });
+            validator.validate();
+            expect(errorSpy).not.toHaveBeenCalled();
+        });
+
+        it('should not pass when using property with the same name in the conditional property definition as the parent', () => {
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [textProperty, createConditionalProperty([textProperty])],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(
+                `Component property "textProperty" used in component "c1" is not unique`,
+            );
+        });
+
+        it('should not pass when using property with the same name in the conditional property definition', () => {
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [
+                    createConditionalProperty([{ ...cloneDeep(textProperty), name: 'radioProperty' }, radioProperty]),
+                ],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(
+                `Component property "radioProperty" used in component "c1" is not unique`,
+            );
+        });
+
+        it('should not pass if a conditional child property has no icon file', () => {
+            const otherRadioProperty = cloneDeep(radioProperty) as any;
+            otherRadioProperty.control.options[0].icon = 'pathU';
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [createConditionalProperty([otherRadioProperty])],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(`Component properties "radioProperty" icon missing "pathU"`);
+        });
+
+        it('should pass if there are multiple nameless properties of control type "header" in same component', () => {
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [
+                    createConditionalProperty([
+                        textProperty,
+                        { label: 'Header', control: { type: 'header' } },
+                        { label: 'Another Header', control: { type: 'header' } },
+                    ]),
+                ],
+            });
+            validator.validate();
+            expect(errorSpy).not.toHaveBeenCalled();
+        });
+
+        it('should not pass if conditional child properties that save data have no name', () => {
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [
+                    createConditionalProperty([
+                        { ...cloneDeep(textProperty), name: undefined },
+                        { ...cloneDeep(mediaProperty), name: undefined },
+                    ]),
+                ],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(
+                `Property in component "c1" must have a name when using control type "text"`,
+            );
+            expect(errorSpy).toHaveBeenCalledWith(
+                `Property in component "c1" must have a name when using control type "media-properties"`,
+            );
+        });
+
+        it('should not pass if conditional child header has a dataType', () => {
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [createConditionalProperty([{ ...cloneDeep(headerProperty), dataType: 'data' }])],
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
