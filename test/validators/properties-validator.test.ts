@@ -38,6 +38,8 @@ describe('PropertiesValidator', () => {
             },
             childProperties: [
                 {
+                    matchType: 'exact-value',
+                    matchExpression: 'some arbitrary value',
                     properties: children,
                 },
             ],
