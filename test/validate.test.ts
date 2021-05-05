@@ -1,5 +1,5 @@
 import { validateFolder, getValidators, validatePackageSize } from '../lib/validate';
-import * as colors from 'colors/safe';
+import * as chalk from 'chalk';
 
 describe('validateFolder', () => {
     it('should pass on minimal sample', async () => {
@@ -31,7 +31,7 @@ describe('validateFolder', () => {
 
         expect(await validateFolder('./test/resources/minimal-sample-invalid-comp-property')).toBe(false);
         expect(global.console.log).toHaveBeenCalledWith(
-            colors.red(`/components/0 should NOT have additional properties
+            chalk.redBright(`/components/0 should NOT have additional properties
 {
     "additionalProperty": "invalid-component-property"
 }
@@ -51,7 +51,7 @@ components-definition.json - line 7, column 8:
 
         expect(await validateFolder('./test/resources/missing-components-definition-sample')).toBe(false);
         expect(global.console.log).toHaveBeenCalledWith(
-            colors.red('Components definition file "components-definition.json" is missing'),
+            chalk.redBright('Components definition file "components-definition.json" is missing'),
         );
     });
 
