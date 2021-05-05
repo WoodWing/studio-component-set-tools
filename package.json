@@ -57,7 +57,7 @@
   "dependencies": {
     "ajv": "^7.0.4",
     "ajv-formats": "^1.5.1",
-    "colors": "^1.4.0",
+    "chalk": "~4.1.1",
     "htmlparser2": "^3.10.0",
     "json-source-map": "^0.6.1",
     "lodash.clonedeep": "^4.5.0",
