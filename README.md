@@ -178,6 +178,12 @@ In case you have never published a npm module before, make sure to read the offi
     npm version patch -m "Bump validator version to %s"
     ```
 
+    Minor version:
+
+    ```bash
+    npm version minor -m "Bump validator version to %s"
+    ```
+
     This will create a commit and tag for the version as well.
 
 1. Push and create a PR from the branch.
