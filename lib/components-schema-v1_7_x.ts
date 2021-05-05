@@ -47,7 +47,7 @@ const inlineComponentPropertyDefinitionOrReferenceList: { oneOf: JSONSchema7Defi
             properties: {
                 name: {
                     type: 'string',
-                    description: 'component property identifier',
+                    description: 'Component property identifier',
                     minLength: 3,
                 },
                 directiveKey: {
@@ -449,17 +449,17 @@ const componentPropertyDefinition: {
             properties: {
                 matchType: {
                     type: 'string',
-                    description: `Defines how to match the parent property's value`,
+                    description: `Defines how to match the value of the parent property`,
                     enum: ['exact-value'],
                 },
                 matchExpression: {
                     type: ['boolean', 'integer', 'string', 'number'],
-                    description: `The expression to use to match the parent property's value`,
+                    description: `The expression to use to match the value of the parent property`,
                 },
                 properties: {
                     type: 'array',
                     items: inlineComponentPropertyDefinitionOrReferenceList,
-                    description: 'names of properties this component can use',
+                    description: 'Names of properties this component can use',
                 },
             },
             additionalProperties: false,
@@ -507,7 +507,7 @@ export const componentsDefinitionSchema_v1_7_x: JSONSchema7 = {
                     properties: {
                         type: 'array',
                         items: inlineComponentPropertyDefinitionOrReferenceList,
-                        description: 'names of properties this component can use',
+                        description: 'Names of properties this component can use',
                     },
 
                     selectionMethod: {
