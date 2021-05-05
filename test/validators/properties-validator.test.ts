@@ -175,7 +175,11 @@ describe('PropertiesValidator', () => {
 
         it('should pass when using the same conditional property definition in other conditions', () => {
             const conditionalProperty = createConditionalProperty([textProperty]);
-            conditionalProperty.childProperties.push({ properties: [textProperty] });
+            conditionalProperty.childProperties.push({
+                matchType: 'exact-value',
+                matchExpression: 'some arbitrary value',
+                properties: [textProperty],
+            });
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.7.0',
                 properties: [conditionalProperty],
