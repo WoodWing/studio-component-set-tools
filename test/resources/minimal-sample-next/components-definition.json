@@ -119,30 +119,6 @@
             "dataType": "data"
         },
         {
-            "name": "sliderProperty2",
-            "label": "Slider property sample 2",
-            "control": {
-                "type": "slider",
-                "minValue": -4,
-                "maxValue": 5,
-                "stepSize": 0.5
-            },
-            "defaultValue": -2,
-            "dataType": "data"
-        },
-        {
-            "name": "sliderProperty3",
-            "label": "Slider property sample 3",
-            "control": {
-                "type": "slider",
-                "minValue": -4,
-                "maxValue": 5,
-                "stepSize": 0.5
-            },
-            "defaultValue": -2,
-            "dataType": "data"
-        },
-        {
             "name": "conditionalProperty",
             "label": "Conditional property sample",
             "control": {
@@ -181,9 +157,7 @@
                     "matchExpression": "value2",
                     "properties": [
                         { "control": { "type": "header" }, "label": "Label" },
-                        { "name": "sliderProperty", "defaultValue": 2 },
-                        { "name": "sliderProperty2", "directiveKey": "text" },
-                        { "name": "sliderProperty3", "defaultValue": 2, "directiveKey": "text" },
+                        { "name": "sliderProperty", "directiveKey": "text" },
                         "childSelectProperty",
                         "checkboxProperty"
                     ]
