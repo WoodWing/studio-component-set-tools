@@ -29,6 +29,13 @@ describe('PropertiesValidator', () => {
         },
         label: 'header-label',
     } as any;
+    const checkboxProperty: ComponentProperty = {
+        name: 'checkboxProperty',
+        control: {
+            type: 'checkbox',
+            value: true,
+        },
+    } as any;
 
     function createConditionalProperty(children: any[]) {
         return {
@@ -283,6 +290,30 @@ describe('PropertiesValidator', () => {
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
                 `Property in component "c1" with control type "fitting" cannot contain child properties`,
+            );
+        });
+
+        it('should pass if checkbox property with "data" dataType is used with boolean value', () => {
+            const prop = cloneDeep(checkboxProperty);
+            prop.dataType = 'data';
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [prop],
+            });
+            validator.validate();
+            expect(errorSpy).not.toHaveBeenCalled();
+        });
+
+        it('should fail if checkbox property with non "data" dataType is used with boolean value', () => {
+            const prop = cloneDeep(checkboxProperty);
+            prop.dataType = 'styles';
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.7.0',
+                properties: [prop],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(
+                `Checkbox property with boolean value can only be used for dataType "data"`,
             );
         });
     });

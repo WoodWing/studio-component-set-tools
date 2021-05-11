@@ -52,6 +52,7 @@ export class PropertiesValidator extends Validator {
         this.validateReservedPropertyName(property);
         this.validatePropertyName(property, componentPropertyNames, component);
         this.validateRadioPropertyIcons(property);
+        this.validateCheckBoxValue(property);
     }
 
     private validatePropertyName(
@@ -102,6 +103,15 @@ export class PropertiesValidator extends Validator {
             if (!this.filePaths.has(path.normalize(controlOption.icon))) {
                 this.error(`Component properties "${property.name}" icon missing "${controlOption.icon}"`);
             }
+        }
+    }
+
+    private validateCheckBoxValue(property: ComponentProperty) {
+        if (property.control.type !== 'checkbox') {
+            return;
+        }
+        if (typeof property.control.value === 'boolean' && property.dataType !== 'data') {
+            this.error(`Checkbox property with boolean value can only be used with dataType "data"`);
         }
     }
 
