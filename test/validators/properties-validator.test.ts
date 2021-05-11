@@ -293,7 +293,7 @@ describe('PropertiesValidator', () => {
             );
         });
 
-        it('should pass if checkbox property with "data" dataType is used with boolean value', () => {
+        it('should pass if a checkbox with dataType "data" is used with a boolean value', () => {
             const prop = cloneDeep(checkboxProperty);
             prop.dataType = 'data';
             const { validator, errorSpy } = createPropertiesValidator({
@@ -304,7 +304,7 @@ describe('PropertiesValidator', () => {
             expect(errorSpy).not.toHaveBeenCalled();
         });
 
-        it('should fail if checkbox property with non "data" dataType is used with boolean value', () => {
+        it('should not pass if a checkbox with dataType other than "data" is used with a boolean value', () => {
             const prop = cloneDeep(checkboxProperty);
             prop.dataType = 'styles';
             const { validator, errorSpy } = createPropertiesValidator({
@@ -313,7 +313,7 @@ describe('PropertiesValidator', () => {
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
-                `Checkbox property with boolean value can only be used with dataType "data"`,
+                `Checkbox property "checkboxProperty" cannot have a boolean value for dataType "styles", boolean values are only allowed for dataType "data"`,
             );
         });
     });

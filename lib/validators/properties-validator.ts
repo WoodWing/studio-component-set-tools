@@ -111,7 +111,9 @@ export class PropertiesValidator extends Validator {
             return;
         }
         if (typeof property.control.value === 'boolean' && property.dataType !== 'data') {
-            this.error(`Checkbox property with boolean value can only be used with dataType "data"`);
+            this.error(
+                `Checkbox property "${property.name}" cannot have a boolean value for dataType "${property.dataType}", boolean values are only allowed for dataType "data"`,
+            );
         }
     }
 
