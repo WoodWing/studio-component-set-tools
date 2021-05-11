@@ -313,7 +313,7 @@ describe('PropertiesValidator', () => {
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
-                `Checkbox property with boolean value can only be used for dataType "data"`,
+                `Checkbox property with boolean value can only be used with dataType "data"`,
             );
         });
     });
