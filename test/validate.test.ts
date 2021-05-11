@@ -22,7 +22,11 @@ describe('validateFolder', () => {
         expect(await validateFolder('./test/resources/minimal-sample-1_6_x')).toBe(true);
     });
 
-    it('should pass on minimal sample for version 1.7.0-next', async () => {
+    it('should pass on minimal sample for version 1.7', async () => {
+        expect(await validateFolder('./test/resources/minimal-sample-1_7_x')).toBe(true);
+    });
+
+    it('should pass on minimal sample for version 1.8.0-next', async () => {
         expect(await validateFolder('./test/resources/minimal-sample-next')).toBe(true);
     });
 
@@ -111,8 +115,13 @@ describe('getValidators', () => {
         expect(validators && validators.length).toEqual(28);
     });
 
-    it('should return amount of validators for version >= 1.7.0-next', () => {
-        const validators = getValidators('1.7.0-next', <any>null, <any>null, <any>null, <any>null, <any>null);
+    it('should return amount of validators for version >= 1.7.0', () => {
+        const validators = getValidators('1.7.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        expect(validators && validators.length).toEqual(28);
+    });
+
+    it('should return amount of validators for version >= 1.8.0-next', () => {
+        const validators = getValidators('1.8.0-next', <any>null, <any>null, <any>null, <any>null, <any>null);
         expect(validators && validators.length).toEqual(28);
     });
 });

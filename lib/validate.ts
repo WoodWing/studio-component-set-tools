@@ -14,6 +14,7 @@ import { componentsDefinitionSchema_v1_4_x } from './components-schema-v1_4_x';
 import { componentsDefinitionSchema_v1_5_x } from './components-schema-v1_5_x';
 import { componentsDefinitionSchema_v1_6_x } from './components-schema-v1_6_x';
 import { componentsDefinitionSchema_v1_7_x } from './components-schema-v1_7_x';
+import { componentsDefinitionSchema_v1_8_x } from './components-schema-v1_8_x';
 
 import { parseDefinition } from './parser';
 import {
@@ -264,8 +265,10 @@ function getValidationSchemaSource(version: string): Schema | null {
         return componentsDefinitionSchema_v1_5_x;
     } else if (semver.satisfies(version, '1.6.x', semVerOptions)) {
         return componentsDefinitionSchema_v1_6_x;
-    } else if (semver.satisfies(version, '1.7.0-next', semVerOptions)) {
+    } else if (semver.satisfies(version, '1.7.x', semVerOptions)) {
         return componentsDefinitionSchema_v1_7_x;
+    } else if (semver.satisfies(version, '1.8.0-next', semVerOptions)) {
+        return componentsDefinitionSchema_v1_8_x;
     }
 
     return null;
