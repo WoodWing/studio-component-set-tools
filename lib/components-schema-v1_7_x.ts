@@ -40,48 +40,54 @@ function labelProperty(description: string): { oneOf: JSONSchema7Definition[] } 
     };
 }
 
-const inlineComponentPropertyDefinitionOrReferenceList: { oneOf: JSONSchema7Definition[] } = {
-    oneOf: [
-        {
-            type: 'string',
-        },
-        {
-            type: 'object',
-            additionalProperties: false,
-            anyOf: [{ required: ['name', 'directiveKey'] }, { required: ['name', 'defaultValue'] }],
-            properties: {
-                name: {
-                    type: 'string',
-                    description: 'Component property identifier',
-                    minLength: 3,
-                },
-                directiveKey: {
-                    type: 'string',
-                    description: 'Directive key for properties that use a directive data type',
-                },
-                defaultValue: defaultValue,
+function inlineComponentPropertyDefinitionOrReferenceList(
+    isChildProperty: boolean,
+): { oneOf: JSONSchema7Definition[] } {
+    return {
+        oneOf: [
+            {
+                type: 'string',
             },
-        },
-        {
-            type: 'object',
-            additionalProperties: false,
-            required: ['control', 'label'],
-            properties: {
-                control: {
-                    type: 'object',
-                    additionalProperties: false,
-                    required: ['type'],
-                    properties: {
-                        type: {
-                            enum: ['header'],
+            {
+                type: 'object',
+                additionalProperties: false,
+                anyOf: [{ required: ['name', 'directiveKey'] }].concat(
+                    !isChildProperty ? [{ required: ['name', 'defaultValue'] }] : [],
+                ),
+                properties: {
+                    name: {
+                        type: 'string',
+                        description: 'Component property identifier',
+                        minLength: 3,
+                    },
+                    directiveKey: {
+                        type: 'string',
+                        description: 'Directive key for properties that use a directive data type',
+                    },
+                    defaultValue: defaultValue,
+                },
+            },
+            {
+                type: 'object',
+                additionalProperties: false,
+                required: ['control', 'label'],
+                properties: {
+                    control: {
+                        type: 'object',
+                        additionalProperties: false,
+                        required: ['type'],
+                        properties: {
+                            type: {
+                                enum: ['header'],
+                            },
                         },
                     },
+                    label: labelProperty('Header label'),
                 },
-                label: labelProperty('Header label'),
             },
-        },
-    ],
-};
+        ],
+    };
+}
 
 const componentGroupDefinition: JSONSchema7Definition = {
     type: 'array',
@@ -451,7 +457,7 @@ const componentPropertyDefinition: {
                 },
                 properties: {
                     type: 'array',
-                    items: inlineComponentPropertyDefinitionOrReferenceList,
+                    items: inlineComponentPropertyDefinitionOrReferenceList(true),
                     description: 'Names of properties this component can use',
                 },
             },
@@ -499,7 +505,7 @@ export const componentsDefinitionSchema_v1_7_x: JSONSchema7 = {
                     icon: { type: 'string', description: 'Icon shown for component in Digital Editor' },
                     properties: {
                         type: 'array',
-                        items: inlineComponentPropertyDefinitionOrReferenceList,
+                        items: inlineComponentPropertyDefinitionOrReferenceList(false),
                         description: 'Names of properties this component can use',
                     },
 
