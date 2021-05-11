@@ -191,7 +191,7 @@ const componentPropertyDefinition: {
                         enum: ['checkbox'],
                         description: 'Checkbox toggling between value and no value',
                     },
-                    value: { type: 'string' },
+                    value: { type: ['boolean', 'string'] },
                 },
             },
             {
