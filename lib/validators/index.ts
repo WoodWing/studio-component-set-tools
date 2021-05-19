@@ -27,4 +27,5 @@ export * from './scripts-validator';
 export * from './slides-validator';
 export * from './strip-styling-on-paste-validator';
 export * from './unit-type-validator';
+export * from './custom-styles-validator';
 export * from './validator';
