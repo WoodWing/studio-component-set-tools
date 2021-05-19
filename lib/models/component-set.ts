@@ -4,6 +4,7 @@ import {
     ComponentGroup,
     ComponentConversionRules,
     ComponentsDefinitionShortcuts,
+    CustomStyle,
 } from './components-definition';
 
 /**
@@ -71,6 +72,11 @@ export interface ComponentSet {
      * List of scripts to be included for html rendition of article
      */
     scripts?: string[];
+
+    /**
+     * List of custom styles definitions which can be configured in the look and feel style of an article
+     */
+    customStyles?: CustomStyle[];
 }
 
 export interface ParsedComponent extends Component {
