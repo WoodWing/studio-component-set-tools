@@ -8,10 +8,7 @@
             "name": "body",
             "label": "Body Label",
             "icon": "icons/component.svg",
-            "properties": [
-                "selectProperty",
-                "conditionalProperty"
-            ],
+            "properties": ["selectProperty", "conditionalProperty"],
             "countStatistics": true
         },
         {
@@ -20,9 +17,7 @@
                 "key": "INTRO_KEY"
             },
             "icon": "icons/component.svg",
-            "properties": [
-                "checkboxProperty"
-            ],
+            "properties": ["checkboxProperty"],
             "directiveOptions": {
                 "text": {
                     "stripStylingOnPaste": false
@@ -45,18 +40,14 @@
         {
             "label": "Minimal",
             "name": "minimal",
-            "components": [
-                "body"
-            ]
+            "components": ["body"]
         },
         {
             "label": {
                 "key": "MINIMAL"
             },
             "name": "minimal2",
-            "components": [
-                "body"
-            ]
+            "components": ["body"]
         }
     ],
     "componentProperties": [
@@ -155,16 +146,12 @@
             "childProperties": [
                 {
                     "matchType": "exact-value",
-                    "properties": [
-                        "childSelectProperty"
-                    ]
+                    "properties": ["childSelectProperty"]
                 },
                 {
                     "matchType": "exact-value",
                     "matchExpression": "value1",
-                    "properties": [
-                        "checkboxProperty"
-                    ]
+                    "properties": ["checkboxProperty"]
                 },
                 {
                     "matchType": "exact-value",
