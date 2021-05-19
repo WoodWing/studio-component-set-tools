@@ -248,6 +248,7 @@ describe('Parser utils child properties', () => {
             },
             conversionRules: {},
             scripts: [],
+            customStyles: [],
             shortcuts: {},
         };
     });

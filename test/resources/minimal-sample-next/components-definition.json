@@ -203,7 +203,7 @@
             "label": "Test Style 2",
             "key": "test-STYLE-2",
             "type": "JSON",
-            "default": "./path-to/test-style.json"
+            "default": "./custom-styles/test-style.json"
         }
     ]
 }
