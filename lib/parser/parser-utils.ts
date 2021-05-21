@@ -45,6 +45,7 @@ export async function parseDefinition(
         conversionRules: componentsDefinition.conversionRules,
         shortcuts: componentsDefinition.shortcuts,
         scripts: componentsDefinition.scripts || [],
+        customStyles: componentsDefinition.customStyles || [],
     };
     const rendition = ComponentRendition.HTML;
     // copy source because renditions may be added to the components

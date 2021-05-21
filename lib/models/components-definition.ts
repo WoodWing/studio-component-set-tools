@@ -38,6 +38,9 @@ export interface ComponentsDefinition {
 
     /** List of scripts to be included for html rendition of article */
     scripts?: string[];
+
+    /** List of custom styles definitions which can be configured in the look and feel style of an article */
+    customStyles?: CustomStyle[];
 }
 
 export interface Component {
@@ -209,4 +212,11 @@ export interface ComponentConversionRule {
 export interface ComponentsDefinitionShortcuts {
     /** List of components for conversion using the shortcuts */
     conversionComponents: string[];
+}
+
+export interface CustomStyle {
+    label: string;
+    key: string;
+    type: 'JSON';
+    default?: string;
 }

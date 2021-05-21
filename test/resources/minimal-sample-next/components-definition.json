@@ -3,7 +3,6 @@
     "description": "Minimal components package sample touching most of the available options.",
     "version": "1.8.0-next",
     "defaultComponentOnEnter": "body",
-
     "components": [
         {
             "name": "body",
@@ -31,11 +30,12 @@
             "selectionMethod": "handle",
             "showToolbar": "always",
             "allowNesting": "one-level",
-            "label": { "key": "COMPONENT_CONTAINER_LABEL" },
+            "label": {
+                "key": "COMPONENT_CONTAINER_LABEL"
+            },
             "properties": []
         }
     ],
-
     "groups": [
         {
             "label": "Minimal",
@@ -43,12 +43,13 @@
             "components": ["body"]
         },
         {
-            "label": { "key": "MINIMAL" },
+            "label": {
+                "key": "MINIMAL"
+            },
             "name": "minimal2",
             "components": ["body"]
         }
     ],
-
     "componentProperties": [
         {
             "name": "selectProperty",
@@ -156,8 +157,16 @@
                     "matchType": "exact-value",
                     "matchExpression": "value2",
                     "properties": [
-                        { "control": { "type": "header" }, "label": "Label" },
-                        { "name": "sliderProperty", "directiveKey": "text" },
+                        {
+                            "control": {
+                                "type": "header"
+                            },
+                            "label": "Label"
+                        },
+                        {
+                            "name": "sliderProperty",
+                            "directiveKey": "text"
+                        },
                         "childSelectProperty",
                         "checkboxProperty"
                     ]
@@ -165,12 +174,23 @@
             ]
         }
     ],
-
     "conversionRules": {
         "body": {
             "intro": "auto"
         }
     },
-
-    "scripts": []
+    "scripts": [],
+    "customStyles": [
+        {
+            "label": "Test Style",
+            "key": "test-style",
+            "type": "JSON"
+        },
+        {
+            "label": "Test Style 2",
+            "key": "test-STYLE-2",
+            "type": "JSON",
+            "default": "./custom-styles/test-style.json"
+        }
+    ]
 }

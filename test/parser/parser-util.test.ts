@@ -298,6 +298,7 @@ describe('Parser utils', () => {
                         },
                     },
                     scripts: [],
+                    customStyles: [],
                     shortcuts: { conversionComponents: ['shortcuts'] },
                 };
             });

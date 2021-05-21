@@ -665,6 +665,27 @@ export const componentsDefinitionSchema_v1_8_x: JSONSchema7 = {
                 type: 'string',
             },
         },
+
+        customStyles: {
+            type: 'array',
+            description:
+                'List of custom styles definitions which can be configured in the look and feel style of an article',
+            items: {
+                type: 'object',
+                properties: {
+                    label: { type: 'string', minLength: 1, maxLength: 20 },
+                    key: {
+                        type: 'string',
+                        minLength: 1,
+                        maxLength: 20,
+                        pattern: '^[a-zA-Z0-9-_]*$',
+                    },
+                    type: { enum: ['JSON'] },
+                    default: { type: 'string' },
+                },
+                required: ['label', 'key', 'type'],
+            },
+        },
     },
 
     required: [

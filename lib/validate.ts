@@ -29,6 +29,7 @@ import {
     ComponentsValidator,
     ConversionRulesValidator,
     ConversionShortcutsValidator,
+    CustomStylesValidator,
     DefaultComponentOnEnterOverrideValidator,
     DefaultComponentOnEnterValidator,
     DefaultValuesValidator,
@@ -311,6 +312,7 @@ export function getValidators(
             new UnitTypeValidator(error, componentSet),
             new LocalizationValidator(error, componentSet, filePaths, getFileContent),
             new PackageValidator(error, componentSet, filePaths, getFileSize),
+            new CustomStylesValidator(error, componentSet, filePaths),
         );
     }
     if (semver.satisfies(version, '>=1.1.0', semVerOptions)) {
