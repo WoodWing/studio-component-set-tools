@@ -16,13 +16,6 @@ describe('CustomStylesValidator', () => {
 
     describe('validate', () => {
         it('should do nothing when no custom styles are given', async () => {
-            delete definition.customStyles;
-            validator = new CustomStylesValidator(error, definition, new Set());
-            await validator.validate();
-            expect(error).not.toHaveBeenCalled();
-        });
-
-        it('should do nothing when no custom styles are given', async () => {
             validator = new CustomStylesValidator(error, definition, new Set());
             await validator.validate();
             expect(error).not.toHaveBeenCalled();
@@ -39,17 +32,17 @@ describe('CustomStylesValidator', () => {
             expect(error).not.toHaveBeenCalled();
         });
 
-        it(`should throw now errors when the default file is available`, async () => {
+        it(`should throw no errors when the default file is available`, async () => {
             definition.customStyles.push({
                 key: 'test-style',
                 label: 'Test Style',
                 type: 'JSON',
-                default: './styles/default-custom-styles/existing-file.json',
+                default: './defaultCustomStyles/existing-file.json',
             });
             validator = new CustomStylesValidator(
                 error,
                 definition,
-                new Set([path.normalize('styles/default-custom-styles/existing-file.json')]),
+                new Set([path.normalize('defaultCustomStyles/existing-file.json')]),
             );
             await validator.validate();
             expect(error).not.toHaveBeenCalled();
