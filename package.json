@@ -31,7 +31,6 @@
     "format:check": "prettier -l '**/*'"
   },
   "devDependencies": {
-    "@types/htmlparser2": "3.7.31",
     "@types/jest": "^26.0.0",
     "@types/json-schema": "~7.0.7",
     "@types/lodash.clonedeep": "^4.5.6",
@@ -58,7 +57,7 @@
     "ajv": "^7.0.4",
     "ajv-formats": "^1.5.1",
     "chalk": "~4.1.1",
-    "htmlparser2": "^3.10.0",
+    "htmlparser2": "^6.1.0",
     "json-source-map": "^0.6.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.2",
