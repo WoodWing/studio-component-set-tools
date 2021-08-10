@@ -133,6 +133,10 @@ const componentPropertyDefinition: {
                         enum: ['select'],
                         description: 'Dropdown with fixed number of options',
                     },
+                    dynamicCaptions: {
+                        type: 'boolean',
+                        description: 'The option captions can be customized',
+                    },
                     options: {
                         type: 'array',
                         minItems: 1,

@@ -124,6 +124,7 @@
             "label": "Conditional property sample",
             "control": {
                 "type": "select",
+                "dynamicCaptions": true,
                 "options": [
                     {
                         "caption": "No value"
