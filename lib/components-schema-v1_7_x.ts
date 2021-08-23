@@ -40,9 +40,9 @@ function labelProperty(description: string): { oneOf: JSONSchema7Definition[] } 
     };
 }
 
-function inlineComponentPropertyDefinitionOrReferenceList(
-    isChildProperty: boolean,
-): { oneOf: JSONSchema7Definition[] } {
+function inlineComponentPropertyDefinitionOrReferenceList(isChildProperty: boolean): {
+    oneOf: JSONSchema7Definition[];
+} {
     return {
         oneOf: [
             {

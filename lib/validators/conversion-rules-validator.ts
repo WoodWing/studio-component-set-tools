@@ -41,8 +41,8 @@ export class ConversionRulesValidator extends Validator {
                         this.error(`Conversion rule references to non existing directive "${srcDirectiveKey}"`);
                         continue; // stop checking
                     }
-                    const srcDirectiveType = this.componentSet.components[srcComponentName].directives[srcDirectiveKey]
-                        .type;
+                    const srcDirectiveType =
+                        this.componentSet.components[srcComponentName].directives[srcDirectiveKey].type;
                     if (![DirectiveType.container, DirectiveType.slideshow].some((type) => type === srcDirectiveType)) {
                         this.error(
                             `Conversion rule references to a directive "${srcDirectiveKey}" which must be "slideshow" or "container"`,
@@ -56,8 +56,8 @@ export class ConversionRulesValidator extends Validator {
                         this.error(`Conversion rule references to non existing directive "${dstDirectiveKey}"`);
                         continue; // stop checking
                     }
-                    const dstDirectiveType = this.componentSet.components[dstComponentName].directives[dstDirectiveKey]
-                        .type;
+                    const dstDirectiveType =
+                        this.componentSet.components[dstComponentName].directives[dstDirectiveKey].type;
                     if (![DirectiveType.container, DirectiveType.slideshow].some((type) => type === dstDirectiveType)) {
                         this.error(
                             `Conversion rule references to a directive "${dstDirectiveKey}" which must be "slideshow" or "container"`,
