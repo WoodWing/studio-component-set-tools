@@ -2,7 +2,6 @@
  * Utils which parse components definition
  */
 
-import * as path from 'path';
 import * as htmlparser from 'htmlparser2';
 import {
     Component,
@@ -132,10 +131,9 @@ async function loadRendition(
     if (!component.renditions) {
         component.renditions = {};
     }
-    component.renditions[rendition] = (await getFileContent(
-        path.normalize(`./templates/${rendition}/${component.name}.html`),
-        { encoding: 'utf8' },
-    )) as string;
+    component.renditions[rendition] = (await getFileContent(`./templates/${rendition}/${component.name}.html`, {
+        encoding: 'utf8',
+    })) as string;
     return component;
 }
 
