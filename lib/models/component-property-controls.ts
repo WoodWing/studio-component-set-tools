@@ -24,6 +24,7 @@ export type ComponentPropertyControl =
  */
 export interface ComponentPropertyControlSelect {
     type: 'select';
+    dynamicCaptions?: boolean;
     options: {
         caption: Label;
 
