@@ -3,7 +3,14 @@ on: push
 
 jobs:
     build:
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+        defaults:
+            run:
+                shell: ${{ matrix.os == 'windows-latest' && 'cmd' || 'bash' }
+
         env:
             CI: true
 
