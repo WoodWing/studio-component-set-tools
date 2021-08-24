@@ -18,7 +18,11 @@ export class CustomStylesValidator extends Validator {
     }
 
     private checkCustomStylesFolder() {
-        if (Array.from(this.filePaths).some((file) => file.toLowerCase().startsWith('styles/customstyles/'))) {
+        if (
+            Array.from(this.filePaths).some((file) =>
+                file.toLowerCase().startsWith(path.normalize('styles/customstyles/')),
+            )
+        ) {
             this.error(`The "styles" directory can't contain a directory called "customStyles".`);
         }
     }
