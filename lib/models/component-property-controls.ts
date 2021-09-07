@@ -34,6 +34,9 @@ export interface ComponentPropertyControlSelect {
         value?: string;
     }[];
 }
+export function isSelect(control: ComponentPropertyControl): control is ComponentPropertyControlSelect {
+    return control.type === 'select';
+}
 
 /**
  * Radio control type with fixed number of options
@@ -54,6 +57,9 @@ export interface ComponentPropertyControlRadio {
         value?: string;
     }[];
 }
+export function isRadio(control: ComponentPropertyControl): control is ComponentPropertyControlRadio {
+    return control.type === 'radio';
+}
 
 /**
  * Checkbox toggling between value and no value
@@ -62,12 +68,20 @@ export interface ComponentPropertyControlCheckbox {
     type: 'checkbox';
     value: string;
 }
+export function isCheckbox(control: ComponentPropertyControl): control is ComponentPropertyControlCheckbox {
+    return control.type === 'checkbox';
+}
 
 /**
  * Checkbox toggling between value and no value with additional checking of link directives. The property is set and disabled if the component has a non empty link directive
  */
 export interface ComponentPropertyControlDisableFullscreenCheckbox {
     type: 'disable-fullscreen-checkbox';
+}
+export function isDisabledFullscreenCheckbox(
+    control: ComponentPropertyControl,
+): control is ComponentPropertyControlDisableFullscreenCheckbox {
+    return control.type === 'disable-fullscreen-checkbox';
 }
 
 /**
@@ -96,6 +110,9 @@ export interface ComponentPropertyControlText {
      */
     readonly?: boolean;
 }
+export function isText(control: ComponentPropertyControl): control is ComponentPropertyControlText {
+    return control.type === 'text';
+}
 
 /**
  * Time field property
@@ -103,6 +120,9 @@ export interface ComponentPropertyControlText {
 export interface ComponentPropertyControlTime {
     type: 'time';
     [k: string]: unknown;
+}
+export function isTime(control: ComponentPropertyControl): control is ComponentPropertyControlTime {
+    return control.type === 'time';
 }
 
 /**
@@ -115,6 +135,9 @@ export interface ComponentPropertyControlColorPicker {
      * Enable opacity setting
      */
     opacity?: boolean;
+}
+export function isColorPicker(control: ComponentPropertyControl): control is ComponentPropertyControlColorPicker {
+    return control.type === 'colorPicker';
 }
 
 /**
@@ -130,6 +153,9 @@ export interface ComponentPropertyControlImageEditor {
      * Enable focuspoint feature
      */
     focuspoint?: boolean;
+}
+export function isImageEditor(control: ComponentPropertyControl): control is ComponentPropertyControlImageEditor {
+    return control.type === 'image-editor';
 }
 
 /**
@@ -163,6 +189,9 @@ export interface ComponentPropertyControlDropCapital {
      */
     linesMaximum?: number;
 }
+export function isDropCapital(control: ComponentPropertyControl): control is ComponentPropertyControlDropCapital {
+    return control.type === 'drop-capital';
+}
 
 /**
  * Media properties control.
@@ -176,6 +205,11 @@ export interface ComponentPropertyControlMediaProperties {
      */
     mediaType?: 'video' | 'social';
 }
+export function isMediaProperties(
+    control: ComponentPropertyControl,
+): control is ComponentPropertyControlMediaProperties {
+    return control.type === 'media-properties';
+}
 
 /**
  * Enables fitting option for an image directive
@@ -183,6 +217,10 @@ export interface ComponentPropertyControlMediaProperties {
 export interface ComponentPropertyControlFitting {
     type: 'fitting';
 }
+export function isFitting(control: ComponentPropertyControl): control is ComponentPropertyControlFitting {
+    return control.type === 'fitting';
+}
+
 /**
  * Adds slides section to component properties (for doc-slideshow)
  */
@@ -196,6 +234,9 @@ export interface ComponentPropertyControlSlides {
      * List of properties to exclude from active slide component properties
      */
     exclude?: string[];
+}
+export function isSlides(control: ComponentPropertyControl): control is ComponentPropertyControlSlides {
+    return control.type === 'slides';
 }
 
 /**
@@ -218,12 +259,18 @@ export interface ComponentPropertyControlInteractive {
      */
     viewLink: string;
 }
+export function isInteractive(control: ComponentPropertyControl): control is ComponentPropertyControlInteractive {
+    return control.type === 'interactive';
+}
 
 /**
  * Adds a header at property position
  */
 export interface ComponentPropertyControlHeader {
     type: 'header';
+}
+export function isHeader(control: ComponentPropertyControl): control is ComponentPropertyControlHeader {
+    return control.type === 'header';
 }
 
 /**
@@ -233,6 +280,9 @@ export interface ComponentPropertyControlTextArea {
     type: 'textarea';
     inputPlaceholder?: Label;
 }
+export function isTextarea(control: ComponentPropertyControl): control is ComponentPropertyControlTextArea {
+    return control.type === 'textarea';
+}
 
 /**
  * Url field property
@@ -240,6 +290,9 @@ export interface ComponentPropertyControlTextArea {
 export interface ComponentPropertyControlUrl {
     type: 'url';
     inputPlaceholder?: Label;
+}
+export function isUrl(control: ComponentPropertyControl): control is ComponentPropertyControlUrl {
+    return control.type === 'url';
 }
 
 /**
@@ -250,6 +303,9 @@ export interface ComponentPropertyControlSlider {
     minValue: number;
     maxValue: number;
     stepSize: number;
+}
+export function isSlider(control: ComponentPropertyControl): control is ComponentPropertyControlSlider {
+    return control.type === 'slider';
 }
 
 /**
