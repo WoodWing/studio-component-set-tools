@@ -128,7 +128,7 @@ export enum ComponentRendition {
     PSV = 'psv',
 }
 
-export interface ComponentProperty {
+export interface ComponentProperty<ControlType = ComponentPropertyControl> {
     /** Unique identifier of component property */
     name: string;
 
@@ -138,7 +138,7 @@ export interface ComponentProperty {
     directiveKey?: string;
 
     /** Type of UI element and options. */
-    control: ComponentPropertyControl;
+    control: ControlType;
 
     /** Type of data being stored and how it is used. For directive data types it may also depend on the control type. */
     dataType:
