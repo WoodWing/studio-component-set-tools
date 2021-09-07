@@ -1,6 +1,7 @@
 import { ComponentPropertyControl, ComponentPropertyControlSelect } from './component-property-controls';
 
-type ComponentPropertyControlWithDynamicCaptions = ComponentPropertyControlSelect;
+export type ComponentPropertyControlWithDynamicCaptions = ComponentPropertyControlSelect;
+
 export function supportsDynamicCaptions(
     control: ComponentPropertyControl,
 ): control is ComponentPropertyControlWithDynamicCaptions {
