@@ -78,7 +78,7 @@ export function isCheckbox(control: ComponentPropertyControl): control is Compon
 export interface ComponentPropertyControlDisableFullscreenCheckbox {
     type: 'disable-fullscreen-checkbox';
 }
-export function isDisabledFullscreenCheckbox(
+export function isDisableFullscreenCheckbox(
     control: ComponentPropertyControl,
 ): control is ComponentPropertyControlDisableFullscreenCheckbox {
     return control.type === 'disable-fullscreen-checkbox';
