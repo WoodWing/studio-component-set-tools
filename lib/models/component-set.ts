@@ -71,12 +71,12 @@ export interface ComponentSet {
     /**
      * List of scripts to be included for html rendition of article
      */
-    scripts?: string[];
+    scripts: string[];
 
     /**
      * List of custom styles definitions which can be configured in the look and feel style of an article
      */
-    customStyles?: CustomStyle[];
+    customStyles: CustomStyle[];
 }
 
 export interface ParsedComponent extends Component {
