@@ -10,7 +10,6 @@ import {
     ComponentsDefinition,
     ComponentSet,
     DirectiveType,
-    GetFileContentType,
     ParsedComponent,
 } from '../models';
 import merge = require('lodash.merge');
@@ -18,20 +17,13 @@ import merge = require('lodash.merge');
 /**
  * Parses the components definition into the object which contains all needed data to make needed validations
  * It already validates:
- * - existing of component properties
- * - existing of directive which properties point to
- * - if directive keys are unique within a component html template
- * - if group names are unique
- * - if components have HTML rendition
- *
- * @param componentsDefinition
- * @param getFileContent
- * @returns Promise<ParsedComponentsDefinition>
+ * - the existence of component properties
+ * - the existence of directives that properties point to
+ * - that directive keys are unique within a component html template
+ * - that group names are unique
+ * - that components have at least an HTML rendition
  */
-export async function parseDefinition(
-    componentsDefinition: ComponentsDefinition,
-    getFileContent?: GetFileContentType,
-): Promise<ComponentSet> {
+export async function parseDefinition(componentsDefinition: ComponentsDefinition): Promise<ComponentSet> {
     const componentSet: ComponentSet = {
         name: componentsDefinition.name,
         description: componentsDefinition.description,
@@ -46,17 +38,13 @@ export async function parseDefinition(
         scripts: componentsDefinition.scripts || [],
         customStyles: componentsDefinition.customStyles || [],
     };
-    const rendition = ComponentRendition.HTML;
-    // copy source because renditions may be added to the components
-    const sourceDefinition = merge({}, componentsDefinition);
-    for (const compDef of sourceDefinition.components) {
-        if (getFileContent && !hasRendition(compDef, rendition)) {
-            await loadRendition(compDef, rendition, getFileContent);
-        }
+    // copy source because properties and child properties will be expanded
+    const definition = merge({}, componentsDefinition);
+    for (const compDef of definition.components) {
         componentSet.components[compDef.name] = parseComponent(
             compDef,
-            sourceDefinition.componentProperties,
-            rendition,
+            definition.componentProperties,
+            ComponentRendition.HTML,
         );
     }
     // build "defaultComponentContent" property
@@ -114,27 +102,6 @@ function getDirectiveType(directiveName: string): DirectiveType {
  */
 function hasRendition(component: Component, rendition: ComponentRendition): boolean {
     return Boolean(component.renditions && rendition in component.renditions);
-}
-
-/**
- * Loads needed rendition to the component
- *
- * @param component
- * @param rendition
- * @param getFileContent
- */
-async function loadRendition(
-    component: Component,
-    rendition: ComponentRendition,
-    getFileContent: GetFileContentType,
-): Promise<Component> {
-    if (!component.renditions) {
-        component.renditions = {};
-    }
-    component.renditions[rendition] = (await getFileContent(`./templates/${rendition}/${component.name}.html`, {
-        encoding: 'utf8',
-    })) as string;
-    return component;
 }
 
 /**

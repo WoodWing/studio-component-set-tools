@@ -1,16 +1,17 @@
 import * as path from 'path';
 import { parseDefinition } from '../../lib/parser';
-import { DirectiveType } from '../../lib/models';
+import { ComponentsDefinition, DirectiveType } from '../../lib/models';
 import cloneDeep = require('lodash.clonedeep');
+import { loadRenditions } from '../../lib/renditions';
+import { deepFreeze } from '../../lib/util/freeze';
 
 describe('Parser utils child properties', () => {
-    let componentsDefinition: any;
     let getFileContent: (filePath: string) => Promise<string>;
     let html: { [s: string]: string };
     let expectedComponentSet: any;
 
-    beforeEach(() => {
-        componentsDefinition = {
+    function createComponentsDefinition(init?: (componentsDefinition: any) => void): ComponentsDefinition {
+        const definition = {
             name: 'child properties',
             description: 'Description',
             version: '1.0.0',
@@ -104,6 +105,13 @@ describe('Parser utils child properties', () => {
             conversionRules: {},
             shortcuts: {},
         };
+        if (init) {
+            init(definition);
+        }
+        return deepFreeze(definition as ComponentsDefinition);
+    }
+
+    beforeEach(() => {
         html = {
             body: `<p doc-editable="text"></p>`,
         };
@@ -254,15 +262,20 @@ describe('Parser utils child properties', () => {
     });
 
     it('should parse the components definition', async () => {
-        const componentSet = await parseDefinition(componentsDefinition, getFileContent);
+        const componentSet = await parseDefinition(await loadRenditions(createComponentsDefinition(), getFileContent));
         expect(componentSet).toEqual(expectedComponentSet);
     });
 
     it('should add default content of default child property when parent default is set', async () => {
-        const definition = cloneDeep(componentsDefinition);
-        definition.componentProperties[0].defaultValue = '_option1';
-        definition.componentProperties[1].defaultValue = '_valueWhenOn';
-        const componentSet = await parseDefinition(definition, getFileContent);
+        const componentSet = await parseDefinition(
+            await loadRenditions(
+                createComponentsDefinition((definition) => {
+                    definition.componentProperties[0].defaultValue = '_option1';
+                    definition.componentProperties[1].defaultValue = '_valueWhenOn';
+                }),
+                getFileContent,
+            ),
+        );
 
         expect(componentSet.defaultComponentContent).toEqual({
             body: { data: { conditionalProperty: 'value1' }, styles: { checkboxProperty: '_valueWhenOn' } },
@@ -270,12 +283,17 @@ describe('Parser utils child properties', () => {
     });
 
     it('should add default content of default child property when parent has no default', async () => {
-        const definition = cloneDeep(componentsDefinition);
-        definition.componentProperties[0].defaultValue = '_option1';
-        definition.componentProperties[1].defaultValue = '_valueWhenOn';
-        // Removing the defaultValue will match with the first option in the select which has no value
-        delete definition.componentProperties[2].defaultValue;
-        const componentSet = await parseDefinition(definition, getFileContent);
+        const componentSet = await parseDefinition(
+            await loadRenditions(
+                createComponentsDefinition((definition) => {
+                    definition.componentProperties[0].defaultValue = '_option1';
+                    definition.componentProperties[1].defaultValue = '_valueWhenOn';
+                    // Removing the defaultValue will match with the first option in the select which has no value
+                    delete definition.componentProperties[2].defaultValue;
+                }),
+                getFileContent,
+            ),
+        );
 
         expect(componentSet.defaultComponentContent).toEqual({
             body: { data: { selectProperty: '_option1' } },

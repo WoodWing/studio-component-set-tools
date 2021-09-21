@@ -60,11 +60,13 @@ import {
     Validator,
 } from './validators';
 import { listFilesRelativeToFolder } from './util/files';
+import { loadRenditions } from './renditions';
+import { deepFreeze } from './util/freeze';
 
 const ajvInstance = new ajv({ allErrors: true, verbose: true, allowUnionTypes: true });
 addFormats(ajvInstance);
 
-const componentsDefinitionPath = path.normalize('./components-definition.json');
+const componentsDefinitionPath = 'components-definition.json';
 
 export const readFile: GetFileContentType = (pathToFile: fs.PathLike, options?: GetFileContentOptionsType) =>
     new Promise<string | Buffer>((resolve, reject) => {
@@ -108,8 +110,9 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
  * Validates a components package given an array of paths
  * and a function to get the file content.
  *
- * @param filePaths paths to files, relative to root folder of components package
+ * @param filePaths normalized paths to files, relative to root folder of components package
  * @param getFileContent an async function that resolves with the file content
+ * @param getFileSize an async function that resolves with the file size
  * @param errorReporter called when there is a validation error
  */
 export async function validate(
@@ -133,6 +136,7 @@ export async function validate(
     if (!componentsDefinition) {
         return false;
     }
+    deepFreeze(componentsDefinition);
 
     const validateSchema = getValidationSchema(componentsDefinition.version);
     if (!validateSchema) {
@@ -165,7 +169,7 @@ export async function validate(
     // parse everything for deeper testing
     let componentSet: ComponentSet | null = null;
     try {
-        componentSet = await parseDefinition(componentsDefinition, getFileContent);
+        componentSet = await parseDefinition(await loadRenditions(componentsDefinition, getFileContent));
     } catch (e) {
         errorReporter(e.message ?? e);
     }

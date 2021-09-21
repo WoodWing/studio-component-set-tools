@@ -13,9 +13,9 @@ import { ComponentSet } from '../models';
 
 const RESERVED = [/^__internal__/];
 const GENERIC_FILES = [
-    path.normalize('./styles/_common.scss'),
-    path.normalize('./styles/design.scss'),
-    path.normalize('./styles/design.css'),
+    path.normalize('styles/_common.scss'),
+    path.normalize('styles/design.scss'),
+    path.normalize('styles/design.css'),
 ];
 
 export class ComponentsValidator extends Validator {
@@ -43,13 +43,13 @@ export class ComponentsValidator extends Validator {
             }
 
             // Validate the component has a html template
-            const htmlTemplatePath = path.normalize(`./templates/html/${comp.name}.html`);
+            const htmlTemplatePath = path.normalize(`templates/html/${comp.name}.html`);
             if (!this.filePaths.has(htmlTemplatePath)) {
                 this.error(`Component "${comp.name}" html template missing "${htmlTemplatePath}"`);
             }
 
             // Validate the component has a style
-            const componentStylePath = path.normalize(`./styles/_${comp.name}.scss`);
+            const componentStylePath = path.normalize(`styles/_${comp.name}.scss`);
             if (!this.filePaths.has(componentStylePath)) {
                 this.error(`Component "${comp.name}" style scss file missing "${componentStylePath}"`);
             }
