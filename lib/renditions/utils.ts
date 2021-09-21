@@ -29,7 +29,7 @@ async function loadRendition(
         component.renditions = {};
     }
     component.renditions[rendition] = (await getFileContent(
-        path.normalize(`./templates/${rendition}/${component.name}.html`),
+        path.normalize(`templates/${rendition}/${component.name}.html`),
         {
             encoding: 'utf8',
         },
