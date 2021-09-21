@@ -1,7 +1,6 @@
 import * as path from 'path';
 import { parseDefinition } from '../../lib/parser';
 import { ComponentsDefinition, DirectiveType } from '../../lib/models';
-import cloneDeep = require('lodash.clonedeep');
 import { loadRenditions } from '../../lib/renditions';
 import { deepFreeze } from '../../lib/util/freeze';
 
