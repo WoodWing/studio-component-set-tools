@@ -8,7 +8,6 @@ module.exports = {
     plugins: ['@typescript-eslint'],
     extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier', 'plugin:prettier/recommended'],
     rules: {
-        '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
         'object-shorthand': ['error', 'never'],
     },
     overrides: [
