@@ -167,7 +167,7 @@ export async function validate(
     try {
         componentSet = await parseDefinition(componentsDefinition, getFileContent);
     } catch (e) {
-        errorReporter(e);
+        errorReporter(e.message ?? e);
     }
     // can't run validators if the parser has failed
     if (!componentSet) {
