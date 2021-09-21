@@ -3,7 +3,7 @@ import { Component, ComponentRendition, ComponentsDefinition, GetFileContentType
 import merge = require('lodash.merge');
 import { deepFreeze } from '../util/freeze';
 
-export async function loadRenditions(
+export async function loadHtmlRenditions(
     componentsDefinition: ComponentsDefinition,
     getFileContent: GetFileContentType,
 ): Promise<ComponentsDefinition> {

@@ -60,7 +60,7 @@ import {
     Validator,
 } from './validators';
 import { listFilesRelativeToFolder } from './util/files';
-import { loadRenditions } from './renditions';
+import { loadHtmlRenditions } from './renditions';
 import { deepFreeze } from './util/freeze';
 
 const ajvInstance = new ajv({ allErrors: true, verbose: true, allowUnionTypes: true });
@@ -169,7 +169,7 @@ export async function validate(
     // parse everything for deeper testing
     let componentSet: ComponentSet | null = null;
     try {
-        componentSet = await parseDefinition(await loadRenditions(componentsDefinition, getFileContent));
+        componentSet = await parseDefinition(await loadHtmlRenditions(componentsDefinition, getFileContent));
     } catch (e) {
         errorReporter(e.message ?? e);
     }

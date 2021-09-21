@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { parseDefinition } from '../../lib/parser';
 import { ComponentsDefinition, DirectiveType } from '../../lib/models';
-import { loadRenditions } from '../../lib/renditions';
+import { loadHtmlRenditions } from '../../lib/renditions';
 import { deepFreeze } from '../../lib/util/freeze';
 
 describe('Parser utils child properties', () => {
@@ -261,13 +261,15 @@ describe('Parser utils child properties', () => {
     });
 
     it('should parse the components definition', async () => {
-        const componentSet = await parseDefinition(await loadRenditions(createComponentsDefinition(), getFileContent));
+        const componentSet = await parseDefinition(
+            await loadHtmlRenditions(createComponentsDefinition(), getFileContent),
+        );
         expect(componentSet).toEqual(expectedComponentSet);
     });
 
     it('should add default content of default child property when parent default is set', async () => {
         const componentSet = await parseDefinition(
-            await loadRenditions(
+            await loadHtmlRenditions(
                 createComponentsDefinition((definition) => {
                     definition.componentProperties[0].defaultValue = '_option1';
                     definition.componentProperties[1].defaultValue = '_valueWhenOn';
@@ -283,7 +285,7 @@ describe('Parser utils child properties', () => {
 
     it('should add default content of default child property when parent has no default', async () => {
         const componentSet = await parseDefinition(
-            await loadRenditions(
+            await loadHtmlRenditions(
                 createComponentsDefinition((definition) => {
                     definition.componentProperties[0].defaultValue = '_option1';
                     definition.componentProperties[1].defaultValue = '_valueWhenOn';

@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { parseDefinition } from '../../lib/parser/parser-utils';
-import { DirectiveType, ComponentRendition, ComponentsDefinition } from '../../lib/models';
-import { loadRenditions } from '../../lib/renditions';
+import { ComponentRendition, ComponentsDefinition, DirectiveType } from '../../lib/models';
+import { loadHtmlRenditions } from '../../lib/renditions';
 import { deepFreeze } from '../../lib/util/freeze';
 
 describe('Parser utils', () => {
@@ -311,7 +311,7 @@ describe('Parser utils', () => {
             });
             it('should be fine when components definition without renditions', async () => {
                 const componentSet = await parseDefinition(
-                    await loadRenditions(createComponentsDefinition(), getFileContent),
+                    await loadHtmlRenditions(createComponentsDefinition(), getFileContent),
                 );
                 expect(componentSet).toEqual(expectedComponentSet);
             });
@@ -352,7 +352,7 @@ describe('Parser utils', () => {
 
             let er = '';
             try {
-                await parseDefinition(await loadRenditions(createComponentsDefinition(), getFileContent));
+                await parseDefinition(await loadHtmlRenditions(createComponentsDefinition(), getFileContent));
             } catch (e) {
                 er = e.message;
             }
@@ -373,7 +373,7 @@ describe('Parser utils', () => {
 
             let er = '';
             try {
-                await parseDefinition(await loadRenditions(createComponentsDefinition(), getFileContent));
+                await parseDefinition(await loadHtmlRenditions(createComponentsDefinition(), getFileContent));
             } catch (e) {
                 er = e.message;
             }
@@ -386,7 +386,7 @@ describe('Parser utils', () => {
             let er = '';
             try {
                 await parseDefinition(
-                    await loadRenditions(
+                    await loadHtmlRenditions(
                         createComponentsDefinition((definition) => {
                             definition.components[0].properties[0] = 'cucicaca';
                         }),
@@ -403,7 +403,7 @@ describe('Parser utils', () => {
             let er = '';
             try {
                 await parseDefinition(
-                    await loadRenditions(
+                    await loadHtmlRenditions(
                         createComponentsDefinition((definition) => {
                             definition.components[1].properties[1].name = 'cucicaca';
                         }),
