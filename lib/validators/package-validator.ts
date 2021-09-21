@@ -90,7 +90,7 @@ export class PackageValidator extends Validator {
     }
 }
 
-export function validateTotalSize(size: number): string | undefined {
+export function validateTotalSize(size: number): string | void {
     const sizeMB = Math.round(size / MB_IN_BYTES);
     if (sizeMB > MAX_COMPONENT_SET_SIZE_MB) {
         return `At ${sizeMB}MB, the component set exceeds the total maximum size of ${MAX_COMPONENT_SET_SIZE_MB}MB.`;
