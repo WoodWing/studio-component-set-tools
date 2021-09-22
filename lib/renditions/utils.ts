@@ -1,13 +1,13 @@
 import * as path from 'path';
 import { Component, ComponentRendition, ComponentsDefinition, GetFileContentType } from '../models';
-import merge = require('lodash.merge');
+import cloneDeep = require('lodash.clonedeep');
 import { deepFreeze } from '../util/freeze';
 
 export async function loadHtmlRenditions(
     componentsDefinition: ComponentsDefinition,
     getFileContent: GetFileContentType,
 ): Promise<ComponentsDefinition> {
-    const enrichedDefinition = merge({}, componentsDefinition);
+    const enrichedDefinition = cloneDeep(componentsDefinition);
     for (const compDef of enrichedDefinition.components) {
         if (!hasRendition(compDef, ComponentRendition.HTML)) {
             await loadRendition(compDef, ComponentRendition.HTML, getFileContent);
