@@ -1,15 +1,16 @@
 import * as path from 'path';
 import { parseDefinition } from '../../lib/parser/parser-utils';
-import { DirectiveType, ComponentRendition } from '../../lib/models';
-import cloneDeep = require('lodash.clonedeep');
+import { ComponentRendition, ComponentsDefinition, DirectiveType } from '../../lib/models';
+import { loadHtmlRenditions } from '../../lib/renditions';
+import { deepFreeze } from '../../lib/util/freeze';
 
 describe('Parser utils', () => {
     describe('parseDefinition', () => {
-        let componentsDefinition: any;
         let getFileContent: (filePath: string) => Promise<string>;
         let html: { [s: string]: string };
-        beforeEach(() => {
-            componentsDefinition = {
+
+        function createComponentsDefinition(init?: (componentsDefinition: any) => void): ComponentsDefinition {
+            const definition = {
                 name: 'minimal-sample',
                 description: 'Minimal components package sample touching most of the available options.',
                 version: '1.0.0',
@@ -120,6 +121,12 @@ describe('Parser utils', () => {
                 },
                 shortcuts: { conversionComponents: ['shortcuts'] },
             };
+            if (init) {
+                init(definition);
+            }
+            return deepFreeze(definition as ComponentsDefinition);
+        }
+        beforeEach(() => {
             html = {
                 body: `<p doc-editable="text"></p>`,
                 complex:
@@ -303,34 +310,32 @@ describe('Parser utils', () => {
                 };
             });
             it('should be fine when components definition without renditions', async () => {
-                const componentSet = await parseDefinition(componentsDefinition, getFileContent);
+                const componentSet = await parseDefinition(
+                    await loadHtmlRenditions(createComponentsDefinition(), getFileContent),
+                );
                 expect(componentSet).toEqual(expectedComponentSet);
             });
             it('should be fine when components definition with renditions', async () => {
-                componentsDefinition.components[0].renditions = {
-                    [ComponentRendition.HTML]: html.body,
-                };
-                componentsDefinition.components[1].renditions = {
-                    [ComponentRendition.HTML]: html.complex,
-                };
+                const componentsDefinition = createComponentsDefinition((definition) => {
+                    definition.components[0].renditions = {
+                        [ComponentRendition.HTML]: html.body,
+                    };
+                    definition.components[1].renditions = {
+                        [ComponentRendition.HTML]: html.complex,
+                    };
+                });
                 const componentSet = await parseDefinition(componentsDefinition);
                 expect(componentSet).toEqual(expectedComponentSet);
             });
             it('should throw an error when components definition without renditions and getFileContent is not passed', async () => {
                 let er = '';
                 try {
-                    await parseDefinition(componentsDefinition);
+                    await parseDefinition(createComponentsDefinition());
                 } catch (e) {
                     er = e.message;
                 }
                 expect(er).toEqual(`Component "body" doesn't have "html" rendition`);
             });
-        });
-
-        it('should not modify the input components definition', async () => {
-            const originalComponentsDefinition = cloneDeep(componentsDefinition);
-            await parseDefinition(componentsDefinition, getFileContent);
-            expect(componentsDefinition).toEqual(originalComponentsDefinition);
         });
 
         it('should throw an error if there are directives with the same attribute values', async () => {
@@ -347,7 +352,7 @@ describe('Parser utils', () => {
 
             let er = '';
             try {
-                await parseDefinition(componentsDefinition, getFileContent);
+                await parseDefinition(await loadHtmlRenditions(createComponentsDefinition(), getFileContent));
             } catch (e) {
                 er = e.message;
             }
@@ -368,7 +373,7 @@ describe('Parser utils', () => {
 
             let er = '';
             try {
-                await parseDefinition(componentsDefinition, getFileContent);
+                await parseDefinition(await loadHtmlRenditions(createComponentsDefinition(), getFileContent));
             } catch (e) {
                 er = e.message;
             }
@@ -378,11 +383,16 @@ describe('Parser utils', () => {
         });
 
         it('should throw an error if there is a property which cannot be found', async () => {
-            componentsDefinition.components[0].properties[0] = 'cucicaca';
-
             let er = '';
             try {
-                await parseDefinition(componentsDefinition, getFileContent);
+                await parseDefinition(
+                    await loadHtmlRenditions(
+                        createComponentsDefinition((definition) => {
+                            definition.components[0].properties[0] = 'cucicaca';
+                        }),
+                        getFileContent,
+                    ),
+                );
             } catch (e) {
                 er = e.message;
             }
@@ -390,11 +400,16 @@ describe('Parser utils', () => {
         });
 
         it('should throw an error if there is a property which cannot be found for merging', async () => {
-            (<any>componentsDefinition.components[1].properties[1]).name = 'cucicaca';
-
             let er = '';
             try {
-                await parseDefinition(componentsDefinition, getFileContent);
+                await parseDefinition(
+                    await loadHtmlRenditions(
+                        createComponentsDefinition((definition) => {
+                            definition.components[1].properties[1].name = 'cucicaca';
+                        }),
+                        getFileContent,
+                    ),
+                );
             } catch (e) {
                 er = e.message;
             }

@@ -24,13 +24,13 @@ The validation result is returned as a boolean value and any error is logged to 
 
 ### `validate`
 
-Lower level method that validates the component set given a set of paths, a function to get the file content given the path and a function that logs errors. This api is useful when the component set is validated in memory.
+Lower level method that validates the component set given a set of normalized relative paths, a function to get the file content given the normalized relative path and a function that logs errors. This api is useful when the component set is validated in memory.
 
 ```ts
 import { validate } from './lib/validate';
 
 const filePaths = new Set(['path1', 'path2']);
-const getFileContent = async (filePath: string) => 'fileContent';
+const getFileContent = async (normalizedRelativefilePath: string) => 'fileContent';
 const errorReporter = (errorMessage: string) => console.error(errorMessage);
 
 const validationResult: boolean = await validate(filePaths, getFileContent, errorReporter);
@@ -50,11 +50,6 @@ const validationResult: boolean = await validatePackageSize(packageSize, errorRe
 ```
 
 ### `parseDefinition`
-
-If published version (from "dist" folder) of the package is used then:
-
--   if parser is going to be used in the browser remember that package's target is ES6 which may be unsupported or partly supported by the browsers
--   also polyfills may be needed for IE browsers
 
 An example of possible usage:
 
