@@ -2,7 +2,7 @@ import { FittingValidator } from '../../lib/validators/fitting-validator';
 
 describe('FittingValidator', () => {
     let componentSet: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: FittingValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -27,7 +27,7 @@ describe('FittingValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new FittingValidator(error, componentSet);
     });
     describe('validate', () => {

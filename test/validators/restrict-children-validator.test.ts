@@ -2,7 +2,7 @@ import { RestrictChildrenValidator } from '../../lib/validators/restrict-childre
 
 describe('RestrictChildrenValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: RestrictChildrenValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -49,7 +49,7 @@ describe('RestrictChildrenValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new RestrictChildrenValidator(error, definition);
     });
     describe('validate', () => {

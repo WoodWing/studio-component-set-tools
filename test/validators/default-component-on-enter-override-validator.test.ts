@@ -2,7 +2,7 @@ import { DefaultComponentOnEnterOverrideValidator } from '../../lib/validators/d
 
 describe('DefaultComponentOnEnterOverrideValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: DefaultComponentOnEnterOverrideValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -17,7 +17,7 @@ describe('DefaultComponentOnEnterOverrideValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new DefaultComponentOnEnterOverrideValidator(error, definition);
     });
     describe('validate', () => {

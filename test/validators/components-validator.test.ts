@@ -3,7 +3,7 @@ import { ComponentsValidator } from '../../lib/validators/components-validator';
 
 describe('ComponentsValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: ComponentsValidator;
     let filePaths: Set<string>;
     beforeEach(() => {
@@ -33,7 +33,7 @@ describe('ComponentsValidator', () => {
             path.normalize('./styles/design.scss'),
             path.normalize('./styles/design.css'),
         ]);
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new ComponentsValidator(error, definition, filePaths);
     });
     describe('validate', () => {

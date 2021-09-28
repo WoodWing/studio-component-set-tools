@@ -2,7 +2,7 @@ import { FocuspointValidator } from '../../lib/validators/focuspoint-validator';
 
 describe('FocuspointValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: FocuspointValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -29,7 +29,7 @@ describe('FocuspointValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new FocuspointValidator(error, definition);
     });
     describe('validate', () => {

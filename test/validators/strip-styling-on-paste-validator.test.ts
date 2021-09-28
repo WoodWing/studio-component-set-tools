@@ -1,7 +1,7 @@
 import { StripStylingOnPasteValidator } from '../../lib/validators';
 
 describe('StripStylingOnPasteValidator', () => {
-    let error: jasmine.Spy, definition: any;
+    let error: jest.Mock, definition: any;
     let validator: StripStylingOnPasteValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -23,7 +23,7 @@ describe('StripStylingOnPasteValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new StripStylingOnPasteValidator(error, definition);
     });
     describe('validate', () => {

@@ -3,7 +3,7 @@ import { COMPONENT_PROPERTY_CONTROL_FITTING_VALUES } from '../../lib/models/comp
 
 describe('DefaultValuesValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: DefaultValuesValidator;
 
     beforeEach(() => {
@@ -16,7 +16,7 @@ describe('DefaultValuesValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
     });
 
     it('should pass validation if property has no defaultValue set', () => {

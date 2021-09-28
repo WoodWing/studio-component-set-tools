@@ -1,7 +1,7 @@
 import { DirectiveOptionsValidator } from '../../lib/validators';
 
 describe('DirectiveOptionsValidator', () => {
-    let error: jasmine.Spy, definition: any;
+    let error: jest.Mock, definition: any;
     let validator: DirectiveOptionsValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -21,7 +21,7 @@ describe('DirectiveOptionsValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new DirectiveOptionsValidator(error, definition);
     });
     describe('validate', () => {
