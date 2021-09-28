@@ -1,7 +1,7 @@
 import { ConversionShortcutsValidator } from '../../lib/validators/conversion-shortcuts-validator';
 
 describe('ConversionShortcutsValidator', () => {
-    let error: jasmine.Spy, definition: any;
+    let error: jest.Mock, definition: any;
     let validator: ConversionShortcutsValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -35,7 +35,7 @@ describe('ConversionShortcutsValidator', () => {
                 conversionComponents: ['picture'],
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new ConversionShortcutsValidator(error, definition);
     });
     describe('validate', () => {

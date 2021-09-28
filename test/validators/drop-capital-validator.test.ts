@@ -2,7 +2,7 @@ import { DropCapitalValidator } from '../../lib/validators/drop-capital-validato
 
 describe('DropCapitalValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: DropCapitalValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -28,7 +28,7 @@ describe('DropCapitalValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new DropCapitalValidator(error, definition);
     });
     describe('validate', () => {

@@ -2,7 +2,7 @@ import { LocalizationValidator } from '../../lib/validators/localization-validat
 
 describe('LocalizationValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: LocalizationValidator;
     let filePaths: Set<string>;
     let getFileContent: any;
@@ -15,10 +15,10 @@ describe('LocalizationValidator', () => {
         };
         filePaths = new Set();
         fileContent = {};
-        getFileContent = jasmine.createSpy('getFileContent').and.callFake(async (path) => {
+        getFileContent = jest.fn(async (path) => {
             return fileContent[path];
         });
-        error = jasmine.createSpy('error');
+        error = jest.fn();
     });
 
     function mockValidJsonContent() {

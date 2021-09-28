@@ -1,7 +1,7 @@
 import { GroupsValidator } from '../../lib/validators/groups-validator';
 
 describe('GroupsValidator', () => {
-    let error: jasmine.Spy, definition: any;
+    let error: jest.Mock, definition: any;
     let validator: GroupsValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -36,7 +36,7 @@ describe('GroupsValidator', () => {
                 },
             ],
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new GroupsValidator(error, definition);
     });
     describe('validate', () => {

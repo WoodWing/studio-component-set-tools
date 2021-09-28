@@ -2,7 +2,7 @@ import { DisableFullscreenCheckboxValidator } from '../../lib/validators/disable
 
 describe('DisableFullscreenCheckboxValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: DisableFullscreenCheckboxValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -28,7 +28,7 @@ describe('DisableFullscreenCheckboxValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new DisableFullscreenCheckboxValidator(error, definition);
     });
     describe('validate', () => {

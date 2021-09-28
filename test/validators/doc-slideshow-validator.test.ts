@@ -2,7 +2,7 @@ import { DocSlideshowValidator } from '../../lib/validators/doc-slideshow-valida
 
 describe('DocSlideshowValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: DocSlideshowValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -20,7 +20,7 @@ describe('DocSlideshowValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new DocSlideshowValidator(error, definition);
     });
     describe('validate', () => {

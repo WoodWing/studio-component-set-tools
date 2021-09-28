@@ -2,7 +2,7 @@ import { DocMediaValidator } from '../../lib/validators/doc-media-validator';
 
 describe('DocMediaValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: DocMediaValidator;
 
     beforeEach(() => {
@@ -41,7 +41,7 @@ describe('DocMediaValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new DocMediaValidator(error, definition);
     });
     describe('validate', () => {

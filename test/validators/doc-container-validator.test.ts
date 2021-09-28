@@ -2,7 +2,7 @@ import { DocContainerValidator } from '../../lib/validators/doc-container-valida
 
 describe('DocContainerValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: DocContainerValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -20,7 +20,7 @@ describe('DocContainerValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new DocContainerValidator(error, definition);
     });
     describe('validate', () => {

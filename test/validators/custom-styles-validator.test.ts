@@ -3,7 +3,7 @@ import { CustomStylesValidator } from '../../lib/validators/custom-styles-valida
 
 describe('CustomStylesValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: CustomStylesValidator;
 
     beforeEach(() => {
@@ -11,7 +11,7 @@ describe('CustomStylesValidator', () => {
         definition = {
             customStyles: [],
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
     });
 
     describe('validate', () => {

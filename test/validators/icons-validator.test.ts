@@ -3,9 +3,9 @@ import { readFile } from 'fs';
 
 describe('IconsValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: IconsValidator;
-    let getFileContent;
+    let getFileContent: any;
     beforeEach(() => {
         // valid definition (cut)
         definition = {
@@ -20,7 +20,7 @@ describe('IconsValidator', () => {
                 },
             },
         };
-        getFileContent = jasmine.createSpy('getFileContent').and.callFake(async (path) => {
+        getFileContent = jest.fn(async (path) => {
             return new Promise((resolve, reject) => {
                 return readFile(path, (err, data) => {
                     if (err) {
@@ -31,7 +31,7 @@ describe('IconsValidator', () => {
                 });
             });
         });
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new IconsValidator(error, definition, getFileContent);
     });
     describe('validate', () => {
