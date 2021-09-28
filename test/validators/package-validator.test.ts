@@ -5,7 +5,7 @@ const MB = 1 * 1000 * 1000;
 
 describe('PackageValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: PackageValidator;
 
     function createFakeFiles(
@@ -31,7 +31,7 @@ describe('PackageValidator', () => {
         definition = {
             components: {},
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
     });
 
     describe('validate', () => {

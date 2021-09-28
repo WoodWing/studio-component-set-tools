@@ -35,7 +35,7 @@ describe('validateFolder', () => {
     });
 
     it('should fail on sample with incorrect schema property', async () => {
-        spyOn(global.console, 'log');
+        jest.spyOn(global.console, 'log');
 
         expect(await validateFolder('./test/resources/minimal-sample-invalid-comp-property')).toBe(false);
         expect(global.console.log).toHaveBeenCalledWith(
@@ -55,7 +55,7 @@ components-definition.json - line 7, column 8:
     });
 
     it('should fail on sample with components definition missing', async () => {
-        spyOn(global.console, 'log');
+        jest.spyOn(global.console, 'log');
 
         expect(await validateFolder('./test/resources/missing-components-definition-sample')).toBe(false);
         expect(global.console.log).toHaveBeenCalledWith(
@@ -64,7 +64,7 @@ components-definition.json - line 7, column 8:
     });
 
     it('should fail on sample with invalid json', async () => {
-        spyOn(global.console, 'log');
+        jest.spyOn(global.console, 'log');
 
         expect(await validateFolder('./test/resources/invalid-definition-json-sample')).toBe(false);
         expect(global.console.log).toHaveBeenCalledWith(

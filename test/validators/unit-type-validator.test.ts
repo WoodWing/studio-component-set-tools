@@ -2,7 +2,7 @@ import { UnitTypeValidator } from '../../lib/validators/unit-type-validator';
 
 describe('UnitTypeValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: UnitTypeValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -34,7 +34,7 @@ describe('UnitTypeValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new UnitTypeValidator(error, definition);
     });
     describe('validate', () => {

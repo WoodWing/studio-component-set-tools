@@ -2,7 +2,7 @@ import { AutofillValidator } from '../../lib/validators/autofill-validator';
 
 describe('AutofillValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: AutofillValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -40,7 +40,8 @@ describe('AutofillValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+
+        error = jest.fn();
         validator = new AutofillValidator(error, definition);
     });
     describe('validate', () => {

@@ -2,7 +2,7 @@ import { InteractiveValidator } from '../../lib/validators/interactive-validator
 
 describe('InteractiveValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: InteractiveValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -28,7 +28,7 @@ describe('InteractiveValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new InteractiveValidator(error, definition);
     });
     describe('validate', () => {

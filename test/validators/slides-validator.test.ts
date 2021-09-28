@@ -2,7 +2,7 @@ import { SlidesValidator } from '../../lib/validators/slides-validator';
 
 describe('SlidesValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: SlidesValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -37,7 +37,7 @@ describe('SlidesValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new SlidesValidator(error, definition);
     });
     describe('validate', () => {

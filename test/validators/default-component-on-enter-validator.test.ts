@@ -2,7 +2,7 @@ import { DefaultComponentOnEnterValidator } from '../../lib/validators/default-c
 
 describe('DefaultComponentOnEnterValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: DefaultComponentOnEnterValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -21,7 +21,7 @@ describe('DefaultComponentOnEnterValidator', () => {
             },
             defaultComponentOnEnter: 'text',
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new DefaultComponentOnEnterValidator(error, definition);
     });
     describe('validate', () => {

@@ -2,7 +2,7 @@ import { ConversionRulesValidator } from '../../lib/validators/conversion-rules-
 
 describe('ConversionRulesValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: ConversionRulesValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -33,7 +33,7 @@ describe('ConversionRulesValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new ConversionRulesValidator(error, definition);
     });
     describe('validate', () => {

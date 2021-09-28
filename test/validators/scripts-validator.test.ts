@@ -2,9 +2,9 @@ import * as path from 'path';
 import { ScriptsValidator } from '../../lib/validators/scripts-validator';
 
 describe('ScriptsValidator', () => {
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     beforeEach(() => {
-        error = jasmine.createSpy('error');
+        error = jest.fn();
     });
     describe('validate', () => {
         it('should pass on valid definition', () => {

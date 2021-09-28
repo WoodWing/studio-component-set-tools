@@ -68,7 +68,7 @@ describe('PropertiesValidator', () => {
                 },
             },
         };
-        const errorSpy = jasmine.createSpy('error');
+        const errorSpy = jest.fn();
         return {
             validator: new PropertiesValidator(
                 errorSpy,

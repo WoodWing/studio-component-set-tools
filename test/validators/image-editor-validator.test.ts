@@ -2,7 +2,7 @@ import { ImageEditorValidator } from '../../lib/validators/image-editor-validato
 
 describe('ImageEditorValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: ImageEditorValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -28,7 +28,7 @@ describe('ImageEditorValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new ImageEditorValidator(error, definition);
     });
     describe('validate', () => {

@@ -2,7 +2,7 @@ import { DirectivePropertiesValidator } from '../../lib/validators/directive-pro
 
 describe('DirectivePropertiesValidator', () => {
     let definition: any;
-    let error: jasmine.Spy;
+    let error: jest.Mock;
     let validator: DirectivePropertiesValidator;
     beforeEach(() => {
         // valid definition (cut)
@@ -37,7 +37,7 @@ describe('DirectivePropertiesValidator', () => {
                 },
             },
         };
-        error = jasmine.createSpy('error');
+        error = jest.fn();
         validator = new DirectivePropertiesValidator(error, definition);
     });
     describe('validate', () => {
