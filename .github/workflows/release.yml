@@ -23,3 +23,14 @@ jobs:
               with:
                   type: stable
                   token: ${{ secrets.NPM_TOKEN }}
+
+            # https://docs.github.com/en/actions/guides/publishing-nodejs-packages#publishing-packages-to-npm-and-github-packages
+            # Setup .npmrc file to publish to GitHub Packages (can replace the other setup-node action when we no longer publish to npm)
+            - uses: actions/setup-node@v2
+              with:
+                  registry-url: 'https://npm.pkg.github.com'
+                  node-version: 14
+            # Publish to GitHub Packages
+            - run: npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
