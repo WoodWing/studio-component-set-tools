@@ -9,42 +9,40 @@ const PROPERTY = 'restrictChildren';
 const ADDITIONAL_PROPERTY = 'withContent';
 
 export class RestrictChildrenValidator extends Validator {
-    private hasSlideshowDirective(parsedComponent: Component): boolean {
-        return Object.values(parsedComponent.directives).some(
-            (directive) => directive.type === DirectiveType.slideshow,
-        );
+    private hasSlideshowDirective(component: Component): boolean {
+        return Object.values(component.directives).some((directive) => directive.type === DirectiveType.slideshow);
     }
 
     async validate(): Promise<void> {
-        Object.values(this.componentSet.components).forEach((parsedComponent: Component) => {
-            const isPresent = PROPERTY in parsedComponent && parsedComponent[PROPERTY];
-            const hasSlideshow = this.hasSlideshowDirective(parsedComponent);
+        Object.values(this.componentSet.components).forEach((component: Component) => {
+            const isPresent = PROPERTY in component && component[PROPERTY];
+            const hasSlideshow = this.hasSlideshowDirective(component);
             if (!isPresent) {
                 if (hasSlideshow) {
                     this.error(
-                        `Component property "${PROPERTY}" must be defined in component "${parsedComponent.name}" because the ` +
+                        `Component property "${PROPERTY}" must be defined in component "${component.name}" because the ` +
                             `component contains a slideshow directive`,
                     );
                 }
                 return;
             }
             const propertyValue =
-                parsedComponent[PROPERTY] ||
+                component[PROPERTY] ||
                 // satisfy the compiler -> if PROPERTY exists then it is a non empty object otherwise it can't pass the schema
                 {};
             const propertyKeys = Object.keys(propertyValue);
             // slideshow component can have only one entry
             if (hasSlideshow && propertyKeys.length > 1) {
                 this.error(
-                    `Component property "${PROPERTY}" of component "${parsedComponent.name}" must contain only one entry` +
+                    `Component property "${PROPERTY}" of component "${component.name}" must contain only one entry` +
                         ` because the component contains a slideshow directive`,
                 );
             }
             // check if all keys point to correct component
             propertyKeys.forEach((componentName: string) => {
-                if (componentName === parsedComponent.name) {
+                if (componentName === component.name) {
                     this.error(
-                        `Component property "${PROPERTY}.${componentName}" of component "${parsedComponent.name}" points to itself`,
+                        `Component property "${PROPERTY}.${componentName}" of component "${component.name}" points to itself`,
                     );
                     return;
                 }
@@ -56,14 +54,14 @@ export class RestrictChildrenValidator extends Validator {
                         if (!(additionalPropertyValue in pointedParsedComponent.directives)) {
                             this.error(
                                 `Additional property "${ADDITIONAL_PROPERTY}" of property "${PROPERTY}.${componentName}" of component ` +
-                                    `"${parsedComponent.name}" points to non existing directive key "${additionalPropertyValue}" of component ` +
+                                    `"${component.name}" points to non existing directive key "${additionalPropertyValue}" of component ` +
                                     `"${pointedParsedComponent.name}"`,
                             );
                         }
                     }
                 } else {
                     this.error(
-                        `Component property "${PROPERTY}.${componentName}" of component "${parsedComponent.name}" points to ` +
+                        `Component property "${PROPERTY}.${componentName}" of component "${component.name}" points to ` +
                             `non existing component`,
                     );
                 }

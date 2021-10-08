@@ -16,79 +16,74 @@ export class DocMediaValidator extends Validator {
         Object.values(this.componentSet.components).forEach((c: Component) => this.validateComponent(c));
     }
 
-    private validateComponent(parsedComponent: Component) {
-        const numMediaDirectives = this.countMediaDirectives(parsedComponent);
+    private validateComponent(component: Component) {
+        const numMediaDirectives = this.countMediaDirectives(component);
         if (numMediaDirectives === 0) {
-            this.validateComponentWithoutMediaDirective(parsedComponent);
+            this.validateComponentWithoutMediaDirective(component);
             return;
         }
 
         if (numMediaDirectives > 1) {
-            this.error(
-                `Component "${parsedComponent.name}" can only have one "doc-media" directive in the HTML definition`,
-            );
+            this.error(`Component "${component.name}" can only have one "doc-media" directive in the HTML definition`);
             return;
         }
 
-        this.validateComponentWithMediaDirective(parsedComponent);
+        this.validateComponentWithMediaDirective(component);
     }
 
-    private validateComponentWithoutMediaDirective(parsedComponent: Component) {
-        if (this.countMediaPropertiesProperties(parsedComponent) > 0) {
+    private validateComponentWithoutMediaDirective(component: Component) {
+        if (this.countMediaPropertiesProperties(component) > 0) {
             this.error(
-                `Component "${parsedComponent.name}" has a "media-properties" control type, but only components with a "doc-media" directive can have a property with this control type`,
+                `Component "${component.name}" has a "media-properties" control type, but only components with a "doc-media" directive can have a property with this control type`,
             );
         }
     }
 
-    private validateComponentWithMediaDirective(parsedComponent: Component) {
-        if (this.countMediaPropertiesProperties(parsedComponent) !== 1) {
+    private validateComponentWithMediaDirective(component: Component) {
+        if (this.countMediaPropertiesProperties(component) !== 1) {
             this.error(
                 `Component "${
-                    parsedComponent.name
+                    component.name
                 }" with "doc-media" directive must have exactly one "media-properties" property (found ${this.countMediaPropertiesProperties(
-                    parsedComponent,
+                    component,
                 )})`,
             );
             return;
         }
 
         // Check whether the media-properties control type property is applied to the doc-media directive.
-        for (const mediaProperty of Object.values(this.mediaPropertiesProperties(parsedComponent))) {
-            this.validateMediaProperty(parsedComponent, mediaProperty);
+        for (const mediaProperty of Object.values(this.mediaPropertiesProperties(component))) {
+            this.validateMediaProperty(component, mediaProperty);
         }
     }
 
-    private validateMediaProperty(parsedComponent: Component, mediaProperty: ComponentProperty) {
+    private validateMediaProperty(component: Component, mediaProperty: ComponentProperty) {
         if (!mediaProperty.directiveKey) {
             this.error(
-                `Component "${parsedComponent.name}" must configure "directiveKey" for the property with control type "media-properties"`,
+                `Component "${component.name}" must configure "directiveKey" for the property with control type "media-properties"`,
             );
             return;
         }
 
-        const directive = parsedComponent.directives[mediaProperty.directiveKey];
+        const directive = component.directives[mediaProperty.directiveKey];
         if (!directive || directive.type !== DirectiveType.media) {
             this.error(
-                `Component "${parsedComponent.name}" has a control type "media-properties" applied to the wrong directive, which can only be used with "doc-media" directives`,
+                `Component "${component.name}" has a control type "media-properties" applied to the wrong directive, which can only be used with "doc-media" directives`,
             );
         }
     }
 
-    private countMediaDirectives(parsedComponent: Component): number {
-        return Object.values(parsedComponent.directives).filter((directive) => directive.type === DirectiveType.media)
-            .length;
+    private countMediaDirectives(component: Component): number {
+        return Object.values(component.directives).filter((directive) => directive.type === DirectiveType.media).length;
     }
 
     /** Count number of "media-properties" properties */
-    private countMediaPropertiesProperties(parsedComponent: Component): number {
-        return this.mediaPropertiesProperties(parsedComponent).length;
+    private countMediaPropertiesProperties(component: Component): number {
+        return this.mediaPropertiesProperties(component).length;
     }
 
     /** Get "media-properties" properties definitions (collection of nested properties behaving as a single property) */
-    private mediaPropertiesProperties(parsedComponent: Component) {
-        return Object.values(parsedComponent.properties).filter(
-            (property) => property.control.type === 'media-properties',
-        );
+    private mediaPropertiesProperties(component: Component) {
+        return Object.values(component.properties).filter((property) => property.control.type === 'media-properties');
     }
 }

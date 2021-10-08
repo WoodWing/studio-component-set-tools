@@ -13,8 +13,8 @@ import { GroupsValidator } from './groups-validator';
 export class DocContainerGroupsValidator extends Validator {
     async validate(): Promise<void> {
         // Find slides control properties and check for include and exclude
-        for (const parsedComponent of Object.values(this.componentSet.components)) {
-            this.validateComponent(parsedComponent);
+        for (const component of Object.values(this.componentSet.components)) {
+            this.validateComponent(component);
         }
     }
 
@@ -24,27 +24,27 @@ export class DocContainerGroupsValidator extends Validator {
      * They should also pass the group validator.
      *
      * @param errorReporter
-     * @param parsedComponent
+     * @param component
      */
-    validateComponent(parsedComponent: Component): void {
-        if (!parsedComponent.directiveOptions) {
+    validateComponent(component: Component): void {
+        if (!component.directiveOptions) {
             return;
         }
 
         const groupsValidator = new GroupsValidator(this.error, this.componentSet);
 
-        for (const [key, directiveOptions] of Object.entries(parsedComponent.directiveOptions)) {
+        for (const [key, directiveOptions] of Object.entries(component.directiveOptions)) {
             // Rules only apply when it has a groups property defined
             if (!directiveOptions.groups) {
                 continue;
             }
-            if (!parsedComponent.directives[key]) {
-                this.error(`Component "${parsedComponent.name}" has a group for invalid directive "${key}"`);
+            if (!component.directives[key]) {
+                this.error(`Component "${component.name}" has a group for invalid directive "${key}"`);
                 continue;
             }
-            if (parsedComponent.directives[key].type !== 'container') {
+            if (component.directives[key].type !== 'container') {
                 this.error(
-                    `Component "${parsedComponent.name}" has a group for directive "${key}" with incompatible type "${parsedComponent.directives[key].type}". Only type "container" is allowed.`,
+                    `Component "${component.name}" has a group for directive "${key}" with incompatible type "${component.directives[key].type}". Only type "container" is allowed.`,
                 );
                 continue;
             }

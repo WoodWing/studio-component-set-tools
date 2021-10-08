@@ -20,10 +20,10 @@ export class FittingValidator extends Validator {
     }
 
     async validate(): Promise<void> {
-        for (const parsedComponent of Object.values(this.componentSet.components)) {
-            if (this.countPerComponent(parsedComponent) > 1) {
+        for (const component of Object.values(this.componentSet.components)) {
+            if (this.countPerComponent(component) > 1) {
                 this.error(
-                    `Component "${parsedComponent.name}" uses properties with "${CONTROL}" control type ` +
+                    `Component "${component.name}" uses properties with "${CONTROL}" control type ` +
                         `more that one time`,
                 );
             }

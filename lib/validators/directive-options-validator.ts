@@ -7,28 +7,28 @@ import { Component } from '../models';
 
 export class DirectiveOptionsValidator extends Validator {
     async validate(): Promise<void> {
-        for (const parsedComponent of Object.values(this.componentSet.components)) {
-            this.validateComponent(parsedComponent);
+        for (const component of Object.values(this.componentSet.components)) {
+            this.validateComponent(component);
         }
     }
 
     /**
      * Validates whether directiveOptions entries have a matching directive
      */
-    validateComponent(parsedComponent: Component): void {
-        if (!parsedComponent.directiveOptions) {
+    validateComponent(component: Component): void {
+        if (!component.directiveOptions) {
             return;
         }
 
-        for (const key of Object.keys(parsedComponent.directiveOptions)) {
-            this.validateDirectiveOption(key, parsedComponent);
+        for (const key of Object.keys(component.directiveOptions)) {
+            this.validateDirectiveOption(key, component);
         }
     }
 
-    validateDirectiveOption(directiveKey: string, parsedComponent: Component): void {
-        if (!parsedComponent.directives[directiveKey]) {
+    validateDirectiveOption(directiveKey: string, component: Component): void {
+        if (!component.directives[directiveKey]) {
             this.error(
-                `Component "${parsedComponent.name}" has directive options for an unknown directive "${directiveKey}".`,
+                `Component "${component.name}" has directive options for an unknown directive "${directiveKey}".`,
             );
         }
     }
