@@ -38,11 +38,10 @@ export async function parseDefinition(componentsDefinition: ComponentsDefinition
         customStyles: componentsDefinition.customStyles || [],
     };
     // copy source because properties and child properties will be expanded
-    const definition: ComponentsDefinition = JSON.parse(JSON.stringify(componentsDefinition));
-    for (const compDef of definition.components) {
+    for (const compDef of componentsDefinition.components) {
         componentSet.components[compDef.name] = parseComponent(
             compDef,
-            definition.componentProperties,
+            componentsDefinition.componentProperties,
             ComponentRendition.HTML,
         );
     }
@@ -164,7 +163,7 @@ function findComponentPropertyTemplate(propertyName: string, componentProperties
     if (!propertyTemplate) {
         throw new Error(`Property "${propertyName}" is not found in definition componentProperties`);
     }
-    return propertyTemplate;
+    return Object.assign({}, propertyTemplate);
 }
 
 function isPropertyObject(property: unknown): property is ComponentProperty {
