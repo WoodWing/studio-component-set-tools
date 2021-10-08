@@ -1,5 +1,5 @@
 import {
-    Component,
+    ComponentDefinition,
     ComponentProperty,
     ComponentGroup,
     ComponentConversionRules,
@@ -79,7 +79,7 @@ export interface ComponentSet {
     customStyles: CustomStyle[];
 }
 
-export interface ParsedComponent extends Component {
+export interface ParsedComponent extends ComponentDefinition {
     /**
      * Parsed complete properties of component.
      */

@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Component, ComponentRendition, ComponentsDefinition, GetFileContentType } from '../models';
+import { ComponentDefinition, ComponentRendition, ComponentsDefinition, GetFileContentType } from '../models';
 import cloneDeep = require('lodash.clonedeep');
 import { deepFreeze } from '../util/freeze';
 
@@ -16,15 +16,15 @@ export async function loadHtmlRenditions(
     return deepFreeze(enrichedDefinition);
 }
 
-function hasRendition(component: Component, rendition: ComponentRendition): boolean {
+function hasRendition(component: ComponentDefinition, rendition: ComponentRendition): boolean {
     return Boolean(component.renditions && rendition in component.renditions);
 }
 
 async function loadRendition(
-    component: Component,
+    component: ComponentDefinition,
     rendition: ComponentRendition,
     getFileContent: GetFileContentType,
-): Promise<Component> {
+): Promise<ComponentDefinition> {
     if (!component.renditions) {
         component.renditions = {};
     }

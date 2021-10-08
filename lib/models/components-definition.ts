@@ -22,7 +22,7 @@ export interface ComponentsDefinition {
     defaultComponentOnEnter: string;
 
     /** List of available components */
-    components: Component[];
+    components: ComponentDefinition[];
 
     /** List of available component properties */
     componentProperties: ComponentProperty[];
@@ -43,7 +43,7 @@ export interface ComponentsDefinition {
     customStyles?: CustomStyle[];
 }
 
-export interface Component {
+export interface ComponentDefinition {
     /** Unique component identifier */
     name: string;
 

@@ -4,7 +4,7 @@
 
 import * as htmlparser from 'htmlparser2';
 import {
-    Component,
+    ComponentDefinition,
     ComponentProperty,
     ComponentRendition,
     ComponentsDefinition,
@@ -100,7 +100,7 @@ function getDirectiveType(directiveName: string): DirectiveType {
  * @param component
  * @param rendition
  */
-function hasRendition(component: Component, rendition: ComponentRendition): boolean {
+function hasRendition(component: ComponentDefinition, rendition: ComponentRendition): boolean {
     return Boolean(component.renditions && rendition in component.renditions);
 }
 
@@ -112,7 +112,7 @@ function hasRendition(component: Component, rendition: ComponentRendition): bool
  * @param rendition
  */
 function parseComponent(
-    component: Component,
+    component: ComponentDefinition,
     componentProperties: ComponentProperty[],
     rendition: ComponentRendition,
 ): ParsedComponent {
