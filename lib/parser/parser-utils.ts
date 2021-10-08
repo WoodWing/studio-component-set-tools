@@ -126,6 +126,7 @@ function parseProperty(
     componentProperty: ComponentProperty | string,
     componentProperties: ComponentProperty[],
 ): ComponentProperty {
+    // Creates a shallow clone of the property object, so properties can be re-assigned.
     return isPropertyObject(componentProperty)
         ? parseComponentPropertyObject(componentProperty, componentProperties)
         : findComponentPropertyTemplate(componentProperty, componentProperties);
