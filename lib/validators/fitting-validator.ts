@@ -4,12 +4,12 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent } from '../models';
+import { Component } from '../models';
 
 const CONTROL = 'fitting';
 
 export class FittingValidator extends Validator {
-    private countPerComponent(component: ParsedComponent): number {
+    private countPerComponent(component: Component): number {
         let amount = 0;
         component.properties.forEach((parsedProperty) => {
             if (parsedProperty.control.type === CONTROL) {

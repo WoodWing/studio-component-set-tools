@@ -3,11 +3,11 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponent } from '../models';
+import { DirectiveType, Component } from '../models';
 
 export class DocSlideshowValidator extends Validator {
     async validate(): Promise<void> {
-        Object.values(this.componentSet.components).forEach((parsedComponent: ParsedComponent) => {
+        Object.values(this.componentSet.components).forEach((parsedComponent: Component) => {
             const amountOfSlideshows = this.countSlideshowDirectives(parsedComponent);
             // check if it's the only one
             if (amountOfSlideshows > 1) {
@@ -19,7 +19,7 @@ export class DocSlideshowValidator extends Validator {
         });
     }
 
-    private countSlideshowDirectives(parsedComponent: ParsedComponent): number {
+    private countSlideshowDirectives(parsedComponent: Component): number {
         return Object.values(parsedComponent.directives).reduce((acc, directive) => {
             if (directive.type === DirectiveType.slideshow) {
                 acc++;

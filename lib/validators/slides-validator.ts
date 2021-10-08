@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent, ComponentProperty } from '../models';
+import { Component, ComponentProperty } from '../models';
 
 export class SlidesValidator extends Validator {
     async validate(): Promise<void> {
@@ -24,7 +24,7 @@ export class SlidesValidator extends Validator {
      * @param parsedComponent
      * @param property
      */
-    validateComponent(parsedComponent: ParsedComponent, property: ComponentProperty): void {
+    validateComponent(parsedComponent: Component, property: ComponentProperty): void {
         if (property.control.type !== 'slides') {
             return;
         }
@@ -53,11 +53,7 @@ export class SlidesValidator extends Validator {
      * @param property
      * @param properties
      */
-    private validateHasProperties(
-        parsedComponent: ParsedComponent,
-        property: ComponentProperty,
-        properties: string[],
-    ): void {
+    private validateHasProperties(parsedComponent: Component, property: ComponentProperty, properties: string[]): void {
         properties.forEach((propertyName) => {
             if (!this.hasProperty(parsedComponent, propertyName)) {
                 this.error(
@@ -74,7 +70,7 @@ export class SlidesValidator extends Validator {
      * @param parsedComponent
      * @param propertyName
      */
-    private hasProperty(parsedComponent: ParsedComponent, propertyName: string) {
+    private hasProperty(parsedComponent: Component, propertyName: string) {
         for (let i = 0; i < parsedComponent.properties.length; i++) {
             if (parsedComponent.properties[i].name === propertyName) {
                 return true;

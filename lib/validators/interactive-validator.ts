@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent, ComponentProperty } from '../models';
+import { Component, ComponentProperty } from '../models';
 
 const CONTROL = 'interactive';
 const ALLOWED_DATA_TYPE = 'doc-interactive';
@@ -18,7 +18,7 @@ export class InteractiveValidator extends Validator {
      *
      * @param component
      */
-    private validateComponent(component: ParsedComponent): void {
+    private validateComponent(component: Component): void {
         component.properties.forEach((property) => this.validateProperty(property));
     }
 

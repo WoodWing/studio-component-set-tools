@@ -3,11 +3,11 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponent } from '../models';
+import { DirectiveType, Component } from '../models';
 
 export class DocContainerValidator extends Validator {
     async validate(): Promise<void> {
-        Object.values(this.componentSet.components).forEach((parsedComponent: ParsedComponent) => {
+        Object.values(this.componentSet.components).forEach((parsedComponent: Component) => {
             const containerCount = this.countContainerDirectives(parsedComponent);
             const slideshowCount = this.countSlideshowDirectives(parsedComponent);
 
@@ -24,13 +24,13 @@ export class DocContainerValidator extends Validator {
         });
     }
 
-    private countContainerDirectives(parsedComponent: ParsedComponent): number {
+    private countContainerDirectives(parsedComponent: Component): number {
         return Object.values(parsedComponent.directives).filter(
             (directive) => directive.type === DirectiveType.container,
         ).length;
     }
 
-    private countSlideshowDirectives(parsedComponent: ParsedComponent): number {
+    private countSlideshowDirectives(parsedComponent: Component): number {
         return Object.values(parsedComponent.directives).filter(
             (directive) => directive.type === DirectiveType.slideshow,
         ).length;

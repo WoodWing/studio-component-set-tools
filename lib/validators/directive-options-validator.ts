@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent } from '../models';
+import { Component } from '../models';
 
 export class DirectiveOptionsValidator extends Validator {
     async validate(): Promise<void> {
@@ -15,7 +15,7 @@ export class DirectiveOptionsValidator extends Validator {
     /**
      * Validates whether directiveOptions entries have a matching directive
      */
-    validateComponent(parsedComponent: ParsedComponent): void {
+    validateComponent(parsedComponent: Component): void {
         if (!parsedComponent.directiveOptions) {
             return;
         }
@@ -25,7 +25,7 @@ export class DirectiveOptionsValidator extends Validator {
         }
     }
 
-    validateDirectiveOption(directiveKey: string, parsedComponent: ParsedComponent): void {
+    validateDirectiveOption(directiveKey: string, parsedComponent: Component): void {
         if (!parsedComponent.directives[directiveKey]) {
             this.error(
                 `Component "${parsedComponent.name}" has directive options for an unknown directive "${directiveKey}".`,

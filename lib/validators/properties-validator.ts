@@ -8,7 +8,7 @@
 
 import * as path from 'path';
 import { Validator } from './validator';
-import { ComponentProperty, ComponentSet, ParsedComponent } from '../models';
+import { ComponentProperty, ComponentSet, Component } from '../models';
 import type { ComponentPropertyControl } from '../models/component-property-controls';
 import * as semver from 'semver';
 
@@ -35,7 +35,7 @@ export class PropertiesValidator extends Validator {
         Object.values(this.componentSet.components).forEach((component) => this.validateComponent(component));
     }
 
-    private validateComponent(component: ParsedComponent): void {
+    private validateComponent(component: Component): void {
         const componentPropertyNames = new Set<string>();
 
         component.properties.forEach((property) => this.validateProperty(property, componentPropertyNames, component));
@@ -44,11 +44,7 @@ export class PropertiesValidator extends Validator {
         );
     }
 
-    private validateProperty(
-        property: ComponentProperty,
-        componentPropertyNames: Set<string>,
-        component: ParsedComponent,
-    ) {
+    private validateProperty(property: ComponentProperty, componentPropertyNames: Set<string>, component: Component) {
         this.validateReservedPropertyName(property);
         this.validatePropertyName(property, componentPropertyNames, component);
         this.validateRadioPropertyIcons(property);
@@ -58,7 +54,7 @@ export class PropertiesValidator extends Validator {
     private validatePropertyName(
         property: ComponentProperty,
         componentPropertyNames: Set<string>,
-        component: ParsedComponent,
+        component: Component,
     ) {
         if (!property.name) {
             this.validateNamelessProperty(property, component);
@@ -82,7 +78,7 @@ export class PropertiesValidator extends Validator {
         }
     }
 
-    private validateNamelessProperty(property: ComponentProperty, component: ParsedComponent) {
+    private validateNamelessProperty(property: ComponentProperty, component: Component) {
         if (property.control.type !== 'header') {
             this.error(
                 `Property in component "${component.name}" must have a name when using control type "${property.control.type}"`,
@@ -120,7 +116,7 @@ export class PropertiesValidator extends Validator {
     private validateChildProperties(
         property: ComponentProperty,
         componentPropertyNames: Set<string>,
-        component: ParsedComponent,
+        component: Component,
     ) {
         if (!property.childProperties) return;
 

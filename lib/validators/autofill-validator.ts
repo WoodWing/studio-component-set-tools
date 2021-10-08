@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponent } from '../models';
+import { DirectiveType, Component } from '../models';
 
 const supportedDestinationDirectives = [DirectiveType.editable, DirectiveType.link];
 const supportedSourceDirectives = [DirectiveType.image];
@@ -25,7 +25,7 @@ export class AutofillValidator extends Validator {
      * @param errorReporter
      * @param parsedComponent
      */
-    validateComponent(parsedComponent: ParsedComponent): void {
+    validateComponent(parsedComponent: Component): void {
         // Only check when it has directiveOptions configured
         if (!parsedComponent.directiveOptions) {
             return;

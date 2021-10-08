@@ -50,7 +50,7 @@ export interface ComponentSet {
      * Map component identifiers to their parsed model.
      */
     components: {
-        [name: string]: ParsedComponent;
+        [name: string]: Component;
     };
 
     /**
@@ -79,7 +79,7 @@ export interface ComponentSet {
     customStyles: CustomStyle[];
 }
 
-export interface ParsedComponent extends ComponentDefinition {
+export interface Component extends ComponentDefinition {
     /**
      * Parsed complete properties of component.
      */

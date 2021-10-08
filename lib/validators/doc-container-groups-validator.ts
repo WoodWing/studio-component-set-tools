@@ -7,7 +7,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent } from '../models';
+import { Component } from '../models';
 import { GroupsValidator } from './groups-validator';
 
 export class DocContainerGroupsValidator extends Validator {
@@ -26,7 +26,7 @@ export class DocContainerGroupsValidator extends Validator {
      * @param errorReporter
      * @param parsedComponent
      */
-    validateComponent(parsedComponent: ParsedComponent): void {
+    validateComponent(parsedComponent: Component): void {
         if (!parsedComponent.directiveOptions) {
             return;
         }

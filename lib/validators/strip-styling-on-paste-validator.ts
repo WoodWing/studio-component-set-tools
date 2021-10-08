@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent } from '../models';
+import { Component } from '../models';
 
 export class StripStylingOnPasteValidator extends Validator {
     async validate(): Promise<void> {
@@ -15,7 +15,7 @@ export class StripStylingOnPasteValidator extends Validator {
     /**
      * Validates whether stripStylingOnPaste is set for an editable directive.
      */
-    validateComponent(parsedComponent: ParsedComponent): void {
+    validateComponent(parsedComponent: Component): void {
         if (!parsedComponent.directiveOptions) {
             return;
         }
@@ -30,7 +30,7 @@ export class StripStylingOnPasteValidator extends Validator {
         }
     }
 
-    validateDirectiveExists(directiveKey: string, parsedComponent: ParsedComponent): boolean {
+    validateDirectiveExists(directiveKey: string, parsedComponent: Component): boolean {
         const directive = parsedComponent.directives[directiveKey];
         if (directive) return true;
 
@@ -40,7 +40,7 @@ export class StripStylingOnPasteValidator extends Validator {
         return false;
     }
 
-    validateDirectiveType(directiveKey: string, parsedComponent: ParsedComponent): void {
+    validateDirectiveType(directiveKey: string, parsedComponent: Component): void {
         const directive = parsedComponent.directives[directiveKey];
         if (directive.type === 'editable') return;
 

@@ -10,7 +10,7 @@ import {
     ComponentsDefinition,
     ComponentSet,
     DirectiveType,
-    ParsedComponent,
+    Component,
 } from '../models';
 import merge = require('lodash.merge');
 
@@ -115,7 +115,7 @@ function parseComponent(
     component: ComponentDefinition,
     componentProperties: ComponentProperty[],
     rendition: ComponentRendition,
-): ParsedComponent {
+): Component {
     if (!hasRendition(component, rendition)) {
         throw new Error(`Component "${component.name}" doesn't have "${rendition}" rendition`);
     }
@@ -230,7 +230,7 @@ function buildComponentSetDefaultContent(componentSet: ComponentSet): void {
  */
 function buildComponentDefaultContent(
     defaultComponentContent: ComponentSet['defaultComponentContent'],
-    component: ParsedComponent,
+    component: Component,
 ): void {
     for (const property of component.properties) {
         buildComponentPropertyDefaultContent(defaultComponentContent, component.name, property);

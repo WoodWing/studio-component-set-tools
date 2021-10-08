@@ -9,14 +9,14 @@
  */
 
 import { Validator } from './validator';
-import { ComponentProperty, DirectiveType, ParsedComponent } from '../models';
+import { ComponentProperty, DirectiveType, Component } from '../models';
 
 export class DocMediaValidator extends Validator {
     async validate(): Promise<void> {
-        Object.values(this.componentSet.components).forEach((c: ParsedComponent) => this.validateComponent(c));
+        Object.values(this.componentSet.components).forEach((c: Component) => this.validateComponent(c));
     }
 
-    private validateComponent(parsedComponent: ParsedComponent) {
+    private validateComponent(parsedComponent: Component) {
         const numMediaDirectives = this.countMediaDirectives(parsedComponent);
         if (numMediaDirectives === 0) {
             this.validateComponentWithoutMediaDirective(parsedComponent);
@@ -33,7 +33,7 @@ export class DocMediaValidator extends Validator {
         this.validateComponentWithMediaDirective(parsedComponent);
     }
 
-    private validateComponentWithoutMediaDirective(parsedComponent: ParsedComponent) {
+    private validateComponentWithoutMediaDirective(parsedComponent: Component) {
         if (this.countMediaPropertiesProperties(parsedComponent) > 0) {
             this.error(
                 `Component "${parsedComponent.name}" has a "media-properties" control type, but only components with a "doc-media" directive can have a property with this control type`,
@@ -41,7 +41,7 @@ export class DocMediaValidator extends Validator {
         }
     }
 
-    private validateComponentWithMediaDirective(parsedComponent: ParsedComponent) {
+    private validateComponentWithMediaDirective(parsedComponent: Component) {
         if (this.countMediaPropertiesProperties(parsedComponent) !== 1) {
             this.error(
                 `Component "${
@@ -59,7 +59,7 @@ export class DocMediaValidator extends Validator {
         }
     }
 
-    private validateMediaProperty(parsedComponent: ParsedComponent, mediaProperty: ComponentProperty) {
+    private validateMediaProperty(parsedComponent: Component, mediaProperty: ComponentProperty) {
         if (!mediaProperty.directiveKey) {
             this.error(
                 `Component "${parsedComponent.name}" must configure "directiveKey" for the property with control type "media-properties"`,
@@ -75,18 +75,18 @@ export class DocMediaValidator extends Validator {
         }
     }
 
-    private countMediaDirectives(parsedComponent: ParsedComponent): number {
+    private countMediaDirectives(parsedComponent: Component): number {
         return Object.values(parsedComponent.directives).filter((directive) => directive.type === DirectiveType.media)
             .length;
     }
 
     /** Count number of "media-properties" properties */
-    private countMediaPropertiesProperties(parsedComponent: ParsedComponent): number {
+    private countMediaPropertiesProperties(parsedComponent: Component): number {
         return this.mediaPropertiesProperties(parsedComponent).length;
     }
 
     /** Get "media-properties" properties definitions (collection of nested properties behaving as a single property) */
-    private mediaPropertiesProperties(parsedComponent: ParsedComponent) {
+    private mediaPropertiesProperties(parsedComponent: Component) {
         return Object.values(parsedComponent.properties).filter(
             (property) => property.control.type === 'media-properties',
         );

@@ -3,20 +3,20 @@
  */
 
 import { Validator } from './validator';
-import { DirectiveType, ParsedComponent } from '../models';
+import { DirectiveType, Component } from '../models';
 
 const PROPERTY = 'restrictChildren';
 const ADDITIONAL_PROPERTY = 'withContent';
 
 export class RestrictChildrenValidator extends Validator {
-    private hasSlideshowDirective(parsedComponent: ParsedComponent): boolean {
+    private hasSlideshowDirective(parsedComponent: Component): boolean {
         return Object.values(parsedComponent.directives).some(
             (directive) => directive.type === DirectiveType.slideshow,
         );
     }
 
     async validate(): Promise<void> {
-        Object.values(this.componentSet.components).forEach((parsedComponent: ParsedComponent) => {
+        Object.values(this.componentSet.components).forEach((parsedComponent: Component) => {
             const isPresent = PROPERTY in parsedComponent && parsedComponent[PROPERTY];
             const hasSlideshow = this.hasSlideshowDirective(parsedComponent);
             if (!isPresent) {
