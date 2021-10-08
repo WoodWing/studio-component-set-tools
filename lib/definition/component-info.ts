@@ -1,4 +1,4 @@
-import { ComponentsDefinition, Component, ComponentRendition } from '../models/components-definition';
+import { ComponentsDefinition, ComponentDefinition, ComponentRendition } from '../models/components-definition';
 import { ComponentField, ComponentSetInfo, ComponentInfoFields } from '../models/component-set-info';
 import { RenditionResolver, processTemplates } from './process-templates';
 import parse5 = require('parse5');
@@ -77,7 +77,7 @@ function parseAttributes(componentFields: ComponentField[], attrs?: parse5.Attri
 
 function addRestrictChildrenInfo(
     componentDefinition: ComponentsDefinition,
-    component: Component,
+    component: ComponentDefinition,
     field: ComponentField,
 ): void {
     if (field.type !== 'container') {

@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent, ComponentProperty } from '../models';
+import { Component, ComponentProperty } from '../models';
 
 const TYPES = ['em', 'px'];
 const TYPES_REGEXP = new RegExp(`^(${TYPES.join('|')})$`, 'i');
@@ -18,7 +18,7 @@ export class UnitTypeValidator extends Validator {
      *
      * @param component
      */
-    private validateComponent(component: ParsedComponent): void {
+    private validateComponent(component: Component): void {
         component.properties.forEach((property) => this.validateProperty(property));
     }
 

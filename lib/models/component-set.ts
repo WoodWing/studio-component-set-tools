@@ -1,5 +1,5 @@
 import {
-    Component,
+    ComponentDefinition,
     ComponentProperty,
     ComponentGroup,
     ComponentConversionRules,
@@ -15,29 +15,19 @@ import {
  * - componentProperties list is removed, as it's merged into the component property lists
  */
 export interface ComponentSet {
-    /**
-     * Name of the components package
-     */
+    /** Name of the components package */
     name: string;
 
-    /**
-     * Description of components package
-     */
+    /** Description of components package */
     description?: string;
 
-    /**
-     * Version of matching components model
-     */
+    /** Version of matching components model */
     version: string;
 
-    /**
-     * Default component inserted on pressing enter in a text field
-     */
+    /** Default component inserted on pressing enter in a text field */
     defaultComponentOnEnter: string;
 
-    /**
-     * Default components content
-     */
+    /** Default components content */
     defaultComponentContent: {
         [componentName: string]: {
             [dataType in ComponentProperty['dataType']]?: {
@@ -46,48 +36,32 @@ export interface ComponentSet {
         };
     };
 
-    /**
-     * Map component identifiers to their parsed model.
-     */
+    /** Map component identifiers to their parsed model. */
     components: {
-        [name: string]: ParsedComponent;
+        [name: string]: Component;
     };
 
-    /**
-     * List of groups shown in component chooser dialog
-     */
+    /** List of groups shown in component chooser dialog */
     groups: ComponentGroup[];
 
-    /**
-     * Conversion rules for transforming one component into another component
-     */
+    /** Conversion rules for transforming one component into another component */
     conversionRules: ComponentConversionRules;
 
-    /**
-     * Shortcuts configurations
-     */
+    /** Shortcuts configurations */
     shortcuts?: ComponentsDefinitionShortcuts;
 
-    /**
-     * List of scripts to be included for html rendition of article
-     */
+    /** List of scripts to be included for html rendition of article */
     scripts: string[];
 
-    /**
-     * List of custom styles definitions which can be configured in the look and feel style of an article
-     */
+    /** List of custom styles definitions which can be configured in the look and feel style of an article */
     customStyles: CustomStyle[];
 }
 
-export interface ParsedComponent extends Component {
-    /**
-     * Parsed complete properties of component.
-     */
+export interface Component extends ComponentDefinition {
+    /** Parsed complete properties of component. */
     properties: ComponentProperty[];
 
-    /**
-     * Information about directives, added after parsing.
-     */
+    /** Information about directives, added after parsing. */
     directives: {
         [key: string]: {
             type: DirectiveType;
@@ -95,9 +69,7 @@ export interface ParsedComponent extends Component {
         };
     };
 
-    /**
-     * Flag which forbids creating of the component
-     */
+    /** Flag which forbids creating of the component */
     noCreatePermission: boolean;
 }
 

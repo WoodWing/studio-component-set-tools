@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent, ComponentProperty } from '../models';
+import { Component, ComponentProperty } from '../models';
 import {
     ComponentPropertyControlCheckbox,
     ComponentPropertyControlRadio,
@@ -34,7 +34,7 @@ export class DefaultValuesValidator extends Validator {
     /**
      * Iterate through all properties of given component.
      */
-    private validateComponent(component: ParsedComponent): void {
+    private validateComponent(component: Component): void {
         component.properties.forEach((property) => this.validateProperty(property));
     }
 

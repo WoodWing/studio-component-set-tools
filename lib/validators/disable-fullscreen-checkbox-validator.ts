@@ -3,7 +3,7 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent, ComponentProperty } from '../models';
+import { Component, ComponentProperty } from '../models';
 
 const CONTROL = 'disable-fullscreen-checkbox';
 const ALLOWED_DATA_TYPE = 'styles';
@@ -19,7 +19,7 @@ export class DisableFullscreenCheckboxValidator extends Validator {
      * @param errorReporter
      * @param component
      */
-    private validateComponent(component: ParsedComponent): void {
+    private validateComponent(component: Component): void {
         component.properties.forEach((property) => this.validateProperty(property));
     }
 

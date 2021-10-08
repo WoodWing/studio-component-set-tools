@@ -5,13 +5,13 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent, ComponentProperty } from '../models';
+import { Component, ComponentProperty } from '../models';
 
 const CONTROL = 'drop-capital';
 const ALLOWED_DATA_TYPE = 'data';
 
 export class DropCapitalValidator extends Validator {
-    private countPerComponent(component: ParsedComponent): number {
+    private countPerComponent(component: Component): number {
         let amount = 0;
         component.properties.forEach((parsedProperty) => {
             if (parsedProperty.control.type === CONTROL) {
@@ -30,7 +30,7 @@ export class DropCapitalValidator extends Validator {
      *
      * @param component
      */
-    private validateComponent(component: ParsedComponent): void {
+    private validateComponent(component: Component): void {
         component.properties.forEach((property) => this.validateProperty(property));
 
         if (this.countPerComponent(component) > 1) {

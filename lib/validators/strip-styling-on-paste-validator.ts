@@ -3,49 +3,49 @@
  */
 
 import { Validator } from './validator';
-import { ParsedComponent } from '../models';
+import { Component } from '../models';
 
 export class StripStylingOnPasteValidator extends Validator {
     async validate(): Promise<void> {
-        for (const parsedComponent of Object.values(this.componentSet.components)) {
-            this.validateComponent(parsedComponent);
+        for (const component of Object.values(this.componentSet.components)) {
+            this.validateComponent(component);
         }
     }
 
     /**
      * Validates whether stripStylingOnPaste is set for an editable directive.
      */
-    validateComponent(parsedComponent: ParsedComponent): void {
-        if (!parsedComponent.directiveOptions) {
+    validateComponent(component: Component): void {
+        if (!component.directiveOptions) {
             return;
         }
 
-        for (const [key, directiveOptions] of Object.entries(parsedComponent.directiveOptions)) {
+        for (const [key, directiveOptions] of Object.entries(component.directiveOptions)) {
             // Only for directives with stripStylingOnPaste option
             if (directiveOptions.stripStylingOnPaste === undefined) continue;
 
-            if (!this.validateDirectiveExists(key, parsedComponent)) continue;
+            if (!this.validateDirectiveExists(key, component)) continue;
 
-            this.validateDirectiveType(key, parsedComponent);
+            this.validateDirectiveType(key, component);
         }
     }
 
-    validateDirectiveExists(directiveKey: string, parsedComponent: ParsedComponent): boolean {
-        const directive = parsedComponent.directives[directiveKey];
+    validateDirectiveExists(directiveKey: string, component: Component): boolean {
+        const directive = component.directives[directiveKey];
         if (directive) return true;
 
         this.error(
-            `Component "${parsedComponent.name}" has stripStylingOnPaste set for an unknown directive "${directiveKey}".`,
+            `Component "${component.name}" has stripStylingOnPaste set for an unknown directive "${directiveKey}".`,
         );
         return false;
     }
 
-    validateDirectiveType(directiveKey: string, parsedComponent: ParsedComponent): void {
-        const directive = parsedComponent.directives[directiveKey];
+    validateDirectiveType(directiveKey: string, component: Component): void {
+        const directive = component.directives[directiveKey];
         if (directive.type === 'editable') return;
 
         this.error(
-            `Component "${parsedComponent.name}" has stripStylingOnPaste set for a directive with key "${directiveKey}" but that directive is not of type "editable". Instead it is of type "${directive.type}".`,
+            `Component "${component.name}" has stripStylingOnPaste set for a directive with key "${directiveKey}" but that directive is not of type "editable". Instead it is of type "${directive.type}".`,
         );
     }
 }
