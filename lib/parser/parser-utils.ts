@@ -94,21 +94,11 @@ function getDirectiveType(directiveName: string): DirectiveType {
 
 /**
  * Checks if component has needed rendition
- *
- * @param component
- * @param rendition
  */
 function hasRendition(component: ComponentDefinition, rendition: ComponentRendition): boolean {
     return Boolean(component.renditions && rendition in component.renditions);
 }
 
-/**
- * Parses a component
- *
- * @param component
- * @param componentProperties
- * @param rendition
- */
 function parseComponent(
     component: ComponentDefinition,
     componentProperties: ComponentProperty[],
@@ -132,12 +122,6 @@ function parseComponent(
     };
 }
 
-/**
- * Parses a property
- *
- * @param componentProperty
- * @param componentProperties
- */
 function parseProperty(
     componentProperty: ComponentProperty | string,
     componentProperties: ComponentProperty[],
@@ -215,8 +199,6 @@ function validateDirective(
  * content with the properties classes, as both deal with the article format.
  * Alternatively the default values could be set after component creation, but this would
  * generate more data operations and trigger more view updates (needs to be tested through).
- *
- * @param componentSet
  */
 function buildComponentSetDefaultContent(componentSet: ComponentSet): void {
     for (const component of Object.values(componentSet.components)) {
@@ -226,9 +208,6 @@ function buildComponentSetDefaultContent(componentSet: ComponentSet): void {
 
 /**
  * Build default component model for given component and add to defaultComponentContent input.
- *
- * @param defaultComponentContent
- * @param component
  */
 function buildComponentDefaultContent(
     defaultComponentContent: ComponentSet['defaultComponentContent'],
@@ -264,10 +243,6 @@ function buildConditionalChildPropertiesDefaultContent(
 
 /**
  * Build default component model property data and add to defaultComponentContent.
- *
- * @param defaultComponentContent
- * @param componentName
- * @param property
  */
 function buildComponentPropertyDefaultContent(
     defaultComponentContent: ComponentSet['defaultComponentContent'],
