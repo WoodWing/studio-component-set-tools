@@ -31,7 +31,7 @@ export interface ComponentSet {
     defaultComponentContent: {
         [componentName: string]: {
             [dataType in ComponentProperty['dataType']]?: {
-                [propertyName: string]: string;
+                [propertyName: string]: ComponentProperty['defaultValue'];
             };
         };
     };

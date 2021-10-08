@@ -12,7 +12,6 @@ import {
     DirectiveType,
     Component,
 } from '../models';
-import merge = require('lodash.merge');
 
 /**
  * Parses the components definition into the object which contains all needed data to make needed validations
@@ -39,7 +38,7 @@ export async function parseDefinition(componentsDefinition: ComponentsDefinition
         customStyles: componentsDefinition.customStyles || [],
     };
     // copy source because properties and child properties will be expanded
-    const definition = merge({}, componentsDefinition);
+    const definition: ComponentsDefinition = JSON.parse(JSON.stringify(componentsDefinition));
     for (const compDef of definition.components) {
         componentSet.components[compDef.name] = parseComponent(
             compDef,
@@ -121,7 +120,8 @@ function parseComponent(
     }
     const directives = parseDirectives((component.renditions && component.renditions[rendition]) || '');
 
-    return merge({}, component, {
+    return {
+        ...component,
         directives: directives,
         properties: (component.properties || []).map((componentProperty) => {
             const property = parseProperty(componentProperty, componentProperties);
@@ -130,7 +130,7 @@ function parseComponent(
             return property;
         }),
         noCreatePermission: false,
-    });
+    };
 }
 
 /**
@@ -152,7 +152,10 @@ function parseComponentPropertyObject(componentProperty: ComponentProperty, comp
     // No name means the property is defined anonymously.
     // Otherwise the property is merged with componentProperties entry. This entry must exist
     return componentProperty.name
-        ? merge({}, findComponentPropertyTemplate(componentProperty.name, componentProperties), componentProperty)
+        ? {
+              ...findComponentPropertyTemplate(componentProperty.name, componentProperties),
+              ...componentProperty,
+          }
         : componentProperty;
 }
 
@@ -313,12 +316,6 @@ function buildComponentPropertyDefaultContent(
 /**
  * Adds default value to default component model.
  * Creates necessary structure when needed.
- *
- * @param defaultComponentContent
- * @param dataTypeKey
- * @param componentName
- * @param propertyName
- * @param value
  */
 function addDefaultPropertyContent(
     defaultComponentContent: ComponentSet['defaultComponentContent'],
@@ -330,10 +327,11 @@ function addDefaultPropertyContent(
     if (!defaultComponentContent[componentName]) {
         defaultComponentContent[componentName] = {};
     }
-    defaultComponentContent[componentName][dataTypeKey] = merge(
-        defaultComponentContent[componentName][dataTypeKey] || {},
-        {
-            [propertyName]: value,
-        },
-    );
+    if (!defaultComponentContent[componentName][dataTypeKey]) {
+        defaultComponentContent[componentName][dataTypeKey] = {};
+    }
+    // TypeScript incorrectly does not infer the structure is initialised above.
+    // Seems related to the string union type for dataTypeKey
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    defaultComponentContent[componentName][dataTypeKey]![propertyName] = value;
 }
