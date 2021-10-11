@@ -12,7 +12,6 @@ import {
     DirectiveType,
     Component,
 } from '../models';
-import merge = require('lodash.merge');
 
 /**
  * Parses the components definition into the object which contains all needed data to make needed validations
@@ -38,16 +37,15 @@ export async function parseDefinition(componentsDefinition: ComponentsDefinition
         scripts: componentsDefinition.scripts || [],
         customStyles: componentsDefinition.customStyles || [],
     };
-    // copy source because properties and child properties will be expanded
-    const definition = merge({}, componentsDefinition);
-    for (const compDef of definition.components) {
+
+    for (const compDef of componentsDefinition.components) {
         componentSet.components[compDef.name] = parseComponent(
             compDef,
-            definition.componentProperties,
+            componentsDefinition.componentProperties,
             ComponentRendition.HTML,
         );
     }
-    // build "defaultComponentContent" property
+
     buildComponentSetDefaultContent(componentSet);
 
     return componentSet;
@@ -96,21 +94,11 @@ function getDirectiveType(directiveName: string): DirectiveType {
 
 /**
  * Checks if component has needed rendition
- *
- * @param component
- * @param rendition
  */
 function hasRendition(component: ComponentDefinition, rendition: ComponentRendition): boolean {
     return Boolean(component.renditions && rendition in component.renditions);
 }
 
-/**
- * Parses a component
- *
- * @param component
- * @param componentProperties
- * @param rendition
- */
 function parseComponent(
     component: ComponentDefinition,
     componentProperties: ComponentProperty[],
@@ -121,7 +109,8 @@ function parseComponent(
     }
     const directives = parseDirectives((component.renditions && component.renditions[rendition]) || '');
 
-    return merge({}, component, {
+    return {
+        ...component,
         directives: directives,
         properties: (component.properties || []).map((componentProperty) => {
             const property = parseProperty(componentProperty, componentProperties);
@@ -130,19 +119,14 @@ function parseComponent(
             return property;
         }),
         noCreatePermission: false,
-    });
+    };
 }
 
-/**
- * Parses a property
- *
- * @param componentProperty
- * @param componentProperties
- */
 function parseProperty(
     componentProperty: ComponentProperty | string,
     componentProperties: ComponentProperty[],
 ): ComponentProperty {
+    // Creates a shallow clone of the property object, so properties can be re-assigned.
     return isPropertyObject(componentProperty)
         ? parseComponentPropertyObject(componentProperty, componentProperties)
         : findComponentPropertyTemplate(componentProperty, componentProperties);
@@ -152,7 +136,10 @@ function parseComponentPropertyObject(componentProperty: ComponentProperty, comp
     // No name means the property is defined anonymously.
     // Otherwise the property is merged with componentProperties entry. This entry must exist
     return componentProperty.name
-        ? merge({}, findComponentPropertyTemplate(componentProperty.name, componentProperties), componentProperty)
+        ? {
+              ...findComponentPropertyTemplate(componentProperty.name, componentProperties),
+              ...componentProperty,
+          }
         : componentProperty;
 }
 
@@ -161,7 +148,7 @@ function findComponentPropertyTemplate(propertyName: string, componentProperties
     if (!propertyTemplate) {
         throw new Error(`Property "${propertyName}" is not found in definition componentProperties`);
     }
-    return propertyTemplate;
+    return Object.assign({}, propertyTemplate);
 }
 
 function isPropertyObject(property: unknown): property is ComponentProperty {
@@ -213,8 +200,6 @@ function validateDirective(
  * content with the properties classes, as both deal with the article format.
  * Alternatively the default values could be set after component creation, but this would
  * generate more data operations and trigger more view updates (needs to be tested through).
- *
- * @param componentSet
  */
 function buildComponentSetDefaultContent(componentSet: ComponentSet): void {
     for (const component of Object.values(componentSet.components)) {
@@ -224,9 +209,6 @@ function buildComponentSetDefaultContent(componentSet: ComponentSet): void {
 
 /**
  * Build default component model for given component and add to defaultComponentContent input.
- *
- * @param defaultComponentContent
- * @param component
  */
 function buildComponentDefaultContent(
     defaultComponentContent: ComponentSet['defaultComponentContent'],
@@ -262,10 +244,6 @@ function buildConditionalChildPropertiesDefaultContent(
 
 /**
  * Build default component model property data and add to defaultComponentContent.
- *
- * @param defaultComponentContent
- * @param componentName
- * @param property
  */
 function buildComponentPropertyDefaultContent(
     defaultComponentContent: ComponentSet['defaultComponentContent'],
@@ -313,12 +291,6 @@ function buildComponentPropertyDefaultContent(
 /**
  * Adds default value to default component model.
  * Creates necessary structure when needed.
- *
- * @param defaultComponentContent
- * @param dataTypeKey
- * @param componentName
- * @param propertyName
- * @param value
  */
 function addDefaultPropertyContent(
     defaultComponentContent: ComponentSet['defaultComponentContent'],
@@ -330,10 +302,11 @@ function addDefaultPropertyContent(
     if (!defaultComponentContent[componentName]) {
         defaultComponentContent[componentName] = {};
     }
-    defaultComponentContent[componentName][dataTypeKey] = merge(
-        defaultComponentContent[componentName][dataTypeKey] || {},
-        {
-            [propertyName]: value,
-        },
-    );
+    if (!defaultComponentContent[componentName][dataTypeKey]) {
+        defaultComponentContent[componentName][dataTypeKey] = {};
+    }
+    // TypeScript incorrectly does not infer the structure is initialised above.
+    // Seems related to the string union type for dataTypeKey
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    defaultComponentContent[componentName][dataTypeKey]![propertyName] = value;
 }

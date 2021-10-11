@@ -1,41 +1,54 @@
 import { PropertiesValidator } from '../../lib/validators';
 import type { ComponentProperty } from '../../lib/models';
-import cloneDeep = require('lodash.clonedeep');
 
 describe('PropertiesValidator', () => {
-    const textProperty: ComponentProperty = {
-        name: 'textProperty',
-        control: {
-            type: 'text',
-        },
-    } as any;
-    const radioProperty: ComponentProperty = {
-        name: 'radioProperty',
-        control: {
-            type: 'radio',
-            options: [{ icon: 'path1' }, { icon: 'path2' }, { icon: 'path5' }],
-        },
-    } as any;
-    const mediaProperty: ComponentProperty = {
-        name: 'mediaProperty',
-        control: {
-            type: 'media-properties',
-        },
-        dataType: 'doc-media',
-    } as any;
-    const headerProperty: ComponentProperty = {
-        control: {
-            type: 'header',
-        },
-        label: 'header-label',
-    } as any;
-    const checkboxProperty: ComponentProperty = {
-        name: 'checkboxProperty',
-        control: {
-            type: 'checkbox',
-            value: true,
-        },
-    } as any;
+    function createTextProperty(): ComponentProperty {
+        return {
+            name: 'textProperty',
+            control: {
+                type: 'text',
+            },
+        } as any;
+    }
+
+    function createRadioProperty(): ComponentProperty {
+        return {
+            name: 'radioProperty',
+            control: {
+                type: 'radio',
+                options: [{ icon: 'path1' }, { icon: 'path2' }, { icon: 'path5' }],
+            },
+        } as any;
+    }
+
+    function createMediaProperty(): ComponentProperty {
+        return {
+            name: 'mediaProperty',
+            control: {
+                type: 'media-properties',
+            },
+            dataType: 'doc-media',
+        } as any;
+    }
+
+    function createHeaderProperty(): ComponentProperty {
+        return {
+            control: {
+                type: 'header',
+            },
+            label: 'header-label',
+        } as any;
+    }
+
+    function createCheckboxProperty(): ComponentProperty {
+        return {
+            name: 'checkboxProperty',
+            control: {
+                type: 'checkbox',
+                value: true,
+            },
+        } as any;
+    }
 
     function createConditionalProperty(children: any[]) {
         return {
@@ -59,12 +72,17 @@ describe('PropertiesValidator', () => {
             components: {
                 c1: {
                     name: 'c1',
-                    properties: params?.properties ?? [textProperty, radioProperty, mediaProperty, headerProperty],
+                    properties: params?.properties ?? [
+                        createTextProperty(),
+                        createRadioProperty(),
+                        createMediaProperty(),
+                        createHeaderProperty(),
+                    ],
                 },
                 // Add another component with same property to test uniqueness validation passes correctly
                 c2: {
                     name: 'c2',
-                    properties: [textProperty],
+                    properties: [createTextProperty()],
                 },
             },
         };
@@ -87,7 +105,7 @@ describe('PropertiesValidator', () => {
 
         it('should not pass if the names are not unique', () => {
             const { validator, errorSpy } = createPropertiesValidator({
-                properties: [{ ...cloneDeep(textProperty), name: 'radioProperty' }, radioProperty],
+                properties: [{ ...createTextProperty(), name: 'radioProperty' }, createRadioProperty()],
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
@@ -97,14 +115,14 @@ describe('PropertiesValidator', () => {
 
         it('should not pass if reserved word is used as a name', () => {
             const { validator, errorSpy } = createPropertiesValidator({
-                properties: [{ ...cloneDeep(textProperty), name: 'parallax' }],
+                properties: [{ ...createTextProperty(), name: 'parallax' }],
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(`Component property name "parallax" is a reserved word`);
         });
 
         it('should not pass if there is no icon file', () => {
-            const otherRadioProperty = cloneDeep(radioProperty) as any;
+            const otherRadioProperty = createRadioProperty() as any;
             otherRadioProperty.control.options[0].icon = 'pathU';
             const { validator, errorSpy } = createPropertiesValidator({
                 properties: [otherRadioProperty],
@@ -116,7 +134,7 @@ describe('PropertiesValidator', () => {
         it('should pass if parallax word is used as a name in version 1.4.0 or higher', () => {
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.4.0',
-                properties: [{ ...cloneDeep(textProperty), name: 'parallax' }],
+                properties: [{ ...createTextProperty(), name: 'parallax' }],
             });
             validator.validate();
             expect(errorSpy).not.toHaveBeenCalled();
@@ -125,7 +143,7 @@ describe('PropertiesValidator', () => {
         it('should pass if parallax word is used as a name in version 1.5.0 or higher', () => {
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.5.0',
-                properties: [{ ...cloneDeep(textProperty), name: 'parallax' }],
+                properties: [{ ...createTextProperty(), name: 'parallax' }],
             });
             validator.validate();
             expect(errorSpy).not.toHaveBeenCalled();
@@ -135,7 +153,7 @@ describe('PropertiesValidator', () => {
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.5.0',
                 properties: [
-                    textProperty,
+                    createTextProperty(),
                     { label: 'Header', control: { type: 'header' } },
                     { label: 'Another Header', control: { type: 'header' } },
                 ],
@@ -148,8 +166,8 @@ describe('PropertiesValidator', () => {
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.5.0',
                 properties: [
-                    { ...cloneDeep(textProperty), name: undefined },
-                    { ...cloneDeep(mediaProperty), name: undefined },
+                    { ...createTextProperty(), name: undefined },
+                    { ...createMediaProperty(), name: undefined },
                 ],
             });
             validator.validate();
@@ -163,7 +181,7 @@ describe('PropertiesValidator', () => {
 
         it('should not pass if a header has a dataType', () => {
             const { validator, errorSpy } = createPropertiesValidator({
-                properties: [{ ...cloneDeep(headerProperty), dataType: 'data' }],
+                properties: [{ ...createHeaderProperty(), dataType: 'data' }],
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
@@ -174,18 +192,18 @@ describe('PropertiesValidator', () => {
         it('should pass on valid conditional property definition (uses same property definition in other component)', () => {
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.7.0',
-                properties: [createConditionalProperty([textProperty])],
+                properties: [createConditionalProperty([createTextProperty()])],
             });
             validator.validate();
             expect(errorSpy).not.toHaveBeenCalled();
         });
 
         it('should pass when using the same conditional property definition in other conditions', () => {
-            const conditionalProperty = createConditionalProperty([textProperty]);
+            const conditionalProperty = createConditionalProperty([createTextProperty()]);
             conditionalProperty.childProperties.push({
                 matchType: 'exact-value',
                 matchExpression: 'some arbitrary value',
-                properties: [textProperty],
+                properties: [createTextProperty()],
             });
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.7.0',
@@ -198,7 +216,7 @@ describe('PropertiesValidator', () => {
         it('should not pass when using property with the same name in the conditional property definition as the parent', () => {
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.7.0',
-                properties: [textProperty, createConditionalProperty([textProperty])],
+                properties: [createTextProperty(), createConditionalProperty([createTextProperty()])],
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
@@ -210,7 +228,10 @@ describe('PropertiesValidator', () => {
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.7.0',
                 properties: [
-                    createConditionalProperty([{ ...cloneDeep(textProperty), name: 'radioProperty' }, radioProperty]),
+                    createConditionalProperty([
+                        { ...createTextProperty(), name: 'radioProperty' },
+                        createRadioProperty(),
+                    ]),
                 ],
             });
             validator.validate();
@@ -220,7 +241,7 @@ describe('PropertiesValidator', () => {
         });
 
         it('should not pass if a conditional child property has no icon file', () => {
-            const otherRadioProperty = cloneDeep(radioProperty) as any;
+            const otherRadioProperty = createRadioProperty() as any;
             otherRadioProperty.control.options[0].icon = 'pathU';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.7.0',
@@ -235,7 +256,7 @@ describe('PropertiesValidator', () => {
                 version: '1.7.0',
                 properties: [
                     createConditionalProperty([
-                        textProperty,
+                        createTextProperty(),
                         { label: 'Header', control: { type: 'header' } },
                         { label: 'Another Header', control: { type: 'header' } },
                     ]),
@@ -250,8 +271,8 @@ describe('PropertiesValidator', () => {
                 version: '1.7.0',
                 properties: [
                     createConditionalProperty([
-                        { ...cloneDeep(textProperty), name: undefined },
-                        { ...cloneDeep(mediaProperty), name: undefined },
+                        { ...createTextProperty(), name: undefined },
+                        { ...createMediaProperty(), name: undefined },
                     ]),
                 ],
             });
@@ -267,7 +288,7 @@ describe('PropertiesValidator', () => {
         it('should not pass if conditional child header has a dataType', () => {
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.7.0',
-                properties: [createConditionalProperty([{ ...cloneDeep(headerProperty), dataType: 'data' }])],
+                properties: [createConditionalProperty([{ ...createHeaderProperty(), dataType: 'data' }])],
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
@@ -280,7 +301,7 @@ describe('PropertiesValidator', () => {
                 version: '1.7.0',
                 properties: [
                     {
-                        ...createConditionalProperty([textProperty]),
+                        ...createConditionalProperty([createTextProperty()]),
                         control: {
                             type: 'fitting',
                         },
@@ -294,7 +315,7 @@ describe('PropertiesValidator', () => {
         });
 
         it('should pass if a checkbox with dataType "data" is used with a boolean value', () => {
-            const prop = cloneDeep(checkboxProperty);
+            const prop = createCheckboxProperty();
             prop.dataType = 'data';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.7.0',
@@ -305,7 +326,7 @@ describe('PropertiesValidator', () => {
         });
 
         it('should not pass if a checkbox with dataType other than "data" is used with a boolean value', () => {
-            const prop = cloneDeep(checkboxProperty);
+            const prop = createCheckboxProperty();
             prop.dataType = 'styles';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.7.0',
