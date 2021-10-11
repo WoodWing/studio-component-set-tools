@@ -37,7 +37,7 @@ export async function parseDefinition(componentsDefinition: ComponentsDefinition
         scripts: componentsDefinition.scripts || [],
         customStyles: componentsDefinition.customStyles || [],
     };
-    // copy source because properties and child properties will be expanded
+
     for (const compDef of componentsDefinition.components) {
         componentSet.components[compDef.name] = parseComponent(
             compDef,
@@ -45,7 +45,7 @@ export async function parseDefinition(componentsDefinition: ComponentsDefinition
             ComponentRendition.HTML,
         );
     }
-    // build "defaultComponentContent" property
+
     buildComponentSetDefaultContent(componentSet);
 
     return componentSet;
