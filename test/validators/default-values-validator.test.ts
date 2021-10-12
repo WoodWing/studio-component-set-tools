@@ -313,7 +313,7 @@ describe('DefaultValuesValidator', () => {
         validator.validate();
 
         expect(error).toHaveBeenCalledWith(
-            `Property propertyName defaultValue should be removed when the 'fit content to frame' needs to be applied.`,
+            `Property propertyName defaultValue has to be one of '_fit-frame-height-to-content', '_fit-frame-to-content'. To use 'fit content to frame' the property needs to be removed from the definition.`,
         );
     });
 
@@ -331,7 +331,7 @@ describe('DefaultValuesValidator', () => {
         validator.validate();
 
         expect(error).toHaveBeenCalledWith(
-            `Property propertyName defaultValue has to be one of '_fit-frame-height-to-content', '_fit-frame-to-content'`,
+            `Property propertyName defaultValue has to be one of '_fit-frame-height-to-content', '_fit-frame-to-content'. To use 'fit content to frame' the property needs to be removed from the definition.`,
         );
     });
 
