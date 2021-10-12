@@ -266,6 +266,21 @@ describe('DefaultValuesValidator', () => {
         );
     });
 
+    it(`should pass with control type fitting and defaultValue is undefined`, () => {
+        definition.components.text.properties.push({
+            name: 'propertyName',
+            dataType: 'styles',
+            control: {
+                type: 'fitting',
+            },
+        });
+
+        validator = new DefaultValuesValidator(error, definition);
+        validator.validate();
+
+        expect(error).not.toHaveBeenCalled();
+    });
+
     Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES).forEach((fittingOption) => {
         it(`should pass with control type fitting and defaultValue is '${fittingOption}'`, () => {
             definition.components.text.properties.push({
@@ -282,6 +297,24 @@ describe('DefaultValuesValidator', () => {
 
             expect(error).not.toHaveBeenCalled();
         });
+    });
+
+    it(`should not pass with control type fitting and defaultValue is empty string`, () => {
+        definition.components.text.properties.push({
+            name: 'propertyName',
+            dataType: 'styles',
+            defaultValue: '',
+            control: {
+                type: 'fitting',
+            },
+        });
+
+        validator = new DefaultValuesValidator(error, definition);
+        validator.validate();
+
+        expect(error).toHaveBeenCalledWith(
+            `Property propertyName defaultValue should be removed when the 'fit content to frame' needs to be applied.`,
+        );
     });
 
     it('should not pass with control type fitting and defaultValue not being present in options', () => {
