@@ -14,6 +14,8 @@ import {
 
 const validDataTypes = new Set(['styles', 'inlineStyles', 'data']);
 
+type AcceptedValueType = 'string' | 'object' | 'number' | 'boolean';
+
 export class DefaultValuesValidator extends Validator {
     private readonly controlTypeToValidateMethod = new Map([
         ['text', this.validateTextControlValue],
@@ -75,24 +77,27 @@ export class DefaultValuesValidator extends Validator {
     }
 
     private validateStringValue(property: ComponentProperty): boolean {
-        if (typeof property.defaultValue !== 'string') {
-            this.error(`Property ${property.name} defaultValue must be a string`);
-            return false;
-        }
-        return true;
+        return this.validateValue(property, 'string');
     }
 
     private validateObjectValue(property: ComponentProperty): boolean {
-        if (typeof property.defaultValue !== 'object') {
-            this.error(`Property ${property.name} defaultValue must be an object`);
-            return false;
-        }
-        return true;
+        return this.validateValue(property, 'object');
     }
 
     private validateNumberValue(property: ComponentProperty): boolean {
-        if (typeof property.defaultValue !== 'number') {
-            this.error(`Property ${property.name} defaultValue must be a number`);
+        return this.validateValue(property, 'number');
+    }
+
+    private validateValue(
+        property: ComponentProperty,
+        acceptedTypes: AcceptedValueType | AcceptedValueType[],
+    ): boolean {
+        if (!Array.isArray(acceptedTypes)) {
+            acceptedTypes = [acceptedTypes];
+        }
+
+        if (!acceptedTypes.some((acceptedType) => typeof property.defaultValue === acceptedType)) {
+            this.error(`Property ${property.name} defaultValue must be one of (${acceptedTypes.join(' | ')})`);
             return false;
         }
         return true;

@@ -90,7 +90,7 @@ describe('DefaultValuesValidator', () => {
             validator = new DefaultValuesValidator(error, definition);
             validator.validate();
 
-            expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be a string');
+            expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be one of (string)');
         });
     });
 
@@ -229,7 +229,7 @@ describe('DefaultValuesValidator', () => {
         validator = new DefaultValuesValidator(error, definition);
         validator.validate();
 
-        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be a string');
+        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be one of (string)');
     });
 
     it('should pass with control type drop-capital and defaultValue being a correct object', () => {
@@ -261,7 +261,7 @@ describe('DefaultValuesValidator', () => {
         validator = new DefaultValuesValidator(error, definition);
         validator.validate();
 
-        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be an object');
+        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be one of (object)');
     });
 
     it('should not pass with control type drop-capital and defaultValue not being a correct object', () => {
@@ -413,7 +413,7 @@ describe('DefaultValuesValidator', () => {
         validator = new DefaultValuesValidator(error, definition);
         validator.validate();
 
-        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be a number');
+        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be one of (number)');
     });
 
     it('should not pass with control type slider and defaultValue being an empty string', () => {
@@ -432,7 +432,7 @@ describe('DefaultValuesValidator', () => {
         validator = new DefaultValuesValidator(error, definition);
         validator.validate();
 
-        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be a number');
+        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be one of (number)');
     });
 
     it('should not pass with control type slider and defaultValue missing', () => {
