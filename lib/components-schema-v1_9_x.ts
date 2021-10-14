@@ -9,7 +9,7 @@
 import { JSONSchema7, JSONSchema7Definition } from 'json-schema';
 
 const defaultValue: JSONSchema7Definition = {
-    type: ['integer', 'string', 'number', 'object'],
+    type: ['integer', 'string', 'number', 'object', 'boolean'],
     description: 'Default value of property upon component creation. By default the property value is not defined.',
 };
 

@@ -198,6 +198,40 @@ describe('DefaultValuesValidator', () => {
         expect(error).toHaveBeenCalledWith('Property propertyName defaultValue does not match checkbox value');
     });
 
+    it('should pass with control type checkbox, data type data and boolean defaultValue', () => {
+        definition.components.text.properties.push({
+            name: 'propertyName',
+            defaultValue: true,
+            dataType: 'data',
+            control: {
+                type: 'checkbox',
+                value: true,
+            },
+        });
+
+        validator = new DefaultValuesValidator(error, definition);
+        validator.validate();
+
+        expect(error).not.toHaveBeenCalled();
+    });
+
+    it('should not pass with control type checkbox, data type other than data and boolean defaultValue', () => {
+        definition.components.text.properties.push({
+            name: 'propertyName',
+            defaultValue: true,
+            dataType: 'styles',
+            control: {
+                type: 'checkbox',
+                value: true,
+            },
+        });
+
+        validator = new DefaultValuesValidator(error, definition);
+        validator.validate();
+
+        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be a string');
+    });
+
     it('should pass with control type drop-capital and defaultValue being a correct object', () => {
         definition.components.text.properties.push({
             name: 'propertyName',

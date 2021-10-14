@@ -128,7 +128,7 @@ export class DefaultValuesValidator extends Validator {
      * Validate defaultValue for checkbox control type.
      */
     private validateCheckboxControlValue(property: ComponentProperty) {
-        if (!this.validateStringValue(property)) {
+        if (property.dataType !== 'data' && !this.validateStringValue(property)) {
             return;
         }
         if (property.defaultValue !== (<ComponentPropertyControlCheckbox>property.control).value) {
