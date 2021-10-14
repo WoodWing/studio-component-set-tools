@@ -90,7 +90,7 @@ describe('DefaultValuesValidator', () => {
             validator = new DefaultValuesValidator(error, definition);
             validator.validate();
 
-            expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be a string');
+            expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be one of (string)');
         });
     });
 
@@ -198,6 +198,40 @@ describe('DefaultValuesValidator', () => {
         expect(error).toHaveBeenCalledWith('Property propertyName defaultValue does not match checkbox value');
     });
 
+    it('should pass with control type checkbox, data type data and boolean defaultValue', () => {
+        definition.components.text.properties.push({
+            name: 'propertyName',
+            defaultValue: true,
+            dataType: 'data',
+            control: {
+                type: 'checkbox',
+                value: true,
+            },
+        });
+
+        validator = new DefaultValuesValidator(error, definition);
+        validator.validate();
+
+        expect(error).not.toHaveBeenCalled();
+    });
+
+    it('should not pass with control type checkbox, data type other than data and boolean defaultValue', () => {
+        definition.components.text.properties.push({
+            name: 'propertyName',
+            defaultValue: true,
+            dataType: 'styles',
+            control: {
+                type: 'checkbox',
+                value: true,
+            },
+        });
+
+        validator = new DefaultValuesValidator(error, definition);
+        validator.validate();
+
+        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be one of (string)');
+    });
+
     it('should pass with control type drop-capital and defaultValue being a correct object', () => {
         definition.components.text.properties.push({
             name: 'propertyName',
@@ -227,7 +261,7 @@ describe('DefaultValuesValidator', () => {
         validator = new DefaultValuesValidator(error, definition);
         validator.validate();
 
-        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be an object');
+        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be one of (object)');
     });
 
     it('should not pass with control type drop-capital and defaultValue not being a correct object', () => {
@@ -379,7 +413,7 @@ describe('DefaultValuesValidator', () => {
         validator = new DefaultValuesValidator(error, definition);
         validator.validate();
 
-        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be a number');
+        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be one of (number)');
     });
 
     it('should not pass with control type slider and defaultValue being an empty string', () => {
@@ -398,7 +432,7 @@ describe('DefaultValuesValidator', () => {
         validator = new DefaultValuesValidator(error, definition);
         validator.validate();
 
-        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be a number');
+        expect(error).toHaveBeenCalledWith('Property propertyName defaultValue must be one of (number)');
     });
 
     it('should not pass with control type slider and defaultValue missing', () => {

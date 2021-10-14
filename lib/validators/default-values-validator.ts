@@ -14,6 +14,8 @@ import {
 
 const validDataTypes = new Set(['styles', 'inlineStyles', 'data']);
 
+type AcceptedValueType = 'string' | 'object' | 'number' | 'boolean';
+
 export class DefaultValuesValidator extends Validator {
     private readonly controlTypeToValidateMethod = new Map([
         ['text', this.validateTextControlValue],
@@ -74,25 +76,16 @@ export class DefaultValuesValidator extends Validator {
         }
     }
 
-    private validateStringValue(property: ComponentProperty): boolean {
-        if (typeof property.defaultValue !== 'string') {
-            this.error(`Property ${property.name} defaultValue must be a string`);
-            return false;
+    private validateValue(
+        property: ComponentProperty,
+        acceptedTypes: AcceptedValueType | AcceptedValueType[],
+    ): boolean {
+        if (!Array.isArray(acceptedTypes)) {
+            acceptedTypes = [acceptedTypes];
         }
-        return true;
-    }
 
-    private validateObjectValue(property: ComponentProperty): boolean {
-        if (typeof property.defaultValue !== 'object') {
-            this.error(`Property ${property.name} defaultValue must be an object`);
-            return false;
-        }
-        return true;
-    }
-
-    private validateNumberValue(property: ComponentProperty): boolean {
-        if (typeof property.defaultValue !== 'number') {
-            this.error(`Property ${property.name} defaultValue must be a number`);
+        if (!acceptedTypes.some((acceptedType) => typeof property.defaultValue === acceptedType)) {
+            this.error(`Property ${property.name} defaultValue must be one of (${acceptedTypes.join(' | ')})`);
             return false;
         }
         return true;
@@ -103,14 +96,14 @@ export class DefaultValuesValidator extends Validator {
      */
     private validateTextControlValue(property: ComponentProperty) {
         // Allow any default string value for text
-        this.validateStringValue(property);
+        this.validateValue(property, 'string');
     }
 
     /**
      * Validate defaultValue against select or radio control type.
      */
     private validateSelectOrRadioControlValue(property: ComponentProperty) {
-        if (!this.validateStringValue(property)) {
+        if (!this.validateValue(property, 'string')) {
             return;
         }
         if (
@@ -128,7 +121,7 @@ export class DefaultValuesValidator extends Validator {
      * Validate defaultValue for checkbox control type.
      */
     private validateCheckboxControlValue(property: ComponentProperty) {
-        if (!this.validateStringValue(property)) {
+        if (!this.validateValue(property, property.dataType === 'data' ? ['string', 'boolean'] : 'string')) {
             return;
         }
         if (property.defaultValue !== (<ComponentPropertyControlCheckbox>property.control).value) {
@@ -140,7 +133,7 @@ export class DefaultValuesValidator extends Validator {
      * Validates defaultValue for drop-capital control type.
      */
     private validateDropCapitalControlValue(property: ComponentProperty) {
-        if (!this.validateObjectValue(property)) {
+        if (!this.validateValue(property, 'object')) {
             return;
         }
         const expectedKeys = ['numberOfCharacters', 'numberOfLines', 'padding'];
@@ -161,7 +154,7 @@ export class DefaultValuesValidator extends Validator {
      * Validates defaultValue for fitting control type.
      */
     private validateFittingControlValue(property: ComponentProperty) {
-        if (!this.validateStringValue(property)) {
+        if (!this.validateValue(property, 'string')) {
             return;
         }
         const values = Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES);
@@ -174,7 +167,7 @@ export class DefaultValuesValidator extends Validator {
      * Validates defaultValue for slider control type.
      */
     private validateSliderControlType(property: ComponentProperty) {
-        if (!this.validateNumberValue(property)) {
+        if (!this.validateValue(property, 'number')) {
             return;
         }
         const sliderControl = property.control as ComponentPropertyControlSlider;
