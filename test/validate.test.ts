@@ -1,7 +1,29 @@
-import { validateFolder, getValidators, validatePackageSize } from '../lib/validate';
+import * as path from 'path';
+import { validate, validateFolder, getValidators, validatePackageSize, readFile, getSize } from '../lib/validate';
 import * as chalk from 'chalk';
+import { listFilesRelativeToFolder } from '../lib/util/files';
+import { GetFileContentOptionsType } from '../lib/models';
 
 describe('validateFolder', () => {
+    function createValidator(fileCustomiser: (filePath: string, content: string) => string) {
+        const errorSpy = jest.fn();
+
+        async function validateFolderWithCustomiser(folderPath: string): Promise<boolean> {
+            const files = await listFilesRelativeToFolder(folderPath);
+            const getFileContent = async (filePath: string, options?: GetFileContentOptionsType) => {
+                let content = await readFile(path.resolve(folderPath, filePath), options);
+                if (Buffer.isBuffer(content)) content = content.toString('utf-8');
+                return fileCustomiser(filePath, content);
+            };
+            const getFileSize = async (filePath: string) => getSize(path.resolve(folderPath, filePath));
+            return validate(files, getFileContent, getFileSize, (errorMessage) => {
+                errorSpy(errorMessage);
+            });
+        }
+
+        return { validateFolderWithCustomiser: validateFolderWithCustomiser, errorSpy: errorSpy };
+    }
+
     it('should pass on minimal sample', async () => {
         expect(await validateFolder('./test/resources/minimal-sample')).toBe(true);
     });
@@ -32,6 +54,24 @@ describe('validateFolder', () => {
 
     it('should pass on minimal sample for version 1.9.0-next', async () => {
         expect(await validateFolder('./test/resources/minimal-sample-next')).toBe(true);
+    });
+
+    it('should fail on invalid character styles', async () => {
+        const { validateFolderWithCustomiser, errorSpy } = createValidator((filePath: string, content: string) => {
+            if (filePath === 'components-definition.json') {
+                const componentsDefinition = JSON.parse(content);
+                componentsDefinition.characterStyles.push({
+                    label: 'Invalid character style',
+                    id: 'invalid-prefix',
+                });
+                return JSON.stringify(componentsDefinition);
+            }
+            return content;
+        });
+
+        expect(await validateFolderWithCustomiser('./test/resources/minimal-sample-next')).toBe(false);
+
+        expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('/characterStyles/2/id should match pattern'));
     });
 
     it('should fail on sample with incorrect schema property', async () => {
