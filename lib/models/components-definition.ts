@@ -41,6 +41,9 @@ export interface ComponentsDefinition {
 
     /** List of custom styles definitions which can be configured in the look and feel style of an article */
     customStyles?: CustomStyle[];
+
+    /** List of character style definitions which can be applied to text. */
+    characterStyles?: CharacterStyle[];
 }
 
 export interface ComponentDefinition {
@@ -219,4 +222,9 @@ export interface CustomStyle {
     key: string;
     type: 'JSON';
     default?: string;
+}
+
+export interface CharacterStyle {
+    label: string;
+    id: string;
 }

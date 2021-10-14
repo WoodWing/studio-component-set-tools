@@ -690,6 +690,18 @@ export const componentsDefinitionSchema_v1_9_x: JSONSchema7 = {
                 required: ['label', 'key', 'type'],
             },
         },
+
+        characterStyles: {
+            type: 'array',
+            description: 'List of character style definitions which can be applied to text.',
+            items: {
+                type: 'object',
+                properties: {
+                    label: { type: 'string' },
+                    id: { type: 'string', pattern: '^cs--?[_a-zA-Z]+[_a-zA-Z0-9-]*' },
+                },
+            },
+        },
     },
 
     required: [
