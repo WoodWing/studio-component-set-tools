@@ -300,6 +300,21 @@ describe('DefaultValuesValidator', () => {
         );
     });
 
+    it(`should pass with control type fitting and defaultValue is undefined`, () => {
+        definition.components.text.properties.push({
+            name: 'propertyName',
+            dataType: 'styles',
+            control: {
+                type: 'fitting',
+            },
+        });
+
+        validator = new DefaultValuesValidator(error, definition);
+        validator.validate();
+
+        expect(error).not.toHaveBeenCalled();
+    });
+
     Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES).forEach((fittingOption) => {
         it(`should pass with control type fitting and defaultValue is '${fittingOption}'`, () => {
             definition.components.text.properties.push({
@@ -318,6 +333,24 @@ describe('DefaultValuesValidator', () => {
         });
     });
 
+    it(`should not pass with control type fitting and defaultValue is empty string`, () => {
+        definition.components.text.properties.push({
+            name: 'propertyName',
+            dataType: 'styles',
+            defaultValue: '',
+            control: {
+                type: 'fitting',
+            },
+        });
+
+        validator = new DefaultValuesValidator(error, definition);
+        validator.validate();
+
+        expect(error).toHaveBeenCalledWith(
+            `Property propertyName defaultValue has to be one of '_fit-frame-height-to-content', '_fit-frame-to-content'. To use 'fit content to frame' the property needs to be removed from the definition.`,
+        );
+    });
+
     it('should not pass with control type fitting and defaultValue not being present in options', () => {
         definition.components.text.properties.push({
             name: 'propertyName',
@@ -332,7 +365,7 @@ describe('DefaultValuesValidator', () => {
         validator.validate();
 
         expect(error).toHaveBeenCalledWith(
-            `Property propertyName defaultValue has to be one of '_fit-frame-height-to-content', '_fit-frame-to-content'`,
+            `Property propertyName defaultValue has to be one of '_fit-frame-height-to-content', '_fit-frame-to-content'. To use 'fit content to frame' the property needs to be removed from the definition.`,
         );
     });
 
