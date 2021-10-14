@@ -159,7 +159,11 @@ export class DefaultValuesValidator extends Validator {
         }
         const values = Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES);
         if (!values.find((value) => value === property.defaultValue)) {
-            this.error(`Property ${property.name} defaultValue has to be one of '${values.join("', '")}'`);
+            this.error(
+                `Property ${property.name} defaultValue has to be one of '${values.join(
+                    "', '",
+                )}'. To use 'fit content to frame' the property needs to be removed from the definition.`,
+            );
         }
     }
 
