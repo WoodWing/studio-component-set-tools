@@ -76,18 +76,6 @@ export class DefaultValuesValidator extends Validator {
         }
     }
 
-    private validateStringValue(property: ComponentProperty): boolean {
-        return this.validateValue(property, 'string');
-    }
-
-    private validateObjectValue(property: ComponentProperty): boolean {
-        return this.validateValue(property, 'object');
-    }
-
-    private validateNumberValue(property: ComponentProperty): boolean {
-        return this.validateValue(property, 'number');
-    }
-
     private validateValue(
         property: ComponentProperty,
         acceptedTypes: AcceptedValueType | AcceptedValueType[],
@@ -108,14 +96,14 @@ export class DefaultValuesValidator extends Validator {
      */
     private validateTextControlValue(property: ComponentProperty) {
         // Allow any default string value for text
-        this.validateStringValue(property);
+        this.validateValue(property, 'string');
     }
 
     /**
      * Validate defaultValue against select or radio control type.
      */
     private validateSelectOrRadioControlValue(property: ComponentProperty) {
-        if (!this.validateStringValue(property)) {
+        if (!this.validateValue(property, 'string')) {
             return;
         }
         if (
@@ -133,7 +121,7 @@ export class DefaultValuesValidator extends Validator {
      * Validate defaultValue for checkbox control type.
      */
     private validateCheckboxControlValue(property: ComponentProperty) {
-        if (property.dataType !== 'data' && !this.validateStringValue(property)) {
+        if (property.dataType !== 'data' && !this.validateValue(property, 'string')) {
             return;
         }
         if (property.defaultValue !== (<ComponentPropertyControlCheckbox>property.control).value) {
@@ -145,7 +133,7 @@ export class DefaultValuesValidator extends Validator {
      * Validates defaultValue for drop-capital control type.
      */
     private validateDropCapitalControlValue(property: ComponentProperty) {
-        if (!this.validateObjectValue(property)) {
+        if (!this.validateValue(property, 'object')) {
             return;
         }
         const expectedKeys = ['numberOfCharacters', 'numberOfLines', 'padding'];
@@ -166,7 +154,7 @@ export class DefaultValuesValidator extends Validator {
      * Validates defaultValue for fitting control type.
      */
     private validateFittingControlValue(property: ComponentProperty) {
-        if (!this.validateStringValue(property)) {
+        if (!this.validateValue(property, 'string')) {
             return;
         }
         const values = Object.values(COMPONENT_PROPERTY_CONTROL_FITTING_VALUES);
@@ -179,7 +167,7 @@ export class DefaultValuesValidator extends Validator {
      * Validates defaultValue for slider control type.
      */
     private validateSliderControlType(property: ComponentProperty) {
-        if (!this.validateNumberValue(property)) {
+        if (!this.validateValue(property, 'number')) {
             return;
         }
         const sliderControl = property.control as ComponentPropertyControlSlider;
