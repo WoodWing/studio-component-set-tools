@@ -60,10 +60,12 @@ describe('validateFolder', () => {
         const { validateFolderWithCustomiser, errorSpy } = createValidator((filePath: string, content: string) => {
             if (filePath === 'components-definition.json') {
                 const componentsDefinition = JSON.parse(content);
-                componentsDefinition.characterStyles.push({
-                    label: 'Invalid character style',
-                    id: 'invalid-prefix',
-                });
+                componentsDefinition.characterStyles = [
+                    {
+                        label: 'Invalid character style',
+                        id: 'invalid-prefix',
+                    },
+                ];
                 return JSON.stringify(componentsDefinition);
             }
             return content;
@@ -71,7 +73,7 @@ describe('validateFolder', () => {
 
         expect(await validateFolderWithCustomiser('./test/resources/minimal-sample-next')).toBe(false);
 
-        expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('/characterStyles/2/id should match pattern'));
+        expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('/characterStyles/0/id should match pattern'));
     });
 
     it('should fail on sample with incorrect schema property', async () => {

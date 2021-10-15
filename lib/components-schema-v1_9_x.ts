@@ -698,7 +698,7 @@ export const componentsDefinitionSchema_v1_9_x: JSONSchema7 = {
                 type: 'object',
                 properties: {
                     label: { type: 'string' },
-                    id: { type: 'string', pattern: '^cs--?[_a-zA-Z]+[_a-zA-Z0-9-]*' },
+                    id: { type: 'string', pattern: '^cs-[_a-zA-Z0-9-]+' },
                 },
             },
         },
