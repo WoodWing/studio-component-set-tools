@@ -1,7 +1,28 @@
-import { validateFolder, getValidators, validatePackageSize } from '../lib/validate';
+import * as path from 'path';
+import { validate, validateFolder, getValidators, validatePackageSize, readFile, getSize } from '../lib/validate';
 import * as chalk from 'chalk';
+import { listFilesRelativeToFolder } from '../lib/util/files';
+import { GetFileContentOptionsType } from '../lib/models';
 
 describe('validateFolder', () => {
+    function createValidator(fileCustomiser: (filePath: string, content: string) => string) {
+        const errorSpy = jest.fn();
+
+        async function validateFolderWithCustomiser(folderPath: string): Promise<boolean> {
+            const files = await listFilesRelativeToFolder(folderPath);
+            const getFileContent = async (filePath: string, options?: GetFileContentOptionsType) => {
+                const content = await readFile(path.resolve(folderPath, filePath), options);
+                return fileCustomiser(filePath, Buffer.isBuffer(content) ? content.toString('utf-8') : content);
+            };
+            const getFileSize = async (filePath: string) => getSize(path.resolve(folderPath, filePath));
+            return validate(files, getFileContent, getFileSize, (errorMessage) => {
+                errorSpy(errorMessage);
+            });
+        }
+
+        return { validateFolderWithCustomiser: validateFolderWithCustomiser, errorSpy: errorSpy };
+    }
+
     it('should pass on minimal sample', async () => {
         expect(await validateFolder('./test/resources/minimal-sample')).toBe(true);
     });
@@ -32,6 +53,26 @@ describe('validateFolder', () => {
 
     it('should pass on minimal sample for version 1.9.0-next', async () => {
         expect(await validateFolder('./test/resources/minimal-sample-next')).toBe(true);
+    });
+
+    it('should fail on invalid character styles', async () => {
+        const { validateFolderWithCustomiser, errorSpy } = createValidator((filePath: string, content: string) => {
+            if (filePath === 'components-definition.json') {
+                const componentsDefinition = JSON.parse(content);
+                componentsDefinition.characterStyles = [
+                    {
+                        label: 'Invalid character style',
+                        id: 'invalid-prefix',
+                    },
+                ];
+                return JSON.stringify(componentsDefinition);
+            }
+            return content;
+        });
+
+        expect(await validateFolderWithCustomiser('./test/resources/minimal-sample-next')).toBe(false);
+
+        expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('/characterStyles/0/id should match pattern'));
     });
 
     it('should fail on sample with incorrect schema property', async () => {
@@ -88,49 +129,53 @@ describe('validatePackageSize', () => {
 });
 
 describe('getValidators', () => {
+    function getValidatorsForVersion(version: string) {
+        return getValidators(version, <any>null, <any>null, <any>null, <any>null, <any>null);
+    }
+
     it('should return null for version < 1.0.0', () => {
-        expect(getValidators('0.9.9', <any>null, <any>null, <any>null, <any>null, <any>null)).toBeNull();
+        expect(getValidatorsForVersion('0.9.9')).toBeNull();
     });
     it('should return amount of validators for version >= 1.0.0 and < 1.1.0', () => {
-        const validators = getValidators('1.0.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        const validators = getValidatorsForVersion('1.0.0');
         expect(validators && validators.length).toEqual(25);
     });
     it('should return amount of validators for version >= 1.1.0', () => {
-        const validators = getValidators('1.1.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        const validators = getValidatorsForVersion('1.1.0');
         expect(validators && validators.length).toEqual(28);
     });
     it('should return amount of validators for version >= 1.3.0', () => {
-        const validators = getValidators('1.3.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        const validators = getValidatorsForVersion('1.3.0');
         expect(validators && validators.length).toEqual(29);
     });
 
     it('should return amount of validators for version >= 1.4.0', () => {
-        const validators = getValidators('1.4.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        const validators = getValidatorsForVersion('1.4.0');
         expect(validators && validators.length).toEqual(28);
     });
 
     it('should return amount of validators for version >= 1.5.0', () => {
-        const validators = getValidators('1.5.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        const validators = getValidatorsForVersion('1.5.0');
         expect(validators && validators.length).toEqual(28);
     });
 
     it('should return amount of validators for version >= 1.6.0', () => {
-        const validators = getValidators('1.6.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        const validators = getValidatorsForVersion('1.6.0');
         expect(validators && validators.length).toEqual(29);
     });
 
     it('should return amount of validators for version >= 1.7.0', () => {
-        const validators = getValidators('1.7.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        const validators = getValidatorsForVersion('1.7.0');
         expect(validators && validators.length).toEqual(29);
     });
 
     it('should return amount of validators for version >= 1.8.0', () => {
-        const validators = getValidators('1.8.0', <any>null, <any>null, <any>null, <any>null, <any>null);
+        const validators = getValidatorsForVersion('1.8.0');
         expect(validators && validators.length).toEqual(29);
     });
 
     it('should return amount of validators for version >= 1.9.0-next', () => {
-        const validators = getValidators('1.9.0-next', <any>null, <any>null, <any>null, <any>null, <any>null);
+        const validators = getValidatorsForVersion('1.9.0-next');
         expect(validators && validators.length).toEqual(29);
     });
 });

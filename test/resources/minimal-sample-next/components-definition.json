@@ -193,5 +193,10 @@
             "type": "JSON",
             "default": "./custom-styles/test-style.json"
         }
+    ],
+
+    "characterStyles": [
+        { "label": "Character Style 1", "id": "cs-character-style-1" },
+        { "label": "Character Style 2", "id": "cs-character-style-2" }
     ]
 }
