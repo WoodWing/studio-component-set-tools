@@ -11,9 +11,8 @@ describe('validateFolder', () => {
         async function validateFolderWithCustomiser(folderPath: string): Promise<boolean> {
             const files = await listFilesRelativeToFolder(folderPath);
             const getFileContent = async (filePath: string, options?: GetFileContentOptionsType) => {
-                let content = await readFile(path.resolve(folderPath, filePath), options);
-                if (Buffer.isBuffer(content)) content = content.toString('utf-8');
-                return fileCustomiser(filePath, content);
+                const content = await readFile(path.resolve(folderPath, filePath), options);
+                return fileCustomiser(filePath, Buffer.isBuffer(content) ? content.toString('utf-8') : content);
             };
             const getFileSize = async (filePath: string) => getSize(path.resolve(folderPath, filePath));
             return validate(files, getFileContent, getFileSize, (errorMessage) => {
