@@ -33,7 +33,7 @@
             "label": {
                 "key": "COMPONENT_CONTAINER_LABEL"
             },
-            "properties": []
+            "properties": ["background-image"]
         }
     ],
     "groups": [
@@ -173,6 +173,17 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "background-image",
+            "label": "Background-image",
+            "control": {
+                "type": "object-select",
+                "source": "dossier",
+                "filterObjectTypes": ["Image"],
+                "filterObjectFormats": ["image/jpeg"]
+            },
+            "dataType": "data"
         }
     ],
     "conversionRules": {

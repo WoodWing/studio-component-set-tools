@@ -17,7 +17,8 @@ export type ComponentPropertyControl =
     | ComponentPropertyControlHeader
     | ComponentPropertyControlTextArea
     | ComponentPropertyControlUrl
-    | ComponentPropertyControlSlider;
+    | ComponentPropertyControlSlider
+    | ComponentPropertyControlObjectSelect;
 
 /**
  * Dropdown with fixed number of options
@@ -306,6 +307,16 @@ export interface ComponentPropertyControlSlider {
 }
 export function isSlider(control: ComponentPropertyControl): control is ComponentPropertyControlSlider {
     return control.type === 'slider';
+}
+
+/**
+ * Object select field property
+ */
+export interface ComponentPropertyControlObjectSelect {
+    type: 'object-select';
+}
+export function isObjectSelect(control: ComponentPropertyControl): control is ComponentPropertyControlObjectSelect {
+    return control.type === 'object-select';
 }
 
 /**
