@@ -153,9 +153,13 @@ export async function validate(
                     return;
                 }
 
-                const errorPointer = componentsDefinitionSourcePointers[error.dataPath];
+                const errorPointer = componentsDefinitionSourcePointers[error.instancePath];
 
-                let errorMessage = `${error.dataPath} ${error.message}\n${JSON.stringify(error.params, undefined, 4)}`;
+                let errorMessage = `${error.instancePath} ${error.message}\n${JSON.stringify(
+                    error.params,
+                    undefined,
+                    4,
+                )}`;
                 errorMessage += `\n${componentsDefinitionPath} - line ${errorPointer.value.line}, column ${errorPointer.value.column}:`;
                 errorMessage += `\n> ${jsonLines
                     .slice(errorPointer.value.line, Math.max(errorPointer.valueEnd.line, errorPointer.value.line + 1))
