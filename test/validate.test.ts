@@ -72,7 +72,7 @@ describe('validateFolder', () => {
 
         expect(await validateFolderWithCustomiser('./test/resources/minimal-sample-next')).toBe(false);
 
-        expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('/characterStyles/0/id should match pattern'));
+        expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('/characterStyles/0/id must match pattern'));
     });
 
     it('should fail on invalid object-select property', async () => {
@@ -96,7 +96,7 @@ describe('validateFolder', () => {
 
         expect(await validateFolder('./test/resources/minimal-sample-invalid-comp-property')).toBe(false);
         expect(global.console.log).toHaveBeenCalledWith(
-            chalk.redBright(`/components/0 should NOT have additional properties
+            chalk.redBright(`/components/0 must NOT have additional properties
 {
     "additionalProperty": "invalid-component-property"
 }
