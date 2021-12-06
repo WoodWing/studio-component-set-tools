@@ -314,6 +314,9 @@ export function isSlider(control: ComponentPropertyControl): control is Componen
  */
 export interface ComponentPropertyControlObjectSelect {
     type: 'object-select';
+    source: 'dossier';
+    filterObjectTypes: 'Image'[];
+    filterObjectFormats?: string[];
 }
 export function isObjectSelect(control: ComponentPropertyControl): control is ComponentPropertyControlObjectSelect {
     return control.type === 'object-select';
