@@ -75,6 +75,22 @@ describe('validateFolder', () => {
         expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('/characterStyles/0/id must match pattern'));
     });
 
+    it('should fail on invalid object-select property', async () => {
+        const { validateFolderWithCustomiser, errorSpy } = createValidator((filePath: string, content: string) => {
+            if (filePath === 'components-definition.json') {
+                const componentsDefinition = JSON.parse(content);
+                delete componentsDefinition.componentProperties.find((prop: any) => prop.name === 'background-image')
+                    .control.source;
+                return JSON.stringify(componentsDefinition);
+            }
+            return content;
+        });
+
+        expect(await validateFolderWithCustomiser('./test/resources/minimal-sample-next')).toBe(false);
+
+        expect(errorSpy).toHaveBeenCalled();
+    });
+
     it('should fail on sample with incorrect schema property', async () => {
         jest.spyOn(global.console, 'log').mockReturnValueOnce();
 

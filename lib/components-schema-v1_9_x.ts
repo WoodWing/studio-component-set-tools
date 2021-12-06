@@ -416,6 +416,38 @@ const componentPropertyDefinition: {
                     },
                 },
             },
+            {
+                additionalProperties: false,
+                required: ['type', 'source', 'filterObjectTypes'],
+                properties: {
+                    type: {
+                        enum: ['object-select'],
+                        description:
+                            'Experimental feature which allows the user to select an object as a component property. The object id is stored in the article data.',
+                    },
+                    source: {
+                        enum: ['dossier'],
+                        description:
+                            'Source for selecting objects. The "dossier" option shows objects from the article dossier.',
+                    },
+                    filterObjectTypes: {
+                        type: 'array',
+                        description: 'List of filtered object types.',
+                        items: {
+                            enum: ['Image'],
+                            description: 'Studio Object type.',
+                        },
+                    },
+                    filterObjectFormats: {
+                        type: 'array',
+                        description: 'List of filtered object formats.',
+                        items: {
+                            type: 'string',
+                            description: 'Format of object (for example "image/jpeg").',
+                        },
+                    },
+                },
+            },
         ],
     },
     dataType: {
