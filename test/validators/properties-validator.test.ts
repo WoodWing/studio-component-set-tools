@@ -50,6 +50,19 @@ describe('PropertiesValidator', () => {
         } as any;
     }
 
+    function createObjectSelectProperty(): ComponentProperty {
+        return {
+            name: 'objectSelectProperty',
+            label: 'Object Select',
+            control: {
+                type: 'object-select',
+                source: 'dossier',
+                filterObjectTypes: ['Image'],
+            },
+            dataType: 'data',
+        };
+    }
+
     function createConditionalProperty(children: any[]) {
         return {
             name: 'conditionalProperty',
@@ -335,6 +348,32 @@ describe('PropertiesValidator', () => {
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
                 `Checkbox property "checkboxProperty" cannot have a boolean value for dataType "styles", boolean values are only allowed for dataType "data"`,
+            );
+        });
+    });
+
+    describe('object-select data type', () => {
+        it('should pass with dataType "data"', () => {
+            const prop = createObjectSelectProperty();
+            prop.dataType = 'data';
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.9.0',
+                properties: [prop],
+            });
+            validator.validate();
+            expect(errorSpy).not.toHaveBeenCalled();
+        });
+
+        it('should not pass with dataType other than "data"', () => {
+            const prop = createObjectSelectProperty();
+            prop.dataType = 'styles';
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.9.0',
+                properties: [prop],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(
+                `Object select property "objectSelectProperty" cannot use dataType "styles", only dataType "data" is allowed`,
             );
         });
     });
