@@ -49,6 +49,7 @@ export class PropertiesValidator extends Validator {
         this.validatePropertyName(property, componentPropertyNames, component);
         this.validateRadioPropertyIcons(property);
         this.validateCheckBoxValue(property);
+        this.validateObjectSelectDataType(property);
     }
 
     private validatePropertyName(
@@ -132,5 +133,16 @@ export class PropertiesValidator extends Validator {
                 this.validateProperty(childProperty, conditionalUsedPropertyNames, component);
             });
         });
+    }
+
+    private validateObjectSelectDataType(property: ComponentProperty) {
+        if (property.control.type !== 'object-select') {
+            return;
+        }
+        if (property.dataType !== 'data') {
+            this.error(
+                `Object select property "${property.name}" cannot use dataType "${property.dataType}", only dataType "data" is allowed`,
+            );
+        }
     }
 }
