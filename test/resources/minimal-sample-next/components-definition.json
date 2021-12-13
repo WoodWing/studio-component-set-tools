@@ -183,7 +183,7 @@
                 "filterObjectTypes": ["Image"],
                 "filterObjectFormats": ["image/jpeg"]
             },
-            "dataType": "data"
+            "dataType": "object"
         }
     ],
     "conversionRules": {

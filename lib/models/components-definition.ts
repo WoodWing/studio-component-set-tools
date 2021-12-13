@@ -148,6 +148,7 @@ export interface ComponentProperty<ControlType = ComponentPropertyControl> {
         | 'styles'
         | 'inlineStyles'
         | 'data'
+        | 'object'
         | 'doc-editable'
         | 'doc-image'
         | 'doc-html'

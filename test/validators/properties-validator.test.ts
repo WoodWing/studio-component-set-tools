@@ -59,7 +59,7 @@ describe('PropertiesValidator', () => {
                 source: 'dossier',
                 filterObjectTypes: ['Image'],
             },
-            dataType: 'data',
+            dataType: 'object',
         };
     }
 
@@ -352,10 +352,10 @@ describe('PropertiesValidator', () => {
         });
     });
 
-    describe('object-select data type', () => {
-        it('should pass with dataType "data"', () => {
+    describe('object data type', () => {
+        it('should pass with dataType "object"', () => {
             const prop = createObjectSelectProperty();
-            prop.dataType = 'data';
+            prop.dataType = 'object';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.9.0',
                 properties: [prop],
@@ -364,17 +364,28 @@ describe('PropertiesValidator', () => {
             expect(errorSpy).not.toHaveBeenCalled();
         });
 
-        it('should not pass with dataType other than "data"', () => {
+        it('should not pass with dataType other than "object"', () => {
             const prop = createObjectSelectProperty();
-            prop.dataType = 'styles';
+            prop.dataType = 'data';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.9.0',
                 properties: [prop],
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
-                `Object select property "objectSelectProperty" cannot use dataType "styles", only dataType "data" is allowed`,
+                `Object select property "objectSelectProperty" cannot use dataType "data", only dataType "object" is allowed`,
             );
+        });
+
+        it('should not be able to use with regular property controls like text', () => {
+            const prop = createTextProperty();
+            prop.dataType = 'object';
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.9.0',
+                properties: [prop],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(`Cannot use dataType "object" with control type "text"`);
         });
     });
 });
