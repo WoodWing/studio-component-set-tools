@@ -75,7 +75,7 @@ describe('validateFolder', () => {
         expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('/characterStyles/0/id must match pattern'));
     });
 
-    it('should fail on invalid object-select property', async () => {
+    it('should fail on invalid studio-object-select property', async () => {
         const { validateFolderWithCustomiser, errorSpy } = createValidator((filePath: string, content: string) => {
             if (filePath === 'components-definition.json') {
                 const componentsDefinition = JSON.parse(content);

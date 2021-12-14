@@ -55,11 +55,11 @@ describe('PropertiesValidator', () => {
             name: 'objectSelectProperty',
             label: 'Object Select',
             control: {
-                type: 'object-select',
+                type: 'studio-object-select',
                 source: 'dossier',
                 filterObjectTypes: ['Image'],
             },
-            dataType: 'object',
+            dataType: 'studio-object',
         };
     }
 
@@ -355,7 +355,7 @@ describe('PropertiesValidator', () => {
     describe('object data type', () => {
         it('should pass with dataType "object"', () => {
             const prop = createObjectSelectProperty();
-            prop.dataType = 'object';
+            prop.dataType = 'studio-object';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.9.0',
                 properties: [prop],
@@ -379,7 +379,7 @@ describe('PropertiesValidator', () => {
 
         it('should not be able to use with regular property controls like text', () => {
             const prop = createTextProperty();
-            prop.dataType = 'object';
+            prop.dataType = 'studio-object';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.9.0',
                 properties: [prop],

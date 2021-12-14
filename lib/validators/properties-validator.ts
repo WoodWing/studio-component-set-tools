@@ -26,7 +26,7 @@ const TYPES_ALLOWING_CHILD_PROPERTIES: ComponentPropertyControl['type'][] = [
     'slider',
 ];
 
-const ALLOWED_CONTROL_TYPES_FOR_OBJECT_DATA_TYPE: ComponentPropertyControl['type'][] = ['object-select'];
+const ALLOWED_CONTROL_TYPES_FOR_OBJECT_DATA_TYPE: ComponentPropertyControl['type'][] = ['studio-object-select'];
 
 export class PropertiesValidator extends Validator {
     constructor(error: (errorMessage: string) => false, definition: ComponentSet, protected filePaths: Set<string>) {
@@ -139,10 +139,10 @@ export class PropertiesValidator extends Validator {
     }
 
     private validateObjectSelectDataType(property: ComponentProperty) {
-        if (property.control.type !== 'object-select') {
+        if (property.control.type !== 'studio-object-select') {
             return;
         }
-        if (property.dataType !== 'object') {
+        if (property.dataType !== 'studio-object') {
             this.error(
                 `Object select property "${property.name}" cannot use dataType "${property.dataType}", only dataType "object" is allowed`,
             );
@@ -150,7 +150,7 @@ export class PropertiesValidator extends Validator {
     }
 
     private validateObjectDataType(property: ComponentProperty) {
-        if (property.dataType !== 'object') {
+        if (property.dataType !== 'studio-object') {
             return;
         }
         if (!ALLOWED_CONTROL_TYPES_FOR_OBJECT_DATA_TYPE.includes(property.control.type)) {

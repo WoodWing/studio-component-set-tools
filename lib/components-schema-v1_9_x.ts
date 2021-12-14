@@ -421,7 +421,7 @@ const componentPropertyDefinition: {
                 required: ['type', 'source', 'filterObjectTypes'],
                 properties: {
                     type: {
-                        enum: ['object-select'],
+                        enum: ['studio-object-select'],
                         description:
                             'Experimental feature which allows the user to select an object as a component property. The object id is stored in the article data.',
                     },
@@ -455,7 +455,7 @@ const componentPropertyDefinition: {
             'styles',
             'inlineStyles',
             'data',
-            'object',
+            'studio-object',
             'doc-editable',
             'doc-image',
             'doc-html',
