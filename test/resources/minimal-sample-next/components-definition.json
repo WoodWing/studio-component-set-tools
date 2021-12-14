@@ -178,12 +178,12 @@
             "name": "background-image",
             "label": "Background-image",
             "control": {
-                "type": "object-select",
+                "type": "studio-object-select",
                 "source": "dossier",
                 "filterObjectTypes": ["Image"],
                 "filterObjectFormats": ["image/jpeg"]
             },
-            "dataType": "data"
+            "dataType": "studio-object"
         }
     ],
     "conversionRules": {

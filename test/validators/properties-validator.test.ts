@@ -50,16 +50,16 @@ describe('PropertiesValidator', () => {
         } as any;
     }
 
-    function createObjectSelectProperty(): ComponentProperty {
+    function createStudioObjectSelectProperty(): ComponentProperty {
         return {
             name: 'objectSelectProperty',
             label: 'Object Select',
             control: {
-                type: 'object-select',
+                type: 'studio-object-select',
                 source: 'dossier',
                 filterObjectTypes: ['Image'],
             },
-            dataType: 'data',
+            dataType: 'studio-object',
         };
     }
 
@@ -352,10 +352,10 @@ describe('PropertiesValidator', () => {
         });
     });
 
-    describe('object-select data type', () => {
-        it('should pass with dataType "data"', () => {
-            const prop = createObjectSelectProperty();
-            prop.dataType = 'data';
+    describe('studio object data type', () => {
+        it('should pass with dataType "studio-object"', () => {
+            const prop = createStudioObjectSelectProperty();
+            prop.dataType = 'studio-object';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.9.0',
                 properties: [prop],
@@ -364,17 +364,28 @@ describe('PropertiesValidator', () => {
             expect(errorSpy).not.toHaveBeenCalled();
         });
 
-        it('should not pass with dataType other than "data"', () => {
-            const prop = createObjectSelectProperty();
-            prop.dataType = 'styles';
+        it('should not pass with dataType other than "studio-object"', () => {
+            const prop = createStudioObjectSelectProperty();
+            prop.dataType = 'data';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.9.0',
                 properties: [prop],
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
-                `Object select property "objectSelectProperty" cannot use dataType "styles", only dataType "data" is allowed`,
+                `Object select property "objectSelectProperty" cannot use dataType "data", only dataType "studio-object" is allowed`,
             );
+        });
+
+        it('should not be able to use with regular property controls like text', () => {
+            const prop = createTextProperty();
+            prop.dataType = 'studio-object';
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.9.0',
+                properties: [prop],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(`Cannot use dataType "studio-object" with control type "text"`);
         });
     });
 });

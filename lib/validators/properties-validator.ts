@@ -26,6 +26,8 @@ const TYPES_ALLOWING_CHILD_PROPERTIES: ComponentPropertyControl['type'][] = [
     'slider',
 ];
 
+const ALLOWED_CONTROL_TYPES_FOR_STUDIO_OBJECT_DATA_TYPE: ComponentPropertyControl['type'][] = ['studio-object-select'];
+
 export class PropertiesValidator extends Validator {
     constructor(error: (errorMessage: string) => false, definition: ComponentSet, protected filePaths: Set<string>) {
         super(error, definition);
@@ -49,7 +51,8 @@ export class PropertiesValidator extends Validator {
         this.validatePropertyName(property, componentPropertyNames, component);
         this.validateRadioPropertyIcons(property);
         this.validateCheckBoxValue(property);
-        this.validateObjectSelectDataType(property);
+        this.validateStudioObjectDataType(property);
+        this.validateStudioObjectSelectDataType(property);
     }
 
     private validatePropertyName(
@@ -135,14 +138,23 @@ export class PropertiesValidator extends Validator {
         });
     }
 
-    private validateObjectSelectDataType(property: ComponentProperty) {
-        if (property.control.type !== 'object-select') {
+    private validateStudioObjectSelectDataType(property: ComponentProperty) {
+        if (property.control.type !== 'studio-object-select') {
             return;
         }
-        if (property.dataType !== 'data') {
+        if (property.dataType !== 'studio-object') {
             this.error(
-                `Object select property "${property.name}" cannot use dataType "${property.dataType}", only dataType "data" is allowed`,
+                `Object select property "${property.name}" cannot use dataType "${property.dataType}", only dataType "studio-object" is allowed`,
             );
+        }
+    }
+
+    private validateStudioObjectDataType(property: ComponentProperty) {
+        if (property.dataType !== 'studio-object') {
+            return;
+        }
+        if (!ALLOWED_CONTROL_TYPES_FOR_STUDIO_OBJECT_DATA_TYPE.includes(property.control.type)) {
+            this.error(`Cannot use dataType "studio-object" with control type "${property.control.type}"`);
         }
     }
 }

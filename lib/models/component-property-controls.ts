@@ -18,7 +18,7 @@ export type ComponentPropertyControl =
     | ComponentPropertyControlTextArea
     | ComponentPropertyControlUrl
     | ComponentPropertyControlSlider
-    | ComponentPropertyControlObjectSelect;
+    | ComponentPropertyControlStudioObjectSelect;
 
 /**
  * Dropdown with fixed number of options
@@ -310,16 +310,18 @@ export function isSlider(control: ComponentPropertyControl): control is Componen
 }
 
 /**
- * Object select field property
+ * Studio Object select field property
  */
-export interface ComponentPropertyControlObjectSelect {
-    type: 'object-select';
+export interface ComponentPropertyControlStudioObjectSelect {
+    type: 'studio-object-select';
     source: 'dossier';
     filterObjectTypes: 'Image'[];
     filterObjectFormats?: string[];
 }
-export function isObjectSelect(control: ComponentPropertyControl): control is ComponentPropertyControlObjectSelect {
-    return control.type === 'object-select';
+export function isStudioObjectSelect(
+    control: ComponentPropertyControl,
+): control is ComponentPropertyControlStudioObjectSelect {
+    return control.type === 'studio-object-select';
 }
 
 /**
