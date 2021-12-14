@@ -50,7 +50,7 @@ describe('PropertiesValidator', () => {
         } as any;
     }
 
-    function createObjectSelectProperty(): ComponentProperty {
+    function createStudioObjectSelectProperty(): ComponentProperty {
         return {
             name: 'objectSelectProperty',
             label: 'Object Select',
@@ -352,9 +352,9 @@ describe('PropertiesValidator', () => {
         });
     });
 
-    describe('object data type', () => {
-        it('should pass with dataType "object"', () => {
-            const prop = createObjectSelectProperty();
+    describe('studio object data type', () => {
+        it('should pass with dataType "studio-object"', () => {
+            const prop = createStudioObjectSelectProperty();
             prop.dataType = 'studio-object';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.9.0',
@@ -364,8 +364,8 @@ describe('PropertiesValidator', () => {
             expect(errorSpy).not.toHaveBeenCalled();
         });
 
-        it('should not pass with dataType other than "object"', () => {
-            const prop = createObjectSelectProperty();
+        it('should not pass with dataType other than "studio-object"', () => {
+            const prop = createStudioObjectSelectProperty();
             prop.dataType = 'data';
             const { validator, errorSpy } = createPropertiesValidator({
                 version: '1.9.0',
@@ -373,7 +373,7 @@ describe('PropertiesValidator', () => {
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(
-                `Object select property "objectSelectProperty" cannot use dataType "data", only dataType "object" is allowed`,
+                `Object select property "objectSelectProperty" cannot use dataType "data", only dataType "studio-object" is allowed`,
             );
         });
 
@@ -385,7 +385,7 @@ describe('PropertiesValidator', () => {
                 properties: [prop],
             });
             validator.validate();
-            expect(errorSpy).toHaveBeenCalledWith(`Cannot use dataType "object" with control type "text"`);
+            expect(errorSpy).toHaveBeenCalledWith(`Cannot use dataType "studio-object" with control type "text"`);
         });
     });
 });
