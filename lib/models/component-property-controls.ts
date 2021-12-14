@@ -318,7 +318,7 @@ export interface ComponentPropertyControlStudioObjectSelect {
     filterObjectTypes: 'Image'[];
     filterObjectFormats?: string[];
 }
-export function isObjectSelect(
+export function isStudioObjectSelect(
     control: ComponentPropertyControl,
 ): control is ComponentPropertyControlStudioObjectSelect {
     return control.type === 'studio-object-select';
