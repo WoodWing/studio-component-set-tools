@@ -280,7 +280,7 @@ function getValidationSchemaSource(version: string): Schema | null {
         return componentsDefinitionSchema_v1_7_x;
     } else if (semver.satisfies(version, '1.8.x', semVerOptions)) {
         return componentsDefinitionSchema_v1_8_x;
-    } else if (semver.satisfies(version, '1.9.0', semVerOptions)) {
+    } else if (semver.satisfies(version, '1.9.x', semVerOptions)) {
         return componentsDefinitionSchema_v1_9_x;
     } else if (semver.satisfies(version, '1.10.0-next', semVerOptions)) {
         return componentsDefinitionSchema_v1_10_x;
