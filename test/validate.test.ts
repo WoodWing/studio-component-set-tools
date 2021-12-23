@@ -51,7 +51,11 @@ describe('validateFolder', () => {
         expect(await validateFolder('./test/resources/minimal-sample-1_8_x')).toBe(true);
     });
 
-    it('should pass on minimal sample for version 1.9.0-next', async () => {
+    it('should pass on minimal sample for version 1.9.0', async () => {
+        expect(await validateFolder('./test/resources/minimal-sample-1_9_x')).toBe(true);
+    });
+
+    it('should pass on minimal sample for version 1.10.0-next', async () => {
         expect(await validateFolder('./test/resources/minimal-sample-next')).toBe(true);
     });
 
