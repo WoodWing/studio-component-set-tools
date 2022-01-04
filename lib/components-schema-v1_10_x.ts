@@ -733,6 +733,8 @@ export const componentsDefinitionSchema_v1_10_x: JSONSchema7 = {
                     label: { type: 'string' },
                     id: { type: 'string', pattern: '^cs-[_a-zA-Z0-9-]+' },
                 },
+                required: ['label', 'id'],
+                additionalProperties: false,
             },
         },
     },
