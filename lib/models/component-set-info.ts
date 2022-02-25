@@ -1,27 +1,16 @@
 /**
- * Combines information about component related fields.
- * Example:
- * {
- *   body: {
-
- *      fields: [
- *          {
- *              type: "editable",
- *              contentKey: "text"
- *          }
- *     ]
- *   },
- *   title: {
- *      fields:    [
- *          {
- *              type: "editable",
- *              contentKey: "text"
- *          }
- *      ]
- *   }
- *   ... etc ...
- * }
+ * Simplified component set information, used by custom channel consumers to easily interpret articles.
  */
+export interface ComponentSetInfo {
+    components: ComponentInfoFields;
+    componentProperties: ComponentInfoProperties;
+}
+
+export interface ComponentInfoFields {
+    [component: string]: {
+        fields: ComponentField[];
+    };
+}
 
 export interface ComponentField {
     contentKey: string;
@@ -29,15 +18,8 @@ export interface ComponentField {
     restrictChildren?: string[];
 }
 
-/**
- * Simplified component set information, used by custom channel consumers to easily interpret articles.
- */
-export interface ComponentSetInfo {
-    components: ComponentInfoFields;
-}
-
-export interface ComponentInfoFields {
-    [component: string]: {
-        fields: ComponentField[];
+export interface ComponentInfoProperties {
+    [property: string]: {
+        dataType: string;
     };
 }

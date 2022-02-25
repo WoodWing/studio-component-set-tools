@@ -1,5 +1,10 @@
 import { ComponentsDefinition, ComponentDefinition, ComponentRendition } from '../models/components-definition';
-import { ComponentField, ComponentSetInfo, ComponentInfoFields } from '../models/component-set-info';
+import {
+    ComponentField,
+    ComponentSetInfo,
+    ComponentInfoFields,
+    ComponentInfoProperties,
+} from '../models/component-set-info';
 import { RenditionResolver, processTemplates } from './process-templates';
 import parse5 = require('parse5');
 
@@ -33,6 +38,12 @@ export function processInfo(componentsDefinition: ComponentsDefinition): Compone
             result[component.name].fields.forEach((f) => addRestrictChildrenInfo(componentsDefinition, component, f));
             return result;
         }, {} as ComponentInfoFields),
+        componentProperties: componentsDefinition.componentProperties.reduce((result, property) => {
+            result[property.name] = {
+                dataType: property.dataType,
+            };
+            return result;
+        }, {} as ComponentInfoProperties),
     };
 }
 

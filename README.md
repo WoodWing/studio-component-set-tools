@@ -103,6 +103,14 @@ The returned data contains the field information per component. An example of th
             ],
         },
     },
+    componentProperties: {
+        position: {
+            dataType: 'styles',
+        },
+        'line-height': {
+            dataType: 'inlineStyles',
+        },
+    },
 }
 ```
 

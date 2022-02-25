@@ -53,6 +53,14 @@ describe('ComponentInfo', () => {
                         ],
                     },
                 },
+                componentProperties: {
+                    checkboxProperty: {
+                        dataType: 'styles',
+                    },
+                    selectProperty: {
+                        dataType: 'styles',
+                    },
+                },
             });
         });
 
@@ -78,6 +86,14 @@ describe('ComponentInfo', () => {
                         ],
                     },
                 },
+                componentProperties: {
+                    checkboxProperty: {
+                        dataType: 'styles',
+                    },
+                    selectProperty: {
+                        dataType: 'styles',
+                    },
+                },
             });
         });
 
@@ -91,6 +107,14 @@ describe('ComponentInfo', () => {
                     },
                     intro: {
                         fields: [],
+                    },
+                },
+                componentProperties: {
+                    checkboxProperty: {
+                        dataType: 'styles',
+                    },
+                    selectProperty: {
+                        dataType: 'styles',
                     },
                 },
             });
@@ -175,6 +199,20 @@ describe('ComponentInfo', () => {
                                 type: 'container',
                             },
                         ],
+                    },
+                },
+                componentProperties: {
+                    checkboxProperty: {
+                        dataType: 'styles',
+                    },
+                    selectProperty: {
+                        dataType: 'styles',
+                    },
+                    'edit-image': {
+                        dataType: 'doc-image',
+                    },
+                    slides: {
+                        dataType: 'doc-slideshow',
                     },
                 },
             });
