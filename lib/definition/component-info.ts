@@ -35,8 +35,8 @@ export async function generateComponentSetInfo(
  *
  * This implementation can be used when the components definition already contains the rendition information.
  */
-export function processInfo(componentsDefinition: ComponentsDefinition): ComponentSetInfo {
-    const componentSet = parseDefinition(componentsDefinition);
+export async function processInfo(componentsDefinition: ComponentsDefinition): Promise<ComponentSetInfo> {
+    const componentSet = await parseDefinition(componentsDefinition);
     return {
         components: Object.values(componentSet.components).reduce((result, component) => {
             result[component.name] = {
