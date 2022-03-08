@@ -71,7 +71,7 @@ describe('ComponentInfo', () => {
         it('should return the component set information data when using processInfo', async () => {
             await processTemplatesFromZip();
 
-            expect(processInfo(definition)).toEqual({
+            expect(await processInfo(definition)).toEqual({
                 components: {
                     body: {
                         fields: [
@@ -108,7 +108,7 @@ describe('ComponentInfo', () => {
         it('should return the component set info for empty templates', async () => {
             await processEmptyTemplates();
 
-            expect(processInfo(definition)).toEqual({
+            expect(await processInfo(definition)).toEqual({
                 components: {
                     body: {
                         fields: [],
