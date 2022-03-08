@@ -92,6 +92,16 @@ The returned data contains the field information per component. An example of th
                     type: 'editable',
                 },
             ],
+            properties: [
+                {
+                    name: 'position',
+                    dataType: 'styles',
+                },
+                {
+                    name: 'line-height',
+                    dataType: 'inlineStyles',
+                },
+            ]
         },
         container: {
             fields: [
@@ -101,14 +111,7 @@ The returned data contains the field information per component. An example of th
                     type: 'container',
                 },
             ],
-        },
-    },
-    componentProperties: {
-        position: {
-            dataType: 'styles',
-        },
-        'line-height': {
-            dataType: 'inlineStyles',
+            properties: [],
         },
     },
 }
