@@ -8,7 +8,7 @@ import {
     ComponentField,
     ComponentSetInfo,
     ComponentInfoFields,
-    ComponentInfoProperty,
+    ComponentInfoProperties,
 } from '../models/component-set-info';
 import { RenditionResolver, processTemplates } from './process-templates';
 import parse5 = require('parse5');
@@ -110,11 +110,10 @@ function addRestrictChildrenInfo(
 function parseProperties(properties: ComponentProperty[]) {
     return properties.reduce((infoProperties, property) => {
         if (property.control.type !== 'header') {
-            infoProperties.push({
-                name: property.name,
+            infoProperties[property.name] = {
                 dataType: property.dataType,
-            });
+            };
         }
         return infoProperties;
-    }, [] as ComponentInfoProperty[]);
+    }, {} as ComponentInfoProperties);
 }

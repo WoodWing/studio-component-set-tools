@@ -10,7 +10,7 @@ export interface ComponentSetInfo {
 export interface ComponentInfoFields {
     [component: string]: {
         fields: ComponentField[];
-        properties: ComponentInfoProperty[];
+        properties: ComponentInfoProperties;
     };
 }
 
@@ -20,7 +20,8 @@ export interface ComponentField {
     restrictChildren?: string[];
 }
 
-export interface ComponentInfoProperty {
-    name: string;
-    dataType: ComponentPropertyDataType;
+export interface ComponentInfoProperties {
+    [property: string]: {
+        dataType: ComponentPropertyDataType;
+    };
 }

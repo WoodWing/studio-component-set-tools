@@ -43,12 +43,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
-                        properties: [
-                            {
-                                name: 'selectProperty',
+                        properties: {
+                            selectProperty: {
                                 dataType: 'styles',
                             },
-                        ],
+                        },
                     },
                     intro: {
                         fields: [
@@ -57,12 +56,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
-                        properties: [
-                            {
-                                name: 'checkboxProperty',
+                        properties: {
+                            checkboxProperty: {
                                 dataType: 'styles',
                             },
-                        ],
+                        },
                     },
                 },
             });
@@ -80,12 +78,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
-                        properties: [
-                            {
-                                name: 'selectProperty',
+                        properties: {
+                            selectProperty: {
                                 dataType: 'styles',
                             },
-                        ],
+                        },
                     },
                     intro: {
                         fields: [
@@ -94,12 +91,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
-                        properties: [
-                            {
-                                name: 'checkboxProperty',
+                        properties: {
+                            checkboxProperty: {
                                 dataType: 'styles',
                             },
-                        ],
+                        },
                     },
                 },
             });
@@ -112,21 +108,19 @@ describe('ComponentInfo', () => {
                 components: {
                     body: {
                         fields: [],
-                        properties: [
-                            {
-                                name: 'selectProperty',
+                        properties: {
+                            selectProperty: {
                                 dataType: 'styles',
                             },
-                        ],
+                        },
                     },
                     intro: {
                         fields: [],
-                        properties: [
-                            {
-                                name: 'checkboxProperty',
+                        properties: {
+                            checkboxProperty: {
                                 dataType: 'styles',
                             },
-                        ],
+                        },
                     },
                 },
             });
@@ -169,12 +163,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
-                        properties: [
-                            {
-                                name: 'edit-image',
+                        properties: {
+                            'edit-image': {
                                 dataType: 'doc-image',
                             },
-                        ],
+                        },
                     },
                     slideshow: {
                         fields: [
@@ -183,12 +176,11 @@ describe('ComponentInfo', () => {
                                 type: 'slideshow',
                             },
                         ],
-                        properties: [
-                            {
-                                name: 'slides',
+                        properties: {
+                            slides: {
                                 dataType: 'doc-slideshow',
                             },
-                        ],
+                        },
                     },
                     body: {
                         fields: [
@@ -197,12 +189,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
-                        properties: [
-                            {
-                                name: 'selectProperty',
+                        properties: {
+                            selectProperty: {
                                 dataType: 'styles',
                             },
-                        ],
+                        },
                     },
                     intro: {
                         fields: [
@@ -211,12 +202,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
-                        properties: [
-                            {
-                                name: 'checkboxProperty',
+                        properties: {
+                            checkboxProperty: {
                                 dataType: 'styles',
                             },
-                        ],
+                        },
                     },
                     container: {
                         fields: [
@@ -226,7 +216,7 @@ describe('ComponentInfo', () => {
                                 type: 'container',
                             },
                         ],
-                        properties: [],
+                        properties: {},
                     },
                     container2: {
                         fields: [
@@ -236,7 +226,7 @@ describe('ComponentInfo', () => {
                                 type: 'container',
                             },
                         ],
-                        properties: [],
+                        properties: {},
                     },
                 },
             });
