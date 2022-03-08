@@ -113,7 +113,6 @@ function parseProperties(properties: ComponentProperty[]) {
             infoProperties.push({
                 name: property.name,
                 dataType: property.dataType,
-                ...(typeof property.label === 'string' && { label: property.label }),
             });
         }
         return infoProperties;
