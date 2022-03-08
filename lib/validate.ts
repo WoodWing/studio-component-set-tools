@@ -174,9 +174,13 @@ export async function validate(
     // parse everything for deeper testing
     let componentSet: ComponentSet | null = null;
     try {
-        componentSet = await parseDefinition(await loadHtmlRenditions(componentsDefinition, getFileContent));
+        componentSet = parseDefinition(await loadHtmlRenditions(componentsDefinition, getFileContent));
     } catch (e) {
-        errorReporter(e.message ?? e);
+        if (!(e instanceof Error)) {
+            // Re-throw any non Error objects as these should not happen (software error, not a component set issue)
+            throw e;
+        }
+        errorReporter(e.message);
     }
     // can't run validators if the parser has failed
     if (!componentSet) {

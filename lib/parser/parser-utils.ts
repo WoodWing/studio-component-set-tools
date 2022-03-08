@@ -22,7 +22,7 @@ import {
  * - that group names are unique
  * - that components have at least an HTML rendition
  */
-export async function parseDefinition(componentsDefinition: ComponentsDefinition): Promise<ComponentSet> {
+export function parseDefinition(componentsDefinition: ComponentsDefinition): ComponentSet {
     const componentSet: ComponentSet = {
         name: componentsDefinition.name,
         description: componentsDefinition.description,
