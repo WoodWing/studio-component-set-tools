@@ -109,8 +109,12 @@ function addRestrictChildrenInfo(
 
 function parseProperties(properties: ComponentProperty[]) {
     return properties.reduce((infoProperties, property) => {
-        if (property.name) {
-            infoProperties.push({ name: property.name, dataType: property.dataType });
+        if (property.control.type !== 'header') {
+            infoProperties.push({
+                name: property.name,
+                dataType: property.dataType,
+                ...(typeof property.label === 'string' && { label: property.label }),
+            });
         }
         return infoProperties;
     }, [] as ComponentInfoProperty[]);
