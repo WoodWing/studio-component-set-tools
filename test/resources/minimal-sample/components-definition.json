@@ -18,7 +18,15 @@
                 "key": "INTRO_KEY"
             },
             "icon": "icons/component.svg",
-            "properties": ["checkboxProperty"]
+            "properties": [
+                {
+                    "control": {
+                        "type": "header"
+                    },
+                    "label": "header"
+                },
+                "checkboxProperty"
+            ]
         }
     ],
 

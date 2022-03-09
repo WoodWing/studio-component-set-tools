@@ -1,7 +1,18 @@
-import { ComponentsDefinition, ComponentDefinition, ComponentRendition } from '../models/components-definition';
-import { ComponentField, ComponentSetInfo, ComponentInfoFields } from '../models/component-set-info';
+import {
+    ComponentsDefinition,
+    ComponentDefinition,
+    ComponentRendition,
+    ComponentProperty,
+} from '../models/components-definition';
+import {
+    ComponentField,
+    ComponentSetInfo,
+    ComponentInfoFields,
+    ComponentInfoProperties,
+} from '../models/component-set-info';
 import { RenditionResolver, processTemplates } from './process-templates';
 import parse5 = require('parse5');
+import { parseDefinition } from '../parser';
 
 const directivePrefix = 'doc-';
 
@@ -24,11 +35,13 @@ export async function generateComponentSetInfo(
  *
  * This implementation can be used when the components definition already contains the rendition information.
  */
-export function processInfo(componentsDefinition: ComponentsDefinition): ComponentSetInfo {
+export async function processInfo(componentsDefinition: ComponentsDefinition): Promise<ComponentSetInfo> {
+    const componentSet = await parseDefinition(componentsDefinition);
     return {
-        components: componentsDefinition.components.reduce((result, component) => {
+        components: Object.values(componentSet.components).reduce((result, component) => {
             result[component.name] = {
                 fields: parseFields((<{ html: string }>component.renditions)[ComponentRendition.HTML]),
+                properties: parseProperties(component.properties),
             };
             result[component.name].fields.forEach((f) => addRestrictChildrenInfo(componentsDefinition, component, f));
             return result;
@@ -92,4 +105,15 @@ function addRestrictChildrenInfo(
         allowedComponentsNames = restrictChildren.filter((child) => allowedComponentsNames.includes(child));
     }
     field.restrictChildren = allowedComponentsNames;
+}
+
+function parseProperties(properties: ComponentProperty[]) {
+    return properties.reduce((infoProperties, property) => {
+        if (property.control.type !== 'header') {
+            infoProperties[property.name] = {
+                dataType: property.dataType,
+            };
+        }
+        return infoProperties;
+    }, {} as ComponentInfoProperties);
 }

@@ -131,6 +131,19 @@ export enum ComponentRendition {
     PSV = 'psv',
 }
 
+export type ComponentPropertyDataType =
+    | 'styles'
+    | 'inlineStyles'
+    | 'data'
+    | 'studio-object'
+    | 'doc-editable'
+    | 'doc-image'
+    | 'doc-html'
+    | 'doc-slideshow'
+    | 'doc-media'
+    | 'doc-interactive'
+    | 'doc-link';
+
 export interface ComponentProperty<ControlType = ComponentPropertyControl> {
     /** Unique identifier of component property */
     name: string;
@@ -144,18 +157,7 @@ export interface ComponentProperty<ControlType = ComponentPropertyControl> {
     control: ControlType;
 
     /** Type of data being stored and how it is used. For directive data types it may also depend on the control type. */
-    dataType:
-        | 'styles'
-        | 'inlineStyles'
-        | 'data'
-        | 'studio-object'
-        | 'doc-editable'
-        | 'doc-image'
-        | 'doc-html'
-        | 'doc-slideshow'
-        | 'doc-media'
-        | 'doc-interactive'
-        | 'doc-link';
+    dataType: ComponentPropertyDataType;
 
     /** Default value of property upon component creation. By default the property value is not defined. */
     defaultValue?: string | { [key: string]: unknown } | number;

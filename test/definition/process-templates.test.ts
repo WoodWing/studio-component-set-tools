@@ -41,7 +41,7 @@ describe('Process Templates', () => {
                         key: 'INTRO_KEY',
                     },
                     name: 'intro',
-                    properties: ['checkboxProperty'],
+                    properties: [{ control: { type: 'header' }, label: 'header' }, 'checkboxProperty'],
                     renditions: {
                         html: `<p class="intro" doc-editable="text">Placeholder text</p>\n`,
                         psv: '',
@@ -73,7 +73,7 @@ describe('Process Templates', () => {
                         key: 'INTRO_KEY',
                     },
                     name: 'intro',
-                    properties: ['checkboxProperty'],
+                    properties: [{ control: { type: 'header' }, label: 'header' }, 'checkboxProperty'],
                     renditions: {
                         html: '',
                         psv: '',

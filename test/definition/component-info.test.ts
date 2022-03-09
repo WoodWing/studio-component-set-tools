@@ -43,6 +43,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
+                        properties: {
+                            selectProperty: {
+                                dataType: 'styles',
+                            },
+                        },
                     },
                     intro: {
                         fields: [
@@ -51,6 +56,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
+                        properties: {
+                            checkboxProperty: {
+                                dataType: 'styles',
+                            },
+                        },
                     },
                 },
             });
@@ -59,7 +69,7 @@ describe('ComponentInfo', () => {
         it('should return the component set information data when using processInfo', async () => {
             await processTemplatesFromZip();
 
-            expect(processInfo(definition)).toEqual({
+            expect(await processInfo(definition)).toEqual({
                 components: {
                     body: {
                         fields: [
@@ -68,6 +78,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
+                        properties: {
+                            selectProperty: {
+                                dataType: 'styles',
+                            },
+                        },
                     },
                     intro: {
                         fields: [
@@ -76,6 +91,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
+                        properties: {
+                            checkboxProperty: {
+                                dataType: 'styles',
+                            },
+                        },
                     },
                 },
             });
@@ -84,13 +104,23 @@ describe('ComponentInfo', () => {
         it('should return the component set info for empty templates', async () => {
             await processEmptyTemplates();
 
-            expect(processInfo(definition)).toEqual({
+            expect(await processInfo(definition)).toEqual({
                 components: {
                     body: {
                         fields: [],
+                        properties: {
+                            selectProperty: {
+                                dataType: 'styles',
+                            },
+                        },
                     },
                     intro: {
                         fields: [],
+                        properties: {
+                            checkboxProperty: {
+                                dataType: 'styles',
+                            },
+                        },
                     },
                 },
             });
@@ -133,6 +163,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
+                        properties: {
+                            'edit-image': {
+                                dataType: 'doc-image',
+                            },
+                        },
                     },
                     slideshow: {
                         fields: [
@@ -141,6 +176,11 @@ describe('ComponentInfo', () => {
                                 type: 'slideshow',
                             },
                         ],
+                        properties: {
+                            slides: {
+                                dataType: 'doc-slideshow',
+                            },
+                        },
                     },
                     body: {
                         fields: [
@@ -149,6 +189,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
+                        properties: {
+                            selectProperty: {
+                                dataType: 'styles',
+                            },
+                        },
                     },
                     intro: {
                         fields: [
@@ -157,6 +202,11 @@ describe('ComponentInfo', () => {
                                 type: 'editable',
                             },
                         ],
+                        properties: {
+                            checkboxProperty: {
+                                dataType: 'styles',
+                            },
+                        },
                     },
                     container: {
                         fields: [
@@ -166,6 +216,7 @@ describe('ComponentInfo', () => {
                                 type: 'container',
                             },
                         ],
+                        properties: {},
                     },
                     container2: {
                         fields: [
@@ -175,6 +226,7 @@ describe('ComponentInfo', () => {
                                 type: 'container',
                             },
                         ],
+                        properties: {},
                     },
                 },
             });
