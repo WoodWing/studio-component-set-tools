@@ -115,7 +115,7 @@ function parseProperties(properties: ComponentProperty[], result: ComponentInfoP
             };
         }
         for (const childPropertiesCandidates of propertyDef.childProperties || []) {
-            parseProperties(childPropertiesCandidates?.properties as ComponentProperty[], result);
+            parseProperties(childPropertiesCandidates.properties as ComponentProperty[], result);
         }
     }
     return result;
