@@ -14,6 +14,43 @@ describe('ComponentInfo', () => {
             );
         });
 
+        it('should return the component set info for empty templates', async () => {
+            await processTemplates(async (_relativePath: string) => {
+                return '<div></div>';
+            }, definition);
+
+            expect(await processInfo(definition)).toEqual({
+                components: {
+                    body: {
+                        fields: [],
+                        properties: {
+                            selectProperty: {
+                                dataType: 'styles',
+                            },
+                        },
+                    },
+                    intro: {
+                        fields: [],
+                        properties: {
+                            checkboxProperty: {
+                                dataType: 'styles',
+                            },
+                        },
+                    },
+                },
+            });
+        });
+    });
+
+    describe('minimal component set next', () => {
+        const componentPath = path.resolve('./test/resources/minimal-sample-next');
+        let definition: ComponentsDefinition;
+        beforeEach(async () => {
+            definition = JSON.parse(
+                (await fs.promises.readFile(path.join(componentPath, 'components-definition.json'))).toString(),
+            );
+        });
+
         const renditionResolver = async (relativePath: string) => {
             const file = path.join(componentPath, relativePath);
             try {
@@ -27,14 +64,8 @@ describe('ComponentInfo', () => {
             await processTemplates(renditionResolver, definition);
         }
 
-        async function processEmptyTemplates() {
-            await processTemplates(async (_relativePath: string) => {
-                return '<div></div>';
-            }, definition);
-        }
-
-        it('should return the component set information data when using generateComponentSetInfo', async () => {
-            expect(await generateComponentSetInfo(definition, renditionResolver)).toEqual({
+        function getExpectedComponentInfo() {
+            return {
                 components: {
                     body: {
                         fields: [
@@ -44,8 +75,20 @@ describe('ComponentInfo', () => {
                             },
                         ],
                         properties: {
+                            checkboxProperty: {
+                                dataType: 'styles',
+                            },
+                            childSelectProperty: {
+                                dataType: 'styles',
+                            },
+                            conditionalProperty: {
+                                dataType: 'data',
+                            },
                             selectProperty: {
                                 dataType: 'styles',
+                            },
+                            sliderProperty: {
+                                dataType: 'data',
                             },
                         },
                     },
@@ -62,68 +105,31 @@ describe('ComponentInfo', () => {
                             },
                         },
                     },
+                    container: {
+                        fields: [
+                            {
+                                contentKey: 'container',
+                                type: 'container',
+                                restrictChildren: ['body', 'intro'],
+                            },
+                        ],
+                        properties: {
+                            'background-image': {
+                                dataType: 'studio-object',
+                            },
+                        },
+                    },
                 },
-            });
+            };
+        }
+
+        it('should return the component set information data when using generateComponentSetInfo', async () => {
+            expect(await generateComponentSetInfo(definition, renditionResolver)).toEqual(getExpectedComponentInfo());
         });
 
         it('should return the component set information data when using processInfo', async () => {
             await processTemplatesFromZip();
-
-            expect(await processInfo(definition)).toEqual({
-                components: {
-                    body: {
-                        fields: [
-                            {
-                                contentKey: 'text',
-                                type: 'editable',
-                            },
-                        ],
-                        properties: {
-                            selectProperty: {
-                                dataType: 'styles',
-                            },
-                        },
-                    },
-                    intro: {
-                        fields: [
-                            {
-                                contentKey: 'text',
-                                type: 'editable',
-                            },
-                        ],
-                        properties: {
-                            checkboxProperty: {
-                                dataType: 'styles',
-                            },
-                        },
-                    },
-                },
-            });
-        });
-
-        it('should return the component set info for empty templates', async () => {
-            await processEmptyTemplates();
-
-            expect(await processInfo(definition)).toEqual({
-                components: {
-                    body: {
-                        fields: [],
-                        properties: {
-                            selectProperty: {
-                                dataType: 'styles',
-                            },
-                        },
-                    },
-                    intro: {
-                        fields: [],
-                        properties: {
-                            checkboxProperty: {
-                                dataType: 'styles',
-                            },
-                        },
-                    },
-                },
-            });
+            expect(await processInfo(definition)).toEqual(getExpectedComponentInfo());
         });
     });
 
