@@ -107,13 +107,16 @@ function addRestrictChildrenInfo(
     field.restrictChildren = allowedComponentsNames;
 }
 
-function parseProperties(properties: ComponentProperty[]) {
-    return properties.reduce((infoProperties, property) => {
-        if (property.control.type !== 'header') {
-            infoProperties[property.name] = {
-                dataType: property.dataType,
+function parseProperties(properties: ComponentProperty[], result: ComponentInfoProperties = {}) {
+    for (const propertyDef of properties) {
+        if (propertyDef.control.type !== 'header' && !result[propertyDef.name]) {
+            result[propertyDef.name] = {
+                dataType: propertyDef.dataType,
             };
         }
-        return infoProperties;
-    }, {} as ComponentInfoProperties);
+        for (const childPropertiesCandidates of propertyDef.childProperties || []) {
+            parseProperties(childPropertiesCandidates?.properties as ComponentProperty[], result);
+        }
+    }
+    return result;
 }
