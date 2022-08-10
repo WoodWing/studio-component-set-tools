@@ -18,7 +18,8 @@ export type ComponentPropertyControl =
     | ComponentPropertyControlTextArea
     | ComponentPropertyControlUrl
     | ComponentPropertyControlSlider
-    | ComponentPropertyControlStudioObjectSelect;
+    | ComponentPropertyControlStudioObjectSelect
+    | ComponentPropertyControlAnchor;
 
 /**
  * Dropdown with fixed number of options
@@ -322,6 +323,16 @@ export function isStudioObjectSelect(
     control: ComponentPropertyControl,
 ): control is ComponentPropertyControlStudioObjectSelect {
     return control.type === 'studio-object-select';
+}
+
+/**
+ * Anchor field property
+ */
+export interface ComponentPropertyControlAnchor {
+    type: 'anchor';
+}
+export function isAnchor(control: ComponentPropertyControl): control is ComponentPropertyControlAnchor {
+    return control.type === 'anchor';
 }
 
 /**
