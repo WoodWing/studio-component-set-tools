@@ -497,7 +497,7 @@ const componentPropertyDefinition: {
                 matchType: {
                     type: 'string',
                     description: `Defines how to match the value of the parent property`,
-                    enum: ['exact-value'],
+                    enum: ['exact-value', 'any-value'],
                 },
                 matchExpression: {
                     type: ['boolean', 'integer', 'string', 'number'],

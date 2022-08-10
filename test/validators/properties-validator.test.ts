@@ -430,8 +430,7 @@ describe('PropertiesValidator', () => {
             prop.dataType = 'data';
             prop.childProperties = [
                 {
-                    matchType: 'exact-value',
-                    matchExpression: 'some arbitrary value',
+                    matchType: 'any-value',
                     properties: [createTextProperty()],
                 },
             ];
