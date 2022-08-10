@@ -24,6 +24,7 @@ const TYPES_ALLOWING_CHILD_PROPERTIES: ComponentPropertyControl['type'][] = [
     'time',
     'colorPicker',
     'slider',
+    'anchor',
 ];
 
 const ALLOWED_CONTROL_TYPES_FOR_STUDIO_OBJECT_DATA_TYPE: ComponentPropertyControl['type'][] = ['studio-object-select'];
@@ -53,6 +54,7 @@ export class PropertiesValidator extends Validator {
         this.validateCheckBoxValue(property);
         this.validateStudioObjectDataType(property);
         this.validateStudioObjectSelectDataType(property);
+        this.validateAnchorDataType(property);
     }
 
     private validatePropertyName(
@@ -145,6 +147,17 @@ export class PropertiesValidator extends Validator {
         if (property.dataType !== 'studio-object') {
             this.error(
                 `Object select property "${property.name}" cannot use dataType "${property.dataType}", only dataType "studio-object" is allowed`,
+            );
+        }
+    }
+
+    private validateAnchorDataType(property: ComponentProperty) {
+        if (property.control.type !== 'anchor') {
+            return;
+        }
+        if (property.dataType !== 'data') {
+            this.error(
+                `Anchor property "${property.name}" cannot use dataType "${property.dataType}", only dataType "data" is allowed`,
             );
         }
     }

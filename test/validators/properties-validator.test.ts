@@ -63,7 +63,18 @@ describe('PropertiesValidator', () => {
         };
     }
 
-    function createConditionalProperty(children: any[]) {
+    function createAnchorProperty(): ComponentProperty {
+        return {
+            name: 'anchorProperty',
+            label: 'Anchor',
+            control: {
+                type: 'anchor',
+            },
+            dataType: 'data',
+        };
+    }
+
+    function createConditionalProperty(children: unknown[]) {
         return {
             name: 'conditionalProperty',
             control: {
@@ -386,6 +397,50 @@ describe('PropertiesValidator', () => {
             });
             validator.validate();
             expect(errorSpy).toHaveBeenCalledWith(`Cannot use dataType "studio-object" with control type "text"`);
+        });
+    });
+
+    describe('anchor property', () => {
+        it('should pass with dataType "studio-object"', () => {
+            const prop = createAnchorProperty();
+            prop.dataType = 'data';
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.10.0',
+                properties: [prop],
+            });
+            validator.validate();
+            expect(errorSpy).not.toHaveBeenCalled();
+        });
+
+        it('should not pass with dataType other than "data"', () => {
+            const prop = createAnchorProperty();
+            prop.dataType = 'styles';
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.10.0',
+                properties: [prop],
+            });
+            validator.validate();
+            expect(errorSpy).toHaveBeenCalledWith(
+                `Anchor property "anchorProperty" cannot use dataType "styles", only dataType "data" is allowed`,
+            );
+        });
+
+        it('should allow child properties on anchor property', () => {
+            const prop = createAnchorProperty();
+            prop.dataType = 'data';
+            prop.childProperties = [
+                {
+                    matchType: 'exact-value',
+                    matchExpression: 'some arbitrary value',
+                    properties: [createTextProperty()],
+                },
+            ];
+            const { validator, errorSpy } = createPropertiesValidator({
+                version: '1.10.0',
+                properties: [prop],
+            });
+            validator.validate();
+            expect(errorSpy).not.toHaveBeenCalled();
         });
     });
 });
