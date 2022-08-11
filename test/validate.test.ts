@@ -1,28 +1,8 @@
-import * as path from 'path';
-import { validate, validateFolder, getValidators, validatePackageSize, readFile, getSize } from '../lib/validate';
+import { validateFolder, getValidators, validatePackageSize } from '../lib/validate';
 import * as chalk from 'chalk';
-import { listFilesRelativeToFolder } from '../lib/util/files';
-import { GetFileContentOptionsType } from '../lib/models';
+import { createValidator } from './test-utils';
 
 describe('validateFolder', () => {
-    function createValidator(fileCustomiser: (filePath: string, content: string) => string) {
-        const errorSpy = jest.fn();
-
-        async function validateFolderWithCustomiser(folderPath: string): Promise<boolean> {
-            const files = await listFilesRelativeToFolder(folderPath);
-            const getFileContent = async (filePath: string, options?: GetFileContentOptionsType) => {
-                const content = await readFile(path.resolve(folderPath, filePath), options);
-                return fileCustomiser(filePath, Buffer.isBuffer(content) ? content.toString('utf-8') : content);
-            };
-            const getFileSize = async (filePath: string) => getSize(path.resolve(folderPath, filePath));
-            return validate(files, getFileContent, getFileSize, (errorMessage) => {
-                errorSpy(errorMessage);
-            });
-        }
-
-        return { validateFolderWithCustomiser: validateFolderWithCustomiser, errorSpy: errorSpy };
-    }
-
     it('should pass on minimal sample', async () => {
         expect(await validateFolder('./test/resources/minimal-sample')).toBe(true);
     });

@@ -448,6 +448,17 @@ const componentPropertyDefinition: {
                     },
                 },
             },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
+                        enum: ['anchor'],
+                        description:
+                            'Experimental feature which allows the user to select text and anchor it to other components.',
+                    },
+                },
+            },
         ],
     },
     dataType: {
@@ -486,7 +497,7 @@ const componentPropertyDefinition: {
                 matchType: {
                     type: 'string',
                     description: `Defines how to match the value of the parent property`,
-                    enum: ['exact-value'],
+                    enum: ['exact-value', 'any-value'],
                 },
                 matchExpression: {
                     type: ['boolean', 'integer', 'string', 'number'],
