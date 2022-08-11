@@ -401,7 +401,7 @@ describe('PropertiesValidator', () => {
     });
 
     describe('anchor property', () => {
-        it('should pass with dataType "studio-object"', () => {
+        it('should pass with dataType "data"', () => {
             const prop = createAnchorProperty();
             prop.dataType = 'data';
             const { validator, errorSpy } = createPropertiesValidator({
