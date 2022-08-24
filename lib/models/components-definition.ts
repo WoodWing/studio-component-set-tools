@@ -193,26 +193,30 @@ export interface ComponentConversionRules {
 }
 
 export interface ComponentConversionRule {
-    [k: string]:
-        | 'auto'
-        | {
-              type: 'simple';
-              map: {
-                  [k: string]: string;
-              };
-              [k: string]: unknown;
-          }
-        | {
-              type: 'from-container';
-              container: string;
-              [k: string]: unknown;
-          }
-        | {
-              type: 'to-container';
-              container: string;
-              [k: string]: unknown;
-          };
+    [k: string]: AutoConversionRule | SimpleConversionRule | FromContainerConversionRule | ToContainerConversionRule;
 }
+
+export type AutoConversionRule = 'auto';
+
+export type SimpleConversionRule = {
+    type: 'simple';
+    map: {
+        [k: string]: string;
+    };
+    [k: string]: unknown;
+};
+
+export type FromContainerConversionRule = {
+    type: 'from-container';
+    container: string;
+    [k: string]: unknown;
+};
+
+export type ToContainerConversionRule = {
+    type: 'to-container';
+    container: string;
+    [k: string]: unknown;
+};
 
 /** Shortcuts configurations for the ComponentsDefinition */
 export interface ComponentsDefinitionShortcuts {
