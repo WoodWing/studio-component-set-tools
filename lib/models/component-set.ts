@@ -81,6 +81,7 @@ export enum DirectiveType {
     slideshow = 'slideshow',
     link = 'link',
     media = 'media',
+    infogram = 'infogram',
     interactive = 'interactive',
 
     unknown = 'unknown',

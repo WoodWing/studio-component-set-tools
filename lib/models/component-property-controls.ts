@@ -11,6 +11,7 @@ export type ComponentPropertyControl =
     | ComponentPropertyControlImageEditor
     | ComponentPropertyControlDropCapital
     | ComponentPropertyControlMediaProperties
+    | ComponentPropertyControlInfogram
     | ComponentPropertyControlFitting
     | ComponentPropertyControlSlides
     | ComponentPropertyControlInteractive
@@ -211,6 +212,18 @@ export function isMediaProperties(
     control: ComponentPropertyControl,
 ): control is ComponentPropertyControlMediaProperties {
     return control.type === 'media-properties';
+}
+
+/**
+ * Infogram properties control.
+ * Contains a sub list of dynamically managed properties based on the media type
+ * of the attached component doc-media directive.
+ */
+export interface ComponentPropertyControlInfogram {
+    type: 'infogram';
+}
+export function isInfogram(control: ComponentPropertyControl): control is ComponentPropertyControlMediaProperties {
+    return control.type === 'infogram';
 }
 
 /**
