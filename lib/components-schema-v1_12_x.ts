@@ -315,7 +315,7 @@ const componentPropertyDefinition: {
                 required: ['type'],
                 properties: {
                     type: {
-                        enum: ['infogram'],
+                        enum: ['infogram-properties'],
                         description: 'Enables infogram properties field property',
                     },
                 },

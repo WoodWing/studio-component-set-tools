@@ -3,9 +3,9 @@
  *
  * Rules:
  *  - A component is not allowed to have more than one doc-infogram directive.
- *  - A component with 1 doc-infogram directives -must- have a property control type "infogram"
- *  - A component property with a "infogram" control type MUST be applied to a "infogram" directive
- *  - A component without a doc-infogram directive can't have any "infogram" control types
+ *  - A component with 1 doc-infogram directives -must- have a property control type "infogram-properties"
+ *  - A component property with a "infogram-properties" control type MUST be applied to a "infogram" directive
+ *  - A component without a doc-infogram directive can't have any "infogram-properties" control types
  */
 
 import { Validator } from './validator';
@@ -36,7 +36,7 @@ export class DocInfogramValidator extends Validator {
     private validateComponentWithoutInfogramDirective(component: Component) {
         if (this.countInfogramPropertiesProperties(component) > 0) {
             this.error(
-                `Component "${component.name}" has a "infogram" control type, but only components with a "doc-infogram" directive can have a property with this control type`,
+                `Component "${component.name}" has a "infogram-properties" control type, but only components with a "doc-infogram" directive can have a property with this control type`,
             );
         }
     }
@@ -46,14 +46,14 @@ export class DocInfogramValidator extends Validator {
             this.error(
                 `Component "${
                     component.name
-                }" with "doc-infogram" directive must have exactly one "infogram" property (found ${this.countInfogramPropertiesProperties(
+                }" with "doc-infogram" directive must have exactly one "infogram-properties" property (found ${this.countInfogramPropertiesProperties(
                     component,
                 )})`,
             );
             return;
         }
 
-        // Check whether the infogram control type property is applied to the doc-infogram directive.
+        // Check whether the infogram-properties control type property is applied to the doc-infogram directive.
         for (const infogramProperty of Object.values(this.infogramPropertiesProperties(component))) {
             this.validateInfogramProperty(component, infogramProperty);
         }
@@ -62,7 +62,7 @@ export class DocInfogramValidator extends Validator {
     private validateInfogramProperty(component: Component, infogramProperty: ComponentProperty) {
         if (!infogramProperty.directiveKey) {
             this.error(
-                `Component "${component.name}" must configure "directiveKey" for the property with control type "infogram"`,
+                `Component "${component.name}" must configure "directiveKey" for the property with control type "infogram-properties"`,
             );
             return;
         }
@@ -70,7 +70,7 @@ export class DocInfogramValidator extends Validator {
         const directive = component.directives[infogramProperty.directiveKey];
         if (!directive || directive.type !== DirectiveType.infogram) {
             this.error(
-                `Component "${component.name}" has a control type "infogram" applied to the wrong directive, which can only be used with "doc-infogram" directives`,
+                `Component "${component.name}" has a control type "infogram-properties" applied to the wrong directive, which can only be used with "doc-infogram" directives`,
             );
         }
     }
@@ -80,13 +80,15 @@ export class DocInfogramValidator extends Validator {
             .length;
     }
 
-    /** Count number of "infogram" properties */
+    /** Count number of "infogram-properties" properties */
     private countInfogramPropertiesProperties(component: Component): number {
         return this.infogramPropertiesProperties(component).length;
     }
 
-    /** Get "infogram" properties definitions (collection of nested properties behaving as a single property) */
+    /** Get "infogram-properties" properties definitions (collection of nested properties behaving as a single property) */
     private infogramPropertiesProperties(component: Component) {
-        return Object.values(component.properties).filter((property) => property.control.type === 'infogram');
+        return Object.values(component.properties).filter(
+            (property) => property.control.type === 'infogram-properties',
+        );
     }
 }

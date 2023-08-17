@@ -220,10 +220,18 @@ export function isMediaProperties(
  * of the attached component doc-media directive.
  */
 export interface ComponentPropertyControlInfogram {
-    type: 'infogram';
+    type: 'infogram-properties';
+    /**
+     * Path to logo
+     */
+    logoPath: string;
+    /**
+     * Link to open when clicking logo
+     */
+    link: string;
 }
 export function isInfogram(control: ComponentPropertyControl): control is ComponentPropertyControlMediaProperties {
-    return control.type === 'infogram';
+    return control.type === 'infogram-properties';
 }
 
 /**

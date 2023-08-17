@@ -22,7 +22,9 @@ describe('DocInfogramValidator', () => {
                             name: 'infogramproperty',
                             directiveKey: 'd1',
                             control: {
-                                type: 'infogram',
+                                type: 'infogram-properties',
+                                logoPath: 'logos/infogram.svg',
+                                link: 'www.infogram.com',
                             },
                         },
                     ],
@@ -53,7 +55,7 @@ describe('DocInfogramValidator', () => {
 
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "infogram" with "doc-infogram" directive must have exactly one "infogram" property (found 0)`,
+                `Component "infogram" with "doc-infogram" directive must have exactly one "infogram-properties" property (found 0)`,
             );
         });
         it('should pass with one infogram directives and other directive types', () => {
@@ -78,7 +80,7 @@ describe('DocInfogramValidator', () => {
                 `Component "infogram" can only have one "doc-infogram" directive in the HTML definition`,
             );
         });
-        it('should fail if a component property with a infogram control type is not applied to a infogram directive', () => {
+        it('should fail if a component property with a infogram-properties control type is not applied to a infogram directive', () => {
             definition.components.wrongdirectivekey = {
                 name: 'wrongdirectivekey',
                 directives: {
@@ -96,17 +98,19 @@ describe('DocInfogramValidator', () => {
                         name: 'infogramproperty',
                         directiveKey: 'd1',
                         control: {
-                            type: 'infogram',
+                            type: 'infogram-properties',
+                            logoPath: 'logos/infogram.svg',
+                            link: 'www.infogram.com',
                         },
                     },
                 ],
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "wrongdirectivekey" has a control type "infogram" applied to the wrong directive, which can only be used with "doc-infogram" directives`,
+                `Component "wrongdirectivekey" has a control type "infogram-properties" applied to the wrong directive, which can only be used with "doc-infogram" directives`,
             );
         });
-        it('should fail in case a "infogram" property does not have a directive key', () => {
+        it('should fail in case a "infogram-properties" property does not have a directive key', () => {
             definition.components.nodirectivekey = {
                 name: 'nodirectivekey',
                 directives: {
@@ -119,31 +123,33 @@ describe('DocInfogramValidator', () => {
                     {
                         name: 'infogramproperty',
                         control: {
-                            type: 'infogram',
+                            type: 'infogram-properties',
                         },
                     },
                 ],
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "nodirectivekey" must configure "directiveKey" for the property with control type "infogram"`,
+                `Component "nodirectivekey" must configure "directiveKey" for the property with control type "infogram-properties"`,
             );
         });
 
-        it('should fail in case a component without a infogram directive has "infogram" property', () => {
+        it('should fail in case a component without a infogram directive has "infogram-properties" property', () => {
             definition.components.body.properties = [
                 {
                     name: 'infogramproperty',
                     directiveKey: 'd1',
                     control: {
-                        type: 'infogram',
+                        type: 'infogram-properties',
+                        logoPath: 'logos/infogram.svg',
+                        link: 'www.infogram.com',
                     },
                 },
             ];
 
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "body" has a "infogram" control type, but only components with a "doc-infogram" directive can have a property with this control type`,
+                `Component "body" has a "infogram-properties" control type, but only components with a "doc-infogram" directive can have a property with this control type`,
             );
         });
     });
