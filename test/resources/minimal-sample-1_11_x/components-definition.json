@@ -1,7 +1,7 @@
 {
-    "name": "minimal-sample-1.10.0",
+    "name": "minimal-sample-1.11.0",
     "description": "Minimal components package sample touching most of the available options.",
-    "version": "1.10.0",
+    "version": "1.11.0",
     "defaultComponentOnEnter": "body",
     "components": [
         {
