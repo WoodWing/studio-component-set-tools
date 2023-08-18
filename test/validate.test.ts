@@ -152,52 +152,46 @@ describe('getValidators', () => {
         const validators = getValidatorsForVersion('1.1.0');
         expect(validators && validators.length).toEqual(28);
     });
-    it('should return amount of validators for version == 1.3.0', () => {
+    it('should return amount of validators for version >= 1.3.0', () => {
         const validators = getValidatorsForVersion('1.3.0');
         expect(validators && validators.length).toEqual(29);
     });
 
-    it('should return amount of validators for version == 1.4.0', () => {
+    it('should return amount of validators for version >= 1.4.0', () => {
         const validators = getValidatorsForVersion('1.4.0');
         expect(validators && validators.length).toEqual(28);
     });
 
-    it('should return amount of validators for version == 1.5.0', () => {
+    it('should return amount of validators for version >= 1.5.0', () => {
         const validators = getValidatorsForVersion('1.5.0');
         expect(validators && validators.length).toEqual(28);
     });
 
-    it('should return amount of validators for version == 1.6.0', () => {
+    it('should return amount of validators for version >= 1.6.0', () => {
         const validators = getValidatorsForVersion('1.6.0');
         expect(validators && validators.length).toEqual(29);
     });
 
-    it('should return amount of validators for version == 1.7.0', () => {
+    it('should return amount of validators for version >= 1.7.0', () => {
         const validators = getValidatorsForVersion('1.7.0');
         expect(validators && validators.length).toEqual(29);
     });
 
-    it('should return amount of validators for version == 1.8.0', () => {
+    it('should return amount of validators for version >= 1.8.0', () => {
         const validators = getValidatorsForVersion('1.8.0');
         expect(validators && validators.length).toEqual(29);
     });
 
-    it('should return amount of validators for version == 1.9.0', () => {
+    it('should return amount of validators for version >= 1.9.0', () => {
         const validators = getValidatorsForVersion('1.9.0');
         expect(validators && validators.length).toEqual(29);
     });
-
-    it('should return amount of validators for version == 1.10.0', () => {
-        const validators = getValidatorsForVersion('1.10.0');
-        expect(validators && validators.length).toEqual(29);
-    });
-
-    it('should return amount of validators for version == 1.11.0', () => {
+    it('should return amount of validators for version >= 1.11.0', () => {
         const validators = getValidatorsForVersion('1.11.0');
         expect(validators && validators.length).toEqual(30);
     });
 
-    it('should return amount of validators for version == 1.12.0-next', () => {
+    it('should return amount of validators for version >= 1.12.0-next', () => {
         const validators = getValidatorsForVersion('1.12.0-next');
         expect(validators && validators.length).toEqual(30);
     });

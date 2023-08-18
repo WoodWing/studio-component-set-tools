@@ -318,6 +318,14 @@ const componentPropertyDefinition: {
                         enum: ['infogram-properties'],
                         description: 'Enables infogram properties field property',
                     },
+                    logoPath: {
+                        type: 'string',
+                        description: 'Path to logo',
+                    },
+                    link: {
+                        type: 'string',
+                        description: 'Link to open when clicking logo',
+                    },
                 },
             },
             {
