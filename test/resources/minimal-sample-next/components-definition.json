@@ -1,7 +1,7 @@
 {
-    "name": "minimal-sample-1.12.0-next",
+    "name": "minimal-sample-1.11.0-next",
     "description": "Minimal components package sample touching most of the available options.",
-    "version": "1.12.0-next",
+    "version": "1.11.0-next",
     "defaultComponentOnEnter": "body",
     "components": [
         {

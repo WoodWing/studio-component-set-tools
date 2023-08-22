@@ -60,5 +60,34 @@ describe('GroupsValidator', () => {
             validator.validate();
             expect(error).toHaveBeenCalledWith(`Component "none" of group "g2" does not exist`);
         });
+
+        it('should not pass if a group with integrationLogo is missing properties', () => {
+            definition.groups.push({
+                name: 'g2',
+                components: ['picture'],
+                integrationLogo: {},
+            });
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(
+                `Component group "g2" is missing mandatory property "logoPath" in "integrationLogo"`,
+            );
+        });
+
+        it('should not pass if a group with integrationLogo properties have wrong type', () => {
+            definition.groups.push({
+                name: 'g2',
+                components: ['picture'],
+                integrationLogo: { logoPath: 123 },
+            });
+            definition.groups.push({
+                name: 'g3',
+                components: ['picture'],
+                integrationLogo: { logoPath: 'path', link: {} },
+            });
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(
+                `Component group "g3" property "link" in "integrationLogo" should be of type string`,
+            );
+        });
     });
 });

@@ -11,7 +11,7 @@ export type ComponentPropertyControl =
     | ComponentPropertyControlImageEditor
     | ComponentPropertyControlDropCapital
     | ComponentPropertyControlMediaProperties
-    | ComponentPropertyControlInfogramProperties
+    | ComponentPropertyControlChartProperties
     | ComponentPropertyControlFitting
     | ComponentPropertyControlSlides
     | ComponentPropertyControlInteractive
@@ -215,23 +215,15 @@ export function isMediaProperties(
 }
 
 /**
- * Infogram properties control.
- * Contains parameters to set the infogram logo
- * attached to component doc-infogram directive.
+ * Chart properties control.
+ * Contains parameters to set the chart logo
+ * attached to component doc-chart directive.
  */
-export interface ComponentPropertyControlInfogramProperties {
-    type: 'infogram-properties';
-    /**
-     * Path to logo. If omitted no logo will be shown.
-     */
-    logoPath?: string;
-    /**
-     * Link to open when clicking logo
-     */
-    link?: string;
+export interface ComponentPropertyControlChartProperties {
+    type: 'chart-properties';
 }
-export function isInfogram(control: ComponentPropertyControl): control is ComponentPropertyControlInfogramProperties {
-    return control.type === 'infogram-properties';
+export function isChart(control: ComponentPropertyControl): control is ComponentPropertyControlChartProperties {
+    return control.type === 'chart-properties';
 }
 
 /**

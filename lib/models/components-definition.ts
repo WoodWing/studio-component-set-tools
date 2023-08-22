@@ -141,7 +141,7 @@ export type ComponentPropertyDataType =
     | 'doc-html'
     | 'doc-slideshow'
     | 'doc-media'
-    | 'doc-infogram'
+    | 'doc-chart'
     | 'doc-interactive'
     | 'doc-link';
 
@@ -187,10 +187,18 @@ export interface ComponentGroup {
 
     /** Names of components in this group */
     components: string[];
+
+    /** Display logo of integration */
+    integrationLogo?: IntegrationLogo;
 }
 
 export interface ComponentConversionRules {
     [k: string]: ComponentConversionRule;
+}
+
+interface IntegrationLogo {
+    logoPath: string;
+    link?: string;
 }
 
 export interface ComponentConversionRule {

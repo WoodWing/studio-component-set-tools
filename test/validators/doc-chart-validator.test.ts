@@ -1,35 +1,35 @@
-import { DocInfogramValidator } from '../../lib/validators/doc-infogram-validator';
+import { DocChartValidator } from '../../lib/validators/doc-chart-validator';
 
-describe('DocInfogramValidator', () => {
+describe('DocChartValidator', () => {
     let definition: any;
     let error: jest.Mock;
-    let validator: DocInfogramValidator;
+    let validator: DocChartValidator;
 
     beforeEach(() => {
         definition = {
             // valid definition (cut)
             components: {
-                infogram: {
-                    name: 'infogram',
+                chart: {
+                    name: 'chart',
                     directives: {
                         d1: {
-                            type: 'infogram',
+                            type: 'chart',
                             tag: 'div',
                         },
                     },
                     properties: [
                         {
-                            name: 'infogramproperty',
+                            name: 'chartproperty',
                             directiveKey: 'd1',
                             control: {
-                                type: 'infogram-properties',
-                                logoPath: 'logos/infogram.svg',
-                                link: 'www.infogram.com',
+                                type: 'chart-properties',
+                                logoPath: 'logos/chart.svg',
+                                link: 'www.chart.com',
                             },
                         },
                     ],
                 },
-                // Do not fail on different components without infogram directive
+                // Do not fail on different components without chart directive
                 body: {
                     name: 'body',
                     directives: {
@@ -43,44 +43,44 @@ describe('DocInfogramValidator', () => {
             },
         };
         error = jest.fn();
-        validator = new DocInfogramValidator(error, definition);
+        validator = new DocChartValidator(error, definition);
     });
     describe('validate', () => {
         it('should pass on a valid definition', () => {
             validator.validate();
             expect(error).not.toHaveBeenCalled();
         });
-        it('should not pass when there is a infogram directive but no infogram properties', () => {
-            definition.components.infogram.properties = [];
+        it('should not pass when there is a chart directive but no chart properties', () => {
+            definition.components.chart.properties = [];
 
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "infogram" with "doc-infogram" directive must have exactly one "infogram-properties" property (found 0)`,
+                `Component "chart" with "doc-chart" directive must have exactly one "chart-properties" property (found 0)`,
             );
         });
-        it('should pass with one infogram directives and other directive types', () => {
-            definition.components.infogram.directives.d2 = {
+        it('should pass with one chart directives and other directive types', () => {
+            definition.components.chart.directives.d2 = {
                 type: 'editable',
                 tag: 'p',
             };
-            definition.components.infogram.directives.d3 = {
+            definition.components.chart.directives.d3 = {
                 type: 'link',
                 tag: 'a',
             };
             validator.validate();
             expect(error).not.toHaveBeenCalled();
         });
-        it('should not pass with multiple infogram type directives', () => {
-            definition.components.infogram.directives.d2 = {
-                type: 'infogram',
+        it('should not pass with multiple chart type directives', () => {
+            definition.components.chart.directives.d2 = {
+                type: 'chart',
                 tag: 'div',
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "infogram" can only have one "doc-infogram" directive in the HTML definition`,
+                `Component "chart" can only have one "doc-chart" directive in the HTML definition`,
             );
         });
-        it('should fail if a component property with a infogram-properties control type is not applied to a infogram directive', () => {
+        it('should fail if a component property with a chart-properties control type is not applied to a chart directive', () => {
             definition.components.wrongdirectivekey = {
                 name: 'wrongdirectivekey',
                 directives: {
@@ -89,67 +89,67 @@ describe('DocInfogramValidator', () => {
                         tag: 'p',
                     },
                     d2: {
-                        type: 'infogram',
+                        type: 'chart',
                         tag: 'div',
                     },
                 },
                 properties: [
                     {
-                        name: 'infogramproperty',
+                        name: 'chartproperty',
                         directiveKey: 'd1',
                         control: {
-                            type: 'infogram-properties',
-                            logoPath: 'logos/infogram.svg',
-                            link: 'www.infogram.com',
+                            type: 'chart-properties',
+                            logoPath: 'logos/chart.svg',
+                            link: 'www.chart.com',
                         },
                     },
                 ],
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "wrongdirectivekey" has a control type "infogram-properties" applied to the wrong directive, which can only be used with "doc-infogram" directives`,
+                `Component "wrongdirectivekey" has a control type "chart-properties" applied to the wrong directive, which can only be used with "doc-chart" directives`,
             );
         });
-        it('should fail in case a "infogram-properties" property does not have a directive key', () => {
+        it('should fail in case a "chart-properties" property does not have a directive key', () => {
             definition.components.nodirectivekey = {
                 name: 'nodirectivekey',
                 directives: {
                     d1: {
-                        type: 'infogram',
+                        type: 'chart',
                         tag: 'div',
                     },
                 },
                 properties: [
                     {
-                        name: 'infogramproperty',
+                        name: 'chartproperty',
                         control: {
-                            type: 'infogram-properties',
+                            type: 'chart-properties',
                         },
                     },
                 ],
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "nodirectivekey" must configure "directiveKey" for the property with control type "infogram-properties"`,
+                `Component "nodirectivekey" must configure "directiveKey" for the property with control type "chart-properties"`,
             );
         });
 
-        it('should fail in case a component without a infogram directive has "infogram-properties" property', () => {
+        it('should fail in case a component without a chart directive has "chart-properties" property', () => {
             definition.components.body.properties = [
                 {
-                    name: 'infogramproperty',
+                    name: 'chartproperty',
                     directiveKey: 'd1',
                     control: {
-                        type: 'infogram-properties',
-                        logoPath: 'logos/infogram.svg',
-                        link: 'www.infogram.com',
+                        type: 'chart-properties',
+                        logoPath: 'logos/chart.svg',
+                        link: 'www.chart.com',
                     },
                 },
             ];
 
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "body" has a "infogram-properties" control type, but only components with a "doc-infogram" directive can have a property with this control type`,
+                `Component "body" has a "chart-properties" control type, but only components with a "doc-chart" directive can have a property with this control type`,
             );
         });
     });

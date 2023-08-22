@@ -101,6 +101,10 @@ const componentGroupDefinition: JSONSchema7Definition = {
                 minLength: 3,
             },
             label: labelProperty('Group label shown in Digital Editor'),
+            integrationLogo: {
+                type: 'object',
+                description: ' Display logo of integration',
+            },
             components: {
                 type: 'array',
                 items: { type: 'string' },
@@ -315,16 +319,8 @@ const componentPropertyDefinition: {
                 required: ['type'],
                 properties: {
                     type: {
-                        enum: ['infogram-properties'],
-                        description: 'Enables infogram properties field property',
-                    },
-                    logoPath: {
-                        type: 'string',
-                        description: 'Path to logo',
-                    },
-                    link: {
-                        type: 'string',
-                        description: 'Link to open when clicking logo',
+                        enum: ['chart-properties'],
+                        description: 'Enables chart properties field property',
                     },
                 },
             },
@@ -490,7 +486,7 @@ const componentPropertyDefinition: {
             'doc-html',
             'doc-slideshow',
             'doc-media',
-            'doc-infogram',
+            'doc-chart',
             'doc-interactive',
             'doc-link',
         ],
