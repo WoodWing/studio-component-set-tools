@@ -18,6 +18,7 @@ import { componentsDefinitionSchema_v1_8_x } from './components-schema-v1_8_x';
 import { componentsDefinitionSchema_v1_9_x } from './components-schema-v1_9_x';
 import { componentsDefinitionSchema_v1_10_x } from './components-schema-v1_10_x';
 import { componentsDefinitionSchema_v1_11_x } from './components-schema-v1_11_x';
+import { componentsDefinitionSchema_v1_12_x } from './components-schema-v1_12_x';
 
 import { parseDefinition } from './parser';
 import {
@@ -290,8 +291,10 @@ function getValidationSchemaSource(version: string): Schema | null {
         return componentsDefinitionSchema_v1_9_x;
     } else if (semver.satisfies(version, '1.10.0', semVerOptions)) {
         return componentsDefinitionSchema_v1_10_x;
-    } else if (semver.satisfies(version, '1.11.0-next', semVerOptions)) {
+    } else if (semver.satisfies(version, '1.11.0', semVerOptions)) {
         return componentsDefinitionSchema_v1_11_x;
+    } else if (semver.satisfies(version, '1.12.0-next', semVerOptions)) {
+        return componentsDefinitionSchema_v1_12_x;
     }
 
     return null;
@@ -353,7 +356,7 @@ export function getValidators(
     if (semver.satisfies(version, '>=1.6.0', semVerOptions)) {
         validators = validators.concat(new StripStylingOnPasteValidator(error, componentSet));
     }
-    if (semver.satisfies(version, '>=1.11.0-next', semVerOptions)) {
+    if (semver.satisfies(version, '>=1.11.0', semVerOptions)) {
         validators = validators.concat(new DocChartValidator(error, componentSet));
     }
     return validators.length > 0 ? validators : null;
