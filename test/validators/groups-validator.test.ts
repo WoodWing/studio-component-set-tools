@@ -61,32 +61,51 @@ describe('GroupsValidator', () => {
             expect(error).toHaveBeenCalledWith(`Component "none" of group "g2" does not exist`);
         });
 
-        it('should not pass if a group with integrationLogo is missing properties', () => {
+        it('should not pass if a group with "logo" is missing mandatory properties', () => {
             definition.groups.push({
                 name: 'g2',
                 components: ['picture'],
-                integrationLogo: {},
+                logo: {},
             });
             validator.validate();
-            expect(error).toHaveBeenCalledWith(
-                `Component group "g2" is missing mandatory property "logoPath" in "integrationLogo"`,
-            );
+            expect(error).toHaveBeenCalledWith(`Component group "g2" is missing mandatory property "path" in "logo"`);
         });
 
-        it('should not pass if a group with integrationLogo properties have wrong type', () => {
-            definition.groups.push({
-                name: 'g2',
-                components: ['picture'],
-                integrationLogo: { logoPath: 123 },
-            });
+        it('should not pass if a group with "logo" property "link" have wrong type', () => {
             definition.groups.push({
                 name: 'g3',
                 components: ['picture'],
-                integrationLogo: { logoPath: 'path', link: {} },
+                logo: { path: 'path', link: {} },
             });
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component group "g3" property "link" in "integrationLogo" should be of type string`,
+                `Component group "g3" property "link" in "logo" should be of type string`,
+            );
+        });
+
+        it('should not pass if a group with "logo" property "path" has invalid type', () => {
+            definition.groups.push({
+                name: 'g2',
+                components: ['picture'],
+                logo: { path: 123 },
+            });
+
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(
+                `Component group "g2" property "path" in "logo" should be of type string`,
+            );
+        });
+
+        it('should not pass if a group with "logo" property "link" has invalid type', () => {
+            definition.groups.push({
+                name: 'g3',
+                components: ['picture'],
+                logo: { link: {} },
+            });
+
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(
+                `Component group "g3" property "link" in "logo" should be of type string`,
             );
         });
     });

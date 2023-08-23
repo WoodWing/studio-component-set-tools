@@ -189,15 +189,15 @@ export interface ComponentGroup {
     components: string[];
 
     /** Display logo of integration */
-    integrationLogo?: IntegrationLogo;
+    logo?: Logo;
 }
 
 export interface ComponentConversionRules {
     [k: string]: ComponentConversionRule;
 }
 
-interface IntegrationLogo {
-    logoPath: string;
+interface Logo {
+    path: string;
     link?: string;
 }
 

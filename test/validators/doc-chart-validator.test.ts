@@ -23,7 +23,7 @@ describe('DocChartValidator', () => {
                             directiveKey: 'd1',
                             control: {
                                 type: 'chart-properties',
-                                logoPath: 'logos/chart.svg',
+                                logo: 'logos/chart.svg',
                                 link: 'www.chart.com',
                             },
                         },
@@ -99,7 +99,7 @@ describe('DocChartValidator', () => {
                         directiveKey: 'd1',
                         control: {
                             type: 'chart-properties',
-                            logoPath: 'logos/chart.svg',
+                            logo: 'logos/chart.svg',
                             link: 'www.chart.com',
                         },
                     },
@@ -141,7 +141,7 @@ describe('DocChartValidator', () => {
                     directiveKey: 'd1',
                     control: {
                         type: 'chart-properties',
-                        logoPath: 'logos/chart.svg',
+                        logo: 'logos/chart.svg',
                         link: 'www.chart.com',
                     },
                 },

@@ -36,21 +36,15 @@ export class GroupsValidator extends Validator {
      * @param parsedGroup
      */
     validateGroupsProperties(group: ComponentGroup): void {
-        if (group.integrationLogo) {
-            if (!group.integrationLogo.logoPath) {
-                this.error(
-                    `Component group "${group.name}" is missing mandatory property "logoPath" in "integrationLogo"`,
-                );
+        if (group.logo) {
+            if (!group.logo.path) {
+                this.error(`Component group "${group.name}" is missing mandatory property "path" in "logo"`);
             }
-            if (group.integrationLogo.logoPath && typeof group.integrationLogo.logoPath !== 'string') {
-                this.error(
-                    `Component group "${group.name}" property "logoPath" in "integrationLogo" should be of type string`,
-                );
+            if (group.logo.path && typeof group.logo.path !== 'string') {
+                this.error(`Component group "${group.name}" property "path" in "logo" should be of type string`);
             }
-            if (group.integrationLogo.link && typeof group.integrationLogo.link !== 'string') {
-                this.error(
-                    `Component group "${group.name}" property "link" in "integrationLogo" should be of type string`,
-                );
+            if (group.logo.link && typeof group.logo.link !== 'string') {
+                this.error(`Component group "${group.name}" property "link" in "logo" should be of type string`);
             }
         }
     }

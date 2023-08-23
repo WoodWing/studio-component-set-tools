@@ -101,9 +101,9 @@ const componentGroupDefinition: JSONSchema7Definition = {
                 minLength: 3,
             },
             label: labelProperty('Group label shown in Digital Editor'),
-            integrationLogo: {
+            logo: {
                 type: 'object',
-                description: ' Display logo of integration',
+                description: 'Group logo with link',
             },
             components: {
                 type: 'array',
