@@ -141,6 +141,7 @@ export type ComponentPropertyDataType =
     | 'doc-html'
     | 'doc-slideshow'
     | 'doc-media'
+    | 'doc-chart'
     | 'doc-interactive'
     | 'doc-link';
 

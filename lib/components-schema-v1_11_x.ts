@@ -331,6 +331,16 @@ const componentPropertyDefinition: {
                 required: ['type'],
                 properties: {
                     type: {
+                        enum: ['chart'],
+                        description: 'Adds chart options',
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type'],
+                properties: {
+                    type: {
                         enum: ['fitting'],
                         description: 'Enables fitting option for an image directive',
                     },
@@ -488,6 +498,7 @@ const componentPropertyDefinition: {
             'doc-html',
             'doc-slideshow',
             'doc-media',
+            'doc-chart',
             'doc-interactive',
             'doc-link',
         ],

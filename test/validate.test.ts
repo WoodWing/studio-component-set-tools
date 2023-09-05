@@ -190,6 +190,6 @@ describe('getValidators', () => {
 
     it('should return amount of validators for version >= 1.11.0', () => {
         const validators = getValidatorsForVersion('1.11.0-next');
-        expect(validators && validators.length).toEqual(29);
+        expect(validators && validators.length).toEqual(30);
     });
 });

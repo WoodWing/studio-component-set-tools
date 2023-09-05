@@ -42,6 +42,7 @@ import {
     DocContainerGroupsValidator,
     DocContainerValidator,
     DocMediaValidator,
+    DocChartValidator,
     DocSlideshowValidator,
     DropCapitalValidator,
     FittingValidator,
@@ -351,6 +352,9 @@ export function getValidators(
     }
     if (semver.satisfies(version, '>=1.6.0', semVerOptions)) {
         validators = validators.concat(new StripStylingOnPasteValidator(error, componentSet));
+    }
+    if (semver.satisfies(version, '>=1.11.0-next', semVerOptions)) {
+        validators = validators.concat(new DocChartValidator(error, componentSet));
     }
     return validators.length > 0 ? validators : null;
 }
