@@ -178,8 +178,18 @@ describe('getValidators', () => {
         expect(validators && validators.length).toEqual(29);
     });
 
-    it('should return amount of validators for version >= 1.9.0-next', () => {
-        const validators = getValidatorsForVersion('1.9.0-next');
+    it('should return amount of validators for version >= 1.9.0', () => {
+        const validators = getValidatorsForVersion('1.9.0');
+        expect(validators && validators.length).toEqual(29);
+    });
+
+    it('should return amount of validators for version >= 1.10.0', () => {
+        const validators = getValidatorsForVersion('1.10.0');
+        expect(validators && validators.length).toEqual(29);
+    });
+
+    it('should return amount of validators for version >= 1.11.0', () => {
+        const validators = getValidatorsForVersion('1.11.0-next');
         expect(validators && validators.length).toEqual(29);
     });
 });

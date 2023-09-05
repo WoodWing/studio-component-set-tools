@@ -34,6 +34,14 @@ describe('GroupsValidator', () => {
                     name: 'g1',
                     components: ['picture'],
                 },
+                {
+                    name: 'g2',
+                    components: ['picture'],
+                    logo: {
+                        icon: 'path1',
+                        link: 'https://www.woodwing.com',
+                    },
+                },
             ],
         };
         error = jest.fn();

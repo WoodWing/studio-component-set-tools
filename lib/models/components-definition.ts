@@ -186,10 +186,18 @@ export interface ComponentGroup {
 
     /** Names of components in this group */
     components: string[];
+
+    /** Logo for this group */
+    logo?: Logo;
 }
 
 export interface ComponentConversionRules {
     [k: string]: ComponentConversionRule;
+}
+
+interface Logo {
+    path: string;
+    link?: string;
 }
 
 export interface ComponentConversionRule {
