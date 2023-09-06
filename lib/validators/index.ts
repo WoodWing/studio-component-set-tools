@@ -15,6 +15,7 @@ export * from './doc-slideshow-validator';
 export * from './drop-capital-validator';
 export * from './fitting-validator';
 export * from './focuspoint-validator';
+export * from './doc-chart-validator';
 export * from './groups-validator';
 export * from './icons-validator';
 export * from './image-editor-validator';

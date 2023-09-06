@@ -11,6 +11,7 @@ export type ComponentPropertyControl =
     | ComponentPropertyControlImageEditor
     | ComponentPropertyControlDropCapital
     | ComponentPropertyControlMediaProperties
+    | ComponentPropertyControlChartProperties
     | ComponentPropertyControlFitting
     | ComponentPropertyControlSlides
     | ComponentPropertyControlInteractive
@@ -211,6 +212,16 @@ export function isMediaProperties(
     control: ComponentPropertyControl,
 ): control is ComponentPropertyControlMediaProperties {
     return control.type === 'media-properties';
+}
+
+/**
+ * Enables chart-properties for an doc-chart directive
+ */
+export interface ComponentPropertyControlChartProperties {
+    type: 'chart-properties';
+}
+export function isChart(control: ComponentPropertyControl): control is ComponentPropertyControlChartProperties {
+    return control.type === 'chart-properties';
 }
 
 /**
