@@ -101,6 +101,22 @@ const componentGroupDefinition: JSONSchema7Definition = {
                 minLength: 3,
             },
             label: labelProperty('Group label shown in Digital Editor'),
+            logo: {
+                type: 'object',
+                description: 'Group logo with link',
+                properties: {
+                    icon: {
+                        type: 'string',
+                        description: 'Path to icon',
+                    },
+                    link: {
+                        type: 'string',
+                        description: 'Link to external source',
+                    },
+                },
+                additionalProperties: false,
+                required: ['icon'],
+            },
             components: {
                 type: 'array',
                 items: { type: 'string' },

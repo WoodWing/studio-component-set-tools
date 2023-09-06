@@ -322,7 +322,7 @@ export function getValidators(
             new DropCapitalValidator(error, componentSet),
             new FittingValidator(error, componentSet),
             new FocuspointValidator(error, componentSet),
-            new GroupsValidator(error, componentSet),
+            new GroupsValidator(error, componentSet, filePaths),
             new IconsValidator(error, componentSet, getFileContent),
             new ImageEditorValidator(error, componentSet),
             new InteractiveValidator(error, componentSet),
@@ -340,7 +340,7 @@ export function getValidators(
         validators = validators.concat(
             new AutofillValidator(error, componentSet),
             new DefaultComponentOnEnterOverrideValidator(error, componentSet),
-            new DocContainerGroupsValidator(error, componentSet),
+            new DocContainerGroupsValidator(error, componentSet, filePaths),
         );
     }
     if (semver.satisfies(version, '>=1.3.0', semVerOptions)) {

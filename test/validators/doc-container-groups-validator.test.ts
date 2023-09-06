@@ -4,6 +4,7 @@ describe('DocContainerGroupsValidator', () => {
     let definition: any;
     let error: jest.Mock;
     let validator: DocContainerGroupsValidator;
+
     beforeEach(() => {
         // valid definition (cut)
         definition = {
@@ -36,9 +37,10 @@ describe('DocContainerGroupsValidator', () => {
         };
         error = jest.fn();
     });
+
     describe('validate', () => {
         it('should validate a correct definition', () => {
-            validator = new DocContainerGroupsValidator(error, definition);
+            validator = new DocContainerGroupsValidator(error, definition, new Set());
 
             validator.validate();
 
@@ -48,7 +50,7 @@ describe('DocContainerGroupsValidator', () => {
         it('should fail validation for invalid directive', () => {
             delete definition.components.c1.directives.main;
 
-            validator = new DocContainerGroupsValidator(error, definition);
+            validator = new DocContainerGroupsValidator(error, definition, new Set());
 
             validator.validate();
 
@@ -58,7 +60,7 @@ describe('DocContainerGroupsValidator', () => {
         it('should fail validation for invalid directive type', () => {
             definition.components.c1.directives.main.type = 'editable';
 
-            validator = new DocContainerGroupsValidator(error, definition);
+            validator = new DocContainerGroupsValidator(error, definition, new Set());
 
             validator.validate();
 
@@ -71,7 +73,7 @@ describe('DocContainerGroupsValidator', () => {
             // Remove the component
             delete definition.components.picture;
 
-            validator = new DocContainerGroupsValidator(error, definition);
+            validator = new DocContainerGroupsValidator(error, definition, new Set());
 
             validator.validate();
 
