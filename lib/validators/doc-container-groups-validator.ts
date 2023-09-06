@@ -7,10 +7,14 @@
  */
 
 import { Validator } from './validator';
-import { Component } from '../models';
+import { Component, ComponentSet } from '../models';
 import { GroupsValidator } from './groups-validator';
 
 export class DocContainerGroupsValidator extends Validator {
+    constructor(error: (errorMessage: string) => false, definition: ComponentSet, private filePaths: Set<string>) {
+        super(error, definition);
+    }
+
     async validate(): Promise<void> {
         // Find slides control properties and check for include and exclude
         for (const component of Object.values(this.componentSet.components)) {
@@ -22,16 +26,13 @@ export class DocContainerGroupsValidator extends Validator {
      * Validates groups of component.
      * These should have a matching doc-container directive.
      * They should also pass the group validator.
-     *
-     * @param errorReporter
-     * @param component
      */
     validateComponent(component: Component): void {
         if (!component.directiveOptions) {
             return;
         }
 
-        const groupsValidator = new GroupsValidator(this.error, this.componentSet);
+        const groupsValidator = new GroupsValidator(this.error, this.componentSet, this.filePaths);
 
         for (const [key, directiveOptions] of Object.entries(component.directiveOptions)) {
             // Rules only apply when it has a groups property defined

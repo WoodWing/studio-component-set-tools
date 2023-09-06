@@ -54,7 +54,7 @@
             "name": "with-logo",
             "components": ["body"],
             "logo": {
-                "icon": "group-logo.svg"
+                "icon": "icons/group-logo.svg"
             }
         },
         {
@@ -62,7 +62,7 @@
             "name": "with-logo-and-link",
             "components": ["body"],
             "logo": {
-                "icon": "group-logo.svg",
+                "icon": "icons/group-logo.svg",
                 "link": "https://www.woodwing.com"
             }
         }

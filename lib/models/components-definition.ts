@@ -196,7 +196,7 @@ export interface ComponentConversionRules {
 }
 
 interface Logo {
-    path: string;
+    icon: string;
     link?: string;
 }
 
