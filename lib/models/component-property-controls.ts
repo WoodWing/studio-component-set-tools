@@ -215,13 +215,13 @@ export function isMediaProperties(
 }
 
 /**
- * Enables chart-properties for an doc-chart directive
+ * Enables chart for an doc-chart directive
  */
 export interface ComponentPropertyControlChartProperties {
-    type: 'chart-properties';
+    type: 'chart';
 }
 export function isChart(control: ComponentPropertyControl): control is ComponentPropertyControlChartProperties {
-    return control.type === 'chart-properties';
+    return control.type === 'chart';
 }
 
 /**
