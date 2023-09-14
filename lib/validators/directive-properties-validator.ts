@@ -7,7 +7,7 @@
 import { Validator } from './validator';
 import { DirectiveType } from '../models';
 
-const CONTROLS = ['image-editor', 'interactive', 'media-properties', 'chart-properties'];
+const CONTROLS = ['image-editor', 'interactive', 'media-properties', 'chart'];
 
 export class DirectivePropertiesValidator extends Validator {
     async validate(): Promise<void> {

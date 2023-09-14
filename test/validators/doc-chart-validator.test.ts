@@ -22,7 +22,7 @@ describe('DocChartValidator', () => {
                             name: 'chartproperty',
                             directiveKey: 'd1',
                             control: {
-                                type: 'chart-properties',
+                                type: 'chart',
                             },
                         },
                     ],
@@ -55,7 +55,7 @@ describe('DocChartValidator', () => {
 
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "Infographic" with "doc-chart" directive must have exactly one "chart-properties" property (found 0)`,
+                `Component "Infographic" with "doc-chart" directive must have exactly one "chart" property (found 0)`,
             );
         });
 
@@ -83,7 +83,7 @@ describe('DocChartValidator', () => {
             );
         });
 
-        it('should fail if a component property with a chart-properties control type is not applied to a chart directive', () => {
+        it('should fail if a component property with a chart control type is not applied to a chart directive', () => {
             definition.components.wrongdirectivekey = {
                 name: 'wrongdirectivekey',
                 directives: {
@@ -101,7 +101,7 @@ describe('DocChartValidator', () => {
                         name: 'chartproperty',
                         directiveKey: 'd1',
                         control: {
-                            type: 'chart-properties',
+                            type: 'chart',
                             logo: 'logos/chart.svg',
                             link: 'www.chart.com',
                         },
@@ -110,11 +110,11 @@ describe('DocChartValidator', () => {
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "wrongdirectivekey" has a control type "chart-properties" applied to the wrong directive, which can only be used with "doc-chart" directives`,
+                `Component "wrongdirectivekey" has a control type "chart" applied to the wrong directive, which can only be used with "doc-chart" directives`,
             );
         });
 
-        it('should fail in case a "chart-properties" property does not have a directive key', () => {
+        it('should fail in case a "chart" property does not have a directive key', () => {
             definition.components.nodirectivekey = {
                 name: 'nodirectivekey',
                 directives: {
@@ -127,24 +127,24 @@ describe('DocChartValidator', () => {
                     {
                         name: 'chartproperty',
                         control: {
-                            type: 'chart-properties',
+                            type: 'chart',
                         },
                     },
                 ],
             };
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "nodirectivekey" must configure "directiveKey" for the property with control type "chart-properties"`,
+                `Component "nodirectivekey" must configure "directiveKey" for the property with control type "chart"`,
             );
         });
 
-        it('should fail in case a component without a chart directive has "chart-properties" property', () => {
+        it('should fail in case a component without a chart directive has "chart" property', () => {
             definition.components.body.properties = [
                 {
                     name: 'chartproperty',
                     directiveKey: 'd1',
                     control: {
-                        type: 'chart-properties',
+                        type: 'chart',
                         logo: 'logos/chart.svg',
                         link: 'www.chart.com',
                     },
@@ -153,7 +153,7 @@ describe('DocChartValidator', () => {
 
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Component "body" has a "chart-properties" control type, but only components with a "doc-chart" directive can have a property with this control type`,
+                `Component "body" has a "chart" control type, but only components with a "doc-chart" directive can have a property with this control type`,
             );
         });
     });
