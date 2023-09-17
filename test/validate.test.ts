@@ -1,5 +1,6 @@
 import { validateFolder, getValidators, validatePackageSize } from '../lib/validate';
-import * as chalk from 'chalk';
+import { redBright } from 'chalk';
+
 import { createValidator } from './test-utils';
 
 describe('validateFolder', () => {
@@ -84,7 +85,7 @@ describe('validateFolder', () => {
 
         expect(await validateFolder('./test/resources/minimal-sample-invalid-comp-property')).toBe(false);
         expect(global.console.log).toHaveBeenCalledWith(
-            chalk.redBright(`/components/0 must NOT have additional properties
+            redBright(`/components/0 must NOT have additional properties
 {
     "additionalProperty": "invalid-component-property"
 }
@@ -104,7 +105,7 @@ components-definition.json - line 7, column 8:
 
         expect(await validateFolder('./test/resources/missing-components-definition-sample')).toBe(false);
         expect(global.console.log).toHaveBeenCalledWith(
-            chalk.redBright('Components definition file "components-definition.json" is missing'),
+            redBright('Components definition file "components-definition.json" is missing'),
         );
     });
 
