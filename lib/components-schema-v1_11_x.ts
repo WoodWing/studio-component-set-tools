@@ -328,11 +328,15 @@ const componentPropertyDefinition: {
             },
             {
                 additionalProperties: false,
-                required: ['type'],
+                required: ['type', 'chartType'],
                 properties: {
                     type: {
                         enum: ['chart'],
                         description: 'Adds chart options',
+                    },
+                    chartType: {
+                        type: 'string',
+                        description: 'Chart provider',
                     },
                 },
             },
