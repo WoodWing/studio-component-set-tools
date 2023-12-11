@@ -219,6 +219,10 @@ export function isMediaProperties(
  */
 export interface ComponentPropertyControlChartProperties {
     type: 'chart';
+    /**
+     * Defines chart provider.
+     */
+    chartType: string;
 }
 export function isChart(control: ComponentPropertyControl): control is ComponentPropertyControlChartProperties {
     return control.type === 'chart';

@@ -23,6 +23,7 @@ describe('DocChartValidator', () => {
                             directiveKey: 'd1',
                             control: {
                                 type: 'chart',
+                                chartType: 'someProvider',
                             },
                         },
                     ],
@@ -102,6 +103,7 @@ describe('DocChartValidator', () => {
                         directiveKey: 'd1',
                         control: {
                             type: 'chart',
+                            chartType: 'someProvider',
                             logo: 'logos/chart.svg',
                             link: 'www.chart.com',
                         },
@@ -111,6 +113,37 @@ describe('DocChartValidator', () => {
             validator.validate();
             expect(error).toHaveBeenCalledWith(
                 `Component "wrongdirectivekey" has a control type "chart" applied to the wrong directive, which can only be used with "doc-chart" directives`,
+            );
+        });
+
+        it('should fail if a component property with a chart control type is missing mandatory property "chartType".', () => {
+            definition.components.wrongdirectivekey = {
+                name: 'chartMissingChartTypeProp',
+                directives: {
+                    d1: {
+                        type: 'editable',
+                        tag: 'p',
+                    },
+                    d2: {
+                        type: 'chart',
+                        tag: 'div',
+                    },
+                },
+                properties: [
+                    {
+                        name: 'chartproperty',
+                        directiveKey: 'd1',
+                        control: {
+                            type: 'chart',
+                            logo: 'logos/chart.svg',
+                            link: 'www.chart.com',
+                        },
+                    },
+                ],
+            };
+            validator.validate();
+            expect(error).toHaveBeenCalledWith(
+                `Component "chartMissingChartTypeProp" is missing mandatory 'chartType' property`,
             );
         });
 
@@ -145,6 +178,7 @@ describe('DocChartValidator', () => {
                     directiveKey: 'd1',
                     control: {
                         type: 'chart',
+                        chartType: 'someProvider',
                         logo: 'logos/chart.svg',
                         link: 'www.chart.com',
                     },
