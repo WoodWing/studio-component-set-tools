@@ -1,4 +1,5 @@
 import { createValidator } from './test-utils';
+import * as path from 'path';
 
 describe('validate chart', () => {
     it('should pass on minimal sample with chart property', async () => {
@@ -36,7 +37,7 @@ describe('validate chart', () => {
                 }
                 return content;
             },
-            ['templates/html/chart.html', 'styles/_chart.scss'],
+            [path.normalize('templates/html/chart.html'), path.normalize('styles/_chart.scss')],
         );
         expect(errorSpy).not.toHaveBeenCalled();
         expect(await validateFolderWithCustomiser('./test/resources/minimal-sample-next')).toBe(true);
