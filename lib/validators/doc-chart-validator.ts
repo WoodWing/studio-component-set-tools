@@ -10,6 +10,7 @@
 
 import { Validator } from './validator';
 import { ComponentProperty, DirectiveType, Component } from '../models';
+import { ComponentPropertyControlChartProperties } from '../models/component-property-controls';
 
 export class DocChartValidator extends Validator {
     async validate(): Promise<void> {
@@ -53,11 +54,17 @@ export class DocChartValidator extends Validator {
 
         // Check whether the chart-properties control type property is applied to the doc-chart directive.
         for (const chartProperty of Object.values(this.chartPropertiesProperties(component))) {
-            this.validateChartProperty(component, chartProperty);
+            this.validateChartProperty(
+                component,
+                chartProperty as ComponentProperty<ComponentPropertyControlChartProperties>,
+            );
         }
     }
 
-    private validateChartProperty(component: Component, chartProperty: ComponentProperty) {
+    private validateChartProperty(
+        component: Component,
+        chartProperty: ComponentProperty<ComponentPropertyControlChartProperties>,
+    ) {
         if (!chartProperty.directiveKey) {
             this.error(
                 `Component "${component.name}" must configure "directiveKey" for the property with control type "chart"`,

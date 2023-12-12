@@ -23,6 +23,7 @@ describe('DocChartValidator', () => {
                             directiveKey: 'd1',
                             control: {
                                 type: 'chart',
+                                chartType: 'infogram',
                             },
                         },
                     ],
@@ -102,6 +103,7 @@ describe('DocChartValidator', () => {
                         directiveKey: 'd1',
                         control: {
                             type: 'chart',
+                            chartType: 'infogram',
                             logo: 'logos/chart.svg',
                             link: 'www.chart.com',
                         },
@@ -145,6 +147,7 @@ describe('DocChartValidator', () => {
                     directiveKey: 'd1',
                     control: {
                         type: 'chart',
+                        chartType: 'infogram',
                         logo: 'logos/chart.svg',
                         link: 'www.chart.com',
                     },
