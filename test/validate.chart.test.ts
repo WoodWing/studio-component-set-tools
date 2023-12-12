@@ -29,10 +29,10 @@ describe('validate chart', () => {
                     });
                     return JSON.stringify(componentsDefinition);
                 }
-                if (filePath === 'templates/html/chart.html') {
+                if (filePath === path.normalize('templates/html/chart.html')) {
                     return `<figure class="chart"><div doc-chart="chart"></div></figure>`;
                 }
-                if (filePath === 'styles/_chart.scss') {
+                if (filePath === path.normalize('styles/_chart.scss')) {
                     return `.chart { color: deeppink; }`;
                 }
                 return content;
