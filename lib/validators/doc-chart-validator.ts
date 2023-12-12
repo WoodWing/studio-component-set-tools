@@ -71,10 +71,6 @@ export class DocChartValidator extends Validator {
             );
             return;
         }
-        if (!chartProperty.control.chartType) {
-            this.error(`Component "${component.name}" is missing mandatory 'chartType' property`);
-            return;
-        }
 
         const directive = component.directives[chartProperty.directiveKey];
         if (!directive || directive.type !== DirectiveType.chart) {

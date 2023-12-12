@@ -335,7 +335,7 @@ const componentPropertyDefinition: {
                         description: 'Adds chart options',
                     },
                     chartType: {
-                        type: 'string',
+                        enum: ['infogram'],
                         description: 'Chart provider',
                     },
                 },

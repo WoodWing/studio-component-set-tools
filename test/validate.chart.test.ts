@@ -38,7 +38,7 @@ describe('validate chart', () => {
             },
             ['templates/html/chart.html', 'styles/_chart.scss'],
         );
-
+        expect(errorSpy).not.toHaveBeenCalled();
         expect(await validateFolderWithCustomiser('./test/resources/minimal-sample-next')).toBe(true);
     });
 });
