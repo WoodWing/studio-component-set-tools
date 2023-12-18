@@ -30,6 +30,13 @@ describe('UnitTypeValidator', () => {
                                 unit: 'eM', // test if it is case-insensitive
                             },
                         },
+                        {
+                            name: 'p4',
+                            control: {
+                                type: 'text',
+                                unit: '%',
+                            },
+                        },
                     ],
                 },
             },
@@ -46,7 +53,7 @@ describe('UnitTypeValidator', () => {
             definition.components.c1.properties[1].control.unit = 'xy';
             validator.validate();
             expect(error).toHaveBeenCalledWith(
-                `Property "p2" has unacceptable unit type "xy", only "em,px" are allowed`,
+                `Property "p2" has unacceptable unit type "xy", only "em,px,%" are allowed`,
             );
         });
     });
