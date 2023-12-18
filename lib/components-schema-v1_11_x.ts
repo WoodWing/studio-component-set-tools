@@ -232,7 +232,7 @@ const componentPropertyDefinition: {
                     },
                     unit: {
                         type: 'string',
-                        description: 'Unit type like em, px etc',
+                        description: 'Unit type like em, px, % etc',
                     },
                     inputPlaceholder: labelProperty('Input placeholder'),
                     readonly: {
