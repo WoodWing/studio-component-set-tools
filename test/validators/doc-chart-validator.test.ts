@@ -44,6 +44,7 @@ describe('DocChartValidator', () => {
         error = jest.fn();
         validator = new DocChartValidator(error, definition);
     });
+
     describe('validate', () => {
         it('should pass on a valid definition', () => {
             validator.validate();
