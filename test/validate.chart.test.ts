@@ -40,6 +40,7 @@ describe('validate chart', () => {
             [path.normalize('templates/html/chart.html'), path.normalize('styles/_chart.scss')],
         );
         expect(errorSpy).not.toHaveBeenCalled();
+        expect(await validateFolderWithCustomiser('./test/resources/minimal-sample-1_11_x')).toBe(true);
         expect(await validateFolderWithCustomiser('./test/resources/minimal-sample-next')).toBe(true);
     });
 });

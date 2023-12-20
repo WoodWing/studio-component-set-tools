@@ -556,7 +556,7 @@ const componentPropertyDefinition: {
     },
 };
 
-export const componentsDefinitionSchema_v1_11_x: JSONSchema7 = {
+export const componentsDefinitionSchema_v1_12_x: JSONSchema7 = {
     $schema: 'http://json-schema.org/draft-07/schema#',
     title: 'Studio components definition schema',
     description: 'Schema describing the format of the components-definition.json file in a Studio component set.',
