@@ -215,15 +215,17 @@ export function isMediaProperties(
 }
 
 /**
- * Chart properties control.
- * Contains parameters to set the chart logo
- * attached to component doc-chart directive.
+ * Enables chart for an doc-chart directive
  */
 export interface ComponentPropertyControlChartProperties {
-    type: 'chart-properties';
+    type: 'chart';
+    /**
+     * Defines chart provider. For now only supports 'infogram'
+     */
+    chartType: 'infogram';
 }
 export function isChart(control: ComponentPropertyControl): control is ComponentPropertyControlChartProperties {
-    return control.type === 'chart-properties';
+    return control.type === 'chart';
 }
 
 /**

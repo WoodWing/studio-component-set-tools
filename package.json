@@ -1,6 +1,6 @@
 {
   "name": "@woodwing/studio-component-set-tools",
-  "version": "1.22.0",
+  "version": "1.22.4",
   "description": "Validation module for Studio Digital Editor component sets.",
   "author": "",
   "license": "Apache-2.0",
@@ -31,6 +31,7 @@
     "format:check": "prettier -l \"**/*\""
   },
   "devDependencies": {
+    "@swc/jest": "^0.2.29",
     "@types/jest": "^27.0.0",
     "@types/json-schema": "~7.0.7",
     "@types/node": "^12.20.28",
@@ -47,7 +48,6 @@
     "npm-run-all": "~4.1.5",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
-    "ts-jest": "^27.0.5",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.2"
   },

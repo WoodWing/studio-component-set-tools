@@ -5,7 +5,7 @@
 import { Validator } from './validator';
 import { Component, ComponentProperty } from '../models';
 
-const TYPES = ['em', 'px'];
+const TYPES = ['em', 'px', '%'];
 const TYPES_REGEXP = new RegExp(`^(${TYPES.join('|')})$`, 'i');
 
 export class UnitTypeValidator extends Validator {

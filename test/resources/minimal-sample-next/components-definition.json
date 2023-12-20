@@ -48,6 +48,23 @@
             },
             "name": "minimal2",
             "components": ["body"]
+        },
+        {
+            "label": "With logo",
+            "name": "with-logo",
+            "components": ["body"],
+            "logo": {
+                "icon": "icons/group-logo.svg"
+            }
+        },
+        {
+            "label": "With logo and link",
+            "name": "with-logo-and-link",
+            "components": ["body"],
+            "logo": {
+                "icon": "icons/group-logo.svg",
+                "link": "https://www.woodwing.com"
+            }
         }
     ],
     "componentProperties": [

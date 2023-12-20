@@ -103,6 +103,15 @@ export interface ComponentDefinition {
 
                 /** names of components in this group */
                 components: string[];
+
+                /** An optional logo which can be shown in the component chooser dialog */
+                logo?: {
+                    /** The icon to be shown */
+                    icon: string;
+
+                    /** The link to which the logo will direct to when the icon is clicked by a user */
+                    link?: string;
+                };
                 [k: string]: unknown;
             }[];
             autofill?: {
@@ -188,16 +197,16 @@ export interface ComponentGroup {
     /** Names of components in this group */
     components: string[];
 
-    /** Display logo of integration */
-    integrationLogo?: IntegrationLogo;
+    /** Logo for this group */
+    logo?: Logo;
 }
 
 export interface ComponentConversionRules {
     [k: string]: ComponentConversionRule;
 }
 
-interface IntegrationLogo {
-    logoPath: string;
+interface Logo {
+    icon: string;
     link?: string;
 }
 

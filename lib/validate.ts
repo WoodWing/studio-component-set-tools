@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as semver from 'semver';
 import ajv, { Schema, ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
-import * as chalk from 'chalk';
+import { redBright } from 'chalk';
 import * as jsonMap from 'json-source-map';
 
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
@@ -106,7 +106,7 @@ export async function validateFolder(folderPath: string): Promise<boolean> {
         readFile(path.resolve(folderPath, filePath), options);
     const getFileSize = async (filePath: string) => getSize(path.resolve(folderPath, filePath));
     return validate(files, getFileContent, getFileSize, (errorMessage) => {
-        console.log(chalk.redBright(errorMessage));
+        console.log(redBright(errorMessage));
     });
 }
 
@@ -240,9 +240,7 @@ async function getComponentsDefinition(
     try {
         return jsonMap.parse(componentsDefinitionContent);
     } catch (e) {
-        errorReporter(
-            chalk.redBright(`Components definition file "${componentsDefinitionPath}" is not valid json: \n${e}`),
-        );
+        errorReporter(redBright(`Components definition file "${componentsDefinitionPath}" is not valid json: \n${e}`));
     }
     return { data: null, pointers: null };
 }
@@ -326,7 +324,7 @@ export function getValidators(
             new DropCapitalValidator(error, componentSet),
             new FittingValidator(error, componentSet),
             new FocuspointValidator(error, componentSet),
-            new GroupsValidator(error, componentSet),
+            new GroupsValidator(error, componentSet, filePaths),
             new IconsValidator(error, componentSet, getFileContent),
             new ImageEditorValidator(error, componentSet),
             new InteractiveValidator(error, componentSet),
@@ -344,7 +342,7 @@ export function getValidators(
         validators = validators.concat(
             new AutofillValidator(error, componentSet),
             new DefaultComponentOnEnterOverrideValidator(error, componentSet),
-            new DocContainerGroupsValidator(error, componentSet),
+            new DocContainerGroupsValidator(error, componentSet, filePaths),
         );
     }
     if (semver.satisfies(version, '>=1.3.0', semVerOptions)) {
@@ -359,5 +357,6 @@ export function getValidators(
     if (semver.satisfies(version, '>=1.11.0', semVerOptions)) {
         validators = validators.concat(new DocChartValidator(error, componentSet));
     }
+
     return validators.length > 0 ? validators : null;
 }

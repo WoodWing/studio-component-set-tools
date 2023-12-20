@@ -101,9 +101,21 @@ const componentGroupDefinition: JSONSchema7Definition = {
                 minLength: 3,
             },
             label: labelProperty('Group label shown in Digital Editor'),
-            integrationLogo: {
+            logo: {
                 type: 'object',
-                description: ' Display logo of integration',
+                description: 'Group logo with link',
+                properties: {
+                    icon: {
+                        type: 'string',
+                        description: 'Path to icon',
+                    },
+                    link: {
+                        type: 'string',
+                        description: 'Link to external source',
+                    },
+                },
+                additionalProperties: false,
+                required: ['icon'],
             },
             components: {
                 type: 'array',
@@ -220,7 +232,7 @@ const componentPropertyDefinition: {
                     },
                     unit: {
                         type: 'string',
-                        description: 'Unit type like em, px etc',
+                        description: 'Unit type like em, px, % etc',
                     },
                     inputPlaceholder: labelProperty('Input placeholder'),
                     readonly: {
@@ -311,6 +323,20 @@ const componentPropertyDefinition: {
                     mediaType: {
                         enum: ['video', 'social'],
                         description: 'Defines media type. If omitted then both types are supported',
+                    },
+                },
+            },
+            {
+                additionalProperties: false,
+                required: ['type', 'chartType'],
+                properties: {
+                    type: {
+                        enum: ['chart'],
+                        description: 'Adds chart options',
+                    },
+                    chartType: {
+                        enum: ['infogram'],
+                        description: 'Chart provider',
                     },
                 },
             },

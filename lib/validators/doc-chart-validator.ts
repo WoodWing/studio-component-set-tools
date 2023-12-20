@@ -3,13 +3,14 @@
  *
  * Rules:
  *  - A component is not allowed to have more than one doc-chart directive.
- *  - A component with 1 doc-chart directives -must- have a property control type "chart-properties"
- *  - A component property with a "chart-properties" control type MUST be applied to a "chart" directive
- *  - A component without a doc-chart directive can't have any "chart-properties" control types
+ *  - A component with 1 doc-chart directive -must- have a property control type "chart"
+ *  - A component property with a "chart" control type MUST be applied to a "chart" directive
+ *  - A component without a doc-chart directive can't have any "chart" control types
  */
 
 import { Validator } from './validator';
 import { ComponentProperty, DirectiveType, Component } from '../models';
+import { ComponentPropertyControlChartProperties } from '../models/component-property-controls';
 
 export class DocChartValidator extends Validator {
     async validate(): Promise<void> {
@@ -34,7 +35,7 @@ export class DocChartValidator extends Validator {
     private validateComponentWithoutChartDirective(component: Component) {
         if (this.countChartPropertiesProperties(component) > 0) {
             this.error(
-                `Component "${component.name}" has a "chart-properties" control type, but only components with a "doc-chart" directive can have a property with this control type`,
+                `Component "${component.name}" has a "chart" control type, but only components with a "doc-chart" directive can have a property with this control type`,
             );
         }
     }
@@ -44,7 +45,7 @@ export class DocChartValidator extends Validator {
             this.error(
                 `Component "${
                     component.name
-                }" with "doc-chart" directive must have exactly one "chart-properties" property (found ${this.countChartPropertiesProperties(
+                }" with "doc-chart" directive must have exactly one "chart" property (found ${this.countChartPropertiesProperties(
                     component,
                 )})`,
             );
@@ -53,14 +54,20 @@ export class DocChartValidator extends Validator {
 
         // Check whether the chart-properties control type property is applied to the doc-chart directive.
         for (const chartProperty of Object.values(this.chartPropertiesProperties(component))) {
-            this.validateChartProperty(component, chartProperty);
+            this.validateChartProperty(
+                component,
+                chartProperty as ComponentProperty<ComponentPropertyControlChartProperties>,
+            );
         }
     }
 
-    private validateChartProperty(component: Component, chartProperty: ComponentProperty) {
+    private validateChartProperty(
+        component: Component,
+        chartProperty: ComponentProperty<ComponentPropertyControlChartProperties>,
+    ) {
         if (!chartProperty.directiveKey) {
             this.error(
-                `Component "${component.name}" must configure "directiveKey" for the property with control type "chart-properties"`,
+                `Component "${component.name}" must configure "directiveKey" for the property with control type "chart"`,
             );
             return;
         }
@@ -68,7 +75,7 @@ export class DocChartValidator extends Validator {
         const directive = component.directives[chartProperty.directiveKey];
         if (!directive || directive.type !== DirectiveType.chart) {
             this.error(
-                `Component "${component.name}" has a control type "chart-properties" applied to the wrong directive, which can only be used with "doc-chart" directives`,
+                `Component "${component.name}" has a control type "chart" applied to the wrong directive, which can only be used with "doc-chart" directives`,
             );
         }
     }
@@ -77,13 +84,13 @@ export class DocChartValidator extends Validator {
         return Object.values(component.directives).filter((directive) => directive.type === DirectiveType.chart).length;
     }
 
-    /** Count number of "chart-properties" properties */
+    /** Count number of "chart" properties */
     private countChartPropertiesProperties(component: Component): number {
         return this.chartPropertiesProperties(component).length;
     }
 
-    /** Get "chart-properties" properties definitions (collection of nested properties behaving as a single property) */
+    /** Get "chart" properties definitions (collection of nested properties behaving as a single property) */
     private chartPropertiesProperties(component: Component) {
-        return Object.values(component.properties).filter((property) => property.control.type === 'chart-properties');
+        return Object.values(component.properties).filter((property) => property.control.type === 'chart');
     }
 }
