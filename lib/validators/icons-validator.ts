@@ -44,7 +44,9 @@ export class IconsValidator extends Validator {
             if (e.message === 'Invalid file signature') {
                 this.error(`Component "${name}" icon "${icon}" is not a valid PNG file`);
             } else {
-                throw e;
+                this.error(
+                    `Cannot validate component "${name}" icon "${icon}" due to an unexpected error: ${e.message}`,
+                );
             }
         }
     }

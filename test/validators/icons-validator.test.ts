@@ -73,5 +73,17 @@ describe('IconsValidator', () => {
                 `Component "wrong" icon "./test/resources/invalid-files/wrong.png" is not a valid PNG file`,
             );
         });
+        it('should fail for unexpected errors from files with a png extension', async () => {
+            definition.components.c3 = {
+                name: 'zero',
+                icon: './test/resources/invalid-files/zero.png',
+            };
+            await validator.validate();
+            expect(error).toHaveBeenCalledWith(
+                expect.stringMatching(
+                    /Cannot validate component "zero" icon ".\/test\/resources\/invalid-files\/zero.png" due to an unexpected error: \w+/,
+                ),
+            );
+        });
     });
 });
