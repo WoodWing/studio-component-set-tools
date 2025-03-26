@@ -63,5 +63,15 @@ describe('IconsValidator', () => {
             await validator.validate();
             expect(error).toHaveBeenCalledWith(`PNG icons are only supported when they are transparent`);
         });
+        it('should fail for non png files with a png extension', async () => {
+            definition.components.c3 = {
+                name: 'wrong',
+                icon: './test/resources/invalid-files/wrong.png',
+            };
+            await validator.validate();
+            expect(error).toHaveBeenCalledWith(
+                `Component "wrong" icon "./test/resources/invalid-files/wrong.png" is not a valid PNG file`,
+            );
+        });
     });
 });
