@@ -16,5 +16,5 @@
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true
     },
-    "include": ["./lib/**/*"]
+    "files": ["./lib/validate.ts", "./lib/utils.ts"]
 }
