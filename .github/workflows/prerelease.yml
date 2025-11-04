@@ -4,6 +4,10 @@ on:
         branches:
             - master
 
+permissions:
+    contents: write
+    packages: write
+
 jobs:
     prerelease:
         runs-on: ubuntu-latest
@@ -11,11 +15,11 @@ jobs:
             CI: true
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v6
               with:
-                  node-version: 20
+                  node-version: 22
 
             - uses: bahmutov/npm-install@v1
 
