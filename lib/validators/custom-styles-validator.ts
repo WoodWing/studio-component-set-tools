@@ -1,9 +1,13 @@
+import * as path from 'path';
 import { ComponentSet, CustomStyle } from '../models';
 import { Validator } from './validator';
-import * as path from 'path';
 
 export class CustomStylesValidator extends Validator {
-    constructor(error: (errorMessage: string) => false, definition: ComponentSet, private filePaths: Set<string>) {
+    constructor(
+        error: (errorMessage: string) => false,
+        definition: ComponentSet,
+        private filePaths: Set<string>,
+    ) {
         super(error, definition);
     }
 

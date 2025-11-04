@@ -1,12 +1,14 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as semver from 'semver';
 import ajv, { Schema, ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
 import { redBright } from 'chalk';
+import * as fs from 'fs';
 import * as jsonMap from 'json-source-map';
-
+import * as path from 'path';
+import * as semver from 'semver';
 import { componentsDefinitionSchema_v1_0_x } from './components-schema-v1_0_x';
+import { componentsDefinitionSchema_v1_10_x } from './components-schema-v1_10_x';
+import { componentsDefinitionSchema_v1_11_x } from './components-schema-v1_11_x';
+import { componentsDefinitionSchema_v1_12_x } from './components-schema-v1_12_x';
 import { componentsDefinitionSchema_v1_1_x } from './components-schema-v1_1_x';
 import { componentsDefinitionSchema_v1_2_x } from './components-schema-v1_2_x';
 import { componentsDefinitionSchema_v1_3_x } from './components-schema-v1_3_x';
@@ -16,11 +18,6 @@ import { componentsDefinitionSchema_v1_6_x } from './components-schema-v1_6_x';
 import { componentsDefinitionSchema_v1_7_x } from './components-schema-v1_7_x';
 import { componentsDefinitionSchema_v1_8_x } from './components-schema-v1_8_x';
 import { componentsDefinitionSchema_v1_9_x } from './components-schema-v1_9_x';
-import { componentsDefinitionSchema_v1_10_x } from './components-schema-v1_10_x';
-import { componentsDefinitionSchema_v1_11_x } from './components-schema-v1_11_x';
-import { componentsDefinitionSchema_v1_12_x } from './components-schema-v1_12_x';
-
-import { parseDefinition } from './parser';
 import {
     ComponentsDefinition,
     ComponentSet,
@@ -28,6 +25,10 @@ import {
     GetFileContentType,
     GetFileSize,
 } from './models';
+import { parseDefinition } from './parser';
+import { loadHtmlRenditions } from './renditions';
+import { listFilesRelativeToFolder } from './util/files';
+import { deepFreeze } from './util/freeze';
 import {
     AutofillValidator,
     ComponentsValidator,
@@ -40,10 +41,10 @@ import {
     DirectiveOptionsValidator,
     DirectivePropertiesValidator,
     DisableFullscreenCheckboxValidator,
+    DocChartValidator,
     DocContainerGroupsValidator,
     DocContainerValidator,
     DocMediaValidator,
-    DocChartValidator,
     DocSlideshowValidator,
     DropCapitalValidator,
     FittingValidator,
@@ -63,11 +64,12 @@ import {
     validateTotalSize,
     Validator,
 } from './validators';
-import { listFilesRelativeToFolder } from './util/files';
-import { loadHtmlRenditions } from './renditions';
-import { deepFreeze } from './util/freeze';
 
-const ajvInstance = new ajv({ allErrors: true, verbose: true, allowUnionTypes: true });
+const ajvInstance = new ajv({
+    allErrors: true,
+    verbose: true,
+    allowUnionTypes: true,
+});
 addFormats(ajvInstance);
 
 const componentsDefinitionPath = 'components-definition.json';
@@ -159,11 +161,9 @@ export async function validate(
 
                 const errorPointer = componentsDefinitionSourcePointers[error.instancePath];
 
-                let errorMessage = `${error.instancePath} ${error.message}\n${JSON.stringify(
-                    error.params,
-                    undefined,
-                    4,
-                )}`;
+                let errorMessage = `${error.instancePath} ${
+                    error.message
+                }\n${JSON.stringify(error.params, undefined, 4)}`;
                 errorMessage += `\n${componentsDefinitionPath} - line ${errorPointer.value.line}, column ${errorPointer.value.column}:`;
                 errorMessage += `\n> ${jsonLines
                     .slice(errorPointer.value.line, Math.max(errorPointer.valueEnd.line, errorPointer.value.line + 1))

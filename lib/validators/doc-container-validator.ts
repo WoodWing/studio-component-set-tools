@@ -2,8 +2,8 @@
  * Validates usage of doc-container directive
  */
 
+import { Component, DirectiveType } from '../models';
 import { Validator } from './validator';
-import { DirectiveType, Component } from '../models';
 
 export class DocContainerValidator extends Validator {
     async validate(): Promise<void> {

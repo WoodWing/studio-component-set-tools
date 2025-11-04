@@ -2,8 +2,8 @@
  * Validates usage of image-editor control type
  */
 
-import { Validator } from './validator';
 import { Component, ComponentProperty } from '../models';
+import { Validator } from './validator';
 
 const CONTROL = 'image-editor';
 const ALLOWED_DATA_TYPE = 'doc-image';

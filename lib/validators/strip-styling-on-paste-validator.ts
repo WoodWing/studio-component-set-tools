@@ -2,8 +2,8 @@
  * Validates stripStylingOnPaste directive option
  */
 
-import { Validator } from './validator';
 import { Component } from '../models';
+import { Validator } from './validator';
 
 export class StripStylingOnPasteValidator extends Validator {
     async validate(): Promise<void> {

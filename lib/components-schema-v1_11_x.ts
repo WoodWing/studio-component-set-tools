@@ -13,7 +13,9 @@ const defaultValue: JSONSchema7Definition = {
     description: 'Default value of property upon component creation. By default the property value is not defined.',
 };
 
-function labelProperty(description: string): { oneOf: JSONSchema7Definition[] } {
+function labelProperty(description: string): {
+    oneOf: JSONSchema7Definition[];
+} {
     return {
         oneOf: [
             {
@@ -136,7 +138,10 @@ const componentPropertyDefinition: {
         minLength: 3,
     },
     label: labelProperty('Display label of Component property'),
-    directiveKey: { type: 'string', description: 'Directive key for properties that use a directive data type' },
+    directiveKey: {
+        type: 'string',
+        description: 'Directive key for properties that use a directive data type',
+    },
     control: {
         type: 'object',
         description: 'Type of UI element and options',
@@ -567,7 +572,10 @@ export const componentsDefinitionSchema_v1_11_x: JSONSchema7 = {
             description: 'Name of the components package',
             minLength: 3,
         },
-        description: { type: 'string', description: 'Description of components package' },
+        description: {
+            type: 'string',
+            description: 'Description of components package',
+        },
         version: {
             type: 'string',
             description: 'Version of matching components model',
@@ -591,7 +599,10 @@ export const componentsDefinitionSchema_v1_11_x: JSONSchema7 = {
                         minLength: 3,
                     },
                     label: labelProperty('Component label shown in Digital Editor'),
-                    icon: { type: 'string', description: 'Icon shown for component in Digital Editor' },
+                    icon: {
+                        type: 'string',
+                        description: 'Icon shown for component in Digital Editor',
+                    },
                     properties: {
                         type: 'array',
                         items: inlineComponentPropertyDefinitionOrReferenceList(false),

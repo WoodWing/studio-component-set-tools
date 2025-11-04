@@ -1,5 +1,5 @@
-import { Label } from './label';
 import { ComponentPropertyControl } from './component-property-controls';
+import { Label } from './label';
 
 /**
  * Type definition for Components definition file.

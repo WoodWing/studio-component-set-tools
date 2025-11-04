@@ -8,8 +8,8 @@
  */
 
 import * as path from 'path';
-import { Validator } from './validator';
 import { ComponentSet } from '../models';
+import { Validator } from './validator';
 
 const RESERVED = [/^__internal__/];
 const GENERIC_FILES = [
@@ -19,7 +19,11 @@ const GENERIC_FILES = [
 ];
 
 export class ComponentsValidator extends Validator {
-    constructor(error: (errorMessage: string) => false, definition: ComponentSet, private filePaths: Set<string>) {
+    constructor(
+        error: (errorMessage: string) => false,
+        definition: ComponentSet,
+        private filePaths: Set<string>,
+    ) {
         super(error, definition);
     }
 

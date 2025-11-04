@@ -2,8 +2,8 @@
  * Validates directiveOptions entries have a matching directive in the template
  */
 
-import { Validator } from './validator';
 import { Component } from '../models';
+import { Validator } from './validator';
 
 export class DirectiveOptionsValidator extends Validator {
     async validate(): Promise<void> {

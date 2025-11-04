@@ -8,8 +8,8 @@
  *  - A component without a doc-media directive can't have any "media-properties" control types
  */
 
+import { Component, ComponentProperty, DirectiveType } from '../models';
 import { Validator } from './validator';
-import { ComponentProperty, DirectiveType, Component } from '../models';
 
 export class DocMediaValidator extends Validator {
     async validate(): Promise<void> {

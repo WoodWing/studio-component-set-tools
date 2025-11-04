@@ -7,10 +7,10 @@
  */
 
 import * as path from 'path';
-import { Validator } from './validator';
-import { ComponentProperty, ComponentSet, Component } from '../models';
-import type { ComponentPropertyControl } from '../models/component-property-controls';
 import * as semver from 'semver';
+import { Component, ComponentProperty, ComponentSet } from '../models';
+import type { ComponentPropertyControl } from '../models/component-property-controls';
+import { Validator } from './validator';
 
 const RESERVED = [/^parallax$/];
 
@@ -30,7 +30,11 @@ const TYPES_ALLOWING_CHILD_PROPERTIES: ComponentPropertyControl['type'][] = [
 const ALLOWED_CONTROL_TYPES_FOR_STUDIO_OBJECT_DATA_TYPE: ComponentPropertyControl['type'][] = ['studio-object-select'];
 
 export class PropertiesValidator extends Validator {
-    constructor(error: (errorMessage: string) => false, definition: ComponentSet, protected filePaths: Set<string>) {
+    constructor(
+        error: (errorMessage: string) => false,
+        definition: ComponentSet,
+        protected filePaths: Set<string>,
+    ) {
         super(error, definition);
     }
 

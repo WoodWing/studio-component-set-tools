@@ -1,18 +1,18 @@
 import {
-    ComponentsDefinition,
-    ComponentDefinition,
-    ComponentRendition,
-    ComponentProperty,
-} from '../models/components-definition';
-import {
     ComponentField,
-    ComponentSetInfo,
     ComponentInfoFields,
     ComponentInfoProperties,
+    ComponentSetInfo,
 } from '../models/component-set-info';
-import { RenditionResolver, processTemplates } from './process-templates';
-import parse5 = require('parse5');
+import {
+    ComponentDefinition,
+    ComponentProperty,
+    ComponentRendition,
+    ComponentsDefinition,
+} from '../models/components-definition';
 import { parseDefinition } from '../parser';
+import { processTemplates, RenditionResolver } from './process-templates';
+import parse5 = require('parse5');
 
 const directivePrefix = 'doc-';
 

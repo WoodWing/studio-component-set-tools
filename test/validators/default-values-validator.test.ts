@@ -1,5 +1,5 @@
-import { DefaultValuesValidator } from '../../lib/validators/default-values-validator';
 import { COMPONENT_PROPERTY_CONTROL_FITTING_VALUES } from '../../lib/models/component-property-controls';
+import { DefaultValuesValidator } from '../../lib/validators/default-values-validator';
 
 describe('DefaultValuesValidator', () => {
     let definition: any;

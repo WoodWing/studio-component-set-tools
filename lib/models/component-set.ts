@@ -1,8 +1,8 @@
 import {
-    ComponentDefinition,
-    ComponentProperty,
-    ComponentGroup,
     ComponentConversionRules,
+    ComponentDefinition,
+    ComponentGroup,
+    ComponentProperty,
     ComponentsDefinitionShortcuts,
     CustomStyle,
 } from './components-definition';

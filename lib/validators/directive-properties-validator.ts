@@ -4,8 +4,8 @@
  * - if all properties whose dataType=doc-* have a reference to a directive
  */
 
-import { Validator } from './validator';
 import { DirectiveType } from '../models';
+import { Validator } from './validator';
 
 const CONTROLS = ['image-editor', 'interactive', 'media-properties', 'chart'];
 

@@ -1,5 +1,5 @@
-import { PropertiesValidator } from '../../lib/validators';
 import type { ComponentProperty } from '../../lib/models';
+import { PropertiesValidator } from '../../lib/validators';
 
 describe('PropertiesValidator', () => {
     function createTextProperty(): ComponentProperty {

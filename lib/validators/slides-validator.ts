@@ -2,8 +2,8 @@
  * Validates value of slides property
  */
 
-import { Validator } from './validator';
 import { Component, ComponentProperty } from '../models';
+import { Validator } from './validator';
 
 export class SlidesValidator extends Validator {
     async validate(): Promise<void> {
