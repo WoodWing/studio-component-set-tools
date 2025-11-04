@@ -5,6 +5,7 @@ on:
             - master
 
 permissions:
+    id-token: write # Required for OIDC
     contents: write
     packages: write
 
