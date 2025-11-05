@@ -31,7 +31,7 @@ jobs:
 
             # https://docs.github.com/en/actions/guides/publishing-nodejs-packages#publishing-packages-to-npm-and-github-packages
             # Setup .npmrc file to publish to GitHub Packages (can replace the other setup-node action when we no longer publish to npm)
-            - uses: actions/setup-node@v5
+            - uses: actions/setup-node@v6
               with:
                   registry-url: 'https://npm.pkg.github.com'
                   node-version: 22
