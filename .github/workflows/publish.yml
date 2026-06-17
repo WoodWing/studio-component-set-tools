@@ -1,0 +1,81 @@
+name: publish
+on:
+    # Prerelease: every push to master publishes a <version>-dev.<sha> build
+    push:
+        branches:
+            - master
+    # Stable: publishing a GitHub release publishes the package.json version
+    release:
+        types: [published]
+
+# npm allows only one trusted publisher per package, matched on the workflow
+# filename. Keeping both publish paths in this single file lets one trusted
+# publisher (publish.yml) cover stable and prerelease, fully token-free.
+permissions:
+    id-token: write # Required for OIDC trusted publishing to npm
+    contents: read
+    packages: write # Required to publish to GitHub Packages
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        env:
+            CI: true
+        steps:
+            - uses: actions/checkout@v5
+
+            # registry-url writes an .npmrc pointing at npmjs.org. With OIDC
+            # trusted publishing, no NODE_AUTH_TOKEN/NPM_TOKEN is needed.
+            - uses: actions/setup-node@v6
+              with:
+                  node-version: 22
+                  registry-url: 'https://registry.npmjs.org'
+
+            # Trusted publishing requires npm >= 11.5.1; Node 22 still ships npm 10.
+            - name: Ensure npm supports trusted publishing
+              run: npm install -g npm@latest
+
+            - uses: bahmutov/npm-install@v1
+
+            - name: build
+              run: npm run build
+
+            # --- Prerelease (push to master) -------------------------------
+            # Mirror the previous epeli/npm-release behaviour: tag the published
+            # artifact as <version>-dev.<9-char-sha>. Not committed back to git.
+            - name: Set prerelease version
+              if: github.event_name == 'push'
+              run: |
+                  BASE=$(node -p "require('./package.json').version")
+                  SHA=$(git rev-parse HEAD | cut -c1-9)
+                  npm version "${BASE}-dev.${SHA}" --no-git-tag-version
+
+            # Publish prerelease to npm via OIDC trusted publishing (no NPM_TOKEN).
+            - name: publish npm prerelease
+              if: github.event_name == 'push'
+              run: npm publish --provenance --access public --tag next
+
+            # --- Stable (GitHub release published) -------------------------
+            # Publish to npm via OIDC trusted publishing (no NPM_TOKEN).
+            # Requires a trusted publisher configured for this package at
+            # https://www.npmjs.com/package/@woodwing/studio-component-set-tools/access
+            # (provider: GitHub Actions, repo: WoodWing/studio-component-set-tools,
+            #  workflow: publish.yml). Provenance is generated automatically.
+            - name: publish npm stable
+              if: github.event_name == 'release'
+              run: npm publish --provenance --access public
+
+            # https://docs.github.com/en/actions/guides/publishing-nodejs-packages#publishing-packages-to-npm-and-github-packages
+            # Setup .npmrc file to publish to GitHub Packages (stable releases only).
+            - uses: actions/setup-node@v6
+              if: github.event_name == 'release'
+              with:
+                  registry-url: 'https://npm.pkg.github.com'
+                  node-version: 22
+
+            # Publish to GitHub Packages (GITHUB_TOKEN is ephemeral, no stored secret).
+            - name: Publish to GitHub Packages
+              if: github.event_name == 'release'
+              run: npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
