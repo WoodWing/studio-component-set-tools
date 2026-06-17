@@ -5,9 +5,8 @@ on:
             - master
 
 permissions:
-    id-token: write # Required for OIDC
-    contents: write
-    packages: write
+    id-token: write # Required for OIDC trusted publishing to npm
+    contents: read
 
 jobs:
     prerelease:
@@ -18,17 +17,32 @@ jobs:
         steps:
             - uses: actions/checkout@v5
 
+            # registry-url writes an .npmrc pointing at npmjs.org. With OIDC
+            # trusted publishing, no NODE_AUTH_TOKEN/NPM_TOKEN is needed.
             - uses: actions/setup-node@v6
               with:
                   node-version: 22
+                  registry-url: 'https://registry.npmjs.org'
+
+            # Trusted publishing requires npm >= 11.5.1; Node 22 still ships npm 10.
+            - name: Ensure npm supports trusted publishing
+              run: npm install -g npm@latest
 
             - uses: bahmutov/npm-install@v1
 
             - name: build
               run: npm run build
 
+            # Mirror the previous epeli/npm-release behaviour: tag the published
+            # artifact as <version>-dev.<9-char-sha>. Not committed back to git.
+            - name: Set prerelease version
+              run: |
+                  BASE=$(node -p "require('./package.json').version")
+                  SHA=$(git rev-parse HEAD | cut -c1-9)
+                  npm version "${BASE}-dev.${SHA}" --no-git-tag-version
+
+            # Publish prerelease to npm via OIDC trusted publishing (no NPM_TOKEN).
+            # Requires a trusted publisher for this package allowing the
+            # prerelease.yml workflow. Provenance is generated automatically.
             - name: publish npm prerelease
-              uses: epeli/npm-release@v1
-              with:
-                  type: prerelease
-                  token: ${{ secrets.NPM_TOKEN }}
+              run: npm publish --provenance --access public --tag next
