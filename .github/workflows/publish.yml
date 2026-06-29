@@ -26,14 +26,11 @@ jobs:
 
             # registry-url writes an .npmrc pointing at npmjs.org. With OIDC
             # trusted publishing, no NODE_AUTH_TOKEN/NPM_TOKEN is needed.
+            # Node 24 ships with npm 11.x (>= 11.5.1 required for trusted publishing).
             - uses: actions/setup-node@v6
               with:
-                  node-version: 22
+                  node-version: 24
                   registry-url: 'https://registry.npmjs.org'
-
-            # Trusted publishing requires npm >= 11.5.1; Node 22 still ships npm 10.
-            - name: Ensure npm supports trusted publishing
-              run: npm install -g npm@latest
 
             - uses: bahmutov/npm-install@v1
 
@@ -71,7 +68,7 @@ jobs:
               if: github.event_name == 'release'
               with:
                   registry-url: 'https://npm.pkg.github.com'
-                  node-version: 22
+                  node-version: 24
 
             # Publish to GitHub Packages (GITHUB_TOKEN is ephemeral, no stored secret).
             - name: Publish to GitHub Packages
