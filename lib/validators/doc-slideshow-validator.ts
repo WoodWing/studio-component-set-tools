@@ -2,8 +2,8 @@
  * Validates usage of doc-slideshow directive
  */
 
+import { Component, DirectiveType } from '../models';
 import { Validator } from './validator';
-import { DirectiveType, Component } from '../models';
 
 export class DocSlideshowValidator extends Validator {
     async validate(): Promise<void> {

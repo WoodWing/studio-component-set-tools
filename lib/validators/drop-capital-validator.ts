@@ -4,8 +4,8 @@
  * - only one per a component
  */
 
-import { Validator } from './validator';
 import { Component, ComponentProperty } from '../models';
+import { Validator } from './validator';
 
 const CONTROL = 'drop-capital';
 const ALLOWED_DATA_TYPE = 'data';

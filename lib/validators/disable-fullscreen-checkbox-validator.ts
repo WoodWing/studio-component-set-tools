@@ -2,8 +2,8 @@
  * Validates usage of disable-fullscreen-checkbox control type
  */
 
-import { Validator } from './validator';
 import { Component, ComponentProperty } from '../models';
+import { Validator } from './validator';
 
 const CONTROL = 'disable-fullscreen-checkbox';
 const ALLOWED_DATA_TYPE = 'styles';

@@ -2,7 +2,6 @@
  * Validates if default values for properties are valid.
  */
 
-import { Validator } from './validator';
 import { Component, ComponentProperty } from '../models';
 import {
     ComponentPropertyControlCheckbox,
@@ -11,6 +10,7 @@ import {
     ComponentPropertyControlSlider,
     COMPONENT_PROPERTY_CONTROL_FITTING_VALUES,
 } from '../models/component-property-controls';
+import { Validator } from './validator';
 
 const validDataTypes = new Set(['styles', 'inlineStyles', 'data']);
 

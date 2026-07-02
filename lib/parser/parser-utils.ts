@@ -4,13 +4,13 @@
 
 import * as htmlparser from 'htmlparser2';
 import {
+    Component,
     ComponentDefinition,
     ComponentProperty,
     ComponentRendition,
     ComponentsDefinition,
     ComponentSet,
     DirectiveType,
-    Component,
 } from '../models';
 
 /**

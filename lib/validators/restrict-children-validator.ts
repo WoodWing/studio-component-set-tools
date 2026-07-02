@@ -2,8 +2,8 @@
  * Validates restrictChildren properties option
  */
 
+import { Component, DirectiveType } from '../models';
 import { Validator } from './validator';
-import { DirectiveType, Component } from '../models';
 
 const PROPERTY = 'restrictChildren';
 const ADDITIONAL_PROPERTY = 'withContent';

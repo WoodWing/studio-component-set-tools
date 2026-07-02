@@ -1,7 +1,7 @@
 import * as path from 'path';
-import { validate, readFile, getSize } from '../lib/validate';
-import { listFilesRelativeToFolder } from '../lib/util/files';
 import { GetFileContentOptionsType } from '../lib/models';
+import { listFilesRelativeToFolder } from '../lib/util/files';
+import { getSize, readFile, validate } from '../lib/validate';
 
 export function createValidator(
     fileCustomiser: (filePath: string, content: string) => string,
@@ -26,5 +26,8 @@ export function createValidator(
         });
     }
 
-    return { validateFolderWithCustomiser: validateFolderWithCustomiser, errorSpy: errorSpy };
+    return {
+        validateFolderWithCustomiser: validateFolderWithCustomiser,
+        errorSpy: errorSpy,
+    };
 }

@@ -1,6 +1,5 @@
-import { validateFolder, getValidators, validatePackageSize } from '../lib/validate';
 import { redBright } from 'chalk';
-
+import { getValidators, validateFolder, validatePackageSize } from '../lib/validate';
 import { createValidator } from './test-utils';
 
 describe('validateFolder', () => {

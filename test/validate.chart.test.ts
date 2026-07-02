@@ -1,5 +1,5 @@
-import { createValidator } from './test-utils';
 import * as path from 'path';
+import { createValidator } from './test-utils';
 
 describe('validate chart', () => {
     it('should pass on minimal sample with chart property', async () => {

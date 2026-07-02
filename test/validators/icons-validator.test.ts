@@ -1,5 +1,5 @@
-import { IconsValidator } from '../../lib/validators/icons-validator';
 import { readFile } from 'fs';
+import { IconsValidator } from '../../lib/validators/icons-validator';
 
 describe('IconsValidator', () => {
     let definition: any;

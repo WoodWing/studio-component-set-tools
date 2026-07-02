@@ -1,6 +1,6 @@
 import * as path from 'path';
-import { parseDefinition } from '../../lib/parser/parser-utils';
 import { ComponentRendition, ComponentsDefinition, DirectiveType } from '../../lib/models';
+import { parseDefinition } from '../../lib/parser/parser-utils';
 import { loadHtmlRenditions } from '../../lib/renditions';
 import { deepFreeze } from '../../lib/util/freeze';
 
@@ -25,7 +25,11 @@ describe('Parser utils', () => {
                             { name: 'letter-spacing', defaultValue: '2' },
                             {
                                 name: 'drop-capital',
-                                defaultValue: { numberOfCharacters: 1, numberOfLines: 3, padding: 5 },
+                                defaultValue: {
+                                    numberOfCharacters: 1,
+                                    numberOfLines: 3,
+                                    padding: 5,
+                                },
                             },
                         ],
                         countStatistics: true,
@@ -59,7 +63,10 @@ describe('Parser utils', () => {
                                     caption: 'Default',
                                 },
                                 {
-                                    caption: { key: 'Option 1 {{0}}', values: { 0: 'Replacement' } },
+                                    caption: {
+                                        key: 'Option 1 {{0}}',
+                                        values: { 0: 'Replacement' },
+                                    },
                                     value: '_option1',
                                 },
                             ],
@@ -178,7 +185,10 @@ describe('Parser utils', () => {
                                                 caption: 'Default',
                                             },
                                             {
-                                                caption: { key: 'Option 1 {{0}}', values: { '0': 'Replacement' } },
+                                                caption: {
+                                                    key: 'Option 1 {{0}}',
+                                                    values: { '0': 'Replacement' },
+                                                },
                                                 value: '_option1',
                                             },
                                         ],
@@ -215,7 +225,11 @@ describe('Parser utils', () => {
                                     },
                                     dataType: 'data',
                                     featureFlag: 'ContentStation-LocalStyleOverrides',
-                                    defaultValue: { numberOfCharacters: 1, numberOfLines: 3, padding: 5 },
+                                    defaultValue: {
+                                        numberOfCharacters: 1,
+                                        numberOfLines: 3,
+                                        padding: 5,
+                                    },
                                 },
                             ],
                             renditions: {
@@ -295,7 +309,11 @@ describe('Parser utils', () => {
                                 'letter-spacing': '2',
                             },
                             data: {
-                                'drop-capital': { numberOfCharacters: 1, numberOfLines: 3, padding: 5 },
+                                'drop-capital': {
+                                    numberOfCharacters: 1,
+                                    numberOfLines: 3,
+                                    padding: 5,
+                                },
                             },
                         },
                     },

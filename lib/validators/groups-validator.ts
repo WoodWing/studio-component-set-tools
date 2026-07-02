@@ -2,12 +2,16 @@
  * Validates if group components exist
  */
 
-import { Validator } from './validator';
-import { ComponentGroup, ComponentSet } from '../models';
 import * as path from 'path';
+import { ComponentGroup, ComponentSet } from '../models';
+import { Validator } from './validator';
 
 export class GroupsValidator extends Validator {
-    constructor(error: (errorMessage: string) => false, definition: ComponentSet, private filePaths: Set<string>) {
+    constructor(
+        error: (errorMessage: string) => false,
+        definition: ComponentSet,
+        private filePaths: Set<string>,
+    ) {
         super(error, definition);
     }
 

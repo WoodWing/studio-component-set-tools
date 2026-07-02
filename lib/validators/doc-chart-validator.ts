@@ -8,9 +8,9 @@
  *  - A component without a doc-chart directive can't have any "chart" control types
  */
 
-import { Validator } from './validator';
-import { ComponentProperty, DirectiveType, Component } from '../models';
+import { Component, ComponentProperty, DirectiveType } from '../models';
 import { ComponentPropertyControlChartProperties } from '../models/component-property-controls';
+import { Validator } from './validator';
 
 export class DocChartValidator extends Validator {
     async validate(): Promise<void> {

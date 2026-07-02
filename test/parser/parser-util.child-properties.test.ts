@@ -1,6 +1,6 @@
 import * as path from 'path';
-import { parseDefinition } from '../../lib/parser';
 import { ComponentsDefinition, DirectiveType } from '../../lib/models';
+import { parseDefinition } from '../../lib/parser';
 import { loadHtmlRenditions } from '../../lib/renditions';
 import { deepFreeze } from '../../lib/util/freeze';
 
@@ -279,7 +279,10 @@ describe('Parser utils child properties', () => {
         );
 
         expect(componentSet.defaultComponentContent).toEqual({
-            body: { data: { conditionalProperty: 'value1' }, styles: { checkboxProperty: '_valueWhenOn' } },
+            body: {
+                data: { conditionalProperty: 'value1' },
+                styles: { checkboxProperty: '_valueWhenOn' },
+            },
         });
     });
 

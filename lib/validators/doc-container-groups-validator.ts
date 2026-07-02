@@ -6,12 +6,16 @@
  * These groups override the root level groups for the component picker popup inside a container.
  */
 
-import { Validator } from './validator';
 import { Component, ComponentSet } from '../models';
 import { GroupsValidator } from './groups-validator';
+import { Validator } from './validator';
 
 export class DocContainerGroupsValidator extends Validator {
-    constructor(error: (errorMessage: string) => false, definition: ComponentSet, private filePaths: Set<string>) {
+    constructor(
+        error: (errorMessage: string) => false,
+        definition: ComponentSet,
+        private filePaths: Set<string>,
+    ) {
         super(error, definition);
     }
 

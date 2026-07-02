@@ -3,11 +3,15 @@
  */
 
 import * as path from 'path';
-import { Validator } from './validator';
 import { ComponentSet } from '../models';
+import { Validator } from './validator';
 
 export class ScriptsValidator extends Validator {
-    constructor(error: (errorMessage: string) => false, definition: ComponentSet, protected filePaths: Set<string>) {
+    constructor(
+        error: (errorMessage: string) => false,
+        definition: ComponentSet,
+        protected filePaths: Set<string>,
+    ) {
         super(error, definition);
     }
 

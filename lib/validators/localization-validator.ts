@@ -4,8 +4,8 @@
  */
 
 import * as path from 'path';
-import { Validator } from './validator';
 import { ComponentSet, GetFileContentType } from '../models';
+import { Validator } from './validator';
 
 // Languages supported by Enterprise Server
 const supportedLanguages = [

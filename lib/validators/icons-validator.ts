@@ -4,10 +4,10 @@
  */
 
 import * as path from 'path';
-import { Validator } from './validator';
-import { Component, ComponentSet, GetFileContentType } from '../models';
-
 import * as pngjs from 'pngjs';
+import { Component, ComponentSet, GetFileContentType } from '../models';
+import { Validator } from './validator';
+
 const PNG = pngjs.PNG;
 
 export class IconsValidator extends Validator {

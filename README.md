@@ -172,7 +172,9 @@ Using these versions as an example, when the new schema is ready follow these st
 
 In case you have never published a npm module before, make sure to read the official npm documentation about [publishing npm packages](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
 
-### Through the Github actions pipeline
+Publishing requires a trusted publisher to be configured on the npm side. See the [documentation](https://docs.npmjs.com/trusted-publishers).
+
+### Using the Github actions pipeline
 
 1. Create a branch
 1. Update the [version number](https://docs.npmjs.com/updating-your-published-package-version-number) of this package. For example, to increase the patch version:
@@ -196,27 +198,3 @@ In case you have never published a npm module before, make sure to read the offi
 1. Publish the release
 
 When the release workflow action succeeds, the new version will be available on [npm](https://www.npmjs.com/package/@woodwing/studio-component-set-tools)
-
-### Manually
-
-Before publishing update the [version number](https://docs.npmjs.com/updating-your-published-package-version-number) of this package. For example, to increase the patch version:
-
-```bash
-npm version patch -m "Bump validator version to %s"
-```
-
-This will create a commit and tag for the version as well.
-
-Next verify you are logged in as a user with access to the [Woodwing organization](https://www.npmjs.com/org/woodwing):
-
-```bash
-npm whoami
-```
-
-Finally publish the [scoped package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages) by running:
-
-```bash
-npm run check
-npm run build
-npm publish --access public
-```

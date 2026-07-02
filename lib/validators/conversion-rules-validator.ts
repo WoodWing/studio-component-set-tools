@@ -2,8 +2,8 @@
  * Validates if conversion rules reference to existing components and directives
  */
 
-import { Validator } from './validator';
 import { DirectiveType } from '../models';
+import { Validator } from './validator';
 
 export class ConversionRulesValidator extends Validator {
     async validate(): Promise<void> {

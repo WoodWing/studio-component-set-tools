@@ -4,7 +4,7 @@
  * These renditions are stored in separate html files. To make the work easy for the editor,
  * these templates are inlined to the processed component set definition.
  */
-import { ComponentsDefinition, ComponentRendition } from '../models/components-definition';
+import { ComponentRendition, ComponentsDefinition } from '../models/components-definition';
 
 export interface RenditionComponentTemplates {
     [renditionName: string]: {

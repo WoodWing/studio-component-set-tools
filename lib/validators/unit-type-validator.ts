@@ -2,8 +2,8 @@
  * Validates value of unit text property
  */
 
-import { Validator } from './validator';
 import { Component, ComponentProperty } from '../models';
+import { Validator } from './validator';
 
 const TYPES = ['em', 'px', '%'];
 const TYPES_REGEXP = new RegExp(`^(${TYPES.join('|')})$`, 'i');

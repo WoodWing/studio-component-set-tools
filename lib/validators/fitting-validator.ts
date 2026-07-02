@@ -3,8 +3,8 @@
  * - only one per a component
  */
 
-import { Validator } from './validator';
 import { Component } from '../models';
+import { Validator } from './validator';
 
 const CONTROL = 'fitting';
 

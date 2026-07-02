@@ -2,8 +2,8 @@
  * Validates if autofill rules are correct
  */
 
+import { Component, DirectiveType } from '../models';
 import { Validator } from './validator';
-import { DirectiveType, Component } from '../models';
 
 const supportedDestinationDirectives = [DirectiveType.editable, DirectiveType.link];
 const supportedSourceDirectives = [DirectiveType.image];

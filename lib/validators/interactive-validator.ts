@@ -2,8 +2,8 @@
  * Validates usage of interactive control type
  */
 
-import { Validator } from './validator';
 import { Component, ComponentProperty } from '../models';
+import { Validator } from './validator';
 
 const CONTROL = 'interactive';
 const ALLOWED_DATA_TYPE = 'doc-interactive';
