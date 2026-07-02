@@ -4,7 +4,7 @@
   "description": "Validation module for Studio Digital Editor component sets.",
   "author": "",
   "license": "Apache-2.0",
-  "repository": "github:woodwing/studio-component-set-tools",
+  "repository": "github:WoodWing/studio-component-set-tools",
   "bugs": {
     "url": "https://github.com/WoodWing/studio-component-set-tools/issues"
   },
